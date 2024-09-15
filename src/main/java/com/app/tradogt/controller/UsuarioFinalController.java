@@ -18,4 +18,14 @@ public class UsuarioFinalController {
     public String misPedidos() {
         return "Usuario/listaOrdenes";
     }
+
+    @GetMapping("/editarOrdenes")
+    public String formularioPedido() {
+        return "Usuario/formOrdenes";
+    }
+
+    @GetMapping("/tracking")
+    public String tracking() {
+        return "Usuario/trackingOrd";
+    }
 }

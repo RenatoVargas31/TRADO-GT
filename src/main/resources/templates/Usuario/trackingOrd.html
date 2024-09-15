@@ -1,0 +1,225 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+    
+<!-- Mirrored from themesdesign.in/nazox/layouts/pages-starter.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 30 Aug 2024 19:31:37 GMT -->
+<head>
+        
+        <meta charset="utf-8" />
+        <title>Starter page | Nazox - Admin & Dashboard Template</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta th:replace="~{Common/cssBase :: css_Base}">
+
+    <!-- App favicon -->
+
+    </head>
+
+    <body data-sidebar="dark">
+    
+    <!-- <body data-layout="horizontal" data-topbar="dark"> -->
+
+        <!-- Begin page -->
+        <div id="layout-wrapper">
+
+
+            <header th:replace="~{Usuario/fragments/navbar :: nav_bar}"></header>
+
+            <!-- ========== Left Sidebar Start ========== -->
+            <div th:replace="~{Usuario/fragments/sidebar :: side_bar}"></div>
+            <!-- Left Sidebar End -->
+
+            
+
+            <!-- ============================================================== -->
+            <!-- Start right Content here -->
+            <!-- ============================================================== -->
+            <div class="main-content">
+
+                <div class="page-content">
+                    <div class="container-fluid">
+
+                        <!-- start page title -->
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                                    <h4 class="mb-sm-0">Starter page</h4>
+
+                                    <div class="page-title-right">
+                                        <ol class="breadcrumb m-0">
+                                            <li class="breadcrumb-item"><a href="javascript: void(0);">Utility</a></li>
+                                            <li class="breadcrumb-item active">Starter page</li>
+                                        </ol>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end page title -->
+                        <div class="row">
+                            <div class="d-flex justify-content-between" style="height: 100vh;">
+                                <div class="col-md-6 col-xl-3" style="margin: 20px;">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h4 class="card-title">Seguimiento del pedido</h4>
+                                            <h6 class="card-subtitle font-14 text-muted">N° de Tracking : 2024-99990000</h6>
+                                        </div>
+                                        <img class="img-fluid" src="assets/images/small/img-4.jpg" alt="Card image cap">
+                                        <div class="card-body">
+                                            <p class="card-text"><b>En validación:</b> 25/07/24 16:40 </p>
+                                            <p class="card-text"><b>En proceso:</b> 27/07/24 13:45 </p>
+                                            <p class="card-text"><b>Arribo al país: </b> 28/07/24 13:15 </p>
+                                            <p class="card-text">En aduanas: [en proceso] </p>
+                                            <p class="card-text">En ruta: [en proceso] </p>
+                                            <p class="card-text">Entregado: [en proceso] </p>
+                                            <a href="#" class="card-link">Inicio</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 col-lg-4" style="position: absolute; right: 0; bottom: 0;">
+                                    <div class="card">
+                                        <div class="w-100 user-chat mt-4 mt-sm-0">
+                                            <div class="p-3 px-lg-4 user-chat-border">
+
+                                                <div class="row">
+
+                                                    <div class="col-md-8 col-6">
+                                                        <h5 class="font-size-15 mb-1 text-truncate">Robert Tafur</h5>
+                                                        <p class="text-muted text-truncate mb-0"><i class="mdi mdi-circle text-success align-middle me-1"></i> Active now</p>
+                                                    </div>
+                                                    <div class="col-md-4 col-6">
+                                                        <ul class="list-inline user-chat-nav text-end mb-0">
+                                                            <li class="list-inline-item d-inline-block d-sm-none">
+                                                                <div class="dropdown">
+                                                                    <button class="btn nav-btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                        <i class="mdi mdi-magnify"></i>
+                                                                    </button>
+                                                                </div>
+                                                            </li>
+
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="px-lg-2">
+                                                <div class="chat-conversation p-3">
+                                                    <ul class="list-unstyled mb-0 pe-3" data-simplebar style="max-height: 450px;">
+                                                        <li>
+                                                            <div class="conversation-list">
+                                                                <div class="chat-avatar">
+                                                                    <img src="assets/images/users/avatar-2.jpg" alt="avatar-2">
+                                                                </div>
+                                                                <div class="ctext-wrap">
+                                                                    <div class="conversation-name">Robert Tafur</div>
+                                                                    <div class="ctext-wrap-content">
+                                                                        <p class="mb-0">
+                                                                            Escriba sus consultas acerca del estado de la orden [Mensaje Automático]
+                                                                        </p>
+                                                                    </div>
+                                                                    <p class="chat-time mb-0"><i class="mdi mdi-clock-outline align-middle me-1"></i> 12:09</p>
+                                                                </div>
+
+                                                            </div>
+                                                        </li>
+
+                                                        <li class="right">
+                                                            <div class="conversation-list">
+                                                                <div class="ctext-wrap">
+                                                                    <div class="conversation-name">Usuario</div>
+                                                                    <div class="ctext-wrap-content">
+                                                                        <p class="mb-0">
+                                                                            Buenas tardes, me gustaría saber por qué mi pedido está demorando en el arribo al país.
+                                                                        </p>
+                                                                    </div>
+
+                                                                    <p class="chat-time mb-0"><i class="bx bx-time-five align-middle me-1"></i> 10:02</p>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+
+                                                        <li>
+                                                            <div class="chat-day-title">
+                                                                <span class="title">Today</span>
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div class="conversation-list">
+                                                                <div class="chat-avatar">
+                                                                    <img src="assets/images/users/avatar-2.jpg" alt="avatar-2">
+                                                                </div>
+                                                                <div class="ctext-wrap">
+                                                                    <div class="conversation-name">Robert Tafur</div>
+                                                                    <div class="ctext-wrap-content">
+                                                                        <p class="mb-0">
+                                                                            El agente le responderá en breve [Mensaje Automático]
+                                                                        </p>
+                                                                    </div>
+                                                                    <p class="chat-time mb-0"><i class="mdi mdi-clock-outline me-1"></i> 10:00</p>
+                                                                </div>
+
+                                                            </div>
+                                                        </li>
+
+
+                                                    </ul>
+                                                </div>
+
+                                            </div>
+                                            <div class="px-lg-3">
+                                                <div class="p-3 chat-input-section">
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            <div class="position-relative">
+                                                                <input type="text" class="form-control chat-input" placeholder="Enter Message...">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-auto">
+                                                            <button type="submit" class="btn btn-primary chat-send w-md waves-effect waves-light"><span class="d-none d-sm-inline-block me-2">Send</span> <i class="mdi mdi-send"></i></button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                    </div> <!-- container-fluid -->
+                </div>
+                <!-- End Page-content -->
+                
+                <footer class="footer">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <script>document.write(new Date().getFullYear())</script> © Nazox.
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="text-sm-end d-none d-sm-block">
+                                    Crafted with <i class="mdi mdi-heart text-danger"></i> by Themesdesign
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+                
+            </div>
+            <!-- end main content-->
+
+        </div>
+        <!-- END layout-wrapper -->
+
+        <!-- Right Sidebar -->
+        <!-- /Right-bar -->
+
+        <!-- Right bar overlay-->
+        <div class="rightbar-overlay"></div>
+
+        <!-- JAVASCRIPT -->
+        <span th:replace="~{Common/jsBase :: js_Base}"></span>
+
+    </body>
+
+<!-- Mirrored from themesdesign.in/nazox/layouts/pages-starter.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 30 Aug 2024 19:31:37 GMT -->
+</html>
