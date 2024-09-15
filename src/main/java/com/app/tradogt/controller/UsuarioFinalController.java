@@ -13,4 +13,9 @@ public class UsuarioFinalController {
     public String inicio() {
         return "Usuario/inicio-usuario";
     }
+
+    @GetMapping("/misPedidos")
+    public String misPedidos() {
+        return "Usuario/listaOrdenes";
+    }
 }
