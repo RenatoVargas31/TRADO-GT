@@ -1,0 +1,342 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+    <head>
+        <meta charset="utf-8" />
+        <title>Dashboard | TRADO </title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- CSS BASE -->
+        <meta th:replace="~{Common/cssBase :: css_Base}">
+        <!-- End CSS BASE -->
+        <!-- jquery.vectormap css -->
+        <link th:href="@{../libs/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.css}" rel="stylesheet" type="text/css" />
+
+        <!-- DataTables -->
+        <link th:href="@{../libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css}" rel="stylesheet" type="text/css" />
+
+        <!-- Responsive datatable examples -->
+        <link th:href="@{../libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css}" rel="stylesheet" type="text/css" />
+
+    </head>
+
+    <body data-sidebar="dark">
+    
+    <!-- <body data-layout="horizontal" data-topbar="dark"> -->
+
+        <!-- Begin page -->
+        <div id="layout-wrapper">
+
+            <!-- ========== NavBar Start ========== -->
+            <header th:replace="~{SuperAdmin/fragments/navbar :: nav_bar}"></header>
+            <!-- Navbar End -->
+            <!-- ========== Left Sidebar Start ========== -->
+            <div th:replace="~{SuperAdmin/fragments/sidebar :: side_bar}"></div>
+            <!-- Left Sidebar End -->
+            <!-- ============================================================== -->
+            <!-- Start right Content here -->
+            <!-- ============================================================== -->
+            <div class="main-content">
+
+                <div class="page-content">
+                    <div class="container-fluid">
+
+                        <!-- start page title -->
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                                    <h4 class="mb-sm-0">Dashboard</h4>
+
+                                    <div class="page-title-right">
+                                        <ol class="breadcrumb m-0">
+                                            <li class="breadcrumb-item"><a href="javascript: void(0);">Nazox</a></li>
+                                            <li class="breadcrumb-item active">Dashboard</li>
+                                        </ol>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end page title -->
+
+                        <div class="row">
+                            <div class="col-xl-8">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h4 class="card-title mb-4">Usuaarios || AdmZonal / AgenCompra / Importadores</h4>
+                                        <div>
+                                            <div id="line-column-chart" class="apex-charts" dir="ltr"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="card-body border-top text-center">
+                                        <div class="row">
+                                            <div class="col-sm-4">
+                                                <div class="mt-4 mt-sm-0">
+                                                    <p class="mb-2 text-muted text-truncate"><i class="mdi mdi-circle text-primary font-size-10 me-1"></i> Registrados:</p>
+                                                    <div class="d-inline-flex">
+                                                        <h5 class="mb-0 me-2">646</h5>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-4">
+                                                <div class="mt-4 mt-sm-0">
+                                                    <p class="mb-2 text-muted text-truncate"><i class="mdi mdi-circle text-success font-size-10 me-1"></i> Activos:</p>
+                                                    <div class="d-inline-flex">
+                                                        <h5 class="mb-0 me-2">312</h5>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <div class="mt-4 mt-sm-0">
+                                                    <p class="mb-2 text-muted text-truncate"><i class="mdi mdi-circle text-warning font-size-10 me-1"></i> Inactivos:</p>
+                                                    <div class="d-inline-flex">
+                                                        <h5 class="mb-0">334</h5>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-xl-4">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="d-flex">
+                                            <div class="flex-1 overflow-hidden">
+                                                <p class="text-truncate font-size-14 mb-2">N° Agentes</p>
+                                                <h4 class="mb-0">200</h4>
+                                            </div>
+                                            <div class="text-primary ms-auto">
+                                                <i class="ri-stack-line font-size-24"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="card-body border-top py-3">
+                                        <div class="text-truncate">
+                                            <span class="badge bg-success-subtle text-success  font-size-11"><i class="mdi mdi-menu-up"> </i> 2.4% </span>
+                                            <span class="text-muted ms-2">Anterior mes</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="d-flex">
+                                            <div class="flex-1 overflow-hidden">
+                                                <p class="text-truncate font-size-14 mb-2">N° Usuarios Baneados</p>
+                                                <h4 class="mb-0">50</h4>
+                                            </div>
+                                            <div class="text-primary ms-auto">
+                                                <i class="ri-store-2-line font-size-24"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-body border-top py-3">
+                                        <div class="text-truncate">
+                                            <span class="badge bg-success-subtle text-success  font-size-11"><i class="mdi mdi-menu-up"> </i> 2.4% </span>
+                                            <span class="text-muted ms-2">Anterior mes</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="d-flex">
+                                            <div class="flex-1 overflow-hidden">
+                                                <p class="text-truncate font-size-14 mb-2">N° Proveedores Baneados</p>
+                                                <h4 class="mb-0">60</h4>
+                                            </div>
+                                            <div class="text-primary ms-auto">
+                                                <i class="ri-briefcase-4-line font-size-24"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-body border-top py-3">
+                                        <div class="text-truncate">
+                                            <span class="badge bg-success-subtle text-success  font-size-11"><i class="mdi mdi-menu-up"> </i> 2.4% </span>
+                                            <span class="text-muted ms-2">Anterior mes</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end row -->
+                        <div class="row">
+                            <div class="col-xl-8">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h4 class="card-title mb-4">Cantidad de órdenes || Estádo de seguimiento</h4>
+
+                                        <div id="line_chart_datalabel" class="apex-charts" dir="ltr"></div>
+                                    </div>
+                                </div><!--end card-->
+                            </div>
+                            <div class="col-xl-4">
+
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h4 class="card-title mb-4">Productos || Mayor venta</h4>
+
+                                        <div id="bar_chart" class="apex-charts" dir="ltr"></div>
+                                    </div>
+                                </div><!--end card-->
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h4 class="card-title mb-4">Proveedores || Mayor valoración</h4>
+                                        <div class="table-responsive">
+                                            <table class="table table-centered datatable dt-responsive nowrap" data-bs-page-length="5" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                                <thead class="table-light">
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Proveedor</th>
+                                                    <th>Tienda</th>
+                                                    <th>Valoración</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr>
+                                                    <td>1</td>
+                                                    <td>Proveedor A</td>
+                                                    <td>Tienda A</td>
+                                                    <td>4.9⭐</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>2</td>
+                                                    <td>Proveedor B</td>
+                                                    <td>Tienda B</td>
+                                                    <td>4.9⭐</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>3</td>
+                                                    <td>Proveedor C</td>
+                                                    <td>Tienda C</td>
+                                                    <td>4.8⭐</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>4</td>
+                                                    <td>Proveedor D</td>
+                                                    <td>Tienda D</td>
+                                                    <td>4.8⭐</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>5</td>
+                                                    <td>Proveedor E</td>
+                                                    <td>Tienda E</td>
+                                                    <td>4.7⭐</td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h4 class="card-title mb-4">Proveedores || Menor valoración</h4>
+                                        <div class="table-responsive">
+                                            <table class="table table-centered datatable dt-responsive nowrap" data-bs-page-length="5" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                                <thead class="table-light">
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Proveedor</th>
+                                                    <th>Tienda</th>
+                                                    <th>Valoración</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr>
+                                                    <td>1</td>
+                                                    <td>Proveedor A</td>
+                                                    <td>Tienda A</td>
+                                                    <td>1.8⭐</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>2</td>
+                                                    <td>Proveedor B</td>
+                                                    <td>Tienda B</td>
+                                                    <td>1.9⭐</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>3</td>
+                                                    <td>Proveedor C</td>
+                                                    <td>Tienda C</td>
+                                                    <td>1.9⭐</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>4</td>
+                                                    <td>Proveedor D</td>
+                                                    <td>Tienda D</td>
+                                                    <td>2.0⭐</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>5</td>
+                                                    <td>Proveedor E</td>
+                                                    <td>Tienda E</td>
+                                                    <td>2.1⭐</td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end row -->
+                    </div>
+
+                </div>
+                <!-- End Page-content -->
+
+                <footer class="footer">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <script>document.write(new Date().getFullYear())</script> © Nazox.
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="text-sm-end d-none d-sm-block">
+                                    Crafted with <i class="mdi mdi-heart text-danger"></i> by Themesdesign
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+
+            </div>
+            <!-- end main content-->
+        </div>
+        <!-- END layout-wrapper -->
+
+
+        <!-- JAVASCRIPT BASE-->
+        <span th:replace="~{Common/jsBase :: js_Base}"></span>
+        <!-- End JAVASCRIPT BASE-->
+        <!-- apexcharts -->
+        <script th:src="@{../libs/apexcharts/apexcharts.min.js}"></script>
+        <!-- apexcharts init -->
+        <script th:src="@{../js/pages/apexcharts.init.js}"></script>
+
+        <!-- jquery.vectormap map -->
+        <script th:src="@{../libs/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.min.js}"></script>
+        <script th:src="@{../libs/admin-resources/jquery.vectormap/maps/jquery-jvectormap-us-merc-en.js}"></script>
+    
+        <!-- Required datatable js -->
+        <script th:src="@{../libs/datatables.net/js/jquery.dataTables.min.js}"></script>
+        <script th:src="@{../libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js}"></script>
+    
+        <!-- Responsive examples -->
+        <script th:src="@{../libs/datatables.net-responsive/js/dataTables.responsive.min.js}"></script>
+        <script th:src="@{../libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js}"></script>
+    
+        <script th:src="@{../js/pages/dashboard.init.js}"></script>
+    </body>
+
+</html>

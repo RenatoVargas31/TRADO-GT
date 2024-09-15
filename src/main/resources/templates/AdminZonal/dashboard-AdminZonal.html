@@ -1,0 +1,429 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- CSS BASE -->
+    <meta th:replace="~{Common/cssBase :: css_Base}">
+    <!-- End CSS BASE -->
+    <!-- jquery.vectormap css -->
+    <link th:href="@{../libs/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.css}" rel="stylesheet" type="text/css" />
+
+    <!-- DataTables -->
+    <link th:href="@{../libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css}" rel="stylesheet" type="text/css" />
+
+    <!-- Responsive datatable examples -->
+    <link th:href="@{../libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css}" rel="stylesheet" type="text/css" />
+</head>
+
+<body data-sidebar="dark">
+
+<!-- <body data-layout="horizontal" data-topbar="dark"> -->
+
+<!-- Begin page -->
+<div id="layout-wrapper">
+
+    <!-- ========== NavBar Start ========== -->
+    <header th:replace="~{AdminZonal/fragments/navbar :: nav_bar}"></header>
+    <!-- Navbar End -->
+    <!-- ========== Left Sidebar Start ========== -->
+    <div th:replace="~{AdminZonal/fragments/sidebar :: side_bar}"></div>
+    <!-- Left Sidebar End -->
+    <!-- ============================================================== -->
+    <!-- Start right Content here -->
+    <!-- ============================================================== -->
+    <div class="main-content">
+        <div class="page-content">
+            <div class="container-fluid">
+
+                <!-- start page title -->
+                <div class="row">
+                    <div class="col-12">
+                        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                            <h4 class="mb-sm-0">Dashboard</h4>
+
+                            <div class="page-title-right">
+                                <ol class="breadcrumb m-0">
+                                    <li class="breadcrumb-item active">Home</li>
+                                    <li class="breadcrumb-item"><a href="javascript: void(0);">Dashboard</a></li>
+                                </ol>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <!-- end page title -->
+
+
+
+
+
+                <div class="row">
+                    <div class="col-xl-8">
+
+                        <div class="card">
+                            <div class="card-body">
+
+                                <h4 class="card-title mb-4">Stock de productos</h4>
+                                <div>
+                                    <div id="column_chart_Stock" class="apex-charts" dir="ltr"></div>
+                                </div>
+                            </div>
+
+                            <div class="card-body border-top text-center">
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <div class="d-inline-flex">
+                                            <h5 class="me-2">42 unidades</h5>
+                                        </div>
+                                        <p class="text-muted text-truncate mb-0">Stock Total</p>
+                                    </div>
+
+                                    <div class="col-sm-4">
+                                        <div class="mt-4 mt-sm-0">
+                                            <p class="mb-2 text-muted text-truncate"><i class="mdi mdi-circle text-primary font-size-10 me-1"></i> Producto con Menor Stock :</p>
+                                            <div class="d-inline-flex">
+                                                <h5 class="mb-0 me-2">Producto G</h5>
+                                                <p class="mb-0">1 unidad</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-4">
+                                        <div class="mt-4 mt-sm-0">
+                                            <p class="mb-2 text-muted text-truncate"><i class="mdi mdi-circle text-success font-size-10 me-1"></i> Stock Promedio :</p>
+                                            <div class="d-inline-flex">
+                                                <h5 class="mb-0">3.5 unidades</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="col-xl-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex">
+                                    <div class="flex-1 overflow-hidden">
+                                        <p class="text-truncate font-size-14 mb-2">N° Usuarios Activos</p>
+                                        <h4 class="mb-0">1452</h4>
+                                    </div>
+                                    <div class="text-success ms-auto">
+                                        <i class="ri-emotion-fill font-size-24"></i>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card-body border-top py-3">
+                                <div class="text-truncate">
+                                    <span class="badge bg-success-subtle text-success  font-size-11"><i class="mdi mdi-menu-up"> </i> 2.4% </span>
+                                    <span class="text-muted ms-2">Mes anterior</span>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex">
+                                    <div class="flex-1 overflow-hidden">
+                                        <p class="text-truncate font-size-14 mb-2">N° Usuarios Inactivos</p>
+                                        <h4 class="mb-0">645</h4>
+                                    </div>
+                                    <div class="text-danger ms-auto">
+                                        <i class="ri-emotion-unhappy-fill font-size-24"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body border-top py-3">
+                                <div class="text-truncate">
+                                    <span class="badge bg-success-subtle text-success  font-size-11"><i class="mdi mdi-menu-up"> </i> 2.4% </span>
+                                    <span class="text-muted ms-2">Mes anterior</span>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex">
+                                    <div class="flex-1 overflow-hidden">
+                                        <p class="text-truncate font-size-14 mb-2">N° Usuarios Registrados</p>
+                                        <h4 class="mb-0">2097</h4>
+                                    </div>
+                                    <div class="text-primary ms-auto">
+                                        <i class="ri-team-fill font-size-24"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body border-top py-3">
+                                <div class="text-truncate">
+                                    <span class="badge bg-success-subtle text-success  font-size-11"><i class="mdi mdi-menu-up"> </i> 2.4% </span>
+                                    <span class="text-muted ms-2">Mes anterior</span>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!-- end row -->
+
+
+                    </div>
+                </div>
+                <!-- end row -->
+
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title mb-4">Top 10 productos más importados en la zona</h4>
+
+                                <div id="bar_chart1_top10" class="apex-charts" dir="ltr"></div>
+                            </div>
+                        </div><!--end card-->
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title mb-4">Top 10 importadores</h4>
+
+                                <div id="bar_chart2_top10" class="apex-charts" dir="ltr"></div>
+                            </div>
+                        </div><!--end card-->
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title mb-4">Usuarios Inactivos/Activos</h4>
+
+                                <div id="pie_chart_AdminZonal" class="apex-charts" dir="ltr"></div>
+                            </div>
+                        </div><!--end card-->
+                    </div>
+                </div>
+                <!-- end row -->
+
+
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="dropdown float-end">
+                                    <a href="#" class="dropdown-toggle arrow-none card-drop" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="mdi mdi-dots-vertical"></i>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-end">
+                                        <!-- item-->
+                                        <a href="javascript:void(0);" class="dropdown-item">Ver agentes</a>
+                                        <!-- item-->
+                                        <a href="javascript:void(0);" class="dropdown-item">Crear agentes</a>
+                                        <!-- item-->
+                                        <a href="javascript:void(0);" class="dropdown-item">Reportar agentes</a>
+                                    </div>
+                                </div>
+
+                                <h4 class="card-title mb-4">Actividad reciente de agentes</h4>
+
+                                <div data-simplebar style="max-height: 200px;">
+                                    <ul class="list-unstyled activity-wid">
+                                        <li class="activity-list">
+                                            <div class="activity-icon avatar-xs">
+                                                <span class="avatar-title bg-primary-subtle text-primary rounded-circle">
+                                                    <i class="ri-edit-2-fill"></i>
+                                                </span>
+                                            </div>
+                                            <div>
+                                                <div>
+                                                    <h5 class="font-size-13">10 Sep, 2024 <small class="text-muted">02:15 pm</small></h5>
+                                                </div>
+                                                <div>
+                                                    <p class="text-muted mb-0">El agente <strong>María López</strong> respondió a la solicitud de cotización de <strong>Juan García</strong> para productos electrónicos</p>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="activity-list">
+                                            <div class="activity-icon avatar-xs">
+                                                <span class="avatar-title bg-primary-subtle text-primary rounded-circle">
+                                                    <i class="ri-user-2-fill"></i>
+                                                </span>
+                                            </div>
+                                            <div>
+                                                <div>
+                                                    <h5 class="font-size-13">09 Sep, 2024 <small class="text-muted">10:30 am</small></h5>
+                                                </div>
+                                                <div>
+                                                    <p class="text-muted mb-0">El agente <strong>Carlos Mendoza</strong> agregó a <strong>Sofía Herrera</strong> como cliente interesada en maquinaria industrial</p>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="activity-list">
+                                            <div class="activity-icon avatar-xs">
+                                                <span class="avatar-title bg-primary-subtle text-primary rounded-circle">
+                                                    <i class="ri-bar-chart-fill"></i>
+                                                </span>
+                                            </div>
+                                            <div>
+                                                <div>
+                                                    <h5 class="font-size-13">08 Sep, 2024 <small class="text-muted">03:45 pm</small></h5>
+                                                </div>
+                                                <div>
+                                                    <p class="text-muted mb-0">El agente <strong>Ana Pérez</strong> realizó el seguimiento de la entrega de una orden de <strong>Pedro Gómez</strong> para muebles</p>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="activity-list">
+                                            <div class="activity-icon avatar-xs">
+                                                <span class="avatar-title bg-primary-subtle text-primary rounded-circle">
+                                                    <i class="ri-mail-fill"></i>
+                                                </span>
+                                            </div>
+                                            <div>
+                                                <div>
+                                                    <h5 class="font-size-13">06 Sep, 2024 <small class="text-muted">12:20 pm</small></h5>
+                                                </div>
+                                                <div>
+                                                    <p class="text-muted mb-0">El agente <strong>David Ruiz</strong> respondió a la consulta de <strong>Laura Fernández</strong> sobre productos de tecnología</p>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="activity-list">
+                                            <div class="activity-icon avatar-xs">
+                                                <span class="avatar-title bg-primary-subtle text-primary rounded-circle">
+                                                    <i class="ri-calendar-2-fill"></i>
+                                                </span>
+                                            </div>
+                                            <div>
+                                                <div>
+                                                    <h5 class="font-size-13">04 Sep, 2024 <small class="text-muted">09:15 am</small></h5>
+                                                </div>
+                                                <div>
+                                                    <p class="text-muted mb-0">El agente <strong>Lucía Ramírez</strong> programó una reunión con el proveedor de textiles para <strong>Esteban Martínez</strong></p>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-8">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="dropdown float-end">
+                                    <a href="#" class="dropdown-toggle arrow-none card-drop" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="mdi mdi-dots-vertical"></i>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-end">
+                                        <!-- item-->
+                                        <a href="javascript:void(0);" class="dropdown-item">Ver agentes</a>
+                                        <!-- item-->
+                                        <a href="javascript:void(0);" class="dropdown-item">Crear agentes</a>
+                                        <!-- item-->
+                                        <a href="javascript:void(0);" class="dropdown-item">Reportar agentes</a>
+                                    </div>
+                                </div>
+
+                                <h4 class="card-title mb-4">Agentes asignados</h4>
+
+                                <div class="table-responsive">
+                                    <table class="table table-centered datatable dt-responsive nowrap" data-bs-page-length="5" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+
+                                        <thead class="table-light">
+                                        <tr>
+                                            <th>Nombre</th>
+                                            <th>Usuarios asignados</th>
+                                            <th>Evaluación de usuarios</th>
+                                            <th>Importaciones gestionadas</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <th>Dmitri Razumíkhin</th>
+                                            <td>750</td>
+                                            <td>89%</td>
+                                            <td>1900</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Rodión Raskólnikov</th>
+                                            <td>510</td>
+                                            <td>45%</td>
+                                            <td>600</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Avdotia Raskólnikova</th>
+                                            <td>98%</td>
+                                            <td>1000</td>
+                                            <td>2300</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div> <!-- container-fluid -->
+        </div>
+        <!-- End Page-content -->
+        <footer class="footer">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <script>document.write(new Date().getFullYear())</script> © Nazox.
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="text-sm-end d-none d-sm-block">
+                            Crafted with <i class="mdi mdi-heart text-danger"></i> by Themesdesign
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+
+
+    </div>
+    <!-- end main content-->
+</div>
+<!-- END layout-wrapper -->
+
+
+<!-- JAVASCRIPT BASE-->
+<span th:replace="~{Common/jsBase :: js_Base}"></span>
+<!-- End JAVASCRIPT BASE-->
+
+<!-- apexcharts -->
+<script th:src="@{../libs/apexcharts/apexcharts.min.js}"></script>
+<!-- apexcharts init -->
+<script th:src="@{../js/pages/apexcharts.init.js}"></script>
+
+
+<!-- Chart JS -->
+<script th:src="@{../libs/chart.js/Chart.bundle.min.js}"></script>
+<script th:src="@{../js/pages/chartjs.init.js}"></script>
+
+<!-- jquery.vectormap map -->
+<script th:src="@{../libs/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.min.js}"></script>
+<script th:src="@{../libs/admin-resources/jquery.vectormap/maps/jquery-jvectormap-us-merc-en.js}"></script>
+
+<!-- Required datatable js -->
+<script th:src="@{../libs/datatables.net/js/jquery.dataTables.min.js}"></script>
+<script th:src="@{../libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js}"></script>
+
+<!-- Responsive examples -->
+<script th:src="@{../libs/datatables.net-responsive/js/dataTables.responsive.min.js}"></script>
+<script th:src="@{../libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js}"></script>
+
+<script th:src="@{../js/pages/dashboard.init.js}"></script>
+
+</body>
+
+</html>

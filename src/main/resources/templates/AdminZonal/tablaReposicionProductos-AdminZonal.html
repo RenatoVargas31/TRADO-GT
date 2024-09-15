@@ -1,0 +1,453 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Reposición de productos</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- CSS BASE -->
+    <meta th:replace="~{Common/cssBase :: css_Base}">
+    <!-- End CSS BASE -->
+    <!-- DataTables -->
+    <link th:href="@{../libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css}" rel="stylesheet" type="text/css" />
+    <link th:href="@{../libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css}" rel="stylesheet" type="text/css" />
+    <link th:href="@{../libs/datatables.net-select-bs4/css/select.bootstrap4.min.css}" rel="stylesheet" type="text/css" />
+
+    <!-- Responsive datatable examples -->
+    <link th:href="@{../libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css}" rel="stylesheet" type="text/css" />
+</head>
+
+<body data-sidebar="dark">
+
+<!-- <body data-layout="horizontal" data-topbar="dark"> -->
+
+<!-- Begin page -->
+<div id="layout-wrapper">
+
+    <!-- ========== NavBar Start ========== -->
+    <header th:replace="AdminZonal/fragments/navbar :: nav_bar"></header>
+    <!-- Navbar End -->
+    <!-- ========== Left Sidebar Start ========== -->
+    <div th:replace="AdminZonal/fragments/sidebar :: side_bar"></div>
+    <!-- Left Sidebar End -->
+    <!-- ============================================================== -->
+    <!-- Start right Content here -->
+    <!-- ============================================================== -->
+    <div class="main-content">
+        <div class="page-content">
+            <div class="container-fluid">
+
+                <!-- start page title -->
+                <div class="row">
+                    <div class="col-12">
+                        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                            <h4 class="mb-sm-0">Reposición de productos</h4>
+
+                            <div class="page-title-right">
+                                <ol class="breadcrumb m-0">
+                                    <li class="breadcrumb-item active">Home</li>
+                                    <li class="breadcrumb-item"><a href="javascript: void(0);">
+                                        Replacement</a></li>
+                                </ol>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <!-- end page title -->
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+
+                                <h4 class="card-title">Solicita la reposición de productos</h4>
+                                <p>Estimado Coordinador Zonal, por favor verifique los productos con bajo stock (menos de 25 unidades)
+                                    y solicite reposición al SuperAdmin a través de la tabla a continuación.</p>
+
+
+                                <table id="datatable-buttons" class="table table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                    <thead>
+                                    <tr>
+                                        <th>Nombre del producto</th>
+                                        <th>Tipo </th>
+                                        <th>Cantidad</th>
+                                        <th>Estado</th>
+                                        <th>Reponer</th>
+                                    </tr>
+                                    </thead>
+
+
+                                    <tbody>
+                                    <tr>
+                                        <td>Converse Chuck Taylor</td>
+                                        <td>Calzado</td>
+                                        <td>18</td>
+                                        <td><span class="badge bg-info fs-6">Reposición en curso</span></td>
+                                        <td>
+                                            <a class="btn btn-outline-secondary btn-sm edit" title="Reponer" data-bs-toggle="modal" data-bs-target="#inProgressModal">
+                                                <i class="fas fa-people-carry"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Levi's 512 Slim Taper Fit Jeans</td>
+                                        <td>Pantalones</td>
+                                        <td>23</td>
+                                        <td><span class="badge bg-warning fs-6 fs-6">A espera de solicitud de reposición</span></td>
+                                        <td>
+                                            <a class="btn btn-outline-secondary btn-sm edit" title="Reponer" data-bs-toggle="modal" data-bs-target="#confirmReplenishmentModal">
+                                                <i class="fas fa-people-carry"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Puma Suede Classic</td>
+                                        <td>Calzado</td>
+                                        <td>30</td>
+                                        <td><span class="badge bg-success fs-6">Stock adecuado</span></td>
+                                        <td>
+                                            <a class="btn btn-outline-secondary btn-sm edit" title="Reponer" data-bs-toggle="modal" data-bs-target="#adequateStockModal">
+                                                <i class="fas fa-people-carry"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Uniqlo Ultra Light Down Vest</td>
+                                        <td>Chalecos</td>
+                                        <td>10</td>
+                                        <td><span class="badge bg-info fs-6">Reposición en curso</span></td>
+                                        <td>
+                                            <a class="btn btn-outline-secondary btn-sm edit" title="Reponer" data-bs-toggle="modal" data-bs-target="#inProgressModal">
+                                                <i class="fas fa-people-carry"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Adidas Superstar</td>
+                                        <td>Calzado</td>
+                                        <td>5</td>
+                                        <td><span class="badge bg-info fs-6">Reposición en curso</span></td>
+                                        <td>
+                                            <a class="btn btn-outline-secondary btn-sm edit" title="Reponer" data-bs-toggle="modal" data-bs-target="#inProgressModal">
+                                                <i class="fas fa-people-carry"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Nike Air Force 1</td>
+                                        <td>Calzado</td>
+                                        <td>12</td>
+                                        <td><span class="badge bg-info fs-6">Reposición en curso</span></td>
+                                        <td>
+                                            <a class="btn btn-outline-secondary btn-sm edit" title="Reponer" data-bs-toggle="modal" data-bs-target="#inProgressModal">
+                                                <i class="fas fa-people-carry"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Levi's 501 Original Fit</td>
+                                        <td>Pantalones</td>
+                                        <td>40</td>
+                                        <td><span class="badge bg-success fs-6">Stock adecuado</span></td>
+                                        <td>
+                                            <a class="btn btn-outline-secondary btn-sm edit" title="Reponer" data-bs-toggle="modal" data-bs-target="#adequateStockModal">
+                                                <i class="fas fa-people-carry"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>H&M Skinny Fit Jeans</td>
+                                        <td>Pantalones</td>
+                                        <td>8</td>
+                                        <td><span class="badge bg-warning fs-6">A espera de solicitud de reposición</span></td>
+                                        <td>
+                                            <a class="btn btn-outline-secondary btn-sm edit" title="Reponer" data-bs-toggle="modal" data-bs-target="#confirmReplenishmentModal">
+                                                <i class="fas fa-people-carry"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Zara Cropped Hoodie</td>
+                                        <td>Sudaderas</td>
+                                        <td>35</td>
+                                        <td><span class="badge bg-success fs-6">Stock adecuado</span></td>
+                                        <td>
+                                            <a class="btn btn-outline-secondary btn-sm edit" title="Reponer" data-bs-toggle="modal" data-bs-target="#adequateStockModal">
+                                                <i class="fas fa-people-carry"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>H&M Relaxed Fit T-Shirt</td>
+                                        <td>Camisetas</td>
+                                        <td>50</td>
+                                        <td><span class="badge bg-success fs-6">Stock adecuado</span></td>
+                                        <td>
+                                            <a class="btn btn-outline-secondary btn-sm edit" title="Reponer" data-bs-toggle="modal" data-bs-target="#adequateStockModal">
+                                                <i class="fas fa-people-carry"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>North Face Puffer Jacket</td>
+                                        <td>Chaquetas</td>
+                                        <td>3</td>
+                                        <td><span class="badge bg-info fs-6">Reposición en curso</span></td>
+                                        <td>
+                                            <a class="btn btn-outline-secondary btn-sm edit" title="Reponer" data-bs-toggle="modal" data-bs-target="#inProgressModal">
+                                                <i class="fas fa-people-carry"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Zara Pleated Skirt</td>
+                                        <td>Faldas</td>
+                                        <td>25</td>
+                                        <td><span class="badge bg-warning fs-6">A espera de solicitud de reposición</span></td>
+                                        <td>
+                                            <a class="btn btn-outline-secondary btn-sm edit" title="Reponer" data-bs-toggle="modal" data-bs-target="#confirmReplenishmentModal">
+                                                <i class="fas fa-people-carry"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>H&M Denim Jacket</td>
+                                        <td>Chaquetas</td>
+                                        <td>60</td>
+                                        <td><span class="badge bg-success fs-6">Stock adecuado</span></td>
+                                        <td>
+                                            <a class="btn btn-outline-secondary btn-sm edit" title="Reponer" data-bs-toggle="modal" data-bs-target="#adequateStockModal">
+                                                <i class="fas fa-people-carry"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Patagonia Fleece Jacket</td>
+                                        <td>Chaquetas</td>
+                                        <td>45</td>
+                                        <td><span class="badge bg-success fs-6">Stock adecuado</span></td>
+                                        <td>
+                                            <a class="btn btn-outline-secondary btn-sm edit" title="Reponer" data-bs-toggle="modal" data-bs-target="#adequateStockModal">
+                                                <i class="fas fa-people-carry"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Levi's Sherpa Trucker Jacket</td>
+                                        <td>Chaquetas</td>
+                                        <td>15</td>
+                                        <td><span class="badge bg-info fs-6">Reposición en curso</span></td>
+                                        <td>
+                                            <a class="btn btn-outline-secondary btn-sm edit" title="Reponer" data-bs-toggle="modal" data-bs-target="#inProgressModal">
+                                                <i class="fas fa-people-carry"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Gucci Leather Belt</td>
+                                        <td>Accesorios</td>
+                                        <td>7</td>
+                                        <td><span class="badge bg-info fs-6">Reposición en curso</span></td>
+                                        <td>
+                                            <a class="btn btn-outline-secondary btn-sm edit" title="Reponer" data-bs-toggle="modal" data-bs-target="#inProgressModal">
+                                                <i class="fas fa-people-carry"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Zara Blazer</td>
+                                        <td>Sacos</td>
+                                        <td>50</td>
+                                        <td><span class="badge bg-success fs-6">Stock adecuado</span></td>
+                                        <td>
+                                            <a class="btn btn-outline-secondary btn-sm edit" title="Reponer" data-bs-toggle="modal" data-bs-target="#adequateStockModal">
+                                                <i class="fas fa-people-carry"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Nike Dri-FIT Shorts</td>
+                                        <td>Pantalones cortos</td>
+                                        <td>20</td>
+                                        <td><span class="badge bg-info fs-6">Reposición en curso</span></td>
+                                        <td>
+                                            <a class="btn btn-outline-secondary btn-sm edit" title="Reponer" data-bs-toggle="modal" data-bs-target="#inProgressModal">
+                                                <i class="fas fa-people-carry"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Adidas Running Shorts</td>
+                                        <td>Pantalones cortos</td>
+                                        <td>8</td>
+                                        <td><span class="badge bg-warning fs-6">A espera de solicitud de reposición</span></td>
+                                        <td>
+                                            <a class="btn btn-outline-secondary btn-sm edit" title="Reponer" data-bs-toggle="modal" data-bs-target="#confirmReplenishmentModal">
+                                                <i class="fas fa-people-carry"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Ray-Ban Aviator Sunglasses</td>
+                                        <td>Accesorios</td>
+                                        <td>10</td>
+                                        <td><span class="badge bg-info fs-6">Reposición en curso</span></td>
+                                        <td>
+                                            <a class="btn btn-outline-secondary btn-sm edit" title="Reponer" data-bs-toggle="modal" data-bs-target="#inProgressModal">
+                                                <i class="fas fa-people-carry"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Vans Old Skool</td>
+                                        <td>Calzado</td>
+                                        <td>35</td>
+                                        <td><span class="badge bg-success fs-6">Stock adecuado</span></td>
+                                        <td>
+                                            <a class="btn btn-outline-secondary btn-sm edit" title="Reponer" data-bs-toggle="modal" data-bs-target="#adequateStockModal">
+                                                <i class="fas fa-people-carry"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Tommy Hilfiger Oxford Shirt</td>
+                                        <td>Camisas</td>
+                                        <td>30</td>
+                                        <td><span class="badge bg-success fs-6">Stock adecuado</span></td>
+                                        <td>
+                                            <a class="btn btn-outline-secondary btn-sm edit" title="Reponer" data-bs-toggle="modal" data-bs-target="#adequateStockModal">
+                                                <i class="fas fa-people-carry"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Gucci GG Marmont Bag</td>
+                                        <td>Accesorios</td>
+                                        <td>5</td>
+                                        <td><span class="badge bg-warning fs-6">A espera de solicitud de reposición</span></td>
+                                        <td>
+                                            <a class="btn btn-outline-secondary btn-sm edit" title="Reponer" data-bs-toggle="modal" data-bs-target="#confirmReplenishmentModal">
+                                                <i class="fas fa-people-carry"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div> <!-- end col -->
+                </div> <!-- end row -->
+                <!--Start modal-->
+                <!-- Modal para confirmar la reposición de un producto -->
+                <div class="modal fade" id="confirmReplenishmentModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="confirmReplenishmentModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="confirmReplenishmentModalLabel">Confirmar Reposición</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p>¿Estás seguro de que deseas reponer este producto? Esta acción no se puede deshacer.</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-light waves-effect" data-bs-dismiss="modal">Cancelar</button>
+                                <button type="button" class="btn btn-primary waves-effect waves-light" id="confirmReplenishment">Confirmar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--End Modal-->
+                <!--Start Modal-->
+
+                <!-- Modal de Reposición en curso -->
+                <div class="modal fade" id="inProgressModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="inProgressModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="inProgressModalLabel">Reposición en curso</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p>La reposición de este producto ya está en curso. Por favor, espera a que el proceso finalice antes de intentar otra acción.</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-light waves-effect" data-bs-dismiss="modal">Cerrar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--End Modal-->
+
+                <!--Start Modal-->
+                <!-- Modal de Stock Adecuado -->
+                <div class="modal fade" id="adequateStockModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="adequateStockModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="adequateStockModalLabel">Stock Adecuado</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p>El stock de este producto es adecuado. No es necesario realizar una reposición en este momento.</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-light waves-effect" data-bs-dismiss="modal">Cerrar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--End Modal-->
+            </div> <!-- container-fluid -->
+        </div>
+        <!-- End Page-content -->
+        <footer class="footer">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <script>document.write(new Date().getFullYear())</script> © TRADO.
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="text-sm-end d-none d-sm-block">
+                            Crafted with <i class="mdi mdi-heart text-danger"></i> by TelesoftGT
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+    <!-- end main content-->
+</div>
+<!-- END layout-wrapper -->
+
+
+<!-- JAVASCRIPT BASE-->
+<span th:replace="~{Common/jsBase :: js_Base}"></span>
+<!-- End JAVASCRIPT BASE-->
+
+<!-- Required datatable js -->
+<script th:src="@{../libs/datatables.net/js/jquery.dataTables.min.js}"></script>
+<script th:src="@{../libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js}"></script>
+<!-- Buttons examples -->
+<script th:src="@{../libs/datatables.net-buttons/js/dataTables.buttons.min.js}"></script>
+<script th:src="@{../libs/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js}"></script>
+<script th:src="@{../libs/jszip/jszip.min.js}"></script>
+<script th:src="@{../libs/pdfmake/build/pdfmake.min.js}"></script>
+<script th:src="@{../libs/pdfmake/build/vfs_fonts.js}"></script>
+<script th:src="@{../libs/datatables.net-buttons/js/buttons.html5.min.js}"></script>
+<script th:src="@{../libs/datatables.net-buttons/js/buttons.print.min.js}"></script>
+<script th:src="@{../libs/datatables.net-buttons/js/buttons.colVis.min.js}"></script>
+
+<script th:src="@{../libs/datatables.net-keytable/js/dataTables.keyTable.min.js}"></script>
+<script th:src="@{../libs/datatables.net-select/js/dataTables.select.min.js}"></script>
+
+<!-- Responsive examples -->
+<script th:src="@{../libs/datatables.net-responsive/js/dataTables.responsive.min.js}"></script>
+<script th:src="@{../libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js}"></script>
+
+<!-- Datatable init js -->
+<script th:src="@{../js/pages/datatables.init.js}"></script>
+</body>
+
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+  <body>
+    <div th:fragment="side_bar" class="vertical-menu" style="background-color: #09094c;">
+      <div data-simplebar class="h-100">
+        <!--- Sidemenu -->
+        <div id="sidebar-menu">
+          <!-- Left Menu Start -->
+          <ul class="metismenu list-unstyled" id="side-menu">
+            <li class="menu-title">Menu</li>
+            <li>
+              <a href="/superadmin/inicio" class=" waves-effect">
+                <i class="ri-home-3-line"></i>
+                <span>Inicio</span>
+              </a>
+            </li>
+
+            <li>
+              <a href="/superadmin/dashboard" class="waves-effect">
+                <i class="ri-dashboard-line"></i><span class="badge rounded-pill bg-success float-end">3</span>
+                <span>Dashboard</span>
+              </a>
+            </li>
+
+            <li class="menu-title">Usuarios</li>
+
+            <li>
+              <a href="javascript: void(0);" class="has-arrow waves-effect">
+                <i class="ri-earth-line"></i>
+                <span>Administrador Zonal</span>
+              </a>
+              <ul class="sub-menu" aria-expanded="false">
+                <li><a href="/superadmin/admZonalNuevo">Nuevo Administrador</a></li>
+                <li><a href="/superadmin/admZonalActivos">Personal Activo</a></li>
+                <li><a href="/superadmin/admZonalInactivos">Personal Inactivo</a></li>
+              </ul>
+            </li>
+
+            <li>
+              <a href="javascript: void(0);" class="has-arrow waves-effect">
+                <i class="ri-store-2-line"></i>
+                <span>Agente de Compra</span>
+              </a>
+              <ul class="sub-menu" aria-expanded="false">
+                <li><a href="/superadmin/agentCompraPostula">Postulaciones</a></li>
+                <li><a href="/superadmin/agentCompraActivos">Personal Activo</a></li>
+                <li><a href="/superadmin/agentCompraInactivos">Personal Inactivo</a></li>
+              </ul>
+            </li>
+
+            <li>
+              <a href="javascript: void(0);" class="has-arrow waves-effect">
+                <i class="ri-account-circle-line"></i>
+                <span>Importador</span>
+              </a>
+              <ul class="sub-menu" aria-expanded="false">
+                <li><a href="/superadmin/importadorSolicitud">Solicitudes de Acceso</a></li>
+                <li><a href="/superadmin/importadorActivos">Clientes activos</a></li>
+                <li><a href="/superadmin/importadorInactivos">Clientes inactivos</a></li>
+              </ul>
+            </li>
+
+            <li class="menu-title">Productos</li>
+
+            <li>
+              <a href="javascript: void(0);" class="has-arrow waves-effect">
+                <i class="ri-clipboard-line"></i>
+                <span>Inventario</span>
+              </a>
+              <ul class="sub-menu" aria-expanded="false">
+                <li><a href="/superadmin/productoNuevo">Nuevo Producto</a></li>
+                <li><a href="/superadmin/productoRepo">Reposiciones</a></li>
+                <li><a href="/superadmin/productoLista">Lista de productos</a></li>
+              </ul>
+            </li>
+
+            <li >
+              <a href="javascript: void(0);" class="has-arrow waves-effect">
+                <i class="ri-contacts-book-line"></i>
+                <span>Proveedores</span>
+              </a>
+              <ul class="sub-menu mm-collapse" aria-expanded="false">
+                <li><a href="/superadmin/proveedorNuevo">Nuevo Proveedor</a></li>
+                <li><a href="/superadmin/proveedorLista">Lista de Proveedores</a></li>
+              </ul>
+            </li>
+
+            <li class="menu-title">Sistema</li>
+
+            <li>
+              <a href="/superadmin/ayuda" class=" waves-effect">
+                <i class="ri-information-line"></i>
+                <span>Ayuda</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+        <!-- Sidebar -->
+      </div>
+    </div>
+  </body>
+</html>

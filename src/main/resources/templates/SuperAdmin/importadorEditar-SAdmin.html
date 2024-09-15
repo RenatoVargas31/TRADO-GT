@@ -1,0 +1,158 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+    <head>
+        <meta charset="utf-8" />
+        <title>Starter page | Nazox - Admin & Dashboard Template</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- CSS BASE -->
+        <meta th:replace="~{Common/cssBase :: css_Base}">
+        <!-- End CSS BASE -->
+
+    </head>
+
+    <body data-sidebar="dark">
+    
+    <!-- <body data-layout="horizontal" data-topbar="dark"> -->
+
+        <!-- Begin page -->
+        <div id="layout-wrapper">
+
+            <!-- ========== NavBar Start ========== -->
+            <header th:replace="~{SuperAdmin/fragments/navbar :: nav_bar}"></header>
+            <!-- Navbar End -->
+            <!-- ========== Left Sidebar Start ========== -->
+            <div th:replace="~{SuperAdmin/fragments/sidebar :: side_bar}"></div>
+            <!-- Left Sidebar End -->
+            <!-- ============================================================== -->
+            <!-- Start right Content here -->
+            <!-- ============================================================== -->
+            <div class="main-content">
+                <div class="page-content">
+                    <div class="container-fluid">
+
+                        <!-- start page title -->
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                                    <h4 class="mb-sm-0">Formulario de edición de importadores</h4>
+
+                                    <div class="page-title-right">
+                                        <ol class="breadcrumb m-0">
+                                            <li class="breadcrumb-item"><a href="javascript: void(0);">Importadores</a></li>
+                                            <li class="breadcrumb-item active">Editar Importadores</li>
+                                        </ol>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end page title -->
+
+                        <div class="row">
+                            <div class="align-content-center-xl-6">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h4 class="card-title">Edición de proveedores</h4>
+                                        <p class="card-title-desc">Provide valuable, actionable feedback to your users with
+                                            HTML5 form validation–available in all our supported browsers.</p>
+                                        <form class="needs-validation" novalidate>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="mb-3">
+                                                        <label for="validationCustom01" class="form-label">Nombre</label>
+                                                        <input type="text" class="form-control" value="Alejandro" id="validationCustom01"
+                                                               placeholder="First name"  required>
+                                                        <div class="valid-feedback">
+                                                            Looks good!
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="mb-3">
+                                                        <label for="validationCustom02" class="form-label">Apellido</label>
+                                                        <input type="text" class="form-control" value="Ramirez" id="validationCustom02"
+                                                               placeholder="Last name"  required>
+                                                        <div class="valid-feedback">
+                                                            Looks good!
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="mb-3">
+                                                        <label for="validationCustom03" class="form-label">DNI</label>
+                                                        <input type="text" class="form-control" value="73891212" id="validationCustom03"
+                                                               placeholder="DNI" required>
+                                                        <div class="valid-feedback">
+                                                            Looks good!
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="mb-3">
+                                                        <label for="validationCustom04" class="form-label">Correo electrónico</label>
+                                                        <input type="email" class="form-control" value="aramires@gmail.com" id="validationCustom04"
+                                                               placeholder="Correo electrónico" required>
+                                                        <div class="valid-feedback">
+                                                            Looks good!
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="mb-3">
+                                                        <label for="validationCustom05" class="form-label">Dirección</label>
+                                                        <input type="text" class="form-control" value="Av. Nueva Toledo 1234" id="validationCustom05"
+                                                               placeholder="Dirección" required>
+                                                        <div class="valid-feedback">
+                                                            Looks good!
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="mb-3">
+                                                        <label for="validationCustom06" class="form-label">Distrito</label>
+                                                        <select class="form-select" id="validationCustom06" required>
+                                                            <option selected disabled value="">Cieneguilla</option>
+                                                            <option>...</option>
+                                                        </select>
+                                                        <div class="invalid-feedback">
+                                                            Please select a valid state.
+                                                        </div>
+
+                                                    </div>
+                                                </div>                                            </div>
+                                            <div>
+                                                <button class="btn btn-primary" type="submit">Editar</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <!-- end card -->
+                            </div> <!-- end col -->
+
+                        </div>
+                        <!-- end row -->
+
+
+                    </div> <!-- container-fluid -->
+                </div>
+                <!-- End Page-content -->
+                
+            </div>
+            <!-- end main content-->
+        </div>
+        <!-- END layout-wrapper -->
+
+
+        <!-- JAVASCRIPT BASE-->
+        <span th:replace="~{Common/jsBase :: js_Base}"></span>
+        <!-- End JAVASCRIPT BASE-->
+    </body>
+
+</html>
