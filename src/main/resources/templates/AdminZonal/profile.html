@@ -55,12 +55,12 @@
                 </div>
 
                 <div class="container-xxl flex-grow-1 container-p-y">
-                    <h3 class="address-title fw-bold">Editar perfil</h3>
                     <hr class="opacity-0">
                     <div class="row">
                         <!-- Bloque de Información de Perfil -->
                         <div class="col-md-3">
-                            <div class="card mb-4">
+                            <div class="card mb-4 ">
+                                <h5 class="card-header">Foto de perfil</h5>
                                 <div class="user-profile-header d-flex flex-column align-items-center mb-4">
                                     <hr class="opacity-0">
                                     <div class="flex-shrink-0">
@@ -68,21 +68,14 @@
                                     </div>
                                     <p class="text-muted mb-0 mt-2">Kevin Doe</p>
                                     <p class="text-muted mb-0">Administrador Zonal</p>
+                                    <p class="text-muted mb-0">Zona este</p>
 
                                     <div class="mt-3 text-center">
                                         <label for="upload" class="btn" style="background-color: #0e5a05; color: #ffffff; border: 2px solid #115e08;  border-radius: 8px; font-size: 14px; cursor: pointer; transition: background-color 0.3s, border-color 0.3s;" tabindex="0">
-                                            <span class="d-none d-sm-block">Subir Foto Nueva</span>
+                                            <span class="d-none d-sm-block">Actualizar foto de perfil</span>
                                             <i class="bx bx-upload d-block d-sm-none"></i>
                                             <input type="file" id="upload" class="account-file-input" hidden accept="image/png, image/jpeg" name="profilePhoto">
                                         </label>
-
-                                        <div class="mt-2">
-                                            <button class="btn" style="background-color: #ffffff; color: #424141; border: 2px solid #dfdede;  border-radius: 8px; font-size: 14px; cursor: pointer; transition: background-color 0.3s, border-color 0.3s;" onmouseover="this.style.backgroundColor='#f8f9fa'; this.style.borderColor='#000000';" onmouseout="this.style.backgroundColor='#ffffff'; this.style.borderColor='#000000';">
-                                                Resetear a Predeterminado
-                                            </button>
-                                        </div>
-
-
                                     </div>
                                 </div>
                             </div>
@@ -96,8 +89,8 @@
 
                         <!-- Bloque de Detalles de Perfil -->
                         <div class="col-md-9">
-                            <div class="card mb-4">
-                                <h5 class="card-header">Detalles de Perfil</h5>
+                            <div class="card mb-4 pb-1">
+                                <h5 class="card-header">Información personal</h5>
 
                                 <div class="card-body">
                                     <form  enctype="multipart/form-data">
