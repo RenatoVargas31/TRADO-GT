@@ -11,6 +11,6 @@ public class UsuarioFinalController {
 
     @GetMapping("/inicio")
     public String inicio() {
-        return "usuario/inicio-usuario";
+        return "Usuario/inicio-usuario";
     }
 }
