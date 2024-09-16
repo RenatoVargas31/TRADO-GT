@@ -52,9 +52,13 @@
                         <div class="row">
                             <div class="align-content-center-xl-6">
                                 <div class="card">
-                                    <div class="card-body">
-                                        <h4 class="card-title">Registro de Administradores Zonales</h4>
-
+                                    <div class="card-body" style="padding: 30px">
+                                        <h4 class="card-title fw-bold">Observaciones:</h4>
+                                            <span style="display: block; padding-bottom: 10px;">- El DNI ingresado debe de tener 8 dígitos y debe existir en RENIEC.</span>
+                                            <span style="display: block; padding-bottom: 10px;">- El nombre ingresado debe coincidir con el registrado en RENIEC.</span>
+                                            <span style="display: block; padding-bottom: 10px;">- El apellido ingresado debe coincidir con el registrado en RENIEC.</span>
+                                            <span style="display: block; padding-bottom: 10px;">- Solo puede haber 2 administradores zonales por cada zona.</span>
+                                        <h4 class="card-title fw-bold">Datos de registro:</h4>
                                         <form class="needs-validation" novalidate>
                                             <div class="row">
                                                 <div class="col-md-6">
@@ -150,11 +154,10 @@
                         </div>
                         <!-- end row -->
 
-
                     </div> <!-- container-fluid -->
                 </div>
                 <!-- End Page-content -->
-                
+                <span th:replace="~{Common/footer :: footerCommon}"></span>
             </div>
             <!-- end main content-->
         </div>
