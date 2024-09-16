@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<body>
+<div th:fragment="side_bar" class="vertical-menu" style="background-color: #F3F4F6;">
+  <div data-simplebar class="h-100">
+    <!--- Sidemenu -->
+    <div id="sidebar-menu">
+      <!-- Left Menu Start -->
+      <ul class="metismenu list-unstyled" id="side-menu">
+        <li class="menu-title">Menu</li>
+
+        <li>
+          <a href="/agente/inicio" class="waves-effect">
+            <i class="ri-dashboard-line"></i>
+            <span>Dashboard</span>
+          </a>
+        </li>
+
+        <li class="menu-title">Gestión de comrpras</li>
+
+        <li>
+          <a href="javascript: void(0);" class="has-arrow waves-effect">
+            <i class="ri-earth-line"></i>
+            <span>Órdenes de compra</span>
+          </a>
+          <ul class="sub-menu" aria-expanded="false">
+            <li><a href="/agente/allOrders">Todas las órdenes</a></li>
+            <li><a href="#">Órdenes si asignar</a></li>
+            <li><a href="#">Órdenes pendientes</a></li>
+            <li><a href="#">Órdenes en proceso</a></li>
+            <li><a href="#">Órdenes resueltas</a></li>
+          </ul>
+        </li>
+
+
+        <li class="menu-title">Gestión de usuarios</li>
+
+        <li>
+          <a href="javascript: void(0);" class="has-arrow waves-effect">
+            <i class="ri-clipboard-line"></i>
+            <span>Usuarios</span>
+          </a>
+          <ul class="sub-menu" aria-expanded="false">
+            <li><a href="#">Todos los usuarios</a></li>
+            <li><a href="#">Usuarios habilitados</a></li>
+            <li><a href="#">Usuarios baneados</a></li>
+          </ul>
+        </li>
+
+        <li class="menu-title">Sistema</li>
+
+        <li>
+          <a href="/agente/faq" class=" waves-effect">
+            <i class="ri-information-line"></i>
+            <span>Ayuda</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <!-- Sidebar -->
+  </div>
+</div>
+</body>
+</html>
