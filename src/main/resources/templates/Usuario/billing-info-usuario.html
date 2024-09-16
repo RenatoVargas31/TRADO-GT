@@ -1,0 +1,378 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Checkout</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- CSS BASE -->
+    <meta th:replace="~{Common/cssBase :: css_Base}">
+    <!-- End CSS BASE -->
+</head>
+
+<body data-sidebar="dark">
+
+<!-- <body data-layout="horizontal" data-topbar="dark"> -->
+
+<!-- Begin page -->
+<div id="layout-wrapper">
+
+    <!-- ========== NavBar Start ========== -->
+    <header th:replace="Usuario/fragments/navbar :: nav_bar"></header>
+    <!-- Navbar End -->
+    <!-- ========== Left Sidebar Start ========== -->
+    <div th:replace="Usuario/fragments/sidebar :: side_bar"></div>
+    <!-- Left Sidebar End -->
+    <!-- ============================================================== -->
+    <!-- Start right Content here -->
+    <!-- ============================================================== -->
+    <div class="main-content">
+        <div class="page-content">
+            <div class="container-fluid">
+
+                <!-- start page title -->
+                <div class="row">
+                    <div class="col-12">
+                        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                            <h4 class="mb-sm-0">Checkout</h4>
+
+                            <div class="page-title-right">
+                                <ol class="breadcrumb m-0">
+                                    <li class="breadcrumb-item active">Home</li>
+                                    <li class="breadcrumb-item"><a href="javascript: void(0);">Checkout</a></li>
+                                </ol>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <!-- end page title -->
+                <div class="row">
+                    <div class="col-lg-8">
+                        <div class="card">
+                            <div class="card-body">
+                                <div id="checkout-nav-pills-wizard" class="twitter-bs-wizard">
+                                    <ul class="twitter-bs-wizard-nav nav nav-pills nav-justified">
+                                        <li class="nav-item">
+                                            <a href="#billing-info" class="nav-link " data-toggle="tab">
+                                                <span class="step-number">01</span>
+                                                <span class="step-title">Información de facturación</span>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="#shipping-info" class="nav-link" data-toggle="tab">
+                                                <span class="step-number">02</span>
+                                                <span class="step-title">Información de envío</span>
+                                            </a>
+                                        </li>
+
+                                        <li class="nav-item">
+                                            <a href="#payment-info" class="nav-link active" data-toggle="tab">
+                                                <span class="step-number">03</span>
+                                                <span class="step-title">Información de pago</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                    <div class="tab-content twitter-bs-wizard-tab-content">
+                                        <div class="tab-pane" id="billing-info">
+                                            <h5 class="card-title">Información de facturación</h5>
+                                            <p class="card-title-desc">Por favor, ingrese sus detalles de facturación. Esta información se utilizará para procesar su pedido y generar su factura</p>
+
+                                            <form>
+                                                <div>
+
+                                                    <div>
+
+                                                        <div class="row">
+                                                            <div class="col-lg-4">
+                                                                <div class="mb-4">
+                                                                    <label class="form-label" for="billing-name">Nombre completo</label>
+                                                                    <input type="text" class="form-control" id="billing-name" placeholder="Enter name">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-4">
+                                                                <div class="mb-4">
+                                                                    <label class="form-label" for="billing-email-address">Correo electrónico</label>
+                                                                    <input type="email" class="form-control" id="billing-email-address" placeholder="Enter email">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-4">
+                                                                <div class="mb-4">
+                                                                    <label class="form-label" for="billing-phone">Teléfono</label>
+                                                                    <input type="text" class="form-control" id="billing-phone" placeholder="Enter Phone no.">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="mb-4">
+                                                            <label class="form-label" for="billing-address">Dirección</label>
+                                                            <textarea class="form-control" id="billing-address" rows="3" placeholder="Enter full address"></textarea>
+                                                        </div>
+
+                                                        <div class="row">
+                                                            <div class="col-lg-4">
+                                                                <div class="mb-4 mb-lg-0">
+                                                                    <label class="form-label">Distrito</label>
+                                                                    <select class="form-select" title="distrito">
+                                                                        <option value="0">Selecionar Districto</option>
+                                                                        <option value="AF">Ancón</option>
+                                                                        <option value="AL">Santa Rosa</option>
+                                                                        <option value="DZ">Carabayllo</option>
+                                                                        <option value="AS">Puente Piedra</option>
+                                                                        <option value="AD">Comas</option>
+                                                                        <option value="AO">Los Olivos</option>
+                                                                        <option value="AI">San Martín de Porres</option>
+                                                                        <option value="AQ">Independencia</option>
+
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-lg-4">
+                                                                <div class="mb-4 mb-lg-0">
+                                                                    <label class="form-label" for="billing-city">Referencia</label>
+                                                                    <input type="text" class="form-control" id="billing-city" placeholder="Enter ref">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="tab-pane" id="shipping-info">
+                                            <h5 class="card-title">Información de envío</h5>
+                                            <p class="card-title-desc">Revise y confirme la dirección de envío. </p>
+
+                                            <div class="row">
+                                                <div class="col-lg-4 col-sm-6">
+                                                    <div class="card border rounded active shipping-address">
+                                                        <div class="card-body">
+                                                            <h5 class="font-size-14 mb-4">Dirreción 1</h5>
+
+                                                            <h5 class="font-size-14">Bradley McMillian</h5>
+                                                            <p class="mb-1">109 Clarksburg Park Road Show Low, AZ 85901</p>
+                                                            <p class="mb-0">Mo. 012-345-6789</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane active" id="payment-info">
+                                            <h5 class="card-title">Información de pago</h5>
+                                            <p class="card-title-desc">Por favor, seleccione su método de pago preferido y complete los detalles a continuación. Asegúrese de que toda la información sea correcta antes de continuar.</p>
+
+                                            <div>
+                                                <h5 class="font-size-14">Método de pago:</h5>
+
+                                                <div class="row">
+
+                                                    <div class="col-lg-4 col-sm-6">
+                                                        <div>
+                                                            <label class="form-label card-radio-label mb-3">
+                                                                <input type="radio" name="pay-method" id="pay-methodoption1" class="card-radio-input">
+
+                                                                <span class="card-radio">
+                                                                    <i class="ri-bank-card-fill font-size-24 align-middle me-2"></i>
+                                                                    <span>Tarjeta de Crédito/Débito</span>
+                                                                </span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-lg-4 col-sm-6">
+                                                        <div>
+                                                            <label class="form-label card-radio-label mb-3">
+                                                                <input type="radio" name="pay-method" id="pay-methodoption2" class="card-radio-input">
+
+                                                                <span class="card-radio">
+                                                                    <i class="ri-visa-fill font-size-24 align-middle me-2"></i>
+                                                                    <span>Visa</span>
+                                                                </span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-lg-4 col-sm-6">
+                                                        <div>
+                                                            <label class="form-label card-radio-label mb-3">
+                                                                <input type="radio" name="pay-method" id="pay-methodoption3" class="card-radio-input" checked="">
+
+                                                                <span class="card-radio">
+                                                                    <i class="ri-mastercard-fill font-size-24 align-middle me-2"></i>
+                                                                    <span>MasterCard</span>
+                                                                </span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+                                                <h5 class="my-3 font-size-14">Para pagar con tarjeta</h5>
+                                                <div class="p-4 border">
+                                                    <form>
+                                                        <div class="mb-3">
+                                                            <label class="form-label" for="cardnameInput">Nombre de la tarjeta</label>
+                                                            <input type="text" class="form-control" id="cardnameInput" placeholder="Name on Card">
+                                                        </div>
+
+                                                        <div class="row">
+                                                            <div class="col-lg-4 col-sm-6">
+                                                                <div class="mb-3 mb-lg-0">
+                                                                    <label class="form-label" for="cardnumberInput">Número de tarjeta</label>
+                                                                    <input type="text" class="form-control" id="cardnumberInput" placeholder="0000 0000 0000 0000">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-4 col-sm-6">
+                                                                <div class="mb-3 mb-lg-0">
+                                                                    <label class="form-label" for="expirydateInput">Fecha de vencimiento</label>
+                                                                    <input type="text" class="form-control" id="expirydateInput" placeholder="MM/YY">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-4 col-sm-6">
+                                                                <div class="mb-3 mb-lg-0">
+                                                                    <label class="form-label" for="cvvcodeInput">Código CVV</label>
+                                                                    <input type="text" class="form-control" id="cvvcodeInput" placeholder="Enter CVV Code">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                                <div class="mt-4 text-end">
+                                                    <a href="#"  type="button" class="btn btn-success waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                                                        Finalizar
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <ul class="pager wizard twitter-bs-wizard-pager-link">
+                                        <li class="previous"><a href="#">Regresar</a></li>
+                                        <li class="next disabled"><a href="#">Siguiente</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="card checkout-order-summary">
+                            <div class="card-body">
+                                <div class="p-3 bg-light mb-4">
+                                    <h5 class="font-size-14 mb-0">Resumen <span class="float-end ms-2">#SK2356</span></h5>
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="table table-centered mb-0 table-nowrap">
+                                        <thead>
+                                        <tr>
+                                            <th class="border-top-0" style="width: 110px;" scope="col">Producto</th>
+                                            <th class="border-top-0" scope="col">Descripción</th>
+                                            <th class="border-top-0" scope="col">Precio</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <th scope="row"><img th:src="@{../images/product/img-1.png}" alt="product-img" title="product-img" class="avatar-md"></th>
+                                            <td>
+                                                <h5 class="font-size-14 text-truncate"><a href="/usuario/productoDetalles" class="text-reset">Full sleeve T-shirt</a></h5>
+                                                <p class="text-muted mb-0">$ 240 x 2</p>
+                                            </td>
+                                            <td>$ 480</td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row"><img th:src="@{../images/product/img-2.png}" alt="product-img" title="product-img" class="avatar-md"></th>
+                                            <td>
+                                                <h5 class="font-size-14 text-truncate"><a href="/usuario/productoDetalles" class="text-reset">Half sleeve T-shirt</a></h5>
+                                                <p class="text-muted mb-0">$ 225 x 1</p>
+                                            </td>
+                                            <td>$ 225</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">
+                                                <h6 class="m-0 text-end">Sub Total:</h6>
+                                            </td>
+                                            <td>
+                                                $ 705
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3">
+                                                <div class="bg-primary-subtle  p-3 rounded">
+                                                    <h5 class="font-size-14 text-primary mb-0"><i class="fas fa-shipping-fast me-2"></i> Envío <span class="float-end">Gratis</span></h5>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">
+                                                <h6 class="m-0 text-end">Total:</h6>
+                                            </td>
+                                            <td>
+                                                $ 705
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Modal -->
+                    <div class="col-sm-6 col-md-4 col-xl-3">
+                        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="staticBackdropLabel">¡Comprá exitosa!</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>¡Gracias por tu compra! Su pedido ha sido recibido y está en espera para ser procesado. Si usted tiene alguna pregunta, no dudes en contactar a su Agente de compra asignado. ¡Que disfrutes de su compra!</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <a href="/usuario/ordenCompra" type="button" class="btn btn-primary waves-effect waves-light">Ver boleta</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div> <!-- container-fluid -->
+        </div>
+        <!-- End Page-content -->
+        <footer class="footer">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <script>document.write(new Date().getFullYear())</script> © TRADO.
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="text-sm-end d-none d-sm-block">
+                            Crafted with <i class="mdi mdi-heart text-danger"></i> by TelesoftGT
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <!-- end main content-->
+</div>
+<!-- END layout-wrapper -->
+
+
+
+<!-- JAVASCRIPT BASE-->
+<span th:replace="~{Common/jsBase :: js_Base}"></span>
+
+<!-- twitter-bootstrap-wizard js -->
+<script th:src="@{../libs/twitter-bootstrap-wizard/jquery.bootstrap.wizard.min.js}"></script>
+
+<script th:src="@{../libs/twitter-bootstrap-wizard/prettify.js}"></script>
+<!-- ecommerce-checkout init -->
+<script th:src="@{../js/pages/ecommerce-checkout.init.js}"></script>
+<!-- End JAVASCRIPT BASE-->
+</body>
+
+</html>

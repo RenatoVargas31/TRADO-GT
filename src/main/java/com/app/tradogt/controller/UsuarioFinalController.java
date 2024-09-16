@@ -28,4 +28,39 @@ public class UsuarioFinalController {
     public String tracking() {
         return "Usuario/trackingOrd";
     }
+
+    @GetMapping("/categoriaMujer")
+    public String showMujerCategoria() {
+        return "usuario/CategoriaMujer-usuario";
+    }
+    @GetMapping("/categoriaHombre")
+    public String showHombreCategoria() {
+        return "usuario/CategoriaHombre-usuario";
+    }
+    @GetMapping("/categoriaTecnologia")
+    public String showTecnologiaCategoria() {
+        return "usuario/CategoriaTecnologia-usuario";
+    }
+    @GetMapping("/categoriaMuebles")
+    public String showMuebleCategoria() {
+        return "usuario/CategoriaMuebles-usuario";
+    }
+
+    @GetMapping("/productoDetalles")
+    public String showproductoDetalles() {
+        return "usuario/producto-detalles";}
+
+    @GetMapping("/carrito")
+    public String showcarrito() {
+        return "usuario/carrito-usuario";
+    }
+
+    @GetMapping("/checkout")
+    public String showcheckout() {
+        return "usuario/billing-info-usuario";
+    }
+    @GetMapping("/ordenCompra")
+    public String showordenCompra() {
+        return "usuario/orden-compra-usuario";
+    }
 }

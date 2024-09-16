@@ -1,0 +1,481 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <title>Productos</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- CSS BASE -->
+  <meta th:replace="~{Common/cssBase :: css_Base}">
+  <!-- End CSS BASE -->
+
+  <!-- ION Slider -->
+  <link th:href="@{../libs/ion-rangeslider/css/ion.rangeSlider.min.css}" rel="stylesheet" type="text/css"/>
+  <link rel="shortcut icon" th:href="@{../images/favicon.ico}">
+
+</head>
+
+<body data-sidebar="dark">
+
+<!-- <body data-layout="horizontal" data-topbar="dark"> -->
+
+<!-- Begin page -->
+<div id="layout-wrapper">
+
+  <!-- ========== NavBar Start ========== -->
+  <header th:replace="Usuario/fragments/navbar :: nav_bar"></header>
+  <!-- Navbar End -->
+  <!-- ========== Left Sidebar Start ========== -->
+  <div th:replace="Usuario/fragments/sidebar :: side_bar"></div>
+  <!-- Left Sidebar End -->
+  <!-- ============================================================== -->
+  <!-- Start right Content here -->
+  <!-- ============================================================== -->
+  <div class="main-content">
+    <div class="page-content">
+      <div class="container-fluid">
+
+        <!-- start page title -->
+        <div class="row">
+          <div class="col-12">
+            <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+              <h4 class="mb-sm-0">Productos</h4>
+
+              <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                  <li class="breadcrumb-item active">Home</li>
+                  <li class="breadcrumb-item active">Productos</li>
+                  <li class="breadcrumb-item"><a href="javascript: void(0);">Tecnología</a></li>
+                </ol>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <!-- end page title -->
+
+
+        <!-- Inicio -->
+
+        <div class="row">
+          <div class="col-xl-3 col-lg-4">
+            <div class="card">
+              <div class="card-header bg-transparent border-bottom">
+                <div class="row align-items-center">
+                  <div class="col-md-6">
+                    <h5 class="mb-0">Filtros</h5>
+                  </div>
+                  <div class="col-md-6 d-flex justify-content-end">
+                    <a href="#" type="button" class="btn btn-primary waves-effect waves-light">Buscar</a>
+                  </div>
+                </div>
+              </div>
+
+              <div class="custom-accordion">
+                <div class="card-body border-top">
+                  <div>
+                    <h5 class="font-size-14 mb-0"><a href="#collapseExample1" class="text-reset d-block" data-bs-toggle="collapse" >Categorías <i class="mdi mdi-minus float-end accor-plus-icon"></i></a></h5>
+
+                    <div class="collapse show" id="collapseExample1">
+
+                      <div class="mt-4">
+                        <div class="form-check mt-2">
+                          <input type="radio" id="categoria1" name="categoria" class="form-check-input">
+                          <label class="form-check-label" for="categoria1">Audífonos</label>
+                        </div>
+                        <div class="form-check mt-2">
+                          <input type="radio" id="categoria2" name="categoria" class="form-check-input">
+                          <label class="form-check-label" for="categoria2">Celulares</label>
+                        </div>
+                        <div class="form-check mt-2">
+                          <input type="radio" id="categoria3" name="categoria" class="form-check-input">
+                          <label class="form-check-label" for="categoria3">Tablet</label>
+                        </div>
+                        <div class="form-check mt-2">
+                          <input type="radio" id="categoria4" name="categoria" class="form-check-input">
+                          <label class="form-check-label" for="categoria4">Laptops</label>
+                        </div>
+                        <div class="form-check mt-2">
+                          <input type="radio" id="categoria5" name="categoria" class="form-check-input">
+                          <label class="form-check-label" for="categoria5">Computadoras</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="card-body border-top">
+                  <div>
+                    <h5 class="font-size-14 mb-0"><a href="#collapseExample5" class="text-reset d-block" data-bs-toggle="collapse">Marca <i class="mdi mdi-minus float-end accor-plus-icon"></i></a></h5>
+
+                    <div class="collapse show" id="collapseExample5">
+
+                      <div class="mt-4">
+                        <div class="form-check mt-2">
+                          <input type="radio" id="productsizeRadio1" name="productsizeRadio" class="form-check-input">
+                          <label class="form-check-label" for="productsizeRadio1">Samsung</label>
+                        </div>
+                        <div class="form-check mt-2">
+                          <input type="radio" id="productsizeRadio2" name="productsizeRadio" class="form-check-input">
+                          <label class="form-check-label" for="productsizeRadio2">Apple</label>
+                        </div>
+                        <div class="form-check mt-2">
+                          <input type="radio" id="productsizeRadio3" name="productsizeRadio" class="form-check-input">
+                          <label class="form-check-label" for="productsizeRadio3">Xiaomi</label>
+                        </div>
+                        <div class="form-check mt-2">
+                          <input type="radio" id="productsizeRadio4" name="productsizeRadio" class="form-check-input">
+                          <label class="form-check-label" for="productsizeRadio4">Huawei</label>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+                <div class="card-body border-top">
+                  <div>
+                    <h5 class="font-size-14 mb-0"><a href="#collapseExample3" class="text-reset d-block" data-bs-toggle="collapse">Precio <i class="mdi mdi-minus float-end accor-plus-icon"></i></a></h5>
+
+                    <div class="collapse show" id="collapseExample3">
+
+                      <div class="mt-4">
+                        <div class="form-check mt-2">
+                          <input type="radio" id="precio1" name="precio" class="form-check-input">
+                          <label class="form-check-label" for="precio1">Hasta S/50</label>
+                        </div>
+                        <div class="form-check mt-2">
+                          <input type="radio" id="precio2" name="precio" class="form-check-input">
+                          <label class="form-check-label" for="precio2">S/50 - S/100 </label>
+                        </div>
+                        <div class="form-check mt-2">
+                          <input type="radio" id="precio3" name="precio" class="form-check-input">
+                          <label class="form-check-label" for="precio3">S/100 - S/250</label>
+                        </div>
+                        <div class="form-check mt-2">
+                          <input type="radio" id="precio4" name="precio" class="form-check-input">
+                          <label class="form-check-label" for="precio4">S/250 - S/500</label>
+                        </div>
+                        <div class="form-check mt-2">
+                          <input type="radio" id="precio5" name="precio" class="form-check-input">
+                          <label class="form-check-label" for="precio5">S/500 - S/1000</label>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+                <div class="card-body border-top">
+                  <div>
+                    <h5 class="font-size-14 mb-0"><a href="#collapseExample2" class="text-reset d-block" data-bs-toggle="collapse" >Descuento <i class="mdi mdi-minus float-end accor-plus-icon"></i></a></h5>
+
+                    <div class="collapse show" id="collapseExample2">
+
+                      <div class="mt-4">
+                        <div class="form-check mt-2">
+                          <input type="radio" id="productdiscountRadio6" name="productdiscountRadio1" class="form-check-input">
+                          <label class="form-check-label" for="productdiscountRadio6">50% o más</label>
+                        </div>
+                        <div class="form-check mt-2">
+                          <input type="radio" id="productdiscountRadio5" name="productdiscountRadio1" class="form-check-input">
+                          <label class="form-check-label" for="productdiscountRadio5">40% o más</label>
+                        </div>
+                        <div class="form-check mt-2">
+                          <input type="radio" id="productdiscountRadio4" name="productdiscountRadio1" class="form-check-input">
+                          <label class="form-check-label" for="productdiscountRadio4">30% o más</label>
+                        </div>
+                        <div class="form-check mt-2">
+                          <input type="radio" id="productdiscountRadio3" name="productdiscountRadio1" class="form-check-input">
+                          <label class="form-check-label" for="productdiscountRadio3">20% o más</label>
+                        </div>
+                        <div class="form-check mt-2">
+                          <input type="radio" id="productdiscountRadio2" name="productdiscountRadio1" class="form-check-input">
+                          <label class="form-check-label" for="productdiscountRadio2">10% o más</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="card-body border-top">
+                  <div>
+                    <h5 class="font-size-14 mb-0"><a href="#collapseExample4" class="collapsed text-reset d-block" data-bs-toggle="collapse">Valoración del cliente <i class="mdi mdi-minus float-end accor-plus-icon"></i></a></h5>
+
+                    <div class="collapse show" id="collapseExample4">
+
+                      <div class="mt-4">
+                        <div class="form-check mt-2">
+                          <input type="radio" id="productratingRadio1" name="productratingRadio1" class="form-check-input">
+                          <label class="form-check-label" for="productratingRadio1">4 <i class="mdi mdi-star text-warning"></i>  y superior</label>
+                        </div>
+                        <div class="form-check mt-2">
+                          <input type="radio" id="productratingRadio2" name="productratingRadio1" class="form-check-input">
+                          <label class="form-check-label" for="productratingRadio2">3 <i class="mdi mdi-star text-warning"></i>  y superior</label>
+                        </div>
+                        <div class="form-check mt-2">
+                          <input type="radio" id="productratingRadio3" name="productratingRadio1" class="form-check-input">
+                          <label class="form-check-label" for="productratingRadio3">2 <i class="mdi mdi-star text-warning"></i>  y superior</label>
+                        </div>
+                        <div class="form-check mt-2">
+                          <input type="radio" id="productratingRadio4" name="productratingRadio1" class="form-check-input">
+                          <label class="form-check-label" for="productratingRadio4">1 <i class="mdi mdi-star text-warning"></i></label>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="col-lg-9">
+            <div class="card">
+              <div class="card-body">
+                <div>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div>
+                        <h5>Equipos tecnológicos:</h5>
+                        <ol class="breadcrumb p-0 bg-transparent mb-2">
+                          <li class="breadcrumb-item"><a href="javascript: void(0);">Tecnología</a></li>
+                          <li class="breadcrumb-item active">Celular</li>
+                        </ol>
+                      </div>
+                    </div>
+
+                    <div class="col-md-5">
+                      <div class="form-inline float-md-end">
+                        <div class="search-box ms-2">
+                          <div class="position-relative">
+                            <input type="text" class="form-control rounded" placeholder="Search...">
+                            <i class="mdi mdi-magnify search-icon"></i>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-1">
+                      <div class="form-inline float-md-end">
+                        <button type="button" class="btn btn-primary waves-effect waves-light">Limpiar</button>
+                      </div>
+                    </div>
+
+                  </div>
+
+                  <div class="d-inline-block my-3 ecommerce-sortby-container">
+                    <span class="fw-medium font-family-secondary">Ordenar por:</span>
+                    <select class="form-select ecommerce-sortby-select w-auto d-inline-block">
+                      <option value="popular" selected>Popular</option>
+                      <option value="nuevo">Nuevo</option>
+                      <option value="descuento">Descuento</option>
+                    </select>
+                  </div>
+
+
+                  <div class="row g-0">
+                    <div class="col-xl-4 col-sm-6">
+                      <div class="card product-box">
+                        <a href="/usuario/productoDetalles" class="text-decoration-none">
+                          <div class="product-img">
+                            <div class="product-ribbon badge bg-warning">
+                              Trending
+                            </div>
+                            <img th:src="@{../images/product/img-1.png}" alt="img-1" class="img-fluid mx-auto d-block">
+                          </div>
+                        </a>
+                        <div class="text-center">
+                          <p class="font-size-12 mb-1">Blue color, T-shirt</p>
+                          <h5 class="font-size-15"><a href="#" class="text-reset">Full sleeve T-shirt</a></h5>
+                          <h5 class="mt-3 mb-0">$240</h5>
+                          <!-- <button type="button" class="btn btn-primary waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#firstmodal">Open First Modal</button> -->
+                        </div>
+
+                        <!-- First modal dialog -->
+                        <!-- <div class="modal fade" id="firstmodal" aria-hidden="true" aria-labelledby="..." tabindex="-1">
+                           <div class="modal-dialog modal-dialog-centered">
+                             <div class="modal-content">
+                               <div class="modal-header">
+                                 <h5 class="modal-title">Modal 1</h5>
+                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                               </div>
+                               <div class="modal-body">
+                                 <p>Show a second modal and hide this one with the button below.</p>
+                               </div>
+                               <div class="modal-footer">
+
+                                 <button class="btn btn-primary" data-bs-target="#secondmodal" data-bs-toggle="modal" data-bs-dismiss="modal">Open Second Modal</button>
+                               </div>
+                             </div>
+                           </div>
+                         </div> -->
+                      </div>
+                    </div>
+
+                    <div class="col-xl-4 col-sm-6">
+                      <div class="card product-box">
+                        <a href="/usuario/productoDetalles" class="text-decoration-none">
+                          <div class="product-img">
+                            <div class="product-ribbon badge bg-primary">
+                              - 25 %
+                            </div>
+                            <img th:src="@{../images/product/img-2.png}" alt="img-2" class="img-fluid mx-auto d-block">
+                          </div>
+
+                          <div class="text-center">
+                            <p class="font-size-12 mb-1">Half sleeve, T-shirt</p>
+                            <h5 class="font-size-15"><a href="#" class="text-reset">Half sleeve T-shirt </a></h5>
+
+                            <h5 class="mt-3 mb-0"><span class="text-muted me-2"><del>$240</del></span>$225</h5>
+                          </div>
+                        </a>
+                      </div>
+                    </div>
+                    <div class="col-xl-4 col-sm-6">
+                      <div class="card product-box">
+                        <a href="/usuario/productoDetalles" class="text-decoration-none">
+                          <div class="product-img">
+
+                            <img th:src="@{../images/product/img-3.png}" alt="img-3" class="img-fluid mx-auto d-block">
+                          </div>
+
+                          <div class="text-center">
+                            <p class="font-size-12 mb-1">Green color, Hoodie</p>
+                            <h5 class="font-size-15"><a href="#" class="text-reset">Hoodie (Green)</a></h5>
+
+                            <h5 class="mt-3 mb-0"><span class="text-muted me-2"><del>$290</del></span>$275</h5>
+                          </div>
+                        </a>
+                      </div>
+                    </div>
+                    <div class="col-xl-4 col-sm-6">
+                      <div class="card product-box">
+                        <a href="/usuario/productoDetalles" class="text-decoration-none">
+                          <div class="product-img">
+
+                            <img th:src="@{../images/product/img-4.png}" alt="img-4" class="img-fluid mx-auto d-block">
+                          </div>
+
+                          <div class="text-center">
+                            <p class="font-size-12 mb-1">Gray color, Hoodie</p>
+                            <h5 class="font-size-15"><a href="#" class="text-reset">Hoodie (Green)</a></h5>
+
+                            <h5 class="mt-3 mb-0"><span class="text-muted me-2"><del>$290</del></span>$275</h5>
+                          </div>
+                        </a>
+                      </div>
+                    </div>
+
+                    <div class="col-xl-4 col-sm-6">
+                      <div class="card product-box">
+                        <a href="/usuario/productoDetalles" class="text-decoration-none">
+                          <div class="product-img">
+                            <img th:src="@{../images/product/img-5.png}" alt="img-5" class="img-fluid mx-auto d-block">
+                          </div>
+
+                          <div class="text-center">
+                            <p class="font-size-12 mb-1">Blue color, T-shirt</p>
+                            <h5 class="font-size-15"><a href="#" class="text-reset">Full sleeve T-shirt</a></h5>
+
+                            <h5 class="mt-3 mb-0">$242</h5>
+                          </div>
+                        </a>
+                      </div>
+                    </div>
+                    <div class="col-xl-4 col-sm-6">
+                      <div class="product-box">
+                        <a href="/usuario/productoDetalles" class="text-decoration-none">
+                          <div class="product-img">
+                            <div class="product-ribbon badge bg-primary">
+                              - 22 %
+                            </div>
+                            <img th:src="@{../images/product/img-6.png}" alt="img-6" class="img-fluid mx-auto d-block">
+
+                          </div>
+
+                          <div class="text-center">
+                            <p class="font-size-12 mb-1">Black color, T-shirt</p>
+                            <h5 class="font-size-15"><a href="#" class="text-reset">Half sleeve T-shirt </a></h5>
+
+                            <h5 class="mt-3 mb-0"><span class="text-muted me-2"><del>$240</del></span>$225</h5>
+                          </div>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row mt-4">
+                    <div class="col-sm-6">
+                      <div>
+                        <p class="mb-sm-0 mt-2">Page <span class="fw-bold">2</span> Of <span class="fw-bold">113</span></p>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <div class="float-sm-end">
+                        <ul class="pagination pagination-rounded mb-sm-0">
+                          <li class="page-item disabled">
+                            <a href="#" class="page-link"><i class="mdi mdi-chevron-left"></i></a>
+                          </li>
+                          <li class="page-item">
+                            <a href="#" class="page-link">1</a>
+                          </li>
+                          <li class="page-item active">
+                            <a href="#" class="page-link">2</a>
+                          </li>
+                          <li class="page-item">
+                            <a href="#" class="page-link">3</a>
+                          </li>
+                          <li class="page-item">
+                            <a href="#" class="page-link">4</a>
+                          </li>
+                          <li class="page-item">
+                            <a href="#" class="page-link">5</a>
+                          </li>
+                          <li class="page-item">
+                            <a href="#" class="page-link"><i class="mdi mdi-chevron-end"></i></a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div> <!-- container-fluid -->
+    </div>
+    <!-- End Page-content -->
+    <footer class="footer">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-sm-6">
+            <script>document.write(new Date().getFullYear())</script> © TRADO.
+          </div>
+          <div class="col-sm-6">
+            <div class="text-sm-end d-none d-sm-block">
+              Crafted with <i class="mdi mdi-heart text-danger"></i> by TelesoftGT
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </div>
+  <!-- end main content-->
+</div>
+<!-- END layout-wrapper -->
+
+
+<!-- JAVASCRIPT BASE-->
+<span th:replace="~{Common/jsBase :: js_Base}"></span>
+
+<!-- Ion Range Slider-->
+<script th:src="@{../libs/ion-rangeslider/js/ion.rangeSlider.min.js}"></script>
+
+<!-- init js -->
+<script th:src="@{../js/pages/product-filter-range.init.js}"></script>
+<!-- End JAVASCRIPT BASE-->
+</body>
+
+</html>
