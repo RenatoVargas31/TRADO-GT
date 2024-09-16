@@ -63,4 +63,17 @@ public class UsuarioFinalController {
     public String showordenCompra() {
         return "usuario/orden-compra-usuario";
     }
+    @GetMapping("/foro")
+    public String showForo() {
+        return "Usuario/foro";
+    }
+
+    @GetMapping("/foroConsultas")
+    public String showForoConsultas() {
+        return "Usuario/consulta";
+    }
+    @GetMapping("/foroProblema")
+    public String showForoProblema() {
+        return "Usuario/problema-soluciones";
+    }
 }
