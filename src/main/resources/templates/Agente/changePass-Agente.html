@@ -1,0 +1,126 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <title>Password</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- CSS BASE -->
+  <meta th:replace="~{Common/cssBase :: css_Base}">
+  <!-- End CSS BASE -->
+</head>
+
+<body data-sidebar="dark">
+
+<!-- <body data-layout="horizontal" data-topbar="dark"> -->
+
+<!-- Begin page -->
+<div id="layout-wrapper">
+
+  <!-- ========== NavBar Start ========== -->
+  <header th:replace="Agente/fragments/navbar :: nav_bar"></header>
+  <!-- Navbar End -->
+  <!-- ========== Left Sidebar Start ========== -->
+  <div th:replace="Agente/fragments/sidebar :: side_bar"></div>
+  <!-- Left Sidebar End -->
+  <!-- ============================================================== -->
+  <!-- Start right Content here -->
+  <!-- ============================================================== -->
+  <div class="main-content">
+    <div class="page-content">
+      <div class="container-fluid">
+
+        <!-- start page title -->
+        <div class="row">
+          <div class="col-12">
+            <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+              <h4 class="mb-sm-0">Reestablecer Contraseña</h4>
+
+              <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                  <li class="breadcrumb-item active">Home</li>
+                  <li class="breadcrumb-item"><a href="javascript: void(0);">Password</a></li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xl-12">
+            <div class="card">
+              <hr class="my-0">
+              <div class="card-body">
+                <form action="/path/to/ServletCord" method="post">
+                  <input type="hidden" name="action" value="changePassword">
+                  <div class="row">
+                    <div class="row">
+                      <div class="mb-3 col-md-6">
+                        <label for="currentPassword" class="form-label">Contraseña Actual</label>
+                        <p class="text-muted mb-2 mt-2">Introduzca su contraseña actual</p>
+                        <input class="form-control" type="password" id="currentPassword" name="currentPassword" required>
+                      </div>
+                    </div>
+                    <div class="mb-3 col-md-6">
+
+                      <label for="newPassword" class="form-label">Nueva Contraseña</label>
+                      <p class="text-muted mb-2 mt-2">Introduzca su nueva contraseña</p>
+
+                      <input class="form-control" type="password" id="newPassword" name="newPassword" required>
+                      <ul class="text-muted mb-2 mt-2 mx-3">
+                        <li>La longitud mínima de la contraseña es de 8 caracteres y máxima de 16 caracteres</li>
+                        <li>Su contraseña debe contener como mínimo 1 número</li>
+                        <li>Su contraseña debe contener como mínimo 2 caracteres especiales</li>
+                        <li>Su contraseña debe contener como mínimo 1 letra mayúscula y minúscula</li>
+                      </ul>
+                    </div>
+                    <div class="mb-3 col-md-6">
+                      <label for="confirmNewPassword" class="form-label">Confirmar Nueva Contraseña</label>
+                      <p class="text-muted mb-2 mt-2">Introduzca de nuevo su contraseña. Asegúrese de que sean idénticas</p>
+
+                      <input class="form-control" type="password" id="confirmNewPassword" name="confirmNewPassword" required>
+                      <hr class="opacity-0">
+                      <div class="mt-2">
+                        <button type="submit" class="btn btn-primary me-2" style="background-color: #FFA500; color: #ffffff; border: 2px solid #FFA500;  border-radius: 8px; font-size: 14px; cursor: pointer; transition: background-color 0.3s, border-color 0.3s;" tabindex="0">Cambiar Contraseña</button>
+                      </div>
+
+                    </div>
+                  </div>
+
+                </form>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <!-- end page title -->
+
+      </div> <!-- container-fluid -->
+    </div>
+    <!-- End Page-content -->
+    <footer class="footer">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-sm-6">
+            <script>document.write(new Date().getFullYear())</script> © TRADO.
+          </div>
+          <div class="col-sm-6">
+            <div class="text-sm-end d-none d-sm-block">
+              Crafted with <i class="mdi mdi-heart text-danger"></i> by TelesoftGT
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </div>
+  <!-- end main content-->
+</div>
+<!-- END layout-wrapper -->
+
+
+<!-- JAVASCRIPT BASE-->
+<span th:replace="~{Common/jsBase :: js_Base}"></span>
+<!-- End JAVASCRIPT BASE-->
+</body>
+
+</html>

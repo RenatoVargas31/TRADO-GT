@@ -271,3 +271,61 @@ $(document).ready(function () {
     a.buttons().container().appendTo("#datatable-proveedor-lista_wrapper .col-md-6:eq(0)");
     $(".dataTables_length select").addClass("form-select form-select-sm");
 });
+
+//DATATABLES - ADMINZONAL
+//Tabla de fechas de arribo
+$(document).ready(function () {
+    var a = $("#datatable-fechaArribo").DataTable({
+        lengthChange: !1,
+        pageLength: 7,
+        info: !1,
+        language: {paginate: {previous: "<i class='mdi mdi-chevron-left'>", next: "<i class='mdi mdi-chevron-right'>"}},
+        drawCallback: function () {
+            $(".dataTables_paginate > .pagination").addClass("pagination-rounded")
+        },
+        buttons: ["copy", "excel", "pdf", "colvis"],
+        columnDefs: [
+            { targets: -1, searchable: false } // Deshabilitar búsqueda en la última columna
+        ]
+    });
+    a.buttons().container().appendTo("#datatable-fechaArribo_wrapper .col-md-6:eq(0)");
+    $(".dataTables_length select").addClass("form-select form-select-sm");
+});
+//Tabla de reposicón de productos
+$(document).ready(function () {
+    var a = $("#datatable-reposicionProducto").DataTable({
+        lengthChange: !1,
+        pageLength: 7,
+        info: !1,
+        language: {paginate: {previous: "<i class='mdi mdi-chevron-left'>", next: "<i class='mdi mdi-chevron-right'>"}},
+        drawCallback: function () {
+            $(".dataTables_paginate > .pagination").addClass("pagination-rounded")
+        },
+        buttons: ["copy", "excel", "pdf", "colvis"],
+        columnDefs: [
+            { targets: -1, searchable: false } // Deshabilitar búsqueda en la última columna
+        ]
+    });
+    a.buttons().container().appendTo("#datatable-reposicionProducto_wrapper .col-md-6:eq(0)");
+    $(".dataTables_length select").addClass("form-select form-select-sm");
+});
+
+//DATATABLES - AGENTE
+//Tabla de todos los productos
+$(document).ready(function () {
+    var a = $("#datatable-ordenesCompraAll").DataTable({
+        lengthChange: !1,
+        pageLength: 7,
+        info: !1,
+        language: {paginate: {previous: "<i class='mdi mdi-chevron-left'>", next: "<i class='mdi mdi-chevron-right'>"}},
+        drawCallback: function () {
+            $(".dataTables_paginate > .pagination").addClass("pagination-rounded")
+        },
+        buttons: ["copy", "excel", "pdf", "colvis"],
+        columnDefs: [
+            { targets: -1, searchable: false } // Deshabilitar búsqueda en la última columna
+        ]
+    });
+    a.buttons().container().appendTo("#datatable-ordenesCompraAll_wrapper .col-md-6:eq(0)");
+    $(".dataTables_length select").addClass("form-select form-select-sm");
+});
