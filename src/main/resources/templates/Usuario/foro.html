@@ -1,0 +1,455 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Inicio</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- CSS BASE -->
+    <meta th:replace="~{Common/cssBase :: css_Base}">
+    <!-- End CSS BASE -->
+</head>
+
+<body data-sidebar="dark">
+
+<!-- <body data-layout="horizontal" data-topbar="dark"> -->
+
+<!-- Begin page -->
+    <div id="layout-wrapper">
+
+        <!-- ========== NavBar Start ========== -->
+        <header th:replace="~{Usuario/fragments/navbar :: nav_bar}"></header>
+        <!-- Navbar End -->
+        <!-- ========== Left Sidebar Start ========== -->
+        <div th:replace="~{Usuario/fragments/sidebar :: side_bar}"></div>
+        <!-- Left Sidebar End -->
+        <!-- ============================================================== -->
+        <!-- Start right Content here -->
+        <!-- ============================================================== -->
+        <div class="main-content">
+            <div class="page-content">
+                <div class="container-fluid">
+
+                    <!-- start page title -->
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                                <h2 class="mb-sm-0">Foro </h2>
+
+                                <div class="page-title-right">
+                                    <ol class="breadcrumb m-0">
+                                        <li class="breadcrumb-item"><a href="javascript: void(0);">Foro</a></li>
+                                        <li class="breadcrumb-item active">Pagina Principal</li>
+                                    </ol>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end page title -->
+
+
+                            <div class="d-lg-flex mb-4">
+                                <div class="chat-leftsidebar">
+
+                                    <div class="chat-leftsidebar-nav">
+                                        <ul class="nav nav-pills nav-justified">
+                                            <li class="nav-item">
+                                                <a href="#chat" data-bs-toggle="tab" aria-expanded="true" class="nav-link active">
+                                                    <i class="ri-add-line font-size-20 mt-3"></i>
+
+                                                    <span class="mt-2 d-none d-sm-block">Agregar nuevo comentario</span>
+                                                </a>
+                                            </li>
+
+
+                                        </ul>
+                                    </div>
+                                    <hr class="mt-4 mb-1">
+                                    <div class="tab-content py-3    ">
+                                        <div class="tab-pane show active" id="chat">
+                                            <div>
+                                                <h5 class="font-size-18 px-3 mb-3 fw-bold">Categoría</h5>
+                                                <ul class="list-unstyled chat-list" data-simplebar style="max-height: 345px;">
+                                                    <li class="active">
+                                                        <a href="#">
+                                                            <div class="d-flex">
+                                                                <div class="flex-1 overflow-hidden">
+                                                                    <h5 class="text-truncate font-size-14 mb-4">Reseñas de productos</h5>
+                                                                    <hr>
+                                                                    <div class="mb-3">
+                                                                        <span class="mdi mdi-circle-outline text-info"></span> Ropa
+                                                                    </div>
+                                                                    <div class="mb-3">
+                                                                        <span class="mdi mdi-circle-outline text-warning"></span> Muebles
+                                                                    </div>
+                                                                    <div class="mb-3">
+                                                                        <span class="mdi mdi-circle-outline text-primary"></span> Calzados
+                                                                    </div>
+                                                                    <div class="mb-3">
+                                                                        <span class="mdi mdi-circle-outline text-danger"></span> Accesorios
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </a>
+                                                    </li>
+
+                                                    <li>
+                                                        <a href="/usuario/foroConsultas">
+                                                            <div class="d-flex">
+                                                                <div class="flex-1 overflow-hidden">
+                                                                    <h5 class="text-truncate font-size-14 mb-1">Consultas generales</h5>
+                                                                </div>
+                                                            </div>
+                                                        </a>
+                                                    </li>
+
+                                                    <li>
+                                                        <a href="/usuario/foroProblema">
+                                                            <div class="d-flex">
+                                                                <div class="flex-1 overflow-hidden">
+                                                                    <h5 class="text-truncate font-size-14 mb-1">Problemas y soluciones</h5>
+                                                                </div>
+                                                            </div>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="tab-pane" id="group">
+                                            <h5 class="font-size-14 px-3 mb-3">Group</h5>
+                                            <ul class="list-unstyled chat-list" data-simplebar style="max-height: 345px;">
+                                                <li>
+                                                    <a href="#">
+                                                        <div class="d-flex align-items-center">
+                                                            <div class="avatar-xs me-3">
+                                                            <span class="avatar-title rounded-circle bg-light text-body">
+                                                                G
+                                                            </span>
+                                                            </div>
+
+                                                            <div class="flex-1">
+                                                                <h5 class="font-size-14 mb-0">General</h5>
+                                                            </div>
+                                                        </div>
+                                                    </a>
+                                                </li>
+
+                                                <li>
+                                                    <a href="#">
+                                                        <div class="d-flex align-items-center">
+                                                            <div class="avatar-xs me-3">
+                                                            <span class="avatar-title rounded-circle bg-light text-body">
+                                                                R
+                                                            </span>
+                                                            </div>
+
+                                                            <div class="flex-1">
+                                                                <h5 class="font-size-14 mb-0">Reporting</h5>
+                                                            </div>
+                                                        </div>
+                                                    </a>
+                                                </li>
+
+                                                <li>
+                                                    <a href="#">
+                                                        <div class="d-flex align-items-center">
+                                                            <div class="avatar-xs me-3">
+                                                            <span class="avatar-title rounded-circle bg-light text-body">
+                                                                M
+                                                            </span>
+                                                            </div>
+
+                                                            <div class="flex-1">
+                                                                <h5 class="font-size-14 mb-0">Meeting</h5>
+                                                            </div>
+                                                        </div>
+                                                    </a>
+                                                </li>
+
+                                                <li>
+                                                    <a href="#">
+                                                        <div class="d-flex align-items-center">
+                                                            <div class="avatar-xs me-3">
+                                                            <span class="avatar-title rounded-circle bg-light text-body">
+                                                                A
+                                                            </span>
+                                                            </div>
+
+                                                            <div class="flex-1">
+                                                                <h5 class="font-size-14 mb-0">Project A</h5>
+                                                            </div>
+                                                        </div>
+                                                    </a>
+                                                </li>
+
+                                                <li>
+                                                    <a href="#">
+                                                        <div class="d-flex align-items-center">
+                                                            <div class="avatar-xs me-3">
+                                                            <span class="avatar-title rounded-circle bg-light text-body">
+                                                                B
+                                                            </span>
+                                                            </div>
+
+                                                            <div class="flex-1">
+                                                                <h5 class="font-size-14 mb-0">Project B</h5>
+                                                            </div>
+                                                        </div>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+
+                                        <div class="tab-pane" id="contact">
+                                            <h5 class="font-size-14 px-3 mb-3">Contact</h5>
+
+                                            <div  data-simplebar style="max-height: 345px;">
+                                                <div>
+                                                    <div class="p-3">
+                                                        A
+                                                    </div>
+
+                                                    <ul class="list-unstyled chat-list">
+                                                        <li>
+                                                            <a href="#">
+                                                                <h5 class="font-size-14 mb-0">Adam Miller</h5>
+                                                            </a>
+                                                        </li>
+
+                                                        <li>
+                                                            <a href="#">
+                                                                <h5 class="font-size-14 mb-0">Alfonso Fisher</h5>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+
+                                                <div class="mt-4">
+                                                    <div class="p-3">
+                                                        B
+                                                    </div>
+
+                                                    <ul class="list-unstyled chat-list">
+                                                        <li>
+                                                            <a href="#">
+                                                                <h5 class="font-size-14 mb-0">Bonnie Harney</h5>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+
+                                                <div class="mt-4">
+                                                    <div class="p-3">
+                                                        C
+                                                    </div>
+
+                                                    <ul class="list-unstyled chat-list">
+                                                        <li>
+                                                            <a href="#">
+                                                                <h5 class="font-size-14 mb-0">Charles Brown</h5>
+                                                            </a>
+                                                            <a href="#">
+                                                                <h5 class="font-size-14 mb-0">Carmella Jones</h5>
+                                                            </a>
+                                                            <a href="#">
+                                                                <h5 class="font-size-14 mb-0">Carrie Williams</h5>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+
+                                                <div class="mt-4">
+                                                    <div class="p-3">
+                                                        D
+                                                    </div>
+
+                                                    <ul class="list-unstyled chat-list">
+                                                        <li>
+                                                            <a href="#">
+                                                                <h5 class="font-size-14 mb-0">Dolores Minter</h5>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="w-100 user-chat mt-4 mt-sm-0">
+                                    <div class="p-3 px-lg-4 user-chat-border">
+                                        <div class="row">
+
+                                            <div class="col-md-12">
+                                                <ul class="list-inline user-chat-nav text-end mb-0">
+
+                                                    <li class="list-inline-item">
+                                                        <div class="dropdown">
+                                                            <button class="btn nav-btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                <i class="mdi mdi-dots-horizontal"></i>
+                                                            </button>
+                                                            <div class="dropdown-menu dropdown-menu-end">
+                                                                <a class="dropdown-item" href="#">Action</a>
+                                                                <a class="dropdown-item" href="#">Another action</a>
+                                                                <a class="dropdown-item" href="#">Something else</a>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+
+                                                    <li class="list-inline-item">
+                                                        <div class="dropdown">
+                                                            <button class="btn nav-btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                <i class="mdi mdi-cog"></i>
+                                                            </button>
+                                                            <div class="dropdown-menu dropdown-menu-end">
+                                                                <a class="dropdown-item" href="#">View Profile</a>
+                                                                <a class="dropdown-item" href="#">Clear chat</a>
+                                                                <a class="dropdown-item" href="#">Muted</a>
+                                                                <a class="dropdown-item" href="#">Delete</a>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+
+                                                    <li class="list-inline-item ms-auto">
+                                                        <div class="search-box">
+                                                            <div class="position-relative">
+                                                                <input type="text" class="form-control" placeholder="Buscar...">
+                                                                <i class="mdi mdi-magnify search-icon"></i>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+
+                                                </ul>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+
+                                    <div class="px-lg-2">
+                                        <div class="chat-conversation p-3">
+                                            <ul class="list-unstyled mb-0 pe-3" data-simplebar style="max-height: 450px;">
+
+                                            <div class="card-group">
+                                                <div class="card mb-4">
+                                                    <img class="card-img-top img-fluid" src="/images/product/image7.png" alt="Card image cap">
+                                                    <div class="card-body">
+                                                        <h4 class="card-title">La polera de Telito</h4>
+                                                        <span class ="bg-info badge me-2 mb-2"> Ropa</span>
+                                                        <p class="card-text">Naaaa. Necesito 5.</p>
+                                                        <p class="card-text">
+                                                            <small class="text-muted">Escrito hace 10 minutos</small>
+                                                        </p>
+                                                    </div>
+
+                                                </div>
+                                                <div class="card mb-4">
+                                                    <img class="card-img-top img-fluid" src="/images/product/img-2.png" alt="Card image cap">
+                                                    <div class="card-body">
+
+                                                        <h4 class="card-title">Polo básico gris</h4>
+                                                        <span class ="bg-info badge me-2 mb-2"> Ropa</span>
+                                                        <p class="card-text">Esto va demasiado con mi estilo. Amo.</p>
+                                                        <p class="card-text">
+                                                            <small class="text-muted">Escrito hace un mes</small>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <div class="card mb-4">
+                                                    <img class="card-img-top img-fluid"src="/images/product/img-3.png" alt="Card image cap">
+                                                    <div class="card-body">
+                                                        <h4 class="card-title">Polera gris con capucha</h4>
+                                                        <span class ="bg-info badge me-2 mb-2"> Ropa</span>
+                                                        <p class="card-text">Estas están mucho mejor que las que venden en la PUCP</p>
+                                                        <p class="card-text">
+                                                            <small class="text-muted">Escrito hace una semana</small>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="card-group">
+                                                <div class="card mb-4">
+                                                    <img class="card-img-top img-fluid" src="/images/product/img-1.png" alt="Card image cap">
+                                                    <div class="card-body">
+
+                                                        <h4 class="card-title">Polera básica gris</h4>
+                                                        <span class ="bg-info badge me-2 mb-2"> Ropa</span>
+                                                        <p class="card-text">Amo esta polera</p>
+                                                        <p class="card-text">
+                                                            <small class="text-muted">Escrito hace dos minutos</small>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <div class="card mb-4">
+                                                    <img class="card-img-top img-fluid" src="/images/product/img-5.png" alt="Card image cap">
+                                                    <div class="card-body">
+                                                        <h4 class="card-title">Polera gris</h4>
+                                                        <span class ="bg-info badge me-2 mb-2"> Ropa</span>
+                                                        <p class="card-text">Demasiado básico, pero bueh.</p>
+                                                        <p class="card-text">
+                                                            <small class="text-muted">Escrito hace 2 horas</small>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <div class="card mb-4">
+                                                    <img class="card-img-top img-fluid" src="/images/product/img-6.png" alt="Card image cap">
+                                                    <div class="card-body">
+                                                        <h4 class="card-title">Polo negro</h4>
+                                                        <span class ="bg-info badge me-2 mb-2"> Ropa</span>
+                                                        <p class="card-text">Estuvo más o menos</p>
+                                                        <p class="card-text">
+                                                            <small class="text-muted">Escrito hace 5 meses</small>
+                                                        </p>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            </ul>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                            <!-- end row -->
+
+                        </div> <!-- container-fluid -->
+                    </div>
+                        </div>
+                    </div>
+
+
+                </div> <!-- container-fluid -->
+            </div>
+            <!-- End Page-content -->
+            <footer class="footer">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <script>document.write(new Date().getFullYear())</script> © TRADO.
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="text-sm-end d-none d-sm-block">
+                                Crafted with <i class="mdi mdi-heart text-danger"></i> by TelesoftGT
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+        <!-- end main content-->
+    </div>
+    <!-- END layout-wrapper -->
+
+
+    <!-- JAVASCRIPT BASE-->
+    <span th:replace="~{Common/jsBase :: js_Base}"></span>
+    <!-- End JAVASCRIPT BASE-->
+</body>
+
+</html>

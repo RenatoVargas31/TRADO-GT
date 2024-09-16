@@ -28,4 +28,17 @@ public class UsuarioFinalController {
     public String tracking() {
         return "Usuario/trackingOrd";
     }
+
+    @GetMapping("/foro")
+    public String foro() {
+        return "Usuario/foro";
+    }
+    @GetMapping("/foroConsultas")
+    public String foroConsultas() {
+        return "Usuario/consulta";
+    }
+    @GetMapping("/foroProblema")
+    public String foroProblema() {
+        return "Usuario/problema-soluciones";
+    }
 }
