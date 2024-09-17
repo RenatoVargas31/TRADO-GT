@@ -42,7 +42,7 @@
                         <div class="row">
                             <div class="col-12">
                                 <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                                    <h4 class="mb-sm-0">Starter page</h4>
+                                    <h4 class="mb-sm-0">Monitoreo del pedido</h4>
 
                                     <div class="page-title-right">
                                         <ol class="breadcrumb m-0">
@@ -56,6 +56,292 @@
                         </div>
                         <!-- end page title -->
                         <div class="row">
+                            <div class="col-lg-8 col-md-10 col-sm-12">
+                                <div class="col-12">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h4 class="card-title mb-4">Orden de compra</h4>
+
+                                            <!-- Datos Personales y Fecha/No. de Orden -->
+                                            <div class="row mb-4">
+                                                <div class="col-md-6 col-sm-12">
+                                                    <h6 >Datos personales</h6>
+                                                    <p>Nombre de comprador: <input type="text" class="form-control"></p>
+                                                    <p>Número DNI: <input type="text" class="form-control"></p>
+                                                    <p>Domicilio: <input type="text" class="form-control"></p>
+                                                </div>
+                                                <div class="col-md-6 col-sm-12">
+                                                    <h6>Fecha y Número de Orden</h6>
+                                                    <p>Fecha: <input type="date" class="form-control"></p>
+                                                    <p>No. de orden: <input type="text" class="form-control"></p>
+                                                    <p>Ciudad, Estado: <input type="text" class="form-control"></p>
+                                                </div>
+                                            </div>
+
+                                            <!-- Datos del Vendedor y del Comprador -->
+                                            <div class="row mb-4">
+                                                <div class="col-md-6 col-sm-12">
+                                                    <h6>Vendedor</h6>
+                                                    <p>Compañía: <input type="text" class="form-control"></p>
+                                                    <p>Contacto: <input type="text" class="form-control"></p>
+                                                    <p>Domicilio: <input type="text" class="form-control"></p>
+                                                    <p>Teléfono: <input type="text" class="form-control"></p>
+                                                </div>
+                                                <div class="col-md-6 col-sm-12">
+                                                    <h6>Comprador</h6>
+                                                    <p>Compañía: <input type="text" class="form-control"></p>
+                                                    <p>Contacto: <input type="text" class="form-control"></p>
+                                                    <p>Domicilio: <input type="text" class="form-control"></p>
+                                                    <p>Teléfono: <input type="text" class="form-control"></p>
+                                                </div>
+                                            </div>
+
+                                            <!-- Productos y Observaciones/Resumen -->
+                                            <div class="row">
+                                                <div class="col-md-6 col-sm-12">
+                                                    <h6>Productos</h6>
+                                                    <p>2 Poleras azules: $480</p>
+                                                    <p>2 Polos franela negro: $480</p>
+                                                </div>
+                                                <div class="col-md-6 col-sm-12">
+                                                    <h6>Observaciones</h6>
+                                                    <p>Subtotal: $960</p>
+                                                    <p>Envío: $100</p>
+                                                    <p>Total: $1060</p>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <!-- Botones de acciones -->
+                                    <div class="row">
+                                        <div class="d-flex justify-content-between" >
+                                            <button type="button" class="btn btn-primary waves-effect waves-light mt-2" onclick="descargarPDF()">Descargar PDF</button>
+                                            <button type="button" class="btn btn-primary waves-effect waves-light mt-2" onclick="descargarHTML()">Descargar HTML</button>
+                                            <a href="" type="button" class="btn btn-primary waves-effect waves-light mt-2">Editar</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4 col-md-10 col-sm-12">
+                                <div class="row">
+                                    <div class="col-lg-12 col-md-12 col-sm-12">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <h4 class="card-title mb-4">Trayectoria del pedido</h4>
+
+                                                <div data-simplebar style="max-height: 350px;">
+                                                    <ul class="list-unstyled activity-wid">
+                                                        <li class="activity-list d-flex align-items-start mb-4">
+                                                            <div class="activity-icon avatar-xs me-3">
+                                                                <span class="avatar-title bg-primary-subtle text-primary rounded-circle">
+                                                                    <i class="ri-file-add-fill"></i>
+                                                                </span>
+                                                            </div>
+                                                            <div>
+                                                                <h5 class="font-size-13">28 Apr, 2020 <small class="text-muted">12:07 am</small></h5>
+                                                                <p class="text-muted mb-0">Orden CREADA</p>
+                                                            </div>
+                                                        </li>
+                                                        <li class="activity-list d-flex align-items-start mb-4">
+                                                            <div class="activity-icon avatar-xs me-3">
+                                                                <span class="avatar-title bg-primary-subtle text-primary rounded-circle">
+                                                                    <i class="ri-search-eye-fill"></i>
+                                                                </span>
+                                                            </div>
+                                                            <div>
+                                                                <h5 class="font-size-13">21 Apr, 2020 <small class="text-muted">08:01 pm</small></h5>
+                                                                <p class="text-muted mb-0">Orden EN VALIDACIÓN</p>
+                                                            </div>
+                                                        </li>
+                                                        <li class="activity-list d-flex align-items-start mb-4">
+                                                            <div class="activity-icon avatar-xs me-3">
+                                                                <span class="avatar-title bg-primary-subtle text-primary rounded-circle">
+                                                                    <i class="ri-settings-2-fill"></i>
+                                                                </span>
+                                                            </div>
+                                                            <div>
+                                                                <h5 class="font-size-13">17 Apr, 2020 <small class="text-muted">09:23 am</small></h5>
+                                                                <p class="text-muted mb-0">Orden EN PROCESO</p>
+                                                            </div>
+                                                        </li>
+                                                        <li class="activity-list d-flex align-items-start mb-4">
+                                                            <div class="activity-icon avatar-xs me-3">
+                                                                <span class="avatar-title bg-primary-subtle text-primary rounded-circle">
+                                                                    <i class="ri-plane-fill"></i>
+                                                                </span>
+                                                            </div>
+                                                            <div>
+                                                                <h5 class="font-size-13">11 Apr, 2020 <small class="text-muted">05:10 pm</small></h5>
+                                                                <p class="text-muted mb-0">Orden ARRIBO AL PAÍS</p>
+                                                            </div>
+                                                        </li>
+                                                        <li class="activity-list d-flex align-items-start mb-4">
+                                                            <div class="activity-icon avatar-xs me-3">
+                                                                <span class="avatar-title bg-primary-subtle text-primary rounded-circle">
+                                                                    <i class="ri-store-fill"></i>
+                                                                </span>
+                                                            </div>
+                                                            <div>
+                                                                <h5 class="font-size-13">07 Apr, 2020 <small class="text-muted">12:47 pm</small></h5>
+                                                                <p class="text-muted mb-0">Orden EN ADUANAS</p>
+                                                            </div>
+                                                        </li>
+                                                        <li class="activity-list d-flex align-items-start mb-4">
+                                                            <div class="activity-icon avatar-xs me-3">
+                                                                <span class="avatar-title bg-primary-subtle text-primary rounded-circle">
+                                                                    <i class="ri-truck-fill"></i>
+                                                                </span>
+                                                            </div>
+                                                            <div>
+                                                                <h5 class="font-size-13">05 Apr, 2020 <small class="text-muted">03:09 pm</small></h5>
+                                                                <p class="text-muted mb-0">Orden EN RUTA</p>
+                                                            </div>
+                                                        </li>
+                                                        <li class="activity-list d-flex align-items-start">
+                                                            <div class="activity-icon avatar-xs me-3">
+                                                                <span class="avatar-title bg-primary-subtle text-primary rounded-circle">
+                                                                    <i class="ri-checkbox-circle-fill"></i>
+                                                                </span>
+                                                            </div>
+                                                            <div>
+                                                                <h5 class="font-size-13">02 Apr, 2020 <small class="text-muted">12:07 am</small></h5>
+                                                                <p class="text-muted mb-0">Orden RECIBIDA</p>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <h4 class="card-title mb-4">Trayectoria del pedido</h4>
+
+                                                <div data-simplebar style="max-height: 400px;">
+                                                    <ul class="list-unstyled activity-wid">
+                                                        <li class="activity-list">
+                                                            <div class="activity-icon avatar-xs">
+                                                        <span class="avatar-title bg-primary-subtle  text-primary rounded-circle">
+                                                            <i class="ri-file-add-fill"></i> <!-- Icono para "Creado" -->
+                                                        </span>
+                                                            </div>
+                                                            <div>
+                                                                <div>
+                                                                    <h5 class="font-size-13">28 Apr, 2020 <small class="text-muted">12:07 am</small></h5>
+                                                                </div>
+                                                                <div>
+                                                                    <p class="text-muted mb-0">Orden CREADA</p>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                        <li class="activity-list">
+                                                            <div class="activity-icon avatar-xs">
+                                                        <span class="avatar-title bg-primary-subtle  text-primary rounded-circle">
+                                                            <i class="ri-search-eye-fill"></i> <!-- Icono para "En validación" -->
+                                                        </span>
+                                                            </div>
+                                                            <div>
+                                                                <div>
+                                                                    <h5 class="font-size-13">21 Apr, 2020 <small class="text-muted">08:01 pm</small></h5>
+                                                                </div>
+                                                                <div>
+                                                                    <p class="text-muted mb-0">Orden EN VALIDACIÓN</p>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                        <li class="activity-list">
+                                                            <div class="activity-icon avatar-xs">
+                                                        <span class="avatar-title bg-primary-subtle  text-primary rounded-circle">
+                                                            <i class="ri-settings-2-fill"></i> <!-- Icono para "En proceso" -->
+                                                        </span>
+                                                            </div>
+                                                            <div>
+                                                                <div>
+                                                                    <h5 class="font-size-13">17 Apr, 2020 <small class="text-muted">09:23 am</small></h5>
+                                                                </div>
+                                                                <div>
+                                                                    <p class="text-muted mb-0">Orden EN PROCESO</p>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                        <li class="activity-list">
+                                                            <div class="activity-icon avatar-xs">
+                                                        <span class="avatar-title bg-primary-subtle  text-primary rounded-circle">
+                                                            <i class="ri-plane-fill"></i> <!-- Icono para "Arribo al país" -->
+                                                        </span>
+                                                            </div>
+                                                            <div>
+                                                                <div>
+                                                                    <h5 class="font-size-13">11 Apr, 2020 <small class="text-muted">05:10 pm</small></h5>
+                                                                </div>
+                                                                <div>
+                                                                    <p class="text-muted mb-0">Orden ARRIBO AL PAÍS</p>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                        <li class="activity-list">
+                                                            <div class="activity-icon avatar-xs">
+                                                        <span class="avatar-title bg-primary-subtle  text-primary rounded-circle">
+                                                            <i class="ri-store-fill"></i> <!-- Icono para "En aduanas" -->
+                                                        </span>
+                                                            </div>
+                                                            <div>
+                                                                <div>
+                                                                    <h5 class="font-size-13">07 Apr, 2020 <small class="text-muted">12:47 pm</small></h5>
+                                                                </div>
+                                                                <div>
+                                                                    <p class="text-muted mb-0">Orden EN ADUANAS</p>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                        <li class="activity-list">
+                                                            <div class="activity-icon avatar-xs">
+                                                        <span class="avatar-title bg-primary-subtle  text-primary rounded-circle">
+                                                            <i class="ri-truck-fill"></i> <!-- Icono para "En ruta" -->
+                                                        </span>
+                                                            </div>
+                                                            <div>
+                                                                <div>
+                                                                    <h5 class="font-size-13">05 Apr, 2020 <small class="text-muted">03:09 pm</small></h5>
+                                                                </div>
+                                                                <div>
+                                                                    <p class="text-muted mb-0">Orden EN RUTA</p>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                        <li class="activity-list">
+                                                            <div class="activity-icon avatar-xs">
+                                                        <span class="avatar-title bg-primary-subtle  text-primary rounded-circle">
+                                                            <i class="ri-checkbox-circle-fill"></i> <!-- Icono para "Recibido" -->
+                                                        </span>
+                                                            </div>
+                                                            <div>
+                                                                <div>
+                                                                    <h5 class="font-size-13">02 Apr, 2020 <small class="text-muted">12:07 am</small></h5>
+                                                                </div>
+                                                                <div>
+                                                                    <p class="text-muted mb-0">Orden RECIBIDA</p>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                      <!--  <div class="row">
                             <div class="d-flex justify-content-between" style="height: 100vh;">
                                 <div class="col-md-6 col-xl-3" style="margin: 20px;">
                                     <div class="card">
@@ -184,7 +470,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
 
 
 
@@ -222,6 +508,59 @@
 
         <!-- JAVASCRIPT -->
         <span th:replace="~{Common/jsBase :: js_Base}"></span>
+
+    <script>
+        function descargarPDF() {
+            const { jsPDF } = window.jspdf; // Acceso a jsPDF desde el espacio global
+            const doc = new jsPDF(); // Crear una nueva instancia de jsPDF
+
+            // Selecciona el contenido del div que quieres convertir en PDF
+            const elemento = document.querySelector('.card-body');
+
+            // Usa html2canvas para capturar el contenido del div como imagen
+            html2canvas(elemento).then(canvas => {
+                const imgData = canvas.toDataURL('image/png'); // Convierte el canvas a imagen
+                const imgWidth = 210; // Ancho de la página A4 en mm (jsPDF usa mm)
+                const pageHeight = 295; // Alto de la página A4 en mm
+                const imgHeight = (canvas.height * imgWidth) / canvas.width;
+                let position = 0;
+
+                // Añadir la imagen al PDF
+                doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+
+                // Descargar el PDF
+                doc.save('orden_de_compra.pdf');
+            });
+        }
+    </script>
+
+    <script>
+        function descargarHTML() {
+            // Selecciona el contenido que deseas descargar (el div con la clase 'card-body')
+            const elemento = document.querySelector('.card-body').innerHTML;
+
+            // Crea un blob con el contenido en formato HTML
+            const blob = new Blob([elemento], { type: 'text/html' });
+
+            // Crea un enlace para descargar el archivo
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'orden_de_compra.html'; // Nombre del archivo a descargar
+
+            // Simula un clic para iniciar la descarga
+            link.click();
+
+            // Limpia el objeto URL creado
+            URL.revokeObjectURL(link.href);
+        }
+    </script>
+
+
+
+
+    <script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js}"></script>
+        <script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js}"></script>
+
 
     </body>
 
