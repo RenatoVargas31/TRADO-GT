@@ -46,8 +46,9 @@
 
                                     <div class="page-title-right">
                                         <ol class="breadcrumb m-0">
-                                            <li class="breadcrumb-item"><a href="javascript: void(0);">Utility</a></li>
-                                            <li class="breadcrumb-item active">Starter page</li>
+                                            <li class="breadcrumb-item active">Home</li>
+                                            <li class="breadcrumb-item active">Lista de pedidos</li>
+                                            <li class="breadcrumb-item"><a href="javascript: void(0);">Tracking</a></li>
                                         </ol>
                                     </div>
                                 </div>
@@ -62,7 +63,7 @@
                                             <h4 class="card-title">Seguimiento del pedido</h4>
                                             <h6 class="card-subtitle font-14 text-muted">N° de Tracking : 2024-99990000</h6>
                                         </div>
-                                        <img class="img-fluid" src="assets/images/small/img-4.jpg" alt="Card image cap">
+                                        <img class="img-fluid" th:src="@{../images/small/img-4.jpg}" alt="Card image cap">
                                         <div class="card-body">
                                             <p class="card-text"><b>En validación:</b> 25/07/24 16:40 </p>
                                             <p class="card-text"><b>En proceso:</b> 27/07/24 13:45 </p>
@@ -74,7 +75,9 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-sm-6 col-lg-4" style="position: absolute; right: 0; bottom: 0;">
+
+
+                                <div class="col-sm-6 col-lg-4" style="position:fixed; right: 0; bottom: 0;">
                                     <div class="card">
                                         <div class="w-100 user-chat mt-4 mt-sm-0">
                                             <div class="p-3 px-lg-4 user-chat-border">
@@ -105,7 +108,7 @@
                                                         <li>
                                                             <div class="conversation-list">
                                                                 <div class="chat-avatar">
-                                                                    <img src="assets/images/users/avatar-2.jpg" alt="avatar-2">
+                                                                    <img th:src="@{../images/users/avatar-2.jpg}" alt="avatar-2">
                                                                 </div>
                                                                 <div class="ctext-wrap">
                                                                     <div class="conversation-name">Robert Tafur</div>
@@ -143,7 +146,7 @@
                                                         <li>
                                                             <div class="conversation-list">
                                                                 <div class="chat-avatar">
-                                                                    <img src="assets/images/users/avatar-2.jpg" alt="avatar-2">
+                                                                    <img th:src="@{../images/users/avatar-2.jpg}" alt="avatar-2">
                                                                 </div>
                                                                 <div class="ctext-wrap">
                                                                     <div class="conversation-name">Robert Tafur</div>
@@ -187,17 +190,18 @@
 
                     </div> <!-- container-fluid -->
                 </div>
+
+
                 <!-- End Page-content -->
-                
                 <footer class="footer">
                     <div class="container-fluid">
                         <div class="row">
                             <div class="col-sm-6">
-                                <script>document.write(new Date().getFullYear())</script> © Nazox.
+                                <script>document.write(new Date().getFullYear())</script> © TRADO.
                             </div>
                             <div class="col-sm-6">
                                 <div class="text-sm-end d-none d-sm-block">
-                                    Crafted with <i class="mdi mdi-heart text-danger"></i> by Themesdesign
+                                    Crafted with <i class="mdi mdi-heart text-danger"></i> by TelesoftGT
                                 </div>
                             </div>
                         </div>
