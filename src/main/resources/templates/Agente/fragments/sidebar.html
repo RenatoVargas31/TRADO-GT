@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <body>
-<div th:fragment="side_bar" class="vertical-menu" style="background-color: #FFA500;">
+<div th:fragment="side_bar" class="vertical-menu" style="background-color: #35332e;">
   <div data-simplebar class="h-100">
     <!--- Sidemenu -->
     <div id="sidebar-menu">
@@ -25,10 +25,10 @@
           </a>
           <ul class="sub-menu" aria-expanded="false">
             <li><a href="/agente/allOrders">Todas las órdenes</a></li>
-            <li><a href="#">Órdenes si asignar</a></li>
-            <li><a href="#">Órdenes pendientes</a></li>
-            <li><a href="#">Órdenes en proceso</a></li>
-            <li><a href="#">Órdenes resueltas</a></li>
+            <li><a href="/agente/sinAsignarOrders">Órdenes si asignar</a></li>
+            <li><a href="/agente/pendingOrders">Órdenes pendientes</a></li>
+            <li><a href="/agente/enProcesoOrders">Órdenes en proceso</a></li>
+            <li><a href="/agente/solveOrders">Órdenes resueltas</a></li>
           </ul>
         </li>
 

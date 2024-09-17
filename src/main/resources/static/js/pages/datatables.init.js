@@ -310,6 +310,7 @@ $(document).ready(function () {
     $(".dataTables_length select").addClass("form-select form-select-sm");
 });
 
+
 //DATATABLES - AGENTE
 //Tabla de todos los productos
 $(document).ready(function () {
@@ -327,5 +328,77 @@ $(document).ready(function () {
         ]
     });
     a.buttons().container().appendTo("#datatable-ordenesCompraAll_wrapper .col-md-6:eq(0)");
+    $(".dataTables_length select").addClass("form-select form-select-sm");
+});
+//Tablas de órdenes sin asignar
+$(document).ready(function () {
+    var a = $("#datatable-ordenesCompraSinAsignar").DataTable({
+        lengthChange: !1,
+        pageLength: 7,
+        info: !1,
+        language: {paginate: {previous: "<i class='mdi mdi-chevron-left'>", next: "<i class='mdi mdi-chevron-right'>"}},
+        drawCallback: function () {
+            $(".dataTables_paginate > .pagination").addClass("pagination-rounded")
+        },
+        buttons: ["copy", "excel", "pdf", "colvis"],
+        columnDefs: [
+            { targets: -1, searchable: false } // Deshabilitar búsqueda en la última columna
+        ]
+    });
+    a.buttons().container().appendTo("#datatable-ordenesCompraSinAsignar_wrapper .col-md-6:eq(0)");
+    $(".dataTables_length select").addClass("form-select form-select-sm");
+});
+//Tablas de órdenes pendientes
+$(document).ready(function () {
+    var a = $("#datatable-ordenesCompraPendientes").DataTable({
+        lengthChange: !1,
+        pageLength: 7,
+        info: !1,
+        language: {paginate: {previous: "<i class='mdi mdi-chevron-left'>", next: "<i class='mdi mdi-chevron-right'>"}},
+        drawCallback: function () {
+            $(".dataTables_paginate > .pagination").addClass("pagination-rounded")
+        },
+        buttons: ["copy", "excel", "pdf", "colvis"],
+        columnDefs: [
+            { targets: -1, searchable: false } // Deshabilitar búsqueda en la última columna
+        ]
+    });
+    a.buttons().container().appendTo("#datatable-ordenesCompraPendientes_wrapper .col-md-6:eq(0)");
+    $(".dataTables_length select").addClass("form-select form-select-sm");
+});
+//Tablas de órdenes en proceso
+$(document).ready(function () {
+    var a = $("#datatable-ordenesCompraEnProceso").DataTable({
+        lengthChange: !1,
+        pageLength: 7,
+        info: !1,
+        language: {paginate: {previous: "<i class='mdi mdi-chevron-left'>", next: "<i class='mdi mdi-chevron-right'>"}},
+        drawCallback: function () {
+            $(".dataTables_paginate > .pagination").addClass("pagination-rounded")
+        },
+        buttons: ["copy", "excel", "pdf", "colvis"],
+        columnDefs: [
+            { targets: -1, searchable: false } // Deshabilitar búsqueda en la última columna
+        ]
+    });
+    a.buttons().container().appendTo("#datatable-ordenesCompraEnProceso_wrapper .col-md-6:eq(0)");
+    $(".dataTables_length select").addClass("form-select form-select-sm");
+});
+//Tablas de órdenes resueltas
+$(document).ready(function () {
+    var a = $("#datatable-ordenesCompraResueltas").DataTable({
+        lengthChange: !1,
+        pageLength: 7,
+        info: !1,
+        language: {paginate: {previous: "<i class='mdi mdi-chevron-left'>", next: "<i class='mdi mdi-chevron-right'>"}},
+        drawCallback: function () {
+            $(".dataTables_paginate > .pagination").addClass("pagination-rounded")
+        },
+        buttons: ["copy", "excel", "pdf", "colvis"],
+        columnDefs: [
+            { targets: -1, searchable: false } // Deshabilitar búsqueda en la última columna
+        ]
+    });
+    a.buttons().container().appendTo("#datatable-ordenesCompraResueltas_wrapper .col-md-6:eq(0)");
     $(".dataTables_length select").addClass("form-select form-select-sm");
 });

@@ -43,7 +43,7 @@ public class AgenteComprasController {
         return "Agente/profile-Agente";
     }
 
-    //PREGUNTAS FRECUENTES 
+    //PREGUNTAS FRECUENTES
     @GetMapping("/faq")
     public String showFaq() {
         return "Agente/faq-Agente";
