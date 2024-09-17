@@ -35,12 +35,12 @@
                         <div class="row">
                             <div class="col-12">
                                 <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                                    <h4 class="mb-sm-0">Formulario de edición de Proveedores</h4>
+                                    <h4 class="mb-sm-0">Actualización de Proveedores</h4>
 
                                     <div class="page-title-right">
                                         <ol class="breadcrumb m-0">
                                             <li class="breadcrumb-item"><a href="javascript: void(0);">Proveedores</a></li>
-                                            <li class="breadcrumb-item active">Editar Proveedor</li>
+                                            <li class="breadcrumb-item active">Actualizar Proveedor</li>
                                         </ol>
                                     </div>
 
@@ -52,27 +52,29 @@
                         <div class="row">
                             <div class="align-content-center-xl-6">
                                 <div class="card">
-                                    <div class="card-body">
-                                        <h4 class="card-title">Edición de Proveedores</h4>
-                                        <p class="card-title-desc">Provide valuable, actionable feedback to your users with
-                                            HTML5 form validation–available in all our supported browsers.</p>
+                                    <div class="card-body" style="padding: 30px">
+                                        <h4 class="card-title fw-bold">Observaciones:</h4>
+                                        <span style="display: block; padding-bottom: 10px;">- El DNI ingresado debe de tener 8 dígitos y debe existir en RENIEC.</span>
+                                        <span style="display: block; padding-bottom: 10px;">- El nombre ingresado debe coincidir con el registrado en RENIEC.</span>
+                                        <span style="display: block; padding-bottom: 10px;">- El apellido ingresado debe coincidir con el registrado en RENIEC.</span>
+                                        <h4 class="card-title fw-bold">Datos de registro:</h4>
                                         <form class="needs-validation" novalidate>
                                             <div class="row">
                                                 <div class="col-md-6">
-                                                    <div class="mb-3">
+                                                    <div class="mb-4">
                                                         <label for="validationCustom01" class="form-label">Nombre</label>
-                                                        <input type="text" class="form-control" value="Manuel" id="validationCustom01"
-                                                               placeholder="First name"  required>
+                                                        <input type="text" class="form-control" id="validationCustom01"
+                                                               placeholder="Ingrese los nombres" disabled style="background-color: #e9ecef;" required>
                                                         <div class="valid-feedback">
                                                             Looks good!
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <div class="mb-3">
+                                                    <div class="mb-4">
                                                         <label for="validationCustom02" class="form-label">Apellido</label>
-                                                        <input type="text" class="form-control" value="Yarlequé" id="validationCustom02"
-                                                               placeholder="Last name"  required>
+                                                        <input type="text" class="form-control" id="validationCustom02"
+                                                               placeholder="Ingrese los apellidos" disabled style="background-color: #e9ecef;" required>
                                                         <div class="valid-feedback">
                                                             Looks good!
                                                         </div>
@@ -81,20 +83,20 @@
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-6">
-                                                    <div class="mb-3">
+                                                    <div class="mb-4">
                                                         <label for="validationCustom03" class="form-label">DNI</label>
-                                                        <input type="text" class="form-control" value="40303849" id="validationCustom03"
-                                                               placeholder="DNI" required>
+                                                        <input type="text" class="form-control" id="validationCustom03"
+                                                               placeholder="Ingrese el DNI" disabled style="background-color: #e9ecef;" required>
                                                         <div class="valid-feedback">
                                                             Looks good!
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <div class="mb-3">
+                                                    <div class="mb-4">
                                                         <label for="validationCustom04" class="form-label">RUC</label>
-                                                        <input type="text" class="form-control" value="10 9839833001" id="validationCustom04"
-                                                               placeholder="RUC" required>
+                                                        <input type="text" class="form-control" id="validationCustom04"
+                                                               placeholder="Ingrese el RUC" disabled style="background-color: #e9ecef;" required>
                                                         <div class="valid-feedback">
                                                             Looks good!
                                                         </div>
@@ -104,10 +106,10 @@
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-6">
-                                                    <div class="mb-3">
+                                                    <div class="mb-4">
                                                         <label for="validationCustom05" class="form-label">Teléfono</label>
-                                                        <input type="tel" class="form-control" value="937463123" id="validationCustom05"
-                                                               placeholder="Telefono" required>
+                                                        <input type="tel" class="form-control" id="validationCustom05"
+                                                               placeholder="Ingrese el teléfono" required>
                                                         <div class="valid-feedback">
                                                             Looks good!
                                                         </div>
@@ -115,10 +117,10 @@
                                                 </div>
 
                                                 <div class="col-md-6">
-                                                    <div class="mb-3">
+                                                    <div class="mb-4">
                                                         <label for="validationCustom06" class="form-label">Nombre de la Tienda</label>
-                                                        <input type="text" class="form-control" value="Miniso" id="validationCustom06"
-                                                               placeholder="Nombre" required>
+                                                        <input type="text" class="form-control" id="validationCustom06"
+                                                               placeholder="Ingrese el nombre de la Tienda" required>
                                                         <div class="invalid-feedback">
                                                             Please provide a valid zip.
                                                         </div>
@@ -127,7 +129,7 @@
                                                 </div>
                                             </div>
                                             <div>
-                                                <button class="btn btn-primary" type="submit">Crear</button>
+                                                <button class="btn btn-primary" type="submit">Guardar</button>
                                             </div>
                                         </form>
                                     </div>

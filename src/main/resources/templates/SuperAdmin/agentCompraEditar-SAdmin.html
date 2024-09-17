@@ -35,7 +35,7 @@
                         <div class="row">
                             <div class="col-12">
                                 <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                                    <h4 class="mb-sm-0">Edición de Agentes</h4>
+                                    <h4 class="mb-sm-0">Actualización de Agentes de Compra</h4>
 
                                     <div class="page-title-right">
                                         <ol class="breadcrumb m-0">
@@ -52,17 +52,15 @@
                         <div class="row">
                             <div class="align-content-center-xl-6">
                                 <div class="card">
-                                    <div class="card-body">
-                                        <h4 class="card-title">Editar Agentes</h4>
-                                        <p class="card-title-desc">Provide valuable, actionable feedback to your users with
-                                            HTML5 form validation–available in all our supported browsers.</p>
+                                    <div class="card-body" style="padding: 30px">
+                                        <h4 class="card-title fw-bold">Datos de registro:</h4>
                                         <form class="needs-validation" novalidate>
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="mb-3">
                                                         <label for="validationCustom01" class="form-label">Nombre</label>
                                                         <input type="text" class="form-control" value="Alejandro" id="validationCustom01"
-                                                               placeholder="First name"  required>
+                                                               placeholder="First name" disabled style="background-color: #e9ecef;" required>
                                                         <div class="valid-feedback">
                                                             Looks good!
                                                         </div>
@@ -72,7 +70,7 @@
                                                     <div class="mb-3">
                                                         <label for="validationCustom02" class="form-label">Apellido</label>
                                                         <input type="text" class="form-control" value="Ramirez" id="validationCustom02"
-                                                               placeholder="Last name"  required>
+                                                               placeholder="Last name" disabled style="background-color: #e9ecef;" required>
                                                         <div class="valid-feedback">
                                                             Looks good!
                                                         </div>
@@ -80,11 +78,21 @@
                                                 </div>
                                             </div>
                                             <div class="row">
-                                                <div class="col-md-6">
+                                                <div class="col-md-3">
                                                     <div class="mb-3">
                                                         <label for="validationCustom03" class="form-label">DNI</label>
                                                         <input type="text" class="form-control" value="74045456" id="validationCustom03"
-                                                               placeholder="DNI" required>
+                                                               placeholder="DNI" disabled style="background-color: #e9ecef;" required>
+                                                        <div class="valid-feedback">
+                                                            Looks good!
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="mb-3">
+                                                        <label for="validationCustom20" class="form-label">RUC</label>
+                                                        <input type="text" class="form-control" value="10740454569" id="validationCustom20"
+                                                               placeholder="DNI" disabled style="background-color: #e9ecef;" required>
                                                         <div class="valid-feedback">
                                                             Looks good!
                                                         </div>
@@ -142,10 +150,13 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="mb-3">
-                                                        <label for="validationCustom08" class="form-label">Razón Social</label>
+                                                        <label for="validationCustom08" class="form-label">Zona</label>
                                                         <select class="form-select" id="validationCustom08" required>
-                                                            <option selected disabled value="">Cieneguilla</option>
-                                                            <option>...</option>
+                                                            <option value="" disabled>Seleccione una zona</option>
+                                                            <option value="Norte">Norte</option>
+                                                            <option value="Sur">Sur</option>
+                                                            <option value="Este" selected>Este</option>
+                                                            <option value="Oeste">Oeste</option>
                                                         </select>
                                                         <div class="invalid-feedback">
                                                             Please select a valid state.
@@ -191,7 +202,7 @@
 
 
                                             <div>
-                                                <button class="btn btn-primary" type="submit">Editar</button>
+                                                <button class="btn btn-primary" type="submit">Guardar</button>
                                             </div>
                                         </form>
                                     </div>

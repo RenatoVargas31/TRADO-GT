@@ -35,12 +35,12 @@
                         <div class="row">
                             <div class="col-12">
                                 <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                                    <h4 class="mb-sm-0">Registro de Administradores Zonales</h4>
+                                    <h4 class="mb-sm-0">Actualización de Administradores Zonales</h4>
 
                                     <div class="page-title-right">
                                         <ol class="breadcrumb m-0">
                                             <li class="breadcrumb-item"><a href="javascript: void(0);">Administrador Zonal</a></li>
-                                            <li class="breadcrumb-item active">Nuevo Administrador</li>
+                                            <li class="breadcrumb-item active">Actualizar Administrador</li>
                                         </ol>
                                     </div>
 
@@ -52,16 +52,20 @@
                         <div class="row">
                             <div class="align-content-center-xl-6">
                                 <div class="card">
-                                    <div class="card-body">
-                                        <h4 class="card-title">Registro de Administradores Zonales</h4>
-
+                                    <div class="card-body" style="padding: 30px">
+                                        <h4 class="card-title fw-bold">Observaciones:</h4>
+                                        <span style="display: block; padding-bottom: 10px;">- El DNI ingresado debe de tener 8 dígitos y debe existir en RENIEC.</span>
+                                        <span style="display: block; padding-bottom: 10px;">- El nombre ingresado debe coincidir con el registrado en RENIEC.</span>
+                                        <span style="display: block; padding-bottom: 10px;">- El apellido ingresado debe coincidir con el registrado en RENIEC.</span>
+                                        <span style="display: block; padding-bottom: 10px;">- Solo puede haber 2 administradores zonales por cada zona.</span>
+                                        <h4 class="card-title fw-bold">Datos de registro:</h4>
                                         <form class="needs-validation" novalidate>
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="mb-3">
-                                                        <label for="validationCustom01" class="form-label">Nombre</label>
-                                                        <input type="text" class="form-control" id="validationCustom01"
-                                                               placeholder="First name"  required>
+                                                        <label for="validationCustom01" class="form-label">Nombres</label>
+                                                        <input value="Carlos" type="text" class="form-control" id="validationCustom01"
+                                                               placeholder="Ingrese sus nombres"  disabled style="background-color: #e9ecef;" required>
                                                         <div class="valid-feedback">
                                                             Looks good!
                                                         </div>
@@ -69,9 +73,9 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="mb-3">
-                                                        <label for="validationCustom02" class="form-label">Apellido</label>
-                                                        <input type="text" class="form-control" id="validationCustom02"
-                                                               placeholder="Last name"  required>
+                                                        <label for="validationCustom02" class="form-label">Apellidos</label>
+                                                        <input value="Fernández García" type="text" class="form-control" id="validationCustom02"
+                                                               placeholder="Ingrese sus apellidos"  disabled style="background-color: #e9ecef;" required>
                                                         <div class="valid-feedback">
                                                             Looks good!
                                                         </div>
@@ -82,8 +86,7 @@
                                                 <div class="col-md-4">
                                                     <div class="mb-3">
                                                         <label for="validationCustom03" class="form-label">DNI</label>
-                                                        <input type="text" class="form-control" id="validationCustom03"
-                                                               placeholder="DNI" required>
+                                                        <input value="31223344" type="text" class="form-control" id="validationCustom03" placeholder="Ingrese su DNI" disabled style="background-color: #e9ecef;" required>
                                                         <div class="valid-feedback">
                                                             Looks good!
                                                         </div>
@@ -92,8 +95,8 @@
                                                 <div class="col-md-4">
                                                     <div class="mb-3">
                                                         <label for="validationCustom04" class="form-label">Teléfono</label>
-                                                        <input type="tel" class="form-control" id="validationCustom04"
-                                                               placeholder="Telefono" required>
+                                                        <input value="912345679" type="tel" class="form-control" id="validationCustom04"
+                                                               placeholder="Ingrese su teléfono" required>
                                                         <div class="valid-feedback">
                                                             Looks good!
                                                         </div>
@@ -102,8 +105,7 @@
                                                 <div class="col-md-4">
                                                     <div class="mb-3">
                                                         <label for="validationCustom05" class="form-label">Fecha de nacimiento</label>
-                                                        <input type="date" class="form-control" id="validationCustom05"
-                                                               placeholder="Fecha" required>
+                                                        <input value="2024-09-12"  type="date" class="form-control" id="validationCustom05" disabled style="background-color: #e9ecef;" required >
                                                         <div class="valid-feedback">
                                                             Looks good!
                                                         </div>
@@ -116,8 +118,8 @@
                                                 <div class="col-md-6">
                                                     <div class="mb-3">
                                                         <label for="validationCustom06" class="form-label">Correo electrónico</label>
-                                                        <input type="email" class="form-control" id="validationCustom06"
-                                                               placeholder="Correo" required>
+                                                        <input value="carlos.garcia@example.com" type="email" class="form-control" id="validationCustom06"
+                                                               placeholder="Ingrese su correo electrónico" required>
                                                         <div class="valid-feedback">
                                                             Looks good!
                                                         </div>
@@ -128,8 +130,11 @@
                                                     <div class="mb-3">
                                                         <label for="validationCustom07" class="form-label">Zona</label>
                                                         <select class="form-select" id="validationCustom07" required>
-                                                            <option selected disabled value="">Choose...</option>
-                                                            <option>...</option>
+                                                            <option value="" disabled>Seleccione una zona</option>
+                                                            <option value="Norte">Norte</option>
+                                                            <option value="Sur">Sur</option>
+                                                            <option value="Este" selected>Este</option>
+                                                            <option value="Oeste">Oeste</option>
                                                         </select>
                                                         <div class="invalid-feedback">
                                                             Please select a valid state.
@@ -139,7 +144,7 @@
                                                 </div>
                                             </div>
                                             <div>
-                                                <button class="btn btn-primary" type="submit">Editar</button>
+                                                <button class="btn btn-primary" type="submit">Guardar</button>
                                             </div>
                                         </form>
                                     </div>
@@ -149,7 +154,6 @@
 
                         </div>
                         <!-- end row -->
-
 
                     </div> <!-- container-fluid -->
                 </div>
