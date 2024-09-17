@@ -1,0 +1,117 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Inicio</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- CSS BASE -->
+    <meta th:replace="~{Common/cssBase :: css_Base}">
+    <!-- End CSS BASE -->
+</head>
+
+<body data-sidebar="dark">
+
+<!-- <body data-layout="horizontal" data-topbar="dark"> -->
+
+<!-- Begin page -->
+    <div id="layout-wrapper">
+
+        <!-- ========== NavBar Start ========== -->
+        <header th:replace="~{Usuario/fragments/navbar :: nav_bar}"></header>
+        <!-- Navbar End -->
+        <!-- ========== Left Sidebar Start ========== -->
+        <div th:replace="~{Usuario/fragments/sidebar :: side_bar}"></div>
+        <!-- Left Sidebar End -->
+        <!-- ============================================================== -->
+        <!-- Start right Content here -->
+        <!-- ============================================================== -->
+        <div class="main-content">
+            <div class="page-content">
+                <div class="container-fluid">
+
+                    <!-- start page title -->
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                                <h2 class="mb-sm-0">Postulación</h2>
+
+                                <div class="page-title-right">
+                                    <ol class="breadcrumb m-0">
+                                        <li class="breadcrumb-item"><a href="javascript: void(0);">Postulación Agente</a></li>
+                                        <li class="breadcrumb-item active">Registrar solicitud</li>
+                                    </ol>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end page title -->
+
+                    <div class="row mb-3">
+                        <div class="card text-center">
+                            <div class="card-body">
+                                <h2 class="card-title"><b>!Únete a nuestro equipo como agente¡</b></h2>
+                                <p class="card-text">¡Sé parte esencial de nuestro equipo como Agente y transforma la experiencia de nuestros usuarios finales!</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <h3 class="card-title">Al unirte cumplirás con responsabilidades: </h3>
+                                <div class="row mt-3"> <!-- Add a top margin here -->
+                                    <div class="col">
+                                        <p class="card-text"><b>Gestión de Órdenes: </b>Visualiza y edita órdenes, monitoreando su estado desde la creación hasta la entrega.</p>
+                                        <p class="card-text"><b>Interacción con Usuarios: </b>A través de un chat en horarios de oficina, verifica números de orden, confirma direcciones y comunica costos adicionales.</p>
+                                        <p class="card-text"><b>Control de Usuarios: </b>Mantén la integridad del sistema baneando usuarios por comportamiento inapropiado, datos falsos o pagos incompletos.</p>
+                                    </div>
+                                    <div class="col">
+                                        <p class="card-text"><b>Asignación y Validación de Órdenes: </b>Asigna y valida datos de órdenes, asegurando precisión antes de proceder.</p>
+                                        <p class="card-text"><b>Generación de Reportes:  </b>Descarga reportes en Excel y PDF para un seguimiento y análisis detallado.</p>
+                                        <p class="card-text"><b>Manejo de Estados de Órdenes: </b>Gestiona órdenes a través de varios estados, asegurando un flujo sin contratiempos.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="row">
+                            <div class="text-center"><b>¡Postúlate hoy mismo y empieza a vivir con la experiencia!</b></div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="text-center">
+                                <button class="btn btn-warning waves-effect waves-light">Postular</button>
+                            </div>
+                        </div>
+                    </div>
+                </div> <!-- container-fluid -->
+            </div>
+            <!-- End Page-content -->
+            <footer class="footer">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <script>document.write(new Date().getFullYear())</script> © TRADO.
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="text-sm-end d-none d-sm-block">
+                                Crafted with <i class="mdi mdi-heart text-danger"></i> by TelesoftGT
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+        <!-- end main content-->
+    </div>
+    <!-- END layout-wrapper -->
+
+
+    <!-- JAVASCRIPT BASE-->
+    <span th:replace="~{Common/jsBase :: js_Base}"></span>
+    <!-- End JAVASCRIPT BASE-->
+</body>
+
+</html>
