@@ -8,6 +8,12 @@
     <!-- CSS BASE -->
     <meta th:replace="~{Common/cssBase :: css_Base}">
     <!-- End CSS BASE -->
+    <style>
+        .carousel-inner img {
+            max-height: 300px; /* Ajusta la altura máxima */
+            object-fit: cover; /* Mantiene las proporciones de la imagen */
+        }
+    </style>
 </head>
 
 <body data-sidebar="dark">
@@ -57,61 +63,147 @@
                         </div>
                     </div>
 
-                    <div class="row mb-3">
-                        <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
-                            <div class="carousel-inner">
-                                <div class="carousel-item active">
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <img th:src="@{../images/viniloTheStrokes.jpg}" class="d-block w-100" alt="Imagen 1">
+                    <div class="row">
+                        <div class="container">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h2 class="card-title"><b>Últimos Lanzamientos</b></h2>
+                                </div>
+                                <div class="card-body">
+                                    <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
+                                        <div class="carousel-inner">
+                                            <!-- Primer grupo de imágenes -->
+                                            <div class="carousel-item active">
+                                                <div class="row">
+                                                    <div class="col-6 col-md-3">
+                                                        <a href="/usuario/productoDetalles">
+                                                            <img th:src="@{../images/viniloTheStrokes.jpg}" class="d-block w-100 img-fluid" alt="Imagen 1">
+                                                        </a>
+                                                    </div>
+                                                    <div class="col-6 col-md-3">
+                                                        <a href="/usuario/productoDetalles"><img th:src="@{../images/cargoPant.jpg}" class="d-block w-100 img-fluid" alt="Imagen 2"></a>
+                                                    </div>
+                                                    <div class="col-6 col-md-3">
+                                                        <a href="/usuario/productoDetalles"><img th:src="@{../images/bateNegan.jpg}" class="d-block w-100 img-fluid" alt="Imagen 3"></a>
+                                                    </div>
+                                                    <div class="col-6 col-md-3">
+                                                        <a href="/usuario/productoDetalles"><img th:src="@{../images/puaGuitarra.jpg}" class="d-block w-100 img-fluid" alt="Imagen 4"></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Segundo grupo de imágenes -->
+                                            <div class="carousel-item">
+                                                <div class="row">
+                                                    <div class="col-6 col-md-3">
+                                                        <a href="/usuario/productoDetalles"><img th:src="@{../images/puaGuitarra.jpg}" class="d-block w-100 img-fluid" alt="Imagen 4"></a>
+                                                    </div>
+                                                    <div class="col-6 col-md-3">
+                                                        <a href="/usuario/productoDetalles"><img th:src="@{../images/zapasConverse.jpg}" class="d-block w-100 img-fluid" alt="Imagen 5"></a>
+                                                    </div>
+                                                    <div class="col-6 col-md-3">
+                                                        <a href="/usuario/productoDetalles"><img th:src="@{../images/perfumeDior.jpg}" class="d-block w-100 img-fluid" alt="Imagen 6"></a>
+                                                    </div>
+                                                    <div class="col-6 col-md-3">
+                                                        <a href="/usuario/productoDetalles"><img th:src="@{../images/cargoPant.jpg}" class="d-block w-100 img-fluid" alt="Imagen 2"></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Tercer grupo de imágenes -->
+                                            <div class="carousel-item">
+                                                <div class="row">
+                                                    <div class="col-6 col-md-3">
+                                                        <a href="/usuario/productoDetalles"><img th:src="@{../images/creatina.jpg}" class="d-block w-100 img-fluid" alt="Imagen 7"></a>
+                                                    </div>
+                                                    <div class="col-6 col-md-3">
+                                                        <a href="/usuario/productoDetalles"><img th:src="@{../images/stanley.jpg}" class="d-block w-100 img-fluid" alt="Imagen 8"></a>
+                                                    </div>
+                                                    <div class="col-6 col-md-3">
+                                                        <a href="/usuario/productoDetalles"><img th:src="@{../images/cadenasHombre.jpg}" class="d-block w-100 img-fluid" alt="Imagen 9"></a>
+                                                    </div>
+                                                    <div class="col-6 col-md-3">
+                                                        <a href="/usuario/productoDetalles"><img th:src="@{../images/perfumeDior.jpg}" class="d-block w-100 img-fluid" alt="Imagen 6">
+                                                        </a></div>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="col-md-4">
-                                            <img th:src="@{../images/cargoPant.jpg}" class="d-block w-100" alt="Imagen 2">
-                                        </div>
-                                        <div class="col-md-4">
-                                            <img th:src="@{../images/bateNegan.jpg}" class="d-block w-100" alt="Imagen 3">
-                                        </div>
+
+                                        <!-- Controles del carrusel -->
+                                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+                                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                            <span class="visually-hidden">Anterior</span>
+                                        </button>
+                                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+                                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                            <span class="visually-hidden">Siguiente</span>
+                                        </button>
                                     </div>
                                 </div>
-                                <div class="carousel-item">
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <img th:src="@{../images/puaGuitarra.jpg}" class="d-block w-100" alt="Imagen 4">
-                                        </div>
-                                        <div class="col-md-4">
-                                            <img th:src="@{../images/zapasConverse.jpg}" class="d-block w-100" alt="Imagen 5">
-                                        </div>
-                                        <div class="col-md-4">
-                                            <img th:src="@{../images/perfumeDior.jpg}" class="d-block w-100" alt="Imagen 6">
-                                        </div>
-                                    </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="container">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h2 class="card-title"><b>Categorías</b></h2>
                                 </div>
-                                <div class="carousel-item">
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <img th:src="@{../images/creatina.jpg}" class="d-block w-100" alt="Imagen 7">
+                                <div class="card-body">
+                                    <div class="row justify-content-center">
+                                        <!-- Categoría: Moda Femenina -->
+                                        <div class="col-6 col-md-3 d-flex flex-column align-items-center text-center">
+                                            <div class="mt-4 mt-md-0">
+                                                <a href="/usuario/categoriaMujer">
+                                                    <img class="rounded-circle avatar-md img-fluid" alt="200x200" th:src="@{../images/users/avatar-4.jpg}" data-holder-rendered="true">
+                                                </a>
+                                            </div>
+                                            <div class="mt-2">
+                                                <p>Moda femenina</p>
+                                            </div>
                                         </div>
-                                        <div class="col-md-4">
-                                            <img th:src="@{../images/stanley.jpg}" class="d-block w-100" alt="Imagen 8">
+
+                                        <!-- Categoría: Moda Masculina -->
+                                        <div class="col-6 col-md-3 d-flex flex-column align-items-center text-center">
+                                            <div class="mt-4 mt-md-0">
+                                                <a href="/usuario/categoriaHombre">
+                                                    <img class="rounded-circle avatar-md img-fluid" alt="200x200" th:src="@{../images/users/avatar-3.jpg}" data-holder-rendered="true">
+                                                </a>
+                                            </div>
+                                            <div class="mt-2">
+                                                <p>Moda masculina</p>
+                                            </div>
                                         </div>
-                                        <div class="col-md-4">
-                                            <img th:src="@{../images/cadenasHombre.jpg}" class="d-block w-100" alt="Imagen 9">
+
+                                        <!-- Categoría: Equipos Tecnológicos -->
+                                        <div class="col-6 col-md-3 d-flex flex-column align-items-center text-center">
+                                            <div class="mt-4 mt-md-0">
+                                                <a href="/usuario/categoriaTecnologia">
+                                                    <img class="rounded-circle avatar-md img-fluid" alt="200x200" th:src="@{../images/equipostecnologicos.jpg}" data-holder-rendered="true">
+                                                </a>
+                                            </div>
+                                            <div class="mt-2">
+                                                <p>Equipos tecnológicos</p>
+                                            </div>
+                                        </div>
+
+                                        <!-- Categoría: Muebles para el Hogar -->
+                                        <div class="col-6 col-md-3 d-flex flex-column align-items-center text-center">
+                                            <div class="mt-4 mt-md-0">
+                                                <a href="/usuario/categoriaMuebles">
+                                                    <img class="rounded-circle avatar-md img-fluid" alt="200x200" th:src="@{../images/muebles.jpg}" data-holder-rendered="true">
+                                                </a>
+                                            </div>
+                                            <div class="mt-2">
+                                                <p>Muebles para el Hogar</p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
-                            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
-                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                <span class="visually-hidden">Anterior</span>
-                            </button>
-                            <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
-                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                <span class="visually-hidden">Siguiente</span>
-                            </button>
-                        </div>
                         </div>
                     </div>
+
 
                     <div class="row">
                         <div class="container">
