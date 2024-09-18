@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Inicio | TRADO</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
+    <meta content="Themesdesign" name="author" />
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="/images/trado.png">
+    <!-- CSS BASE -->
+    <meta th:replace="~{Common/cssBase :: css_Base}">
+    <!-- End CSS BASE -->
+    <style>
+        body {
+            background: url('/images/gradient_1920_1080.png') no-repeat center center fixed;
+            background-size: cover;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Ensure the right image takes up the full height and width of its column */
+        .right-side-image {
+            height: 100vh; /* Full viewport height */
+            object-fit: cover; /* Maintain aspect ratio */
+            width: 100%; /* Make sure the image covers the full width */
+        }
+
+        /* Responsive for smaller screens */
+        @media (max-width: 768px) {
+            .right-side-image {
+                display: none; /* Hide the image on smaller screens */
+            }
+        }
+    </style>
+</head>
+
+<body class="auth-body-bg">
+<div>
+    <div class="container-fluid p-0">
+        <div class="row g-0">
+            <!-- Left side content -->
+            <div class="col-lg-4">
+                <div class="authentication-page-content p-4 d-flex align-items-center min-vh-100">
+                    <div class="w-100">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-9">
+                                <div>
+                                    <div class="text-center">
+                                        <div>
+                                            <img src="/images/trado-light.png" alt="" height="100" class="auth-logo logo-dark mx-auto">
+                                        </div>
+                                        <h4 class="font-size-18 mt-4">Bienvenido a Trado!</h4>
+                                        <p class="text-muted">Inicie sesión para estar más cerca de nuestros productos y promociones</p>
+                                    </div>
+
+                                    <div class="p-2 mt-5">
+                                        <form class="">
+                                            <div class="mb-3 auth-form-group-custom mb-4">
+                                                <i class="ri-user-2-line auti-custom-input-icon"></i>
+                                                <label for="username" class="fw-semibold">Nombre de Usuario</label>
+                                                <input type="text" class="form-control" id="username" placeholder="Ingresar usuario">
+                                            </div>
+
+                                            <div class="mb-3 auth-form-group-custom mb-4">
+                                                <i class="ri-lock-2-line auti-custom-input-icon"></i>
+                                                <label for="userpassword">Contraseña</label>
+                                                <input type="password" class="form-control" id="userpassword" placeholder="Ingresar contraseña">
+                                            </div>
+
+                                            <div class="mt-4 text-center">
+                                                <button class="btn btn-primary w-md waves-effect waves-light" type="submit">Ingresar</button>
+                                            </div>
+
+                                            <div class="mt-4 text-center">
+                                                <a href="/sistema/PassRestore" class="text-muted"><i class="mdi mdi-lock me-1"></i>¿Olidaste tu contraseña?</a>
+                                            </div>
+                                        </form>
+                                        <div class="mt-5 text-center">
+                                            <p>¿Aún no tienes una cuenta? <a href="/sistema/CreateAcc" class="fw-medium text-primary"> Registrarse </a> </p>
+                                            <p>© <script>document.write(new Date().getFullYear())</script> TRADO. Diseñado con <i class="mdi mdi-heart text-danger"></i> por Telesoft GT</p>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Right side image -->
+            <div class="col-lg-8 d-none d-lg-block">
+                <img src="/images/297451387_172154511984888_7597808842372857148_n.jpg" alt="" class="right-side-image">
+            </div>
+        </div>
+    </div>
+</div>
+<!-- JAVASCRIPT BASE-->
+<span th:replace="~{Common/jsBase :: js_Base}"></span>
+<!-- End JAVASCRIPT BASE-->
+</body>
+</html>
