@@ -11,6 +11,46 @@
         <meta th:replace="~{Common/cssBase :: css_Base}">
 
     <!-- App favicon -->
+    <style>
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .chat-box {
+            flex: 1;
+            overflow-y: auto;
+            margin-bottom: 10px;
+        }
+
+        .chat-message {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .message-header {
+            font-weight: bold;
+        }
+
+        .message-body {
+            margin-top: 5px;
+        }
+
+        .message-input {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .message-input input {
+            border-radius: 0;
+        }
+
+        .message-input button {
+            border-radius: 0;
+        }
+
+    </style>
 
     </head>
 
@@ -42,7 +82,7 @@
                         <div class="row">
                             <div class="col-12">
                                 <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                                    <h4 class="mb-sm-0">Starter page</h4>
+                                    <h4 class="mb-sm-0">Monitoreo del pedido</h4>
 
                                     <div class="page-title-right">
                                         <ol class="breadcrumb m-0">
@@ -56,139 +96,203 @@
                         </div>
                         <!-- end page title -->
                         <div class="row">
-                            <div class="d-flex justify-content-between" style="height: 100vh;">
-                                <div class="col-md-6 col-xl-3" style="margin: 20px;">
+                            <div class="col-lg-8 col-md-10 col-sm-12">
+                                <div class="col-12">
                                     <div class="card">
                                         <div class="card-body">
-                                            <h4 class="card-title">Seguimiento del pedido</h4>
-                                            <h6 class="card-subtitle font-14 text-muted">N° de Tracking : 2024-99990000</h6>
-                                        </div>
-                                        <img class="img-fluid" th:src="@{../images/small/img-4.jpg}" alt="Card image cap">
-                                        <div class="card-body">
-                                            <p class="card-text"><b>En validación:</b> 25/07/24 16:40 </p>
-                                            <p class="card-text"><b>En proceso:</b> 27/07/24 13:45 </p>
-                                            <p class="card-text"><b>Arribo al país: </b> 28/07/24 13:15 </p>
-                                            <p class="card-text">En aduanas: [en proceso] </p>
-                                            <p class="card-text">En ruta: [en proceso] </p>
-                                            <p class="card-text">Entregado: [en proceso] </p>
-                                            <a href="#" class="card-link">Inicio</a>
-                                        </div>
-                                    </div>
-                                </div>
+                                            <h4 class=" mb-4">Orden de compra</h4>
 
-
-                                <div class="col-sm-6 col-lg-4" style="position:fixed; right: 0; bottom: 0;">
-                                    <div class="card">
-                                        <div class="w-100 user-chat mt-4 mt-sm-0">
-                                            <div class="p-3 px-lg-4 user-chat-border">
-
-                                                <div class="row">
-
-                                                    <div class="col-md-8 col-6">
-                                                        <h5 class="font-size-15 mb-1 text-truncate">Robert Tafur</h5>
-                                                        <p class="text-muted text-truncate mb-0"><i class="mdi mdi-circle text-success align-middle me-1"></i> Active now</p>
-                                                    </div>
-                                                    <div class="col-md-4 col-6">
-                                                        <ul class="list-inline user-chat-nav text-end mb-0">
-                                                            <li class="list-inline-item d-inline-block d-sm-none">
-                                                                <div class="dropdown">
-                                                                    <button class="btn nav-btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                        <i class="mdi mdi-magnify"></i>
-                                                                    </button>
-                                                                </div>
-                                                            </li>
-
-                                                        </ul>
-                                                    </div>
+                                            <!-- Datos Personales y Fecha/No. de Orden -->
+                                            <div class="row mb-4">
+                                                <div class="col-md-6 col-sm-12">
+                                                    <h5>Datos personales</h5>
+                                                    <p>Nombre de comprador: <input type="text" class="form-control" value="Juan Pérez" disabled></p>
+                                                    <p>Número DNI: <input type="text" class="form-control" value="12345678" disabled></p>
+                                                    <p>Domicilio: <input type="text" class="form-control" value="Av. Siempre Viva 742" disabled></p>
+                                                </div>
+                                                <div class="col-md-6 col-sm-12">
+                                                    <h5>Fecha y Número de Orden</h5>
+                                                    <p>Fecha: <input type="date" class="form-control" value="2024-09-17" disabled></p>
+                                                    <p>No. de orden: <input type="text" class="form-control" value="ORD123456" disabled></p>
+                                                    <p>Ciudad, Estado: <input type="text" class="form-control" value="Springfield, IL" disabled></p>
                                                 </div>
                                             </div>
-                                            <div class="px-lg-2">
-                                                <div class="chat-conversation p-3">
-                                                    <ul class="list-unstyled mb-0 pe-3" data-simplebar style="max-height: 450px;">
-                                                        <li>
-                                                            <div class="conversation-list">
-                                                                <div class="chat-avatar">
-                                                                    <img th:src="@{../images/users/avatar-2.jpg}" alt="avatar-2">
-                                                                </div>
-                                                                <div class="ctext-wrap">
-                                                                    <div class="conversation-name">Robert Tafur</div>
-                                                                    <div class="ctext-wrap-content">
-                                                                        <p class="mb-0">
-                                                                            Escriba sus consultas acerca del estado de la orden [Mensaje Automático]
-                                                                        </p>
-                                                                    </div>
-                                                                    <p class="chat-time mb-0"><i class="mdi mdi-clock-outline align-middle me-1"></i> 12:09</p>
-                                                                </div>
 
-                                                            </div>
-                                                        </li>
-
-                                                        <li class="right">
-                                                            <div class="conversation-list">
-                                                                <div class="ctext-wrap">
-                                                                    <div class="conversation-name">Usuario</div>
-                                                                    <div class="ctext-wrap-content">
-                                                                        <p class="mb-0">
-                                                                            Buenas tardes, me gustaría saber por qué mi pedido está demorando en el arribo al país.
-                                                                        </p>
-                                                                    </div>
-
-                                                                    <p class="chat-time mb-0"><i class="bx bx-time-five align-middle me-1"></i> 10:02</p>
-                                                                </div>
-                                                            </div>
-                                                        </li>
-
-                                                        <li>
-                                                            <div class="chat-day-title">
-                                                                <span class="title">Today</span>
-                                                            </div>
-                                                        </li>
-                                                        <li>
-                                                            <div class="conversation-list">
-                                                                <div class="chat-avatar">
-                                                                    <img th:src="@{../images/users/avatar-2.jpg}" alt="avatar-2">
-                                                                </div>
-                                                                <div class="ctext-wrap">
-                                                                    <div class="conversation-name">Robert Tafur</div>
-                                                                    <div class="ctext-wrap-content">
-                                                                        <p class="mb-0">
-                                                                            El agente le responderá en breve [Mensaje Automático]
-                                                                        </p>
-                                                                    </div>
-                                                                    <p class="chat-time mb-0"><i class="mdi mdi-clock-outline me-1"></i> 10:00</p>
-                                                                </div>
-
-                                                            </div>
-                                                        </li>
-
-
-                                                    </ul>
+                                            <!-- Datos del Vendedor y del Comprador -->
+                                            <div class="row mb-4">
+                                                <div class="col-md-6 col-sm-12">
+                                                    <h5>Vendedor</h5>
+                                                    <p>Compañía: <input type="text" class="form-control" value="Vendedor S.A." disabled></p>
+                                                    <p>Contacto: <input type="text" class="form-control" value="Ana Gómez" disabled></p>
+                                                    <p>Domicilio: <input type="text" class="form-control" value="Calle Falsa 123" disabled></p>
+                                                    <p>Teléfono: <input type="text" class="form-control" value="555-1234" disabled></p>
                                                 </div>
-
+                                                <div class="col-md-6 col-sm-12">
+                                                    <h5>Comprador</h5>
+                                                    <p>Compañía: <input type="text" class="form-control" value="Comprador Ltda." disabled></p>
+                                                    <p>Contacto: <input type="text" class="form-control" value="Laura Martínez" disabled></p>
+                                                    <p>Domicilio: <input type="text" class="form-control" value="Av. Siempre Viva 742"></p>
+                                                    <p>Teléfono: <input type="text" class="form-control" value="555-6789" disabled></p>
+                                                </div>
                                             </div>
-                                            <div class="px-lg-3">
-                                                <div class="p-3 chat-input-section">
-                                                    <div class="row">
-                                                        <div class="col">
-                                                            <div class="position-relative">
-                                                                <input type="text" class="form-control chat-input" placeholder="Enter Message...">
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-auto">
-                                                            <button type="submit" class="btn btn-primary chat-send w-md waves-effect waves-light"><span class="d-none d-sm-inline-block me-2">Send</span> <i class="mdi mdi-send"></i></button>
-                                                        </div>
-                                                    </div>
+
+                                            <!-- Productos y Observaciones/Resumen -->
+                                            <div class="row">
+                                                <div class="col-md-6 col-sm-12">
+                                                    <h5>Productos</h5>
+                                                    <p>2 Poleras azules: $480</p>
+                                                    <p>2 Polos franela negro: $480</p>
                                                 </div>
+                                                <div class="col-md-6 col-sm-12">
+                                                    <h5>Observaciones</h5>
+                                                    <p>Subtotal: $960</p>
+                                                    <p>Envío: $100</p>
+                                                    <p>Total: $1060</p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Botones de acciones -->
+                                        <div class="row mb-10">
+                                            <div class="d-flex justify-content-between" >
+                                                <button type="button" class="btn btn-primary waves-effect waves-light mb-5 mar" onclick="descargarPDF()">Descargar PDF</button>
+                                                <button type="button" class="btn btn-primary waves-effect waves-light mb-5" onclick="descargarHTML()">Descargar HTML</button>
+                                                <a href="" type="button" class="btn btn-primary waves-effect waves-light mb-5">Editar</a>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+
+                            <div class="col-lg-4 col-md-10 col-sm-12">
+                                <div class="row">
+                                    <div class="col-lg-12 col-md-12 col-sm-12">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <h4 class="card-title mb-4">Trayectoria del pedido</h4>
+
+                                                <div data-simplebar style="max-height: 350px;">
+                                                    <ul class="list-unstyled activity-wid">
+                                                        <li class="activity-list d-flex align-items-start mb-4">
+                                                            <div class="activity-icon avatar-xs me-3">
+                                                                <span class="avatar-title bg-primary-subtle text-primary rounded-circle">
+                                                                    <i class="ri-file-add-fill"></i>
+                                                                </span>
+                                                            </div>
+                                                            <div>
+                                                                <h5 class="font-size-13">28 Apr, 2020 <small class="text-muted">12:07 am</small></h5>
+                                                                <p class="text-muted mb-0">Orden CREADA</p>
+                                                            </div>
+                                                        </li>
+                                                        <li class="activity-list d-flex align-items-start mb-4">
+                                                            <div class="activity-icon avatar-xs me-3">
+                                                                <span class="avatar-title bg-primary-subtle text-primary rounded-circle">
+                                                                    <i class="ri-search-eye-fill"></i>
+                                                                </span>
+                                                            </div>
+                                                            <div>
+                                                                <h5 class="font-size-13">21 Apr, 2020 <small class="text-muted">08:01 pm</small></h5>
+                                                                <p class="text-muted mb-0">Orden EN VALIDACIÓN</p>
+                                                            </div>
+                                                        </li>
+                                                        <li class="activity-list d-flex align-items-start mb-4">
+                                                            <div class="activity-icon avatar-xs me-3">
+                                                                <span class="avatar-title bg-primary-subtle text-primary rounded-circle">
+                                                                    <i class="ri-settings-2-fill"></i>
+                                                                </span>
+                                                            </div>
+                                                            <div>
+                                                                <h5 class="font-size-13">17 Apr, 2020 <small class="text-muted">09:23 am</small></h5>
+                                                                <p class="text-muted mb-0">Orden EN PROCESO</p>
+                                                            </div>
+                                                        </li>
+                                                        <li class="activity-list d-flex align-items-start mb-4">
+                                                            <div class="activity-icon avatar-xs me-3">
+                                                                <span class="avatar-title bg-primary-subtle text-primary rounded-circle">
+                                                                    <i class="ri-plane-fill"></i>
+                                                                </span>
+                                                            </div>
+                                                            <div>
+                                                                <h5 class="font-size-13">11 Apr, 2020 <small class="text-muted">05:10 pm</small></h5>
+                                                                <p class="text-muted mb-0">Orden ARRIBO AL PAÍS</p>
+                                                            </div>
+                                                        </li>
+                                                        <li class="activity-list d-flex align-items-start mb-4">
+                                                            <div class="activity-icon avatar-xs me-3">
+                                                                <span class="avatar-title bg-primary-subtle text-primary rounded-circle">
+                                                                    <i class="ri-store-fill"></i>
+                                                                </span>
+                                                            </div>
+                                                            <div>
+                                                                <h5 class="font-size-13">07 Apr, 2020 <small class="text-muted">12:47 pm</small></h5>
+                                                                <p class="text-muted mb-0">Orden EN ADUANAS</p>
+                                                            </div>
+                                                        </li>
+                                                        <li class="activity-list d-flex align-items-start mb-4">
+                                                            <div class="activity-icon avatar-xs me-3">
+                                                                <span class="avatar-title bg-primary-subtle text-primary rounded-circle">
+                                                                    <i class="ri-truck-fill"></i>
+                                                                </span>
+                                                            </div>
+                                                            <div>
+                                                                <h5 class="font-size-13">05 Apr, 2020 <small class="text-muted">03:09 pm</small></h5>
+                                                                <p class="text-muted mb-0">Orden EN RUTA</p>
+                                                            </div>
+                                                        </li>
+                                                        <li class="activity-list d-flex align-items-start">
+                                                            <div class="activity-icon avatar-xs me-3">
+                                                                <span class="avatar-title bg-primary-subtle text-primary rounded-circle">
+                                                                    <i class="ri-checkbox-circle-fill"></i>
+                                                                </span>
+                                                            </div>
+                                                            <div>
+                                                                <h5 class="font-size-13">02 Apr, 2020 <small class="text-muted">12:07 am</small></h5>
+                                                                <p class="text-muted mb-0">Orden RECIBIDA</p>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <h4 class="card-title mb-4">Chat</h4>
+
+                                                <div data-simplebar style="max-height: 400px;">
+                                                    <!-- Chat Container -->
+                                                    <div class="chat-container">
+                                                        <div class="chat-box">
+                                                            <!-- Messages -->
+                                                            <div class="chat-message">
+                                                                <div class="message-header">User 1</div>
+                                                                <div class="message-body">Hello! How can I help you today?</div>
+                                                            </div>
+                                                            <div class="chat-message">
+                                                                <div class="message-header">User 2</div>
+                                                                <div class="message-body">I have a question about my order.</div>
+                                                            </div>
+                                                        </div>
+                                                        <!-- Message Input -->
+                                                        <div class="message-input">
+                                                            <input type="text" class="form-control" placeholder="Type a message...">
+                                                            <button class="btn btn-primary mt-2">Send</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
                         </div>
-
-
-
-                    </div> <!-- container-fluid -->
+                        </div>
                 </div>
 
 
@@ -223,6 +327,57 @@
         <!-- JAVASCRIPT -->
         <span th:replace="~{Common/jsBase :: js_Base}"></span>
 
+            <script>
+                function descargarPDF() {
+                    const { jsPDF } = window.jspdf; // Acceso a jsPDF desde el espacio global
+                    const doc = new jsPDF(); // Crear una nueva instancia de jsPDF
+
+                    // Selecciona el contenido del div que quieres convertir en PDF
+                    const elemento = document.querySelector('.card-body');
+
+                    // Usa html2canvas para capturar el contenido del div como imagen
+                    html2canvas(elemento).then(canvas => {
+                        const imgData = canvas.toDataURL('image/png'); // Convierte el canvas a imagen
+                        const imgWidth = 210; // Ancho de la página A4 en mm (jsPDF usa mm)
+                        const pageHeight = 295; // Alto de la página A4 en mm
+                        const imgHeight = (canvas.height * imgWidth) / canvas.width;
+                        let position = 0;
+
+                        // Añadir la imagen al PDF
+                        doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+
+                        // Descargar el PDF
+                        doc.save('orden_de_compra.pdf');
+                    });
+                }
+            </script>
+
+            <script>
+                function descargarHTML() {
+                    // Selecciona el contenido que deseas descargar (el div con la clase 'card-body')
+                    const elemento = document.querySelector('.card-body').innerHTML;
+
+                    // Crea un blob con el contenido en formato HTML
+                    const blob = new Blob([elemento], { type: 'text/html' });
+
+                    // Crea un enlace para descargar el archivo
+                    const link = document.createElement('a');
+                    link.href = URL.createObjectURL(blob);
+                    link.download = 'orden_de_compra.html'; // Nombre del archivo a descargar
+
+                    // Simula un clic para iniciar la descarga
+                    link.click();
+
+                    // Limpia el objeto URL creado
+                    URL.revokeObjectURL(link.href);
+                }
+            </script>
+
+
+
+
+            <script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js}"></script>
+            <script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js}"></script>
     </body>
 
 <!-- Mirrored from themesdesign.in/nazox/layouts/pages-starter.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 30 Aug 2024 19:31:37 GMT -->
