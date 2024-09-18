@@ -96,6 +96,8 @@ var options = {
         }]
     },
     chart = new ApexCharts(document.querySelector("#line_chart_datalabel"), options),
+
+
     options = (chart.render(), {
         chart: {
             height: 380,
@@ -117,17 +119,15 @@ var options = {
             dashArray: [0, 8, 5]
         },
         series: [{
-            name: "Session Duration",
+            name: "Satisfechos",
             data: [45, 52, 38, 24, 33, 26, 21, 20, 6, 8, 15, 10]
+
         }, {
-            name: "Page Views",
-            data: [36, 42, 60, 42, 13, 18, 29, 37, 36, 51, 32, 35]
-        }, {
-            name: "Total Visits",
+            name: "No satisfechos",
             data: [89, 56, 74, 98, 72, 38, 64, 46, 84, 58, 46, 49]
         }],
         title: {
-            text: "Page Statistics",
+            text: "Curva de satisfaccion",
             align: "left"
         },
         markers: {
@@ -137,7 +137,7 @@ var options = {
             }
         },
         xaxis: {
-            categories: ["01 Jan", "02 Jan", "03 Jan", "04 Jan", "05 Jan", "06 Jan", "07 Jan", "08 Jan", "09 Jan", "10 Jan", "11 Jan", "12 Jan"]
+            categories: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Setiembre", "Octubre", "Noviembre", "Diciembre"]
         },
         tooltip: {
             y: [{
