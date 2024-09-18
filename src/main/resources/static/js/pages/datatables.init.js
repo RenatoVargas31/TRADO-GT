@@ -18,7 +18,7 @@ $(document).ready(function () {
         drawCallback: function () {
             $(".dataTables_paginate > .pagination").addClass("pagination-rounded")
         },
-        buttons: ["copy", "excel", "pdf", "colvis"]
+        buttons: ["copiar", "excel", "pdf", "colvis"]
     });
     a.buttons().container().appendTo("#datatable-buttons_wrapper .col-md-6:eq(0)");
     $(".dataTables_length select").addClass("form-select form-select-sm");
