@@ -12,12 +12,6 @@
     <meta th:replace="~{Common/cssBase :: css_Base}">
     <!-- End CSS BASE -->
     <style>
-        body {
-            background: url('/images/gradient_1920_1080.png') no-repeat center center fixed;
-            background-size: cover;
-            margin: 0;
-            padding: 0;
-        }
 
         /* Ensure the right image takes up the full height and width of its column */
         .right-side-image {
@@ -48,7 +42,7 @@
                                 <div>
                                     <div class="text-center">
                                         <div>
-                                            <img src="/images/trado-light.png" alt="" height="100" class="auth-logo logo-dark mx-auto">
+                                            <img src="/images/trado-dark.png" alt="" height="60" class="auth-logo logo-dark mx-auto">
                                         </div>
                                         <h4 class="font-size-18 mt-4">Bienvenido a Trado!</h4>
                                         <p class="text-muted">Inicie sesión para estar más cerca de nuestros productos y promociones</p>
@@ -69,7 +63,7 @@
                                             </div>
 
                                             <div class="mt-4 text-center">
-                                                <button class="btn btn-primary w-md waves-effect waves-light" type="submit">Ingresar</button>
+                                                <a href="/usuario/inicio" class="btn btn-primary w-md waves-effect waves-light" type="submit">Ingresar</a>
                                             </div>
 
                                             <div class="mt-4 text-center">
@@ -78,7 +72,7 @@
                                         </form>
                                         <div class="mt-5 text-center">
                                             <p>¿Aún no tienes una cuenta? <a href="/sistema/CreateAcc" class="fw-medium text-primary"> Registrarse </a> </p>
-                                            <p>© <script>document.write(new Date().getFullYear())</script> TRADO. Diseñado con <i class="mdi mdi-heart text-danger"></i> por Telesoft GT</p>
+                                            <p>© <script>document.write(new Date().getFullYear())</script> TRADO. Creado con <i class="mdi mdi-heart text-danger"></i> por Telesoft GT</p>
                                         </div>
                                     </div>
 
