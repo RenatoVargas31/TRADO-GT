@@ -43,6 +43,20 @@ public class AgenteComprasController {
         return "Agente/profile-Agente";
     }
 
+    //Tableros de USUARIOS
+    @GetMapping("/allUsers")
+    public String showAllUsers() {
+        return "Agente/allUsersTable-Agente";
+    }
+    @GetMapping("/habilitadosUsers")
+    public String showHabilitadosUsers() {
+        return "Agente/habilitadosUsersTable-Agente";
+    }
+    @GetMapping("/baneadosUsers")
+    public String showBaneadosUsers() {
+        return "Agente/baneadosUsersTable-Agente";
+    }
+
     //PREGUNTAS FRECUENTES
     @GetMapping("/faq")
     public String showFaq() {
