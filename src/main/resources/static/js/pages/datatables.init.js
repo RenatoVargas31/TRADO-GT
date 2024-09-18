@@ -456,3 +456,40 @@ $(document).ready(function () {
     a.buttons().container().appendTo("#datatable-usuariosBaneados_wrapper .col-md-6:eq(0)");
     $(".dataTables_length select").addClass("form-select form-select-sm");
 });
+
+//Tabla de productos de usuarios (esta tabla cambiará de info dependiendo del usuario, manejar en el
+//html supongo
+$(document).ready(function () {
+    var a = $("#datatable-productoUsuario").DataTable({
+        lengthChange: !1,
+        pageLength: 3,
+        info: !1,
+        language: {paginate: {previous: "<i class='mdi mdi-chevron-left'>", next: "<i class='mdi mdi-chevron-right'>"}},
+        drawCallback: function () {
+            $(".dataTables_paginate > .pagination").addClass("pagination-rounded")
+        },
+        buttons: ["excel", "pdf"],
+        columnDefs: [
+            { targets: -1, searchable: false } // Deshabilitar búsqueda en la última columna
+        ]
+    });
+    a.buttons().container().appendTo("#datatable-productoUsuario_wrapper .col-md-6:eq(0)");
+    $(".dataTables_length select").addClass("form-select form-select-sm");
+});
+$(document).ready(function () {
+    var a = $("#datatable-historialComportamiento").DataTable({
+        lengthChange: !1,
+        pageLength: 3,
+        info: !1,
+        language: {paginate: {previous: "<i class='mdi mdi-chevron-left'>", next: "<i class='mdi mdi-chevron-right'>"}},
+        drawCallback: function () {
+            $(".dataTables_paginate > .pagination").addClass("pagination-rounded")
+        },
+        buttons: ["excel", "pdf"],
+        columnDefs: [
+            { targets: -1, searchable: false } // Deshabilitar búsqueda en la última columna
+        ]
+    });
+    a.buttons().container().appendTo("#datatable-historialComportamiento_wrapper .col-md-6:eq(0)");
+    $(".dataTables_length select").addClass("form-select form-select-sm");
+});

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <body>
-<div th:fragment="side_bar" class="vertical-menu" style="background-color: #35332e;">
+<div th:fragment="side_bar" class="vertical-menu" style="background-color: #221f1f;">
   <div data-simplebar class="h-100">
     <!--- Sidemenu -->
     <div id="sidebar-menu">
@@ -12,7 +12,7 @@
         <li>
           <a href="/agente/inicio" class="waves-effect">
             <i class="ri-dashboard-line"></i>
-            <span>Dashboard</span>
+            <span>Inicio (dashboard o tablas)</span>
           </a>
         </li>
 
@@ -45,6 +45,12 @@
             <li><a href="/agente/habilitadosUsers">Usuarios habilitados</a></li>
             <li><a href="/agente/baneadosUsers">Usuarios baneados</a></li>
           </ul>
+        </li>
+        <li>
+          <a href="/agente/chat" class="waves-effect">
+            <i class="ri-chat-1-line"></i>
+            <span>Chat</span>
+          </a>
         </li>
 
         <li class="menu-title">Sistema</li>
