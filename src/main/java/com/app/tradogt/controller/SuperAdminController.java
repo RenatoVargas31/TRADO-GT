@@ -75,9 +75,13 @@ public class SuperAdminController {
     public String viewImportadorInactivos() {
         return "SuperAdmin/importadorInactivos-SAdmin";
     }
-    @GetMapping("/productoRepo")
-    public String viewProductoRepo() {
-        return "SuperAdmin/productoRepo-SAdmin";
+    @GetMapping("/productoNuevo")
+    public String viewProductoNuevo() {
+        return "SuperAdmin/productoNuevo-SAdmin";
+    }
+    @GetMapping("/productoEditar")
+    public String viewProductoEditar() {
+        return "SuperAdmin/productoEditar-SAdmin";
     }
     @GetMapping("/productoLista")
     public String viewProductoLista() {

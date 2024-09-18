@@ -12,12 +12,6 @@
     <!-- CSS BASE -->
     <meta th:replace="~{Common/cssBase :: css_Base}">
     <!-- End CSS BASE -->
-    <style>
-        body {
-            background: url('/images/gradient_1920_1080.png') no-repeat center center fixed;
-            background-size: cover;
-        }
-    </style>
 </head>
 
 <body class="auth-body-bg">
@@ -32,9 +26,9 @@
                                     <div>
                                         <div class="text-center">
                                             <div>
-                                                <a href="sistema/loguin" class="authentication-logo">
-                                                    <img src="/images/trado-light.png" alt="" height="100" class="auth-logo logo-dark mx-auto">
-                                                    <img src="/images/trado-light.png" alt="" height="100" class="auth-logo logo-light mx-auto">
+                                                <a href="/sistema/loguin" class="authentication-logo">
+                                                    <img src="/images/trado-dark.png" alt="" height="50" class="auth-logo logo-dark mx-auto">
+                                                    <img src="/images/trado-light.png" alt="" height="50" class="auth-logo logo-light mx-auto">
                                                 </a>
                                             </div>
                                             <h4 class="font-size-18 mt-4">Bienvenido a Trado!</h4>
@@ -65,8 +59,10 @@
                                                 </div>
                                             </form>
                                         </div>
-
-
+                                        <div class="mt-5 text-center">
+                                            <p>Don't have an account ? <a href="/sistema/CreateAcc" class="fw-medium text-primary"> Register </a> </p>
+                                            <p>© <script>document.write(new Date().getFullYear())</script> Nazox. Crafted with <i class="mdi mdi-heart text-danger"></i> by Themesdesign</p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -79,20 +75,7 @@
                     </div>
                 </div>
             </div>
-            <footer class="footer">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <script>document.write(new Date().getFullYear())</script> © TRADO.
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="text-sm-end d-none d-sm-block">
-                                Crafted with <i class="mdi mdi-heart text-danger"></i> by TelesoftGT
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </footer>
+
         </div>
     </div>
     <!-- JAVASCRIPT BASE-->
