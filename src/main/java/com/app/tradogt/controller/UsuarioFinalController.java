@@ -85,4 +85,8 @@ public class UsuarioFinalController {
 
     @GetMapping("/registro")
     public String registroPostulacion() {return "Usuario/registroSolicitud";}
+    @GetMapping("/contraseña")
+    public  String showpassword(){
+        return "Usuario/password-usuario";
+    }
 }
