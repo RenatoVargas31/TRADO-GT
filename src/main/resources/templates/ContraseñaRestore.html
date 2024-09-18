@@ -10,16 +10,8 @@
     <link rel="shortcut icon" href="/images/trado.png">
     <!-- CSS BASE -->
     <meta th:replace="~{Common/cssBase :: css_Base}">
-    <!-- Bootstrap CSS (necessary if not already included in css_Base) -->
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <!-- End CSS BASE -->
     <style>
-        body {
-            background: url('/images/gradient_1920_1080.png') no-repeat center center fixed;
-            background-size: cover;
-            margin: 0;
-            padding: 0;
-        }
         /* Ensure the right image takes up the full height and width of its column */
         .right-side-image {
             height: 100vh; /* Full viewport height */
@@ -39,6 +31,7 @@
 <div>
     <div class="container-fluid p-0">
         <div class="row g-0">
+            <!-- Left side content -->
             <div class="col-lg-4">
                 <div class="authentication-page-content p-4 d-flex align-items-center min-vh-100">
                     <div class="w-100">
@@ -47,32 +40,32 @@
                                 <div>
                                     <div class="text-center">
                                         <div>
-                                            <img src="/images/trado-light.png" alt="" height="100" class="auth-logo logo-dark mx-auto">
+                                            <img src="/images/trado-dark.png" alt="" height="60" class="auth-logo logo-dark mx-auto">
                                         </div>
-
-                                        <h4 class="font-size-18 mt-4">Restablecer Contraseña</h4>
-                                        <p class="text-muted">En esta pestaña podrás cambiar la contraseña olvidada.</p>
+                                        <h4 class="font-size-18 mt-4">¡Bienvenido a Trado!</h4>
+                                        <p class="text-muted">Restablezca su contraseña para volver a ver nuestros productos</p>
                                     </div>
 
                                     <div class="p-2 mt-5">
                                         <div class="alert alert-success mb-4" role="alert">
-                                            Ingresa tu correo donde se mandarán las instrucciones para el restablecimiento!
+                                            ¡Ingrese su correo electrónico y siga las instrucciones que se le enviarán!
                                         </div>
-                                        <form id="passwordResetForm">
+                                        <form class="" action="/sistema/PassRestoreConfirm">
+
                                             <div class="auth-form-group-custom mb-4">
                                                 <i class="ri-mail-line auti-custom-input-icon"></i>
-                                                <label for="useremail">Correo</label>
-                                                <input type="email" class="form-control" id="useremail" placeholder="Ingresar correo" required>
+                                                <label for="useremail">Correo electrónico</label>
+                                                <input type="email" class="form-control" id="useremail" placeholder="Ingrese su correo">
                                             </div>
 
                                             <div class="mt-4 text-center">
-                                                <button class="btn btn-primary w-md waves-effect waves-light" type="button" id="confirmButton">Confirmar</button>
+                                                <button class="btn btn-primary w-md waves-effect waves-light" type="submit">Enviar</button>
                                             </div>
                                         </form>
-                                        <div class="mt-5 text-center">
-                                            <p>¿Aún no tienes una cuenta? <a href="/sistema/CreateAcc" class="fw-medium text-primary"> Registrarse </a> </p>
-                                            <p>© <script>document.write(new Date().getFullYear())</script> TRADO. Diseñado con <i class="mdi mdi-heart text-danger"></i> por Telesoft GT</p>
-                                        </div>
+                                    </div>
+                                    <div class="mt-5 text-center">
+                                        <p>¿Aún no tienes una cuenta? <a href="/sistema/CreateAcc" class="fw-medium text-primary"> Registrarse </a> </p>
+                                        <p>© <script>document.write(new Date().getFullYear())</script> TRADO. Creado con <i class="mdi mdi-heart text-danger"></i> por Telesoft GT</p>
                                     </div>
                                 </div>
                             </div>
@@ -87,40 +80,8 @@
         </div>
     </div>
 </div>
-
-<!-- Modal -->
-<div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="successModalLabel">Correo Enviado</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                Correo enviado satisfactoriamente.
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-            </div>
-        </div>
-    </div>
-</div>
-
 <!-- JAVASCRIPT BASE-->
 <span th:replace="~{Common/jsBase :: js_Base}"></span>
-<!-- Bootstrap JS and dependencies (necessary if not already included in js_Base) -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<!-- Custom Script -->
-<script>
-    document.getElementById('confirmButton').addEventListener('click', function() {
-        // Simulate form submission and show modal
-        $('#successModal').modal('show');
-    });
-</script>
 <!-- End JAVASCRIPT BASE-->
 </body>
 </html>
