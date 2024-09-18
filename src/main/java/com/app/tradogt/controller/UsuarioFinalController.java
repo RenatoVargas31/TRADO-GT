@@ -31,37 +31,37 @@ public class UsuarioFinalController {
 
     @GetMapping("/categoriaMujer")
     public String showMujerCategoria() {
-        return "usuario/CategoriaMujer-usuario";
+        return "Usuario/CategoriaMujer-usuario";
     }
     @GetMapping("/categoriaHombre")
     public String showHombreCategoria() {
-        return "usuario/CategoriaHombre-usuario";
+        return "Usuario/CategoriaHombre-usuario";
     }
     @GetMapping("/categoriaTecnologia")
     public String showTecnologiaCategoria() {
-        return "usuario/CategoriaTecnologia-usuario";
+        return "Usuario/CategoriaTecnologia-usuario";
     }
     @GetMapping("/categoriaMuebles")
     public String showMuebleCategoria() {
-        return "usuario/CategoriaMuebles-usuario";
+        return "Usuario/CategoriaMuebles-usuario";
     }
 
     @GetMapping("/productoDetalles")
     public String showproductoDetalles() {
-        return "usuario/producto-detalles";}
+        return "Usuario/producto-detalles";}
 
     @GetMapping("/carrito")
     public String showcarrito() {
-        return "usuario/carrito-usuario";
+        return "Usuario/carrito-usuario";
     }
 
     @GetMapping("/checkout")
     public String showcheckout() {
-        return "usuario/billing-info-usuario";
+        return "Usuario/billing-info-usuario";
     }
     @GetMapping("/ordenCompra")
     public String showordenCompra() {
-        return "usuario/orden-compra-usuario";
+        return "Usuario/orden-compra-usuario";
     }
     @GetMapping("/foro")
     public String showForo() {
