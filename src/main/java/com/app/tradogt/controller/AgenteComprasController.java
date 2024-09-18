@@ -85,6 +85,10 @@ public class AgenteComprasController {
     public String showInfoUser(){
         return "Agente/detallesUsuarios-Agente";
     }
+    @GetMapping("/infoUsuarioBaneado")
+    public String showInfoUserBan(){
+        return "Agente/detallesUsuariosBaneados-Agente";
+    }
 
     //CHAT CON USUARIOS
     @GetMapping("/chat")

@@ -1,0 +1,239 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Perfil de importador</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- CSS BASE -->
+    <div th:insert="Common/cssBase :: css_Base"></div>
+    <!-- End CSS BASE -->
+
+    <!-- DataTables -->
+    <link th:href="@{../libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css}" rel="stylesheet" type="text/css" />
+    <link th:href="@{../libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css}" rel="stylesheet" type="text/css" />
+    <link th:href="@{../libs/datatables.net-select-bs4/css/select.bootstrap4.min.css}" rel="stylesheet" type="text/css" />
+
+    <!-- Responsive datatable examples -->
+    <link th:href="@{../libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css}" rel="stylesheet" type="text/css" />
+
+</head>
+
+<body data-sidebar="dark">
+
+<!-- <body data-layout="horizontal" data-topbar="dark"> -->
+
+<!-- Begin page -->
+<div id="layout-wrapper">
+
+    <!-- ========== NavBar Start ========== -->
+    <header th:replace="Agente/fragments/navbar :: nav_bar"></header>
+    <!-- Navbar End -->
+
+    <!-- ========== Left Sidebar Start ========== -->
+    <div th:replace="Agente/fragments/sidebar :: side_bar"></div>
+    <!-- Left Sidebar End -->
+
+    <!-- ============================================================== -->
+    <!-- Start right Content here -->
+    <!-- ============================================================== -->
+    <div class="main-content">
+        <div class="page-content">
+            <div class="container-fluid">
+
+                <div class="row">
+                    <div class="col-12">
+                        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                            <h4 class="mb-sm-0">Perfil de importador</h4>
+
+                            <div class="page-title-right">
+                                <ol class="breadcrumb m-0">
+                                    <li class="breadcrumb-item active">Home</li>
+                                    <li class="breadcrumb-item"><a href="javascript: void(0);">Profile</a></li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="container-xxl flex-grow-1 container-p-y">
+                    <hr class="opacity-0">
+                    <div class="row">
+                        <!-- Bloque de Información de Perfil -->
+                        <div class="col-md-3">
+                            <div class="card mb-4 ">
+                                <h5 class="card-header">Foto de perfil</h5>
+                                <div class="user-profile-header d-flex flex-column align-items-center mb-3">
+                                    <hr class="opacity-0">
+                                    <div class="flex-shrink-0">
+                                        <img src="/images/users/sid.jpg" alt="user image" class="d-block rounded-circle" style="width: 100px; height: 100px; object-fit: cover;">
+                                    </div>
+                                    <p class="text-muted mb-0 mt-2">Jesús Andrés Luján</p>
+                                    <p class="text-muted mb-0">Importador</p>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Bloque de Detalles de Perfil -->
+                        <div class="col-md-9">
+
+                            <div class="card mb-4 " >
+                                <div class="card-header bg-light">
+                                    <h5>Información de importador</h5>
+                                </div>
+                                <div class="card-body row">
+                                    <div class="col">
+                                        <p><strong>Nombres:</strong> Jesús Andrés</p>
+                                        <p><strong>DNI:</strong> 74294745</p>
+                                        <p><strong>Correo electrónico:</strong> consulta@universidadSideralCarrion.com </p>
+                                        <p><strong>Dirección:</strong> Los Olivos</p>
+                                    </div>
+                                    <div class="col">
+                                        <p><strong>Apellidos:</strong> Luján Carrión</p>
+                                        <p><strong>RUC:</strong> 12867901</p>
+                                        <p><strong>Teléfono:</strong> 931356990</p>
+                                        <p><strong>Fecha de nacimiento:</strong> 01/01/1990</p>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card de historial de comportamiento del importador -->
+
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-12 col-lg-8">
+                                <div class="card">
+                                    <div class="card-header bg-light">
+                                        <h5>Historial de comportamiento del importador</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <table id="datatable-historialComportamiento" class="table table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                            <thead>
+                                            <tr>
+                                                <th>Fecha</th>
+                                                <th>Acción</th>
+                                                <th>Detalles</th>
+                                            </tr>
+                                            </thead>
+
+                                            <tbody>
+                                            <tr>
+                                                <td>01/09/2023</td>
+                                                <td>Incumplimiento de plazos</td>
+                                                <td class="text-center align-middle">
+                                                    <a  class="btn btn-outline-secondary btn-sm edit" title="Ver" >
+                                                        <i class="fas fa-eye"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>15/08/2023</td>
+                                                <td>Entrega con retraso</td>
+                                                <td class="text-center align-middle">
+                                                    <a  class="btn btn-outline-secondary btn-sm edit" title="Ver" >
+                                                        <i class="fas fa-eye"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>30/07/2023</td>
+                                                <td>Reclamo por calidad</td>
+                                                <td class="text-center align-middle">
+                                                    <a  class="btn btn-outline-secondary btn-sm edit" title="Ver" >
+                                                        <i class="fas fa-eye"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>10/07/2023</td>
+                                                <td>Falsificación de documentos</td>
+                                                <td class="text-center align-middle">
+                                                    <a  class="btn btn-outline-secondary btn-sm edit" title="Ver" >
+                                                        <i class="fas fa-eye"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>10/07/2023</td>
+                                                <td>Falsificación de documentos</td>
+                                                <td class="text-center align-middle">
+                                                    <a  class="btn btn-outline-secondary btn-sm edit" title="Ver" >
+                                                        <i class="fas fa-eye"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mensajes de éxito y error -->
+                <div id="error-message" class="alert alert-danger" style="display: none;" role="alert"></div>
+                <div id="success-message" class="alert alert-success" style="display: none;" role="alert"></div>
+                <!-- / Content -->
+            </div>
+        </div>
+
+    </div>
+    <!-- End Page-content -->
+    <footer class="footer">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-6">
+                    <script>document.write(new Date().getFullYear())</script> © TRADO.
+                </div>
+                <div class="col-sm-6">
+                    <div class="text-sm-end d-none d-sm-block">
+                        Crafted with <i class="mdi mdi-heart text-danger"></i> by TelesoftGT
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>
+<!-- end main content-->
+</div>
+<!-- END layout-wrapper -->
+
+
+<!-- JAVASCRIPT BASE-->
+<div th:insert="Common/jsBase :: js_Base"></div>
+<!-- End JAVASCRIPT BASE-->
+
+<!-- Required datatable js -->
+<script th:src="@{../libs/datatables.net/js/jquery.dataTables.min.js}"></script>
+<script th:src="@{../libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js}"></script>
+<!-- Buttons examples -->
+<script th:src="@{../libs/datatables.net-buttons/js/dataTables.buttons.min.js}"></script>
+<script th:src="@{../libs/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js}"></script>
+<script th:src="@{../libs/jszip/jszip.min.js}"></script>
+<script th:src="@{../libs/pdfmake/build/pdfmake.min.js}"></script>
+<script th:src="@{../libs/pdfmake/build/vfs_fonts.js}"></script>
+<script th:src="@{../libs/datatables.net-buttons/js/buttons.html5.min.js}"></script>
+<script th:src="@{../libs/datatables.net-buttons/js/buttons.print.min.js}"></script>
+<script th:src="@{../libs/datatables.net-buttons/js/buttons.colVis.min.js}"></script>
+
+<script th:src="@{../libs/datatables.net-keytable/js/dataTables.keyTable.min.js}"></script>
+<script th:src="@{../libs/datatables.net-select/js/dataTables.select.min.js}"></script>
+
+<!-- Responsive examples -->
+<script th:src="@{../libs/datatables.net-responsive/js/dataTables.responsive.min.js}"></script>
+<script th:src="@{../libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js}"></script>
+
+<!-- Datatable init js -->
+<script th:src="@{../js/pages/datatables.init.js}"></script>
+
+
+</body>
+
+</html>

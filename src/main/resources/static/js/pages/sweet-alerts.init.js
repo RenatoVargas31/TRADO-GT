@@ -57,7 +57,61 @@
                     icon: "error"
                 })
             })
-        }), t("#sa-image").click(function () {
+        }), t("#sa-params1").click(function () {
+            Swal.fire({
+                title: "¿Estás seguro de solicitar reembolso?",
+                text: "¡Esta acción es irreversible!",
+                icon: "warning",
+                showCancelButton: !0,
+                confirmButtonText: "Sí, solicitar reembolso",
+                cancelButtonText: "No, cancelar",
+                confirmButtonClass: "btn btn-success mt-2",
+                cancelButtonClass: "btn btn-danger ms-2 mt-2",
+                buttonsStyling: !1
+            }).then(function (t) {
+                t.value ? Swal.fire({
+                    title: "Listo",
+                    text: "Se te enviará un correo con la boleta de devolución",
+                    icon: "success"
+                }) : t.dismiss === Swal.DismissReason.cancel && Swal.fire({
+                    title: "Cancelado",
+                    text: "Tu pedido sigue en preceso",
+                    icon: "error"
+                })
+            })
+        }), t("#sa-params2").click(function () {
+            Swal.fire({
+                title: "¿Estás seguro de solicitar reembolso?",
+                text: "¡Esta acción es irreversible!",
+                icon: "warning",
+                showCancelButton: !0,
+                confirmButtonText: "Sí, solicitar reembolso",
+                cancelButtonText: "No, cancelar",
+                confirmButtonClass: "btn btn-success mt-2",
+                cancelButtonClass: "btn btn-danger ms-2 mt-2",
+                buttonsStyling: !1
+            }).then(function (t) {
+                t.value ? Swal.fire({
+                    title: "Listo",
+                    text: "Se te enviará un correo con la boleta de devolución",
+                    icon: "success"
+                }) : t.dismiss === Swal.DismissReason.cancel && Swal.fire({
+                    title: "Cancelado",
+                    text: "Tu pedido sigue en preceso",
+                    icon: "error"
+                })
+            })
+        })
+
+
+
+
+
+
+
+
+
+            t("#sa-image").click(function () {
             Swal.fire({
                 title: "Sweet!",
                 text: "Modal with a custom image.",
