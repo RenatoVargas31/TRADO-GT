@@ -19,6 +19,9 @@ public class UsuarioFinalController {
         return "Usuario/listaOrdenes";
     }
 
+    @GetMapping("/perfil")
+    public String verPerfil(){return "Usuario/profile_user";}
+
     @GetMapping("/editarOrdenes")
     public String formularioPedido() {
         return "Usuario/formOrdenes";
