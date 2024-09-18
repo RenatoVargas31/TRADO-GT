@@ -106,15 +106,15 @@
                                             <div class="row mb-4">
                                                 <div class="col-md-6 col-sm-12">
                                                     <h5>Datos personales</h5>
-                                                    <p>Nombre de comprador: <input type="text" class="form-control" value="Juan Pérez" disabled></p>
-                                                    <p>Número DNI: <input type="text" class="form-control" value="12345678" disabled></p>
-                                                    <p>Domicilio: <input type="text" class="form-control" value="Av. Siempre Viva 742" disabled></p>
+                                                    <p>Nombre de comprador: <input type="text" class="form-control" value="Juan Pérez" disabled style="background-color: darkgray"></p>
+                                                    <p>Número DNI: <input type="text" class="form-control" value="12345678" disabled style="background-color: darkgray"></p>
+                                                    <p>Domicilio: <input type="text" class="form-control" value="Av. Siempre Viva 742" disabled style="background-color: darkgray"></p>
                                                 </div>
                                                 <div class="col-md-6 col-sm-12">
                                                     <h5>Fecha y Número de Orden</h5>
-                                                    <p>Fecha: <input type="date" class="form-control" value="2024-09-17" disabled></p>
-                                                    <p>No. de orden: <input type="text" class="form-control" value="ORD123456" disabled></p>
-                                                    <p>Ciudad, Estado: <input type="text" class="form-control" value="Springfield, IL" disabled></p>
+                                                    <p>Fecha: <input type="date" class="form-control" value="2024-09-17" disabled style="background-color: darkgray"></p>
+                                                    <p>No. de orden: <input type="text" class="form-control" value="ORD123456" disabled style="background-color: darkgray"></p>
+                                                    <p>Ciudad, Estado: <input type="text" class="form-control" value="Springfield, IL" disabled style="background-color: darkgray"></p>
                                                 </div>
                                             </div>
 
@@ -122,17 +122,17 @@
                                             <div class="row mb-4">
                                                 <div class="col-md-6 col-sm-12">
                                                     <h5>Vendedor</h5>
-                                                    <p>Compañía: <input type="text" class="form-control" value="Vendedor S.A." disabled></p>
-                                                    <p>Contacto: <input type="text" class="form-control" value="Ana Gómez" disabled></p>
-                                                    <p>Domicilio: <input type="text" class="form-control" value="Calle Falsa 123" disabled></p>
-                                                    <p>Teléfono: <input type="text" class="form-control" value="555-1234" disabled></p>
+                                                    <p>Compañía: <input type="text" class="form-control" value="Vendedor S.A." disabled style="background-color: darkgray"></p>
+                                                    <p>Contacto: <input type="text" class="form-control" value="Ana Gómez" disabled style="background-color: darkgray"></p>
+                                                    <p>Domicilio: <input type="text" class="form-control" value="Calle Falsa 123" disabled style="background-color: darkgray"></p>
+                                                    <p>Teléfono: <input type="text" class="form-control" value="555-1234" disabled style="background-color: darkgray"></p>
                                                 </div>
                                                 <div class="col-md-6 col-sm-12">
                                                     <h5>Comprador</h5>
-                                                    <p>Compañía: <input type="text" class="form-control" value="Comprador Ltda." disabled></p>
-                                                    <p>Contacto: <input type="text" class="form-control" value="Laura Martínez" disabled></p>
-                                                    <p>Domicilio: <input type="text" class="form-control" value="Av. Siempre Viva 742"></p>
-                                                    <p>Teléfono: <input type="text" class="form-control" value="555-6789" disabled></p>
+                                                    <p>Compañía: <input type="text" class="form-control" value="Comprador Ltda." disabled style="background-color: darkgray"></p>
+                                                    <p>Contacto: <input type="text" class="form-control" value="Laura Martínez" disabled style="background-color: darkgray"></p>
+                                                    <p>Domicilio: <input type="text" class="form-control" value="Av. Siempre Viva 742" style="background-color: darkgray"></p>
+                                                    <p>Teléfono: <input type="text" class="form-control" value="555-6789" disabled style="background-color: darkgray"></p>
                                                 </div>
                                             </div>
 
@@ -327,30 +327,6 @@
         <!-- JAVASCRIPT -->
         <span th:replace="~{Common/jsBase :: js_Base}"></span>
 
-            <script>
-                function descargarPDF() {
-                    const { jsPDF } = window.jspdf; // Acceso a jsPDF desde el espacio global
-                    const doc = new jsPDF(); // Crear una nueva instancia de jsPDF
-
-                    // Selecciona el contenido del div que quieres convertir en PDF
-                    const elemento = document.querySelector('.card-body');
-
-                    // Usa html2canvas para capturar el contenido del div como imagen
-                    html2canvas(elemento).then(canvas => {
-                        const imgData = canvas.toDataURL('image/png'); // Convierte el canvas a imagen
-                        const imgWidth = 210; // Ancho de la página A4 en mm (jsPDF usa mm)
-                        const pageHeight = 295; // Alto de la página A4 en mm
-                        const imgHeight = (canvas.height * imgWidth) / canvas.width;
-                        let position = 0;
-
-                        // Añadir la imagen al PDF
-                        doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-
-                        // Descargar el PDF
-                        doc.save('orden_de_compra.pdf');
-                    });
-                }
-            </script>
 
             <script>
                 function descargarHTML() {
