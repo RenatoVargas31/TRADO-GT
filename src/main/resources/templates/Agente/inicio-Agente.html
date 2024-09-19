@@ -3,6 +3,23 @@
 
 <head>
     <meta charset="utf-8" />
+    <title>Apex Charts | Nazox - Admin & Dashboard Template</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
+    <meta content="Themesdesign" name="author" />
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="assets/images/favicon.ico">
+
+
+
+    <!-- Bootstrap Css -->
+    <link href="assets/css/bootstrap.min.css" id="bootstrap-style" rel="stylesheet" type="text/css" />
+    <!-- Icons Css -->
+    <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+    <!-- App Css-->
+    <link href="assets/css/app.min.css" id="app-style" rel="stylesheet" type="text/css" />
+
+    <meta charset="utf-8" />
     <title>Starter page | Nazox - Admin & Dashboard Template</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- CSS BASE -->
@@ -11,6 +28,7 @@
 </head>
 
 <body data-sidebar="dark">
+
 
 <!-- <body data-layout="horizontal" data-topbar="dark"> -->
 
@@ -48,6 +66,29 @@
                 </div>
                 <!-- end page title -->
 
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title mb-4">Ordenes por estado y mes</h4>
+
+                                <div id="line_chart_datalabel" class="apex-charts" dir="ltr"></div>
+                            </div>
+                        </div><!--end card-->
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title mb-4">Cantidad de usuarios satisfechos y no satisfechos por mes</h4>
+
+                                <div id="line_chart_dashed" class="apex-charts" dir="ltr"></div>
+                            </div>
+                        </div><!--end card-->
+                    </div>
+                </div>
+                <!-- end row -->
+
             </div> <!-- container-fluid -->
         </div>
         <!-- End Page-content -->
@@ -74,6 +115,31 @@
 <!-- JAVASCRIPT BASE-->
 <span th:replace="~{Common/jsBase :: js_Base}"></span>
 <!-- End JAVASCRIPT BASE-->
+
+<!-- apexcharts -->
+<script th:src="@{../libs/apexcharts/apexcharts.min.js}"></script>
+<!-- apexcharts init -->
+<script th:src="@{../js/pages/apexcharts.init.js}"></script>
+
+
+<!-- Chart JS -->
+<script th:src="@{../libs/chart.js/Chart.bundle.min.js}"></script>
+<script th:src="@{../js/pages/chartjs.init.js}"></script>
+
+<!-- jquery.vectormap map -->
+<script th:src="@{../libs/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.min.js}"></script>
+<script th:src="@{../libs/admin-resources/jquery.vectormap/maps/jquery-jvectormap-us-merc-en.js}"></script>
+
+<!-- Required datatable js -->
+<script th:src="@{../libs/datatables.net/js/jquery.dataTables.min.js}"></script>
+<script th:src="@{../libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js}"></script>
+
+<!-- Responsive examples -->
+<script th:src="@{../libs/datatables.net-responsive/js/dataTables.responsive.min.js}"></script>
+<script th:src="@{../libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js}"></script>
+
+<script th:src="@{../js/pages/dashboard.init.js}"></script>
+
 </body>
 
 </html>

@@ -48,8 +48,8 @@
 
                                     <div class="page-title-right">
                                         <ol class="breadcrumb m-0">
-                                            <li class="breadcrumb-item"><a href="javascript: void(0);">Ordenes</a></li>
-                                            <li class="breadcrumb-item active">Lista de ordenes</li>
+                                            <li class="breadcrumb-item"><a href="javascript: void(0);">Inicio</a></li>
+                                            <li class="breadcrumb-item active">Lista de pedidos</li>
                                         </ol>
                                     </div>
 
@@ -61,134 +61,345 @@
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="card">
-                                    <div class="card-body  pt-0">
-                                        <ul class="nav nav-tabs nav-tabs-custom mb-4">
+                                    <div class="card-body">
+
+
+                                        <ul class="nav nav-tabs">
                                             <li class="nav-item">
-                                                <a class="nav-link fw-bold p-3 active" href="#">Todas tus ordenes</a>
+                                                <a class="nav-link active" id="all-orders-tab" data-bs-toggle="tab" href="#all-orders" role="tab">Todos</a>
                                             </li>
                                             <li class="nav-item">
-                                                <a class="nav-link p-3 fw-bold" href="#">En proceso</a>
+                                                <a class="nav-link" id="in-process-tab" data-bs-toggle="tab" href="#create" role="tab">En proceso</a>
                                             </li>
                                             <li class="nav-item">
-                                                <a class="nav-link p-3 fw-bold" href="#">Recibidos</a>
+                                                <a class="nav-link" id="received-tab" data-bs-toggle="tab" href="#received" role="tab">Recibidos</a>
                                             </li>
                                         </ul>
-                                        <div class="table-responsive">
-                                            <table class="table table-centered datatable dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
-                                                <thead class="thead-light">
-                                                    <tr>
-                                                        <th style="width: 20px;">
-                                                            <div class="form-checkbox">
-                                                                <input type="checkbox" class="form-check-input" id="ordercheck">
-                                                                <label class="form-check-label mb-0" for="ordercheck">&nbsp;</label>
-                                                            </div>
-                                                        </th>
-                                                        <th>Código</th>
-                                                        <th>Fecha de compra</th>
-                                                        <th>Agente</th>
-                                                        <th>Precio</th>
-                                                        <th>Estado</th>
-                                                        <th>Invoice</th>
-                                                        <th style="width: 120px;">Action</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td>
-                                                            <div class="form-checkbox">
-                                                                <input type="checkbox" class="form-check-input" id="ordercheck1">
-                                                                <label class="form-check-label mb-0" for="ordercheck1">&nbsp;</label>
-                                                            </div>
-                                                        </td>
 
-                                                        <td><a href="javascript: void(0);" class="text-reset fw-bold">#NZ1572</a> </td>
-                                                        <td>
-                                                            04 Apr, 2020
-                                                        </td>
-                                                        <td>Walter Brown</td>
+                                        <div class="tab-content mt-3">
 
-                                                        <td>
-                                                            $172
-                                                        </td>
-                                                        <td>
-                                                            <div class="badge bg-success-subtle text-success  font-size-12">Paid</div>
-                                                        </td>
-                                                        <td>
-                                                            <button class="btn btn-light btn-rounded">Invoice <i class="mdi mdi-download ms-2"></i></button>
-                                                        </td>
-                                                        <td>
-                                                            <a href="javascript:void(0);" class="text-eye me-3" data-bs-toggle="tooltip" data-placement="top" title="Show"><i class="ri-eye-fill font-size-18"></i></a>
-                                                            <a href="javascript:void(0);" class="text-primary me-3" data-bs-toggle="tooltip" data-placement="top" title="Edit"><i class="mdi mdi-pencil font-size-18"></i></a>
-                                                            <a href="javascript:void(0);" class="text-danger" data-bs-toggle="tooltip" data-placement="top" title="Delete"><i class="mdi mdi-trash-can font-size-18"></i></a>
+                                            <div class="tab-pane fade show active" id="all-orders" role="tabpanel">
+                                                <div class="table-responsive">
+                                                    <table class="table table-centered datatable dt-responsive nowrap" style="width: 100%;">
+                                                        <thead class="table-light">
+                                                        <tr>
 
-                                                        </td>
-                                                    </tr>
+                                                            <th>Código</th>
+                                                            <th>Fecha de compra</th>
+                                                            <th>Precio</th>
+                                                            <th>Agente</th>
+                                                            <th>Estado</th>
+                                                            <th>Boleta</th>
+                                                            <th>Action</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        <tr>
+                                                            <td>#NZ1572</td>
+                                                            <td>04 Apr, 2020</td>
 
-                                                    <tr>
-                                                        <td>
-                                                            <div class="form-checkbox">
-                                                                <input type="checkbox" class="form-check-input" id="ordercheck10">
-                                                                <label class="form-check-label mb-0" for="ordercheck10">&nbsp;</label>
-                                                            </div>
-                                                        </td>
+                                                            <td>$172</td>
+                                                            <td>Walter Brown</td>
+                                                            <td><span class="badge bg-success">Creado</span></td>
+                                                            <td><a href="#" class="btn btn-light btn-sm">Boleta</a></td>
+                                                            <td>
+                                                                <a href="/usuario/tracking" class="text-primary"><i class="mdi mdi-eye"></i></a>
+                                                                <a href="/usuario/editarOrdenes" class="text-warning"><i class="mdi mdi-pencil"></i></a>
+                                                                <a href="#" class="text-danger"><i class="mdi mdi-delete" id="sa-params2"></i></a>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>#NZ1563</td>
+                                                            <td>28 Mar, 2020</td>
+                                                            <td>$164</td>
+                                                            <td>Frank Dean</td>
+                                                            <td><span class="badge bg-warning">En proceso</span></td>
+                                                            <td><a href="#" class="btn btn-light btn-sm">Boleta</a></td>
+                                                            <td>
+                                                                <a href="/usuario/tracking" class="text-primary"><i class="mdi mdi-eye"></i></a>
+                                                                <a href="/usuario/editarOrdenes" class="text-warning"><i class="mdi mdi-pencil"></i></a>
+                                                                <a href="#" class="text-danger"><i class="mdi mdi-delete" id="sa-params"></i></a>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>#NZ15632</td>
+                                                            <td>27 Mar, 2020</td>
 
-                                                        <td><a href="javascript: void(0);" class="text-reset fw-bold">#NZ1563</a> </td>
-                                                        <td>
-                                                            28 Mar, 2020
-                                                        </td>
-                                                        <td>Frank Dean</td>
+                                                            <td>$154</td>
+                                                            <td>James Hamilton</td>
+                                                            <td><span class="badge bg-success">Creado</span></td>
+                                                            <td><a href="#" class="btn btn-light btn-sm">Boleta</a></td>
+                                                            <td>
+                                                                <a href="/usuario/tracking" class="text-primary"><i class="mdi mdi-eye"></i></a>
+                                                                <a href="/usuario/editarOrdenes" class="text-warning" id=""><i class="mdi mdi-pencil"></i></a>
+                                                                <a href="#" class="text-danger"><i class="mdi mdi-delete" id="sa-params1"></i></a>
+                                                            </td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
 
-                                                        <td>
-                                                            $164
-                                                        </td>
-                                                        <td>
-                                                            <div class="badge  bg-warning-subtle text-warning font-size-12">unpaid</div>
-                                                        </td>
-                                                        <td>
-                                                            <button class="btn btn-light btn-rounded">Invoice <i class="mdi mdi-download ms-2"></i></button>
-                                                        </td>
-                                                        <td>
-                                                            <a href="javascript:void(0);" class="text-eye me-3" data-bs-toggle="tooltip" data-placement="top" title="Show"><i class="ri-eye-fill font-size-18"></i></a>
-                                                            <a href="javascript:void(0);" class="text-primary me-3" data-bs-toggle="tooltip" data-placement="top" title="Edit"><i class="mdi mdi-pencil font-size-18"></i></a>
-                                                            <a href="javascript:void(0);" class="text-danger" data-bs-toggle="tooltip" data-placement="top" title="Delete"><i class="mdi mdi-trash-can font-size-18" id="sa-params"></i></a>
-                                                        </td>
-                                                    </tr>
 
-                                                    <tr>
-                                                        <td>
-                                                            <div class="form-checkbox">
-                                                                <input type="checkbox" class="form-check-input" id="ordercheck11">
-                                                                <label class="form-check-label mb-0" for="ordercheck11">&nbsp;</label>
-                                                            </div>
-                                                        </td>
+                                        </div>
+                                        <div class="tab-content mt-3">
 
-                                                        <td><a href="javascript: void(0);" class="text-reset fw-bold">#NZ15632</a> </td>
-                                                        <td>
-                                                            27 Mar, 2020
-                                                        </td>
-                                                        <td>James Hamilton</td>
+                                            <div class="tab-pane fade " id="create" role="tabpanel">
+                                                <div class="table-responsive">
+                                                    <table class="table table-centered datatable dt-responsive nowrap" style="width: 100%;">
+                                                        <thead class="table-light">
+                                                        <tr>
 
-                                                        <td>
-                                                            $154
-                                                        </td>
-                                                        <td>
-                                                            <div class="badge bg-success-subtle text-success  font-size-12">Paid</div>
-                                                        </td>
-                                                        <td>
-                                                            <button class="btn btn-light btn-rounded">Invoice <i class="mdi mdi-download ms-2" ></i></button>
-                                                        </td>
-                                                        <td>
-                                                            <a href="javascript:void(0);" class="text-eye me-3" data-bs-toggle="tooltip" data-placement="top" title="Show"><i class="ri-eye-fill font-size-18"></i></a>
-                                                            <a href="javascript:void(0);" class="text-primary me-3" data-bs-toggle="tooltip" data-placement="top" title="Edit"><i class="mdi mdi-pencil font-size-18"></i></a>
-                                                            <a href="javascript:void(0);" class="text-danger" data-bs-toggle="tooltip" data-placement="top" title="Delete"><i class="mdi mdi-trash-can font-size-18"></i></a>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
+                                                            <th>Código</th>
+                                                            <th>Fecha de compra</th>
+                                                            <th>Precio</th>
+                                                            <th>Agente</th>
+                                                            <th>Estado</th>
+                                                            <th>Boleta</th>
+                                                            <th>Action</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        <tr>
+                                                            <td>#NZ1572</td>
+                                                            <td>04 Apr, 2020</td>
+
+                                                            <td>$172</td>
+                                                            <td>Walter Brown</td>
+                                                            <td><span class="badge bg-success">Creado</span></td>
+                                                            <td><a href="#" class="btn btn-light btn-sm">Boleta</a></td>
+                                                            <td>
+                                                                <a href="/usuario/tracking" class="text-primary"><i class="mdi mdi-eye"></i></a>
+                                                                <a href="/usuario/editarOrdenes" class="text-warning"><i class="mdi mdi-pencil"></i></a>
+                                                                <a href="#" class="text-danger"><i class="mdi mdi-delete"></i></a>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>#NZ1563</td>
+                                                            <td>28 Mar, 2020</td>
+                                                            <td>$164</td>
+                                                            <td>Frank Dean</td>
+                                                            <td><span class="badge bg-success">Creado</span></td>
+                                                            <td><a href="#" class="btn btn-light btn-sm">Boleta</a></td>
+                                                            <td>
+                                                                <a href="/usuario/tracking" class="text-primary"><i class="mdi mdi-eye"></i></a>
+                                                                <a href="/usuario/editarOrdenes" class="text-warning"><i class="mdi mdi-pencil"></i></a>
+                                                                <a href="#" class="text-danger"><i class="mdi mdi-delete"></i></a>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>#NZ15632</td>
+                                                            <td>27 Mar, 2020</td>
+                                                            <td>$154</td>
+                                                            <td>James Hamilton</td>
+                                                            <td><span class="badge bg-success">Creado</span></td>
+                                                            <td><a href="#" class="btn btn-light btn-sm">Boleta</a></td>
+                                                            <td>
+                                                                <a href="/usuario/tracking" class="text-primary"><i class="mdi mdi-eye"></i></a>
+                                                                <a href="/usuario/editarOrdenes" class="text-warning"><i class="mdi mdi-pencil"></i></a>
+                                                                <a href="#" class="text-danger"><i class="mdi mdi-delete"></i></a>
+                                                            </td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+
+
+
+                                        </div>
+                                        <div class="tab-content mt-3">
+
+                                            <div class="tab-pane fade " id="received" role="tabpanel">
+                                                <div class="table-responsive">
+                                                    <table class="table table-centered datatable dt-responsive nowrap" style="width: 100%;">
+                                                        <thead class="table-light">
+                                                        <tr>
+
+                                                            <th>Código</th>
+                                                            <th>Fecha de compra</th>
+                                                            <th>Precio</th>
+                                                            <th>Agente</th>
+                                                            <th>Estado</th>
+                                                            <th>Boleta</th>
+                                                            <th>Acción</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        <tr>
+                                                            <td>#NZ1572</td>
+                                                            <td>04 Apr, 2020</td>
+                                                            <td>$172</td>
+                                                            <td>Walter Brown</td>
+                                                            <td><span class="badge bg-success">Recibido</span></td>
+                                                            <td><a href="/usuario/tracking" class="btn btn-light btn-sm"><i class="mdi mdi-download"></i></a></td>
+                                                            <td>
+                                                                <a href="#" class="text-primary"><i class="mdi mdi-email"></i></a>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>#NZ1563</td>
+                                                            <td>28 Mar, 2020</td>
+                                                            <td>$164</td>
+                                                            <td>Frank Dean</td>
+                                                            <td><span class="badge bg-success">Recibido</span></td>
+                                                            <td><a href="/usuario/tracking" class="btn btn-light btn-sm"><i class="mdi mdi-download"></i></a></td>
+                                                            <td>
+                                                                <a href="#" class="text-primary"><i class="mdi mdi-email"></i></a>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>#NZ15632</td>
+                                                            <td>27 Mar, 2020</td>
+                                                            <td>$154</td>
+                                                            <td>James Hamilton</td>
+                                                            <td><span class="badge bg-success">Recibido</span></td>
+                                                            <td><a href="/usuario/tracking" class="btn btn-light btn-sm"><i class="mdi mdi-download"></i></a></td>
+                                                            <td>
+                                                                <a href="#" class="text-primary"><i class="mdi mdi-email"></i></a>
+                                                            </td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+
+
                                         </div>
                                     </div>
                                 </div>
                             </div>
+
+                            <!-- <div class="col-lg-12">
+                                 <div class="card">
+                                     <div class="card-body  pt-0">
+                                         <ul class="nav nav-tabs nav-tabs-custom mb-4">
+                                             <li class="nav-item">
+                                                 <a class="nav-link fw-bold p-3 active" href="#">Todas tus ordenes</a>
+                                             </li>
+                                             <li class="nav-item">
+                                                 <a class="nav-link p-3 fw-bold" href="#">En proceso</a>
+                                             </li>
+                                             <li class="nav-item">
+                                                 <a class="nav-link p-3 fw-bold" href="#">Recibidos</a>
+                                             </li>
+                                         </ul>
+                                         <div class="table-responsive">
+                                             <table class="table table-centered datatable dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                                 <thead class="thead-light">
+                                                     <tr>
+                                                         <th style="width: 20px;">
+                                                             <div class="form-checkbox">
+                                                                 <input type="checkbox" class="form-check-input" id="ordercheck">
+                                                                 <label class="form-check-label mb-0" for="ordercheck">&nbsp;</label>
+                                                             </div>
+                                                         </th>
+                                                         <th>Código</th>
+                                                         <th>Fecha de compra</th>
+                                                         <th>Agente</th>
+                                                         <th>Precio</th>
+                                                         <th>Estado</th>
+                                                         <th>Boleta</th>
+                                                         <th style="width: 120px;">Action</th>
+                                                     </tr>
+                                                 </thead>
+                                                 <tbody>
+                                                     <tr>
+                                                         <td>
+                                                             <div class="form-checkbox">
+                                                                 <input type="checkbox" class="form-check-input" id="ordercheck1">
+                                                                 <label class="form-check-label mb-0" for="ordercheck1">&nbsp;</label>
+                                                             </div>
+                                                         </td>
+
+                                                         <td><a href="javascript: void(0);" class="text-reset fw-bold">#NZ1572</a> </td>
+                                                         <td>
+                                                             04 Apr, 2020
+                                                         </td>
+                                                         <td>Walter Brown</td>
+
+                                                         <td>
+                                                             $172
+                                                         </td>
+                                                         <td>
+                                                             <div class="badge bg-success-subtle text-success  font-size-12">Paid</div>
+                                                         </td>
+                                                         <td>
+                                                             <button class="btn btn-light btn-rounded">Boleta <i class="mdi mdi-download ms-2"></i></button>
+                                                         </td>
+                                                         <td>
+                                                             <a href="javascript:void(0);" class="text-eye me-3" data-bs-toggle="tooltip" data-placement="top" title="Show"><i class="ri-eye-fill font-size-18"></i></a>
+                                                             <a href="javascript:void(0);" class="text-primary me-3" data-bs-toggle="tooltip" data-placement="top" title="Edit"><i class="mdi mdi-pencil font-size-18"></i></a>
+                                                             <a href="javascript:void(0);" class="text-danger" data-bs-toggle="tooltip" data-placement="top" title="Delete"><i class="mdi mdi-trash-can font-size-18"></i></a>
+
+                                                         </td>
+                                                     </tr>
+
+                                                     <tr>
+                                                         <td>
+                                                             <div class="form-checkbox">
+                                                                 <input type="checkbox" class="form-check-input" id="ordercheck10">
+                                                                 <label class="form-check-label mb-0" for="ordercheck10">&nbsp;</label>
+                                                             </div>
+                                                         </td>
+
+                                                         <td><a href="javascript: void(0);" class="text-reset fw-bold">#NZ1563</a> </td>
+                                                         <td>
+                                                             28 Mar, 2020
+                                                         </td>
+                                                         <td>Frank Dean</td>
+
+                                                         <td>
+                                                             $164
+                                                         </td>
+                                                         <td>
+                                                             <div class="badge  bg-warning-subtle text-warning font-size-12">unpaid</div>
+                                                         </td>
+                                                         <td>
+                                                             <button class="btn btn-light btn-rounded">Boleta <i class="mdi mdi-download ms-2"></i></button>
+                                                         </td>
+                                                         <td>
+                                                             <a href="javascript:void(0);" class="text-eye me-3" data-bs-toggle="tooltip" data-placement="top" title="Show"><i class="ri-eye-fill font-size-18"></i></a>
+                                                             <a href="javascript:void(0);" class="text-primary me-3" data-bs-toggle="tooltip" data-placement="top" title="Edit"><i class="mdi mdi-pencil font-size-18"></i></a>
+                                                             <a href="javascript:void(0);" class="text-danger" data-bs-toggle="tooltip" data-placement="top" title="Delete"><i class="mdi mdi-trash-can font-size-18" id="sa-params"></i></a>
+                                                         </td>
+                                                     </tr>
+
+                                                     <tr>
+                                                         <td>
+                                                             <div class="form-checkbox">
+                                                                 <input type="checkbox" class="form-check-input" id="ordercheck11">
+                                                                 <label class="form-check-label mb-0" for="ordercheck11">&nbsp;</label>
+                                                             </div>
+                                                         </td>
+
+                                                         <td><a href="javascript: void(0);" class="text-reset fw-bold">#NZ15632</a> </td>
+                                                         <td>
+                                                             27 Mar, 2020
+                                                         </td>
+                                                         <td>James Hamilton</td>
+
+                                                         <td>
+                                                             $154
+                                                         </td>
+                                                         <td>
+                                                             <div class="badge bg-success-subtle text-success  font-size-12">Paid</div>
+                                                         </td>
+                                                         <td>
+                                                             <button class="btn btn-light btn-rounded">Boleta <i class="mdi mdi-download ms-2" ></i></button>
+                                                         </td>
+                                                         <td>
+                                                             <a href="javascript:void(0);" class="text-eye me-3" data-bs-toggle="tooltip" data-placement="top" title="Show"><i class="ri-eye-fill font-size-18"></i></a>
+                                                             <a href="javascript:void(0);" class="text-primary me-3" data-bs-toggle="tooltip" data-placement="top" title="Edit"><i class="mdi mdi-pencil font-size-18"></i></a>
+                                                             <a href="javascript:void(0);" class="text-danger" data-bs-toggle="tooltip" data-placement="top" title="Delete"><i class="mdi mdi-trash-can font-size-18"></i></a>
+                                                         </td>
+                                                     </tr>
+                                                 </tbody>
+                                             </table>
+                                         </div>
+                                     </div>
+                                 </div>
+                             </div> -->
                         </div>
                         <!-- end row -->
 
@@ -225,6 +436,26 @@
         <!-- JAVASCRIPT -->
 
         <span th:replace="~{Common/jsBase :: js_Base}"></span>
+    <script>
+        document.querySelectorAll('.nav-link').forEach(function(tab){
+            tab.addEventListener('click', function(){
+                document.querySelectorAll('.tab-pane').forEach(function(pane){
+                    pane.classList.remove('show', 'active');
+                });
+                const paneId = this.getAttribute('href');
+                document.querySelector(paneId).classList.add('show', 'active');
+            });
+        });
+
+    </script>
+
+    <!-- jQuery -->
+    <script th:src="@{https://code.jquery.com/jquery-3.6.0.min.js}"></script>
+
+    <!-- DataTables -->
+    <link rel="stylesheet" th:href="@{https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css}">
+    <script th:src="@{https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js}"></script>
+
 
 
     </body>

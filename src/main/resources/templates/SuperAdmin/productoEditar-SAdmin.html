@@ -1,0 +1,281 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+    <head>
+        <meta charset="utf-8" />
+        <title>Starter page | Nazox - Admin & Dashboard Template</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- CSS BASE -->
+        <meta th:replace="~{Common/cssBase :: css_Base}">
+        <!-- End CSS BASE -->
+        <!-- twitter-bootstrap-wizard css -->
+        <link rel="stylesheet" th:href="@{../libs/twitter-bootstrap-wizard/prettify.css}">
+        <link th:href="@{../libs/bootstrap-touchspin/jquery.bootstrap-touchspin.min.css}" rel="stylesheet">
+        <link th:href="@{../libs/select2/css/select2.min.css}" rel="stylesheet" type="text/css">
+        <link th:href="@{../libs/bootstrap-datepicker/css/bootstrap-datepicker.min.css}" rel="stylesheet">
+        <link th:href="@{../libs/spectrum-colorpicker2/spectrum.min.css}" rel="stylesheet" type="text/css">
+    </head>
+
+    <body data-sidebar="dark">
+    
+    <!-- <body data-layout="horizontal" data-topbar="dark"> -->
+
+        <!-- Begin page -->
+        <div id="layout-wrapper">
+
+            <!-- ========== NavBar Start ========== -->
+            <header th:replace="~{SuperAdmin/fragments/navbar :: nav_bar}"></header>
+            <!-- Navbar End -->
+            <!-- ========== Left Sidebar Start ========== -->
+            <div th:replace="~{SuperAdmin/fragments/sidebar :: side_bar}"></div>
+            <!-- Left Sidebar End -->
+            <!-- ============================================================== -->
+            <!-- Start right Content here -->
+            <!-- ============================================================== -->
+            <div class="main-content">
+                <div class="page-content">
+                    <div class="container-fluid">
+
+                        <!-- start page title -->
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                                    <h4 class="mb-sm-0">Registro de Productos</h4>
+
+                                    <div class="page-title-right">
+                                        <ol class="breadcrumb m-0">
+                                            <li class="breadcrumb-item"><a href="javascript: void(0);">Lista de Productos</a></li>
+                                            <li class="breadcrumb-item active">Actualizar Producto</li>
+                                        </ol>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end page title -->
+
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="card">
+                                    <div class="card-body">
+
+                                        <div id="basic-pills-wizard" class="twitter-bs-wizard">
+                                            <ul class="twitter-bs-wizard-nav nav nav-pills nav-justified">
+                                                <li class="nav-item">
+                                                    <a href="#seller-details" class="nav-link active" data-toggle="tab">
+                                                        <span class="step-number">01</span>
+                                                        <span class="step-title">Datos Generales</span>
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a href="#company-document" class="nav-link" data-toggle="tab">
+                                                        <span class="step-number">02</span>
+                                                        <span class="step-title">Reposiciones por Zonas</span>
+                                                    </a>
+                                                </li>
+
+                                            </ul>
+                                            <div class="tab-content twitter-bs-wizard-tab-content">
+                                                <div class="tab-pane active" id="seller-details">
+                                                    <form>
+                                                        <div class="row">
+                                                            <div class="col-lg-6">
+                                                                <div class="mb-3">
+                                                                    <label class="form-label" for="basicpill-firstname-input">Nombre</label>
+                                                                    <input type="text" value="Arroz Integral" class="form-control" id="basicpill-firstname-input">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-6">
+                                                                <div class="mb-3">
+                                                                    <label for="category" >Categoría</label>
+                                                                    <select id="category" class="form-select">
+                                                                        <option disabled>--Selecciona una categoría--</option>
+                                                                        <option value="AE">Ropa Masculina</option>
+                                                                        <option value="VI">Ropa Femenina</option>
+                                                                        <option value="MC" selected>Electrónica</option>
+                                                                        <option value="DI">Muebles</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="row">
+                                                            <div class="col-lg-2">
+                                                                <div class="mb-3">
+                                                                    <label class="form-label" for="demo3">Cantidad disponible</label>
+                                                                    <input id="demo3" type="text" value="500" name="demo3">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-3">
+                                                                <div class="mb-3">
+                                                                    <label class="form-label" for="demo2">Costo Unitario</label>
+                                                                    <input id="demo2" type="text" value="0.70" name="demo2" class=" form-control">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-3">
+                                                                <div class="mb-3">
+                                                                    <label class="form-label" for="demo4">Costo de envío C/25 uni.</label>
+                                                                    <input id="demo4" type="text" value="0.08" name="demo4" class=" form-control">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-4">
+                                                                <div class="mb-3">
+                                                                    <label for="proveedor" >Proveedor</label>
+                                                                    <select id="proveedor" class="form-select">
+                                                                        <option disabled>--Seleccione un Proveedor--</option>
+                                                                        <option value="AE">Proveedor A</option>
+                                                                        <option value="VI">Proveedor B</option>
+                                                                        <option value="MC">Proveedor C</option>
+                                                                        <option value="DI">Proveedor D</option>
+                                                                        <option value="DI">Proveedor E</option>
+                                                                        <option value="DI" selected>Proveedor F</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-lg-12">
+                                                                <div class="mb-3">
+                                                                    <label class="form-label" for="autoResizeTextarea">Descripción (Modelos, Colores, especificaciones técnicas, etc.)</label>
+                                                                    <textarea id="autoResizeTextarea" class="form-control" rows="4" style="overflow:hidden;" ></textarea>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                                <div class="tab-pane" id="company-document">
+                                                    <div>
+                                                        <form>
+                                                            <div class="row justify-content-center align-items-center ">
+                                                                <div class="col-lg-4">
+                                                                    <div class="mb-3">
+                                                                        <label class="form-label" for="demo5">ZONA NORTE</label>
+                                                                        <input id="demo5" type="text" value="25" name="demo5">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row justify-content-center align-items-center">
+                                                                <div class="col-lg-4">
+                                                                    <div class="mb-3">
+                                                                        <label class="form-label" for="demo6">ZONA SUR</label>
+                                                                        <input id="demo6" type="text" value="50" name="demo5">
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+                                                            <div class="row justify-content-center align-items-center">
+                                                                <div class="col-lg-4">
+                                                                    <div class="mb-3">
+                                                                        <label class="form-label" for="demo7">ZONA ESTE</label>
+                                                                        <input id="demo7" type="text" value="90" name="demo5">
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+                                                            <div class="row justify-content-center align-items-center">
+                                                                <div class="col-lg-4">
+                                                                    <div class="mb-3">
+                                                                        <label class="form-label" for="demo8">ZONA OESTE</label>
+                                                                        <input id="demo8" type="text" value="80" name="demo5">
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <ul class="pager wizard twitter-bs-wizard-pager-link">
+                                                <li class="previous disabled"><a href="javascript: void(0);">Previous</a></li>
+                                                <li class="next"><a href="javascript: void(0);">Next</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <!-- end row -->
+
+                    </div> <!-- container-fluid -->
+                </div>
+                <!-- End Page-content -->
+                <span th:replace="~{Common/footer :: footerCommon}"></span>
+            </div>
+            <!-- end main content-->
+        </div>
+        <!-- END layout-wrapper -->
+
+
+        <!-- JAVASCRIPT BASE-->
+        <span th:replace="~{Common/jsBase :: js_Base}"></span>
+        <!-- End JAVASCRIPT BASE-->
+        <!-- twitter-bootstrap-wizard js -->
+        <script th:src="@{../libs/twitter-bootstrap-wizard/jquery.bootstrap.wizard.min.js}"></script>
+
+        <script th:src="@{../libs/twitter-bootstrap-wizard/prettify.js}"></script>
+
+        <script th:src="@{../libs/bootstrap-touchspin/jquery.bootstrap-touchspin.min.js}"></script>
+        <script th:src="@{../js/pages/form-advanced.init.js}"></script>
+        <!-- form wizard init -->
+        <script th:src="@{../js/pages/form-wizard.init.js}"></script>
+
+        <script>
+            $(document).ready(function() {
+                $('#demo3').TouchSpin({
+                    initval: 0
+                });
+            });
+            $(document).ready(function() {
+                $("#demo2").TouchSpin({
+                    min: 0,
+                    max: 100000,
+                    step: 0.01,
+                    decimals: 2,
+                    boostat: 5,
+                    maxboostedstep: 10,
+                    prefix: '$'
+                });
+            });
+            $(document).ready(function() {
+                $("#demo4").TouchSpin({
+                    min: 0,
+                    max: 100000,
+                    step: 0.01,
+                    decimals: 2,
+                    boostat: 5,
+                    maxboostedstep: 10,
+                    prefix: '$'
+                });
+            });
+            $(document).ready(function() {
+                $('#demo5').TouchSpin({
+                    initval: 0
+                });
+            });
+            $(document).ready(function() {
+                $('#demo6').TouchSpin({
+                    initval: 0
+                });
+            });
+            $(document).ready(function() {
+                $('#demo7').TouchSpin({
+                    initval: 0
+                });
+            });
+            $(document).ready(function() {
+                $('#demo8').TouchSpin({
+                    initval: 0
+                });
+            });
+            document.addEventListener('DOMContentLoaded', function() {
+                var textarea = document.getElementById('autoResizeTextarea');
+                textarea.addEventListener('input', function() {
+                    this.style.height = 'auto';
+                    this.style.height = (this.scrollHeight) + 'px';
+                });
+            });
+        </script>
+    </body>
+
+</html>

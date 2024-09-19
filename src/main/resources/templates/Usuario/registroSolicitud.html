@@ -1,0 +1,234 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+    
+<!-- Mirrored from themesdesign.in/nazox/layouts/form-validation.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 30 Aug 2024 19:31:50 GMT -->
+<head>
+        
+        <meta charset="utf-8" />
+        <title>Form Validation | Nazox - Admin & Dashboard Template</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta th:replace="~{Common/cssBase :: css_Base}">
+
+</head>
+
+    <body data-sidebar="dark">
+    
+    <!-- <body data-layout="horizontal" data-topbar="dark"> -->
+
+        <!-- Begin page -->
+        <div id="layout-wrapper">
+
+
+            <header th:replace="~{Usuario/fragments/navbar :: nav_bar}"></header>
+
+            <!-- ========== Left Sidebar Start ========== -->
+            <div th:replace="~{Usuario/fragments/sidebar :: side_bar}"></div>
+            <!-- Left Sidebar End -->
+
+            
+
+            <!-- ============================================================== -->
+            <!-- Start right Content here -->
+            <!-- ============================================================== -->
+            <div class="main-content">
+
+                <div class="page-content">
+                    <div class="container-fluid">
+
+                        <!-- start page title -->
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                                    <h4 class="mb-sm-0">Registro de Solicitud</h4>
+
+                                    <div class="page-title-right">
+                                        <ol class="breadcrumb m-0">
+                                            <li class="breadcrumb-item"><a href="javascript: void(0);">Postulación Agente</a></li>
+                                            <li class="breadcrumb-item active">Registrar Solicitud</li>
+                                        </ol>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end page title -->
+                        
+                        <div class="row">
+                            <div class="align-content-center-xl-6">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h4 class="card-title">Formulario de solicitud</h4>
+                                        <p class="card-title-desc">Registra tu solicitud para que el administrador pueda revisarla</p>
+                                        <form class="needs-validation" novalidate>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="mb-3">
+                                                        <label for="validationCustom01" class="form-label">Nombres</label>
+                                                        <input type="text" class="form-control" id="validationCustom01"
+                                                            placeholder="Nombres" required>
+                                                        <div class="valid-feedback">
+                                                            ¡Correcto!
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="mb-3">
+                                                        <label for="validationCustom01" class="form-label">Apellidos</label>
+                                                        <input type="text" class="form-control" id="validationCustom02"
+                                                               placeholder="Apellidos" required>
+                                                        <div class="valid-feedback">
+                                                            ¡Correcto!
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="mb-3">
+                                                        <label for="validationCustom03" class="form-label">Distrito</label>
+                                                        <select class="form-select" id="validationCustom03" required>
+                                                            <option selected disabled value="">Lima</option>
+                                                            <option>...</option>
+                                                        </select>
+                                                        <div class="invalid-feedback">
+                                                            Please select a valid state.
+                                                        </div>
+        
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="mb-3">
+                                                        <label for="validationCustom01" class="form-label">DNI</label>
+                                                        <input type="number" class="form-control" id="validationCustom04"
+                                                               placeholder="DNI" required>
+                                                        <div class="valid-feedback">
+                                                            ¡Correcto!
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <div class="mb-3">
+                                                        <label for="validationCustom01" class="form-label">Dirección</label>
+                                                        <input type="text" class="form-control" id="validationCustom05"
+                                                               placeholder="Dirección" required>
+                                                        <div class="valid-feedback">
+                                                            ¡Correcto!
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="mb-3">
+                                                        <label for="validationCustom06" class="form-label">Correo electrónico</label>
+                                                        <input type="email" class="form-control" id="validationCustom06"
+                                                               placeholder="Correo" required>
+                                                        <div class="valid-feedback">
+                                                            ¡Correcto!
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="mb-3">
+                                                        <label for="validationCustom07" class="form-label">Razón Social</label>
+                                                        <input type="text" class="form-control" id="validationCustom07"
+                                                               placeholder="Razón Social" required>
+                                                        <div class="invalid-feedback">
+                                                            Please provide a valid zip.
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <div class="mb-3">
+                                                        <label for="validationCustom08" class="form-label">Teléfono</label>
+                                                        <input type="number" class="form-control" id="validationCustom08"
+                                                               placeholder="Teléfono" required>
+                                                        <div class="valid-feedback">
+                                                            ¡Correcto!
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="mb-3">
+                                                        <label for="validationCustom09" class="form-label">Código de Jurisdicción</label>
+                                                        <input type="text" class="form-control" id="validationCustom09"
+                                                               placeholder="Codigo de jurisdiccion" required>
+                                                        <div class="valid-feedback">
+                                                            ¡Correcto!
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="mb-3">
+                                                        <label for="validationCustom10" class="form-label">Código de despachador de Aduanas</label>
+                                                        <input type="text" class="form-control" id="validationCustom10"
+                                                               placeholder="Codigo" required>
+                                                        <div class="invalid-feedback">
+                                                            Please provide a valid zip.
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                            <div>
+                                                <a href="#" class="btn btn-primary">Registrar</a>
+                                                <a href="/usuario/inicio" class="btn btn-danger">Cancelar</a>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <!-- end card -->
+                            </div> <!-- end col -->
+        
+                        </div>
+                        <!-- end row -->
+                        
+
+                    </div> <!-- container-fluid -->
+                </div>
+                <!-- End Page-content -->
+                
+                <footer class="footer">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <script>document.write(new Date().getFullYear())</script> © Nazox.
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="text-sm-end d-none d-sm-block">
+                                    Crafted with <i class="mdi mdi-heart text-danger"></i> by Themesdesign
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+                
+            </div>
+            <!-- end main content-->
+
+        </div>
+        <!-- END layout-wrapper -->
+
+        <!-- Right Sidebar -->
+        <!-- /Right-bar -->
+
+        <!-- Right bar overlay-->
+        <div class="rightbar-overlay"></div>
+
+        <!-- JAVASCRIPT -->
+        <span th:replace="~{Common/jsBase :: js_Base}"></span>
+
+    </body>
+
+<!-- Mirrored from themesdesign.in/nazox/layouts/form-validation.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 30 Aug 2024 19:31:51 GMT -->
+</html>

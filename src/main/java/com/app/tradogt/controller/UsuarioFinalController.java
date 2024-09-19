@@ -19,6 +19,9 @@ public class UsuarioFinalController {
         return "Usuario/listaOrdenes";
     }
 
+    @GetMapping("/perfil")
+    public String verPerfil(){return "Usuario/profile_user";}
+
     @GetMapping("/editarOrdenes")
     public String formularioPedido() {
         return "Usuario/formOrdenes";
@@ -31,37 +34,37 @@ public class UsuarioFinalController {
 
     @GetMapping("/categoriaMujer")
     public String showMujerCategoria() {
-        return "usuario/CategoriaMujer-usuario";
+        return "Usuario/CategoriaMujer-usuario";
     }
     @GetMapping("/categoriaHombre")
     public String showHombreCategoria() {
-        return "usuario/CategoriaHombre-usuario";
+        return "Usuario/CategoriaHombre-usuario";
     }
     @GetMapping("/categoriaTecnologia")
     public String showTecnologiaCategoria() {
-        return "usuario/CategoriaTecnologia-usuario";
+        return "Usuario/CategoriaTecnologia-usuario";
     }
     @GetMapping("/categoriaMuebles")
     public String showMuebleCategoria() {
-        return "usuario/CategoriaMuebles-usuario";
+        return "Usuario/CategoriaMuebles-usuario";
     }
 
     @GetMapping("/productoDetalles")
     public String showproductoDetalles() {
-        return "usuario/producto-detalles";}
+        return "Usuario/producto-detalles";}
 
     @GetMapping("/carrito")
     public String showcarrito() {
-        return "usuario/carrito-usuario";
+        return "Usuario/carrito-usuario";
     }
 
     @GetMapping("/checkout")
     public String showcheckout() {
-        return "usuario/billing-info-usuario";
+        return "Usuario/billing-info-usuario";
     }
     @GetMapping("/ordenCompra")
     public String showordenCompra() {
-        return "usuario/orden-compra-usuario";
+        return "Usuario/orden-compra-usuario";
     }
     @GetMapping("/foro")
     public String showForo() {
@@ -76,24 +79,14 @@ public class UsuarioFinalController {
     public String showForoProblema() {
         return "Usuario/problema-soluciones";
     }
-    @GetMapping("/detalleForo")
-    public String detalleForo() {
-        return "Usuario/viewForo";
-    }
-    @GetMapping("/detalleConsulta")
-    public String detalleConsulta() {
-        return "Usuario/viewConsulta";
-    }
-    @GetMapping("/detalleProblema")
-    public String detalleProblema() {
-        return "Usuario/viewProblema";
-    }
-    @GetMapping("/nuevaConsulta")
-    public String nuevaConsulta() {
-        return "Usuario/nuevaConsulta";
-    }
-    @GetMapping("/nuevaResena")
-    public String nuevaResena() {
-        return "Usuario/nuevaResena";
+
+    @GetMapping("/solicitud")
+    public String vistaPostulacion() {return "Usuario/postulacion";}
+
+    @GetMapping("/registro")
+    public String registroPostulacion() {return "Usuario/registroSolicitud";}
+    @GetMapping("/contraseña")
+    public  String showpassword(){
+        return "Usuario/password-usuario";
     }
 }
