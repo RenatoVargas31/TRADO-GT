@@ -1,14 +1,17 @@
 <!doctype html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
 
 <head>
     <meta charset="utf-8" />
     <title>Inicio</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- CSS BASE -->
-    <meta th:replace="~{Common/cssBase :: css_Base}">
+    <div th:replace="~{Common/cssBase :: css_Base}"></div>
     <!-- End CSS BASE -->
 </head>
+
 
 <body data-sidebar="dark">
 
@@ -39,7 +42,7 @@
                                 <div class="page-title-right">
                                     <ol class="breadcrumb m-0">
                                         <li class="breadcrumb-item"><a href="javascript: void(0);">Foro</a></li>
-                                        <li class="breadcrumb-item active">Pagina Principal</li>
+                                        <li class="breadcrumb-item active">Reseñas</li>
                                     </ol>
                                 </div>
 
@@ -53,19 +56,122 @@
                                 <div class="chat-leftsidebar">
 
                                     <div class="chat-leftsidebar-nav">
-                                        <ul class="nav nav-pills nav-justified">
-                                            <li class="nav-item">
-                                                <a href="#chat" data-bs-toggle="tab" aria-expanded="true" class="nav-link active">
-                                                    <i class="ri-add-line font-size-20 mt-3"></i>
+                                        <div class="p-4">
+                                        <div class="card-body border-top">
+                                            <div>
+                                                <div style="border: 2px solid #ccc; border-radius: 8px; padding: 10px; background-color: #f9f9f9;">
+                                                    <h5 class="font-size-14 mb-0">
+                                                        <a href="#collapseExample1" class="text-reset d-block" data-bs-toggle="collapse">
+                                                            Agregar nuevo comentario
+                                                            <i class="mdi mdi-plus float-end accor-plus-icon"></i>
+                                                        </a>
+                                                    </h5>
+                                                </div>
 
-                                                    <span class="mt-2 d-none d-sm-block">Agregar nuevo comentario</span>
-                                                </a>
-                                            </li>
+
+                                                <div class="collapse" id="collapseExample1">
+                                                    <div class="custom-accordion">
+                                                        <div class="mt-4">
+                                                            <ul class="nav nav-pills flex-column">
 
 
-                                        </ul>
+                                                                <li class="nav-item mb-3">
+                                                                    <a href="#" class="btn btn-link d-flex align-items-center text-primary" data-bs-toggle="modal" data-bs-target="#exampleModalCenter2">
+                                                                        <i class="bi bi-chat-right-text font-size-20 me-2"></i>  <span class="mx-2">Agregar nueva reseña</span>
+                                                                    </a>
+                                                                </li>
+                                                                <!-- Modal -->
+                                                                <div class="modal fade" id="exampleModalCenter2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                                                    <div class="modal-dialog modal-lg">
+                                                                        <div class="modal-content">
+                                                                            <div class="modal-header">
+                                                                                <h5 class="modal-title" id="exampleModalCenterTitle2">Agregar nueva reseña</h5>
+                                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                            </div>
+                                                                            <form id="consultaForm2">
+                                                                                <div class="modal-body">
+                                                                                    <!-- Campos del formulario -->
+                                                                                    <div class="mb-3 col-md-12">
+                                                                                        <label class="form-label fw-bolder fs-5">Ingrese un título *</label>
+                                                                                        <input type="text" class="form-control" name="titulo" placeholder="Ingrese el título aquí" maxlength="25" required>
+                                                                                        <small class="form-text text-muted">Ingrese un máximo de 25 caracteres</small>
+                                                                                    </div>
+                                                                                    <div class="mb-3 col-md-12">
+                                                                                        <label class="form-label fw-bolder fs-5">¿Cómo calificaría la calidad del producto? ¿Lo recomienda?</label>
+                                                                                        <textarea class="form-control" name="cuerpo" rows="5" placeholder="Ingrese el cuerpo de la publicación aquí" maxlength="250"></textarea>
+                                                                                        <small class="form-text text-muted">Ingrese un máximo de 250 caracteres</small>
+                                                                                    </div>
+                                                                                    <div class="mb-3 col-md-12">
+                                                                                        <label class="form-label fw-bolder fs-5">¿Cómo calificaría el tiempo de entrega del pedido?</label>
+
+                                                                                        <small class="form-text text-muted">Ingrese un máximo de 25 caracteres</small>
+                                                                                    </div>
+                                                                                    <div class="mb-3 col-md-12">
+                                                                                        <label class="form-label fw-bolder fs-5">¿Cómo calificaría la atención del agente?</label>
+
+                                                                                        <small class="form-text text-muted">Ingrese un máximo de 25 caracteres</small>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="modal-footer">
+                                                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                                                                    <button type="submit" class="btn btn-primary">Publicar</button>
+                                                                                </div>
+                                                                            </form>
+                                                                        </div><!-- /.modal-content -->
+                                                                    </div><!-- /.modal-dialog -->
+                                                                </div>
+
+
+                                                                <li class="nav-item mb-3">
+                                                                    <a href="#" class="btn btn-link d-flex align-items-center text-primary" data-bs-toggle="modal" data-bs-target="#exampleModalCenter">
+                                                                        <i class="bi bi-question-circle font-size-20 me-2"></i>   <span class="mx-2">Agregar nueva consulta</span>
+                                                                    </a>
+                                                                </li>
+                                                                <!-- Modal -->
+                                                                <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                                                    <div class="modal-dialog modal-lg">
+                                                                        <div class="modal-content">
+                                                                            <div class="modal-header">
+                                                                                <h5 class="modal-title" id="exampleModalCenterTitle">Agregar nueva consulta</h5>
+                                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                            </div>
+                                                                            <form id="consultaForm">
+                                                                                <div class="modal-body">
+                                                                                    <!-- Campos del formulario -->
+                                                                                    <div class="mb-3 col-md-12">
+                                                                                        <label class="form-label fw-bolder fs-5">Ingrese un título *</label>
+                                                                                        <input type="text" class="form-control" name="titulo" placeholder="Ingrese el título aquí" maxlength="25" required>
+                                                                                        <small class="form-text text-muted">Ingrese un máximo de 25 caracteres</small>
+                                                                                    </div>
+                                                                                    <div class="mb-3 col-md-12">
+                                                                                        <label class="form-label fw-bolder fs-5">Ingrese el cuerpo de la publicación</label>
+                                                                                        <textarea class="form-control" name="cuerpo" rows="5" placeholder="Ingrese el cuerpo de la publicación aquí" maxlength="250"></textarea>
+                                                                                        <small class="form-text text-muted">Ingrese un máximo de 250 caracteres</small>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="modal-footer">
+                                                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                                                                    <button type="submit" class="btn btn-primary">Publicar</button>
+                                                                                </div>
+                                                                            </form>
+                                                                        </div><!-- /.modal-content -->
+                                                                    </div><!-- /.modal-dialog -->
+                                                                </div><!-- /.modal -->
+
+                                                            </ul>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+
+
+                                            </div>
+                                        </div>
                                     </div>
-                                    <hr class="mt-4 mb-1">
+
+
+                                    </div>
+                                    <hr class="mt-2 mb-1">
                                     <div class="tab-content py-3    ">
                                         <div class="tab-pane show active" id="chat">
                                             <div>

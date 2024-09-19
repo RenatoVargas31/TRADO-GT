@@ -1,5 +1,6 @@
 <!doctype html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 
 <head>
     <meta charset="utf-8" />
@@ -54,17 +55,41 @@
 
 
                         <div class="chat-leftsidebar-nav">
-                            <ul class="nav nav-pills nav-justified">
-                                <li class="nav-item">
-                                    <a href="#chat" data-bs-toggle="tab" aria-expanded="true" class="nav-link active">
-                                        <i class="ri-add-line font-size-20 mt-3"></i>
+                            <div class="p-4">
+                                <div class="card-body border-top">
+                                    <div>
+                                        <h5 class="font-size-14 mb-0">
+                                            <a href="#collapseExample1" class="text-reset d-block" data-bs-toggle="collapse">
+                                                Agregar nuevo comentario
+                                                <i class="mdi mdi-plus float-end accor-plus-icon"></i>
+                                            </a>
+                                        </h5>
 
-                                        <span class="mt-2 d-none d-sm-block">Agregar nuevo comentario</span>
-                                    </a>
-                                </li>
+                                        <div class="collapse" id="collapseExample1">
+                                            <div class="custom-accordion">
+                                                <div class="mt-4">
+                                                    <ul class="nav nav-pills flex-column">
+                                                        <li class="nav-item mb-3">
+                                                            <a href="/usuario/foro/nuevaResena" aria-expanded="true" class="nav-link d-flex align-items-center">
+                                                                <i class="bi bi-chat-right-text font-size-20 me-2"></i>
+                                                                <span class="mx-2">Agregar nueva reseña</span>
+                                                            </a>
+                                                        </li>
+                                                        <li class="nav-item">
+                                                            <a href="/usuario/foro/nuevaConsulta" aria-expanded="true" class="nav-link d-flex align-items-center">
+                                                                <i class="bi bi-question-circle font-size-20 me-2"></i>
+                                                                <span class="mx-2">Agregar nueva consulta</span>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
 
 
-                            </ul>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <hr class="mt-4 mb-1">
 
@@ -333,15 +358,14 @@
                                                         <div class="conversation-name">Manuel Yarlewhat</div>
                                                         <div class="ctext-wrap-content">
                                                             <p class="mb-0">
-                                                               La calidad del producto es inferior a la esperada ¿Cómo puedo reclamar?</p>
-
+                                                                Mi pago fue rechazado. ¿Qué puedo hacer?
                                                         </div>
                                                         <p class="chat-time mb-0"><i class="mdi mdi-clock-outline align-middle me-1"></i> 11:11</p>
                                                     </div>
 
                                                     <!-- Icono de ojo al lado derecho del mensaje -->
                                                     <div class="eye-icon">
-                                                        <a href="usuario/foroConsultas" title="Ver más detalles">
+                                                        <a href="/usuario/detalleProblema" title="Ver más detalles">
                                                             <i class="mdi mdi-eye" style="font-size: 20px;"></i>
                                                         </a>
                                                     </div>
@@ -369,7 +393,7 @@
 
                                                     <!-- Icono de ojo al lado derecho del mensaje -->
                                                     <div class="eye-icon">
-                                                        <a href="usuario/foroConsultas" title="Ver más detalles">
+                                                        <a href="/usuario/detalleProblema" title="Ver más detalles">
                                                             <i class="mdi mdi-eye" style="font-size: 20px;"></i>
                                                         </a>
                                                     </div>
@@ -396,7 +420,7 @@
 
                                                     <!-- Icono de ojo al lado derecho del mensaje -->
                                                     <div class="eye-icon">
-                                                        <a href="usuario/foroConsultas" title="Ver más detalles">
+                                                        <a href="/usuario/detalleProblema" title="Ver más detalles">
                                                             <i class="mdi mdi-eye" style="font-size: 20px;"></i>
                                                         </a>
                                                     </div>
@@ -415,12 +439,12 @@
                                 <div class="row">
                                     <div class="col">
                                         <div class="position-relative">
-                                            <input type="text" class="form-control chat-input" placeholder="Escribir consulta...">
+                                            <input type="text" class="form-control chat-input" placeholder="Escribir problema...">
 
                                         </div>
                                     </div>
                                     <div class="col-auto">
-                                        <button type="submit" class="btn btn-primary chat-send w-md waves-effect waves-light"><span class="d-none d-sm-inline-block me-2">Send</span> <i class="mdi mdi-send"></i></button>
+                                        <button type="submit" class="btn btn-primary chat-send w-md waves-effect waves-light"><span class="d-none d-sm-inline-block me-2">Enviar</span> <i class="mdi mdi-send"></i></button>
                                     </div>
                                 </div>
                             </div>
