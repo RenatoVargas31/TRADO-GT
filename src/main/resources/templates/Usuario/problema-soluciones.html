@@ -58,31 +58,164 @@
                             <div class="p-4">
                                 <div class="card-body border-top">
                                     <div>
-                                        <h5 class="font-size-14 mb-0">
-                                            <a href="#collapseExample1" class="text-reset d-block" data-bs-toggle="collapse">
-                                                Agregar nuevo comentario
-                                                <i class="mdi mdi-plus float-end accor-plus-icon"></i>
-                                            </a>
-                                        </h5>
+                                        <div style="border: 2px solid #ccc; border-radius: 8px; padding: 10px; background-color: #f9f9f9;">
+                                            <h5 class="font-size-14 mb-0">
+                                                <a href="#collapseExample1" class="text-reset d-block" data-bs-toggle="collapse">
+                                                    Agregar nuevo comentario
+                                                    <i class="mdi mdi-plus float-end accor-plus-icon"></i>
+                                                </a>
+                                            </h5>
+                                        </div>
+
 
                                         <div class="collapse" id="collapseExample1">
                                             <div class="custom-accordion">
                                                 <div class="mt-4">
                                                     <ul class="nav nav-pills flex-column">
+
+
                                                         <li class="nav-item mb-3">
-                                                            <a href="/usuario/foro/nuevaResena" aria-expanded="true" class="nav-link d-flex align-items-center">
-                                                                <i class="bi bi-chat-right-text font-size-20 me-2"></i>
-                                                                <span class="mx-2">Agregar nueva reseña</span>
+                                                            <a href="#" class="btn btn-link d-flex align-items-center text-primary" data-bs-toggle="modal" data-bs-target="#exampleModalCenter2">
+                                                                <i class="bi bi-chat-right-text font-size-20 me-2"></i>  <span class="mx-2">Agregar nueva reseña</span>
                                                             </a>
                                                         </li>
-                                                        <li class="nav-item">
-                                                            <a href="/usuario/foro/nuevaConsulta" aria-expanded="true" class="nav-link d-flex align-items-center">
-                                                                <i class="bi bi-question-circle font-size-20 me-2"></i>
-                                                                <span class="mx-2">Agregar nueva consulta</span>
+                                                        <!-- Modal -->
+                                                        <div class="modal fade" id="exampleModalCenter2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                                            <div class="modal-dialog modal-lg">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title" id="exampleModalCenterTitle2">Agregar nueva reseña</h5>
+                                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                    </div>
+                                                                    <form id="consultaForm2">
+                                                                        <div class="modal-body">
+                                                                            <!-- Campos del formulario -->
+                                                                            <div class="mb-3 col-md-12">
+                                                                                <label class="form-label fw-bolder fs-5">Ingrese un título *</label>
+                                                                                <input type="text" class="form-control" name="titulo" placeholder="Ingrese el título aquí" maxlength="25" required>
+                                                                                <small class="form-text text-muted">Ingrese un máximo de 25 caracteres</small>
+                                                                            </div>
+                                                                            <div class="mb-3 col-md-12">
+                                                                                <label class="form-label fw-bolder fs-5">¿Cómo calificaría la calidad del producto? ¿Lo recomienda?</label>
+                                                                                <textarea class="form-control" name="cuerpo" rows="5" placeholder="Ingrese el cuerpo de la publicación aquí" maxlength="250"></textarea>
+                                                                                <small class="form-text text-muted">Ingrese un máximo de 250 caracteres</small>
+                                                                            </div>
+                                                                            <div class="mb-3 col-md-12">
+                                                                                <label class="form-label fw-bolder fs-5">¿Cómo calificaría el tiempo de entrega del pedido?</label>
+
+                                                                                <!-- Contenedor para las estrellas -->
+                                                                                <div class="rating">
+                                                                                    <input type="radio" id="star5" name="rating" value="5" />
+                                                                                    <label for="star5" title="5 estrellas">
+                                                                                        <i class="bi bi-star-fill text-warning"></i>
+                                                                                    </label>
+
+                                                                                    <input type="radio" id="star4" name="rating" value="4" />
+                                                                                    <label for="star4" title="4 estrellas">
+                                                                                        <i class="bi bi-star-fill text-warning"></i>
+                                                                                    </label>
+
+                                                                                    <input type="radio" id="star3" name="rating" value="3" />
+                                                                                    <label for="star3" title="3 estrellas">
+                                                                                        <i class="bi bi-star-fill text-warning"></i>
+                                                                                    </label>
+
+                                                                                    <input type="radio" id="star2" name="rating" value="2" />
+                                                                                    <label for="star2" title="2 estrellas">
+                                                                                        <i class="bi bi-star-fill text-warning"></i>
+                                                                                    </label>
+
+                                                                                    <input type="radio" id="star1" name="rating" value="1" />
+                                                                                    <label for="star1" title="1 estrella">
+                                                                                        <i class="bi bi-star-fill text-warning"></i>
+                                                                                    </label>
+                                                                                </div>
+
+                                                                                <small class="form-text text-muted">Seleccione una calificación de 1 a 5 estrellas</small>
+                                                                            </div>
+                                                                            <div class="mb-3 col-md-12">
+                                                                                <label class="form-label fw-bolder fs-5">¿Cómo calificaría la atención del agente?</label>
+
+                                                                                <!-- Contenedor para las estrellas -->
+                                                                                <div class="rating">
+                                                                                    <input type="radio" id="agent-star5" name="agent-rating" value="5" />
+                                                                                    <label for="agent-star5" title="5 estrellas">
+                                                                                        <i class="bi bi-star-fill text-warning"></i>
+                                                                                    </label>
+
+                                                                                    <input type="radio" id="agent-star4" name="agent-rating" value="4" />
+                                                                                    <label for="agent-star4" title="4 estrellas">
+                                                                                        <i class="bi bi-star-fill text-warning"></i>
+                                                                                    </label>
+
+                                                                                    <input type="radio" id="agent-star3" name="agent-rating" value="3" />
+                                                                                    <label for="agent-star3" title="3 estrellas">
+                                                                                        <i class="bi bi-star-fill text-warning"></i>
+                                                                                    </label>
+
+                                                                                    <input type="radio" id="agent-star2" name="agent-rating" value="2" />
+                                                                                    <label for="agent-star2" title="2 estrellas">
+                                                                                        <i class="bi bi-star-fill text-warning"></i>
+                                                                                    </label>
+
+                                                                                    <input type="radio" id="agent-star1" name="agent-rating" value="1" />
+                                                                                    <label for="agent-star1" title="1 estrella">
+                                                                                        <i class="bi bi-star-fill text-warning"></i>
+                                                                                    </label>
+                                                                                </div>
+
+                                                                                <small class="form-text text-muted">Seleccione una calificación de 1 a 5 estrellas</small>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                                                            <button type="submit" class="btn btn-primary">Publicar</button>
+                                                                        </div>
+                                                                    </form>
+                                                                </div><!-- /.modal-content -->
+                                                            </div><!-- /.modal-dialog -->
+                                                        </div>
+
+
+                                                        <li class="nav-item mb-3">
+                                                            <a href="#" class="btn btn-link d-flex align-items-center text-primary" data-bs-toggle="modal" data-bs-target="#exampleModalCenter">
+                                                                <i class="bi bi-question-circle font-size-20 me-2"></i>   <span class="mx-2">Agregar nueva consulta</span>
                                                             </a>
                                                         </li>
+                                                        <!-- Modal -->
+                                                        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                                            <div class="modal-dialog modal-lg">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title" id="exampleModalCenterTitle">Agregar nueva consulta</h5>
+                                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                    </div>
+                                                                    <form id="consultaForm">
+                                                                        <div class="modal-body">
+                                                                            <!-- Campos del formulario -->
+                                                                            <div class="mb-3 col-md-12">
+                                                                                <label class="form-label fw-bolder fs-5">Ingrese un título *</label>
+                                                                                <input type="text" class="form-control" name="titulo" placeholder="Ingrese el título aquí" maxlength="25" required>
+                                                                                <small class="form-text text-muted">Ingrese un máximo de 25 caracteres</small>
+                                                                            </div>
+                                                                            <div class="mb-3 col-md-12">
+                                                                                <label class="form-label fw-bolder fs-5">Ingrese el cuerpo de la publicación</label>
+                                                                                <textarea class="form-control" name="cuerpo" rows="5" placeholder="Ingrese el cuerpo de la publicación aquí" maxlength="250"></textarea>
+                                                                                <small class="form-text text-muted">Ingrese un máximo de 250 caracteres</small>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                                                            <button type="submit" class="btn btn-primary">Publicar</button>
+                                                                        </div>
+                                                                    </form>
+                                                                </div><!-- /.modal-content -->
+                                                            </div><!-- /.modal-dialog -->
+                                                        </div><!-- /.modal -->
+
                                                     </ul>
                                                 </div>
+
                                             </div>
                                         </div>
 
