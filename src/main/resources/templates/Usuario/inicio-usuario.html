@@ -129,8 +129,6 @@
             background: none; /* Fondo transparente */
         }
 
-
-
     </style>}
 
 
@@ -171,7 +169,7 @@
                                 <div class="card-header">
                                     <h2 class="card-title"><b>Últimos Lanzamientos</b></h2>
                                 </div>
-                                <div class="card-body">
+                                <div class="card-body" style="background-color: white"> <!--Carrusel -->
                                     <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
                                         <div class="carousel-inner">
                                             <!-- Primer grupo de imágenes -->
@@ -251,55 +249,280 @@
                                 <div class="card-header">
                                     <h2 class="card-title"><b>Categorías</b></h2>
                                 </div>
-                                <div class="card-body">
-                                    <div class="row justify-content-center">
-                                        <!-- Categoría: Moda Femenina -->
-                                        <div class="col-6 col-md-3 d-flex flex-column align-items-center text-center">
-                                            <div class="mt-4 mt-md-0">
-                                                <a href="/usuario/categoriaMujer">
-                                                    <img class="rounded-circle avatar-md img-fluid" alt="200x200" th:src="@{../images/users/avatar-4.jpg}" data-holder-rendered="true">
-                                                </a>
+                                <div class="card-body" style="background-color: snow">
+                                    <div id="carouselExample2" class="carousel slide" data-bs-ride="carousel">
+                                        <div class="carousel-inner">
+                                            <!-- Primer grupo de categorías - Moda Femenina -->
+                                            <div class="carousel-item active">
+                                                <div class="row text-end">
+                                                    <div class="col-3 col-md-2">
+                                                        <a href="/usuario/categoriaMujer">
+                                                            <img class="rounded-circle avatar-md img-fluid" alt="Blusas" th:src="@{../images/modaFemenina/blusa.jpeg}">
+                                                        </a>
+                                                        <div class="mt-2">
+                                                            <p>Blusas</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-3 col-md-2">
+                                                        <a href="/usuario/categoriaMujer">
+                                                            <img class="rounded-circle avatar-md img-fluid" alt="Short Mujer" th:src="@{../images/modaFemenina/short.jpeg}">
+                                                        </a>
+                                                        <div class="mt-2">
+                                                            <p>Short (Mujer)</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-3 col-md-2">
+                                                        <a href="/usuario/categoriaMujer">
+                                                            <img class="rounded-circle avatar-md img-fluid" alt="Polera Mujer" th:src="@{../images/modaFemenina/polera.jpg}">
+                                                        </a>
+                                                        <div class="mt-2">
+                                                            <p>Polera (Mujer)</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-3 col-md-2">
+                                                        <a href="/usuario/categoriaMujer">
+                                                            <img class="rounded-circle avatar-md img-fluid img-centered" alt="Pantalones Mujer" th:src="@{../images/modaFemenina/pantalon.jpg}">
+                                                        </a>
+                                                        <div class="mt-2">
+                                                            <p>Pantalones (Mujer)</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-3 col-md-2">
+                                                        <a href="/usuario/categoriaMujer">
+                                                            <img class="rounded-circle avatar-md img-fluid" alt="Vestidos" th:src="@{../images/modaFemenina/vestido.jpeg}">
+                                                        </a>
+                                                        <div class="mt-2">
+                                                            <p>Vestidos</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div class="mt-2">
-                                                <p>Moda femenina</p>
+
+                                            <!-- Segundo grupo de categorías - Moda Masculina -->
+                                            <div class="carousel-item">
+                                                <div class="row text-end">
+                                                    <div class="col-6 col-md-2">
+                                                        <a href="/usuario/categoriaHombre">
+                                                            <img class="rounded-circle avatar-md img-fluid" alt="Polos Hombre" th:src="@{../images/modaMasculina/polo.jpeg}">
+                                                        </a>
+                                                        <div class="mt-2">
+                                                            <p>Polos (Hombre)</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6 col-md-2">
+                                                        <a href="/usuario/categoriaHombre">
+                                                            <img class="rounded-circle avatar-md img-fluid" alt="Camisas Hombre" th:src="@{../images/modaMasculina/camisa.jpeg}">
+                                                        </a>
+                                                        <div class="mt-2">
+                                                            <p>Camisas (Hombre)</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6 col-md-2">
+                                                        <a href="/usuario/categoriaHombre">
+                                                            <img class="rounded-circle avatar-md img-fluid" alt="Poleras Hombre" th:src="@{../images/modaMasculina/polera.jpg}">
+                                                        </a>
+                                                        <div class="mt-2">
+                                                            <p>Poleras (Hombre)</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6 col-md-2">
+                                                        <a href="/usuario/categoriaHombre">
+                                                            <img class="rounded-circle avatar-md img-fluid" alt="Chompas Hombre" th:src="@{../images/modaMasculina/chompa.jpeg}">
+                                                        </a>
+                                                        <div class="mt-2">
+                                                            <p>Chompas (Hombre)</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6 col-md-2">
+                                                        <a href="/usuario/categoriaHombre">
+                                                            <img class="rounded-circle avatar-md img-fluid" alt="Pantalones Hombre" th:src="@{../images/modaMasculina/pantalon.jpg}">
+                                                        </a>
+                                                        <div class="mt-2">
+                                                            <p>Pantalones (Hombre)</p>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+                                            <!-- Tercer grupo de categorías - Tecnología -->
+                                            <div class="carousel-item">
+                                                <div class="row text-end">
+                                                    <div class="col-6 col-md-2">
+                                                        <a href="/usuario/categoriaTecnologia">
+                                                            <img class="rounded-circle avatar-md img-fluid" alt="Auriculares" th:src="@{../images/tecnologia/audifono.jpeg}">
+                                                        </a>
+                                                        <div class="mt-2">
+                                                            <p>Auriculares</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6 col-md-2">
+                                                        <a href="/usuario/categoriaTecnologia">
+                                                            <img class="rounded-circle avatar-md img-fluid" alt="Celulares" th:src="@{../images/tecnologia/celular.jpeg}">
+                                                        </a>
+                                                        <div class="mt-2">
+                                                            <p>Celulares</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6 col-md-2">
+                                                        <a href="/usuario/categoriaTecnologia">
+                                                            <img class="rounded-circle avatar-md img-fluid" alt="Tablets" th:src="@{../images/tecnologia/tablet.jpeg}">
+                                                        </a>
+                                                        <div class="mt-2">
+                                                            <p>Tablets</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6 col-md-2">
+                                                        <a href="/usuario/categoriaTecnologia">
+                                                            <img class="rounded-circle avatar-md img-fluid" alt="Laptops" th:src="@{../images/tecnologia/laptop.jpeg}">
+                                                        </a>
+                                                        <div class="mt-2">
+                                                            <p>Laptops</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6 col-md-2">
+                                                        <a href="/usuario/categoriaTecnologia">
+                                                            <img class="rounded-circle avatar-md img-fluid" alt="Computadoras" th:src="@{../images/tecnologia/pc.jpeg}">
+                                                        </a>
+                                                        <div class="mt-2">
+                                                            <p>Computadoras</p>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+                                            <!-- Cuarto grupo de categorías - Muebles -->
+                                            <div class="carousel-item">
+                                                <div class="row text-end">
+                                                    <div class="col-6 col-md-2">
+                                                        <a href="/usuario/categoriaMuebles">
+                                                            <img class="rounded-circle avatar-md img-fluid" alt="Comedores" th:src="@{../images/mueblesHogar/comedor.jpeg}">
+                                                        </a>
+                                                        <div class="mt-2">
+                                                            <p>Juego de Comedor</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6 col-md-2">
+                                                        <a href="/usuario/categoriaMuebles">
+                                                            <img class="rounded-circle avatar-md img-fluid" alt="Sillones" th:src="@{../images/mueblesHogar/sillon.jpeg}">
+                                                        </a>
+                                                        <div class="mt-2">
+                                                            <p>Sillones</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6 col-md-2">
+                                                        <a href="/usuario/categoriaMuebles">
+                                                            <img class="rounded-circle avatar-md img-fluid" alt="Armarios" th:src="@{../images/mueblesHogar/armario.jpeg}">
+                                                        </a>
+                                                        <div class="mt-2">
+                                                            <p>Armarios</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6 col-md-2">
+                                                        <a href="/usuario/categoriaMuebles">
+                                                            <img class="rounded-circle avatar-md img-fluid" alt="Literas" th:src="@{../images/mueblesHogar/Literas.jpeg}">
+                                                        </a>
+                                                        <div class="mt-2">
+                                                            <p>Literas</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6 col-md-2">
+                                                        <a href="/usuario/categoriaMuebles">
+                                                            <img class="rounded-circle avatar-md img-fluid" alt="Estantes" th:src="@{../images/mueblesHogar/Estante.jpeg}">
+                                                        </a>
+                                                        <div class="mt-2">
+                                                            <p>Estantes</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
 
-                                        <!-- Categoría: Moda Masculina -->
-                                        <div class="col-6 col-md-3 d-flex flex-column align-items-center text-center">
-                                            <div class="mt-4 mt-md-0">
-                                                <a href="/usuario/categoriaHombre">
-                                                    <img class="rounded-circle avatar-md img-fluid" alt="200x200" th:src="@{../images/users/avatar-3.jpg}" data-holder-rendered="true">
-                                                </a>
-                                            </div>
-                                            <div class="mt-2">
-                                                <p>Moda masculina</p>
-                                            </div>
-                                        </div>
 
-                                        <!-- Categoría: Equipos Tecnológicos -->
-                                        <div class="col-6 col-md-3 d-flex flex-column align-items-center text-center">
-                                            <div class="mt-4 mt-md-0">
-                                                <a href="/usuario/categoriaTecnologia">
-                                                    <img class="rounded-circle avatar-md img-fluid" alt="200x200" th:src="@{../images/equipostecnologicos.jpg}" data-holder-rendered="true">
-                                                </a>
-                                            </div>
-                                            <div class="mt-2">
-                                                <p>Equipos tecnológicos</p>
-                                            </div>
-                                        </div>
+                                        <!-- Controles del carrusel -->
+                                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample2" data-bs-slide="prev">
+                                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                            <span class="visually-hidden">Anterior</span>
+                                        </button>
+                                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExample2" data-bs-slide="next">
+                                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                            <span class="visually-hidden">Siguiente</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-                                        <!-- Categoría: Muebles para el Hogar -->
-                                        <div class="col-6 col-md-3 d-flex flex-column align-items-center text-center">
-                                            <div class="mt-4 mt-md-0">
-                                                <a href="/usuario/categoriaMuebles">
-                                                    <img class="rounded-circle avatar-md img-fluid" alt="200x200" th:src="@{../images/muebles.jpg}" data-holder-rendered="true">
-                                                </a>
-                                            </div>
-                                            <div class="mt-2">
-                                                <p>Muebles para el Hogar</p>
-                                            </div>
-                                        </div>
+                    <div class="row">
+                        <div class="container">
+                            <div class="col-lg-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h2 class="card-title"><b>Lista de últimos pedidos</b></h2>
+                                    </div>
+                                    <div class="card-body" style="background-color: snow">
+                                        <table id="datatable-historialComportamiento" class="table table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                            <thead>
+                                            <tr>
+                                                <th>Código</th>
+                                                <th>Producto</th>
+                                                <th>Precio</th>
+                                                <th>Cantidad</th>
+                                                <th>Fecha</th>
+                                                <th>Estado</th>
+                                                <th>Agente</th>
+                                                <th>Acción</th>
+                                            </tr>
+                                            </thead>
+
+                                            <tbody>
+                                            <tr>
+                                                <td>#NZ1579</td>
+                                                <td>Crocs de Tiburon</td>
+                                                <td>S/. 25</td>
+                                                <td>30</td>
+                                                <td>01/09/2023</td>
+                                                <td>Creado</td>
+                                                <td> -- </td>
+                                                <td>
+                                                    <a  href="/usuario/tracking" class="btn btn-outline-secondary btn-sm edit" title="Ver" >
+                                                        <i class="fas fa-eye"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>#NZ1346</td>
+                                                <td>Bomber Jacket</td>
+                                                <td>S/. 45</td>
+                                                <td>30</td>
+                                                <td>01/09/2023</td>
+                                                <td>Creado</td>
+                                                <td>Anna Ramirez</td>
+                                                <td>
+                                                    <a  href="/usuario/tracking" class="btn btn-outline-secondary btn-sm edit" title="Ver" >
+                                                        <i class="fas fa-eye"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>#NZ1579</td>
+                                                <td>Crocs de Tiburon</td>
+                                                <td>S/. 25</td>
+                                                <td>30</td>
+                                                <td>01/09/2023</td>
+                                                <td>Creado</td>
+                                                <td> -- </td>
+                                                <td>
+                                                    <a  href="/usuario/tracking" class="btn btn-outline-secondary btn-sm edit" title="Ver" >
+                                                        <i class="fas fa-eye"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
                             </div>
@@ -307,14 +530,13 @@
                     </div>
 
 
-                    <div class="row">
+                    <!--  <div class="row">
                         <div class="container">
                             <div class="card">
                                 <div class="card-body">
                                     <h2 class="card-title"><b>Lista de ultimos pedidos</b></h2>
                                 </div>
                                 <div class="row">
-                                        <!-- Primera fila con 2 columnas -->
                                     <div class="col-md-6">
                                         <div class="card">
                                             <div class="row no-gutters align-items-center">
@@ -354,9 +576,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-
-
+                    </div> -->
                 </div> <!-- container-fluid -->
             </div>
 
@@ -463,7 +683,7 @@
         // Aquí puedes personalizar las respuestas del chatbot
         if (input.toLowerCase().includes("hola")) {
             return "¡Hola! ¿Cómo puedo ayudarte hoy?";
-        } else if (input.toLowerCase().includes("adiós")) {
+        } else if (input.toLowerCase().includes("adios")) {
             return "¡Adiós! Que tengas un buen día.";
         } else {
             return "Lo siento, no entiendo esa pregunta.";
@@ -472,6 +692,25 @@
 
 </script>
 
+<!-- Required datatable js -->
+<script th:src="@{../libs/datatables.net/js/jquery.dataTables.min.js}"></script>
+<script th:src="@{../libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js}"></script>
+<!-- Buttons examples -->
+<script th:src="@{../libs/datatables.net-buttons/js/dataTables.buttons.min.js}"></script>
+<script th:src="@{../libs/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js}"></script>
+<script th:src="@{../libs/jszip/jszip.min.js}"></script>
+<script th:src="@{../libs/pdfmake/build/pdfmake.min.js}"></script>
+<script th:src="@{../libs/pdfmake/build/vfs_fonts.js}"></script>
+<script th:src="@{../libs/datatables.net-buttons/js/buttons.print.min.js}"></script>
+<script th:src="@{../libs/datatables.net-buttons/js/buttons.colVis.min.js}"></script>
+
+<script th:src="@{../libs/datatables.net-keytable/js/dataTables.keyTable.min.js}"></script>
+<script th:src="@{../libs/datatables.net-select/js/dataTables.select.min.js}"></script>
+
+<!-- Responsive examples -->
+<script th:src="@{../libs/datatables.net-responsive/js/dataTables.responsive.min.js}"></script>
+<script th:src="@{../libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js}"></script>
+<script th:src="@{../js/pages/datatables.init.js}"></script>
 
 
 
