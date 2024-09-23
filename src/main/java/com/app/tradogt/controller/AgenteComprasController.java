@@ -64,6 +64,10 @@ public class AgenteComprasController {
     public String showInfoOrderResuelta() {
         return "Agente/detallesResueltasProducto-Agente";
     }
+    @GetMapping("/detailsOrderCancelada")
+    public String showInfoOrderCancelada() {
+        return "Agente/detallesCanceladoProducto-Agente";
+    }
 
 
     //Tableros de USUARIOS

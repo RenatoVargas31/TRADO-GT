@@ -79,10 +79,26 @@ public class UsuarioFinalController {
     public String showForoProblema() {
         return "Usuario/problema-soluciones";
     }
+    @GetMapping("/detalleConsulta")
+    public String showDetalleConsultas() {
+        return "Usuario/viewConsulta";
+    }
+    @GetMapping("/detalleProblema")
+    public String showDetalleProblema() {
+        return "Usuario/viewProblema";
+    }
+    @GetMapping("/detalleForo")
+    public String showDetalleForo() {
+        return "Usuario/viewForo";
+    }
 
     @GetMapping("/solicitud")
     public String vistaPostulacion() {return "Usuario/postulacion";}
 
     @GetMapping("/registro")
     public String registroPostulacion() {return "Usuario/registroSolicitud";}
+    @GetMapping("/contraseña")
+    public  String showpassword(){
+        return "Usuario/password-usuario";
+    }
 }
