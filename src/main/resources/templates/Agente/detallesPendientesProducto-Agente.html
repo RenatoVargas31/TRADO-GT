@@ -49,177 +49,116 @@
                 <!-- end page title -->
 
                 <div class="row">
-                    <!-- Información del Usuario Propietario -->
                     <div class="col-md-8">
+                        <!-- Card 1: Información de la Orden y del Comprador -->
                         <div class="card mb-4">
                             <div class="card-header bg-light d-flex justify-content-between align-items-center">
-                                <h5>Información de importador</h5>
-                                <button class="btn btn-primary btn-sm" id="editButton" onclick="toggleEdit()">Editar</button>
+                                <h5>Información del Comprador y Orden</h5>
+                                <button class="btn btn-primary btn-sm">Editar</button>
                             </div>
-                            <div class="card-body row" id="importerInfo">
-                                <!-- Columna 1 -->
+                            <div class="card-body row">
+                                <!-- Columna izquierda: Datos personales -->
                                 <div class="col">
-                                    <p><strong>Nombre:</strong> <span id="nombreText">Juan Pérez</span></p>
-                                    <p><strong>DNI:</strong> <span id="dniText">73216821</span></p>
-                                    <p><strong>Dirección de envío:</strong> <span id="direccionText">Grimmauld Place 12</span></p>
+                                    <p><strong>Nombre de comprador:</strong> Juan Pérez</p>
+                                    <p><strong>Número DNI:</strong> 73216821</p>
+                                    <p><strong>Domicilio:</strong> Grimmauld Place 12</p>
+                                    <p><strong>Compañía:</strong> Comprador Ltda.</p>
+                                    <p><strong>RUC:</strong> 12867901</p>
+                                    <p><strong>Teléfono:</strong> 990024063</p>
                                 </div>
-                                <!-- Columna 2 -->
+                                <!-- Columna derecha: Información de la orden -->
                                 <div class="col">
-                                    <p><strong>Compañía:</strong> <span id="companiaText">Comprador Ldta.</span></p>
-                                    <p><strong>RUC:</strong> <span id="rucText">12867901</span></p>
-                                    <p><strong>Teléfono:</strong> <span id="telefonoText">990024063</span></p>
+                                    <p><strong>Fecha de la orden:</strong> 2024-09-17</p>
+                                    <p><strong>Número de orden:</strong> ORD123456</p>
+                                    <p><strong>Ciudad, Estado:</strong> Springfield, IL</p>
+                                    <p><strong>Compañía Vendedora:</strong> Vendedor S.A.</p>
+                                    <p><strong>Contacto Vendedor:</strong> Ana Gómez</p>
+                                    <p><strong>Teléfono Vendedor:</strong> 555-1234</p>
                                 </div>
                             </div>
                         </div>
 
-                        <script>
-                            let isEditing = false;
-
-                            function toggleEdit() {
-                                const editButton = document.getElementById('editButton');
-
-                                // Obtener los elementos de texto
-                                const nombreText = document.getElementById('nombreText');
-                                const dniText = document.getElementById('dniText');
-                                const direccionText = document.getElementById('direccionText');
-                                const companiaText = document.getElementById('companiaText');
-                                const rucText = document.getElementById('rucText');
-                                const telefonoText = document.getElementById('telefonoText');
-
-                                if (!isEditing) {
-                                    // Cambiar a modo de edición
-                                    nombreText.innerHTML = `<input type="text" class="form-control" id="nombreInput" value="${nombreText.innerText}">`;
-                                    dniText.innerHTML = `<input type="text" class="form-control" id="dniInput" value="${dniText.innerText}">`;
-                                    direccionText.innerHTML = `<input type="text" class="form-control" id="direccionInput" value="${direccionText.innerText}">`;
-                                    companiaText.innerHTML = `<input type="text" class="form-control" id="companiaInput" value="${companiaText.innerText}">`;
-                                    rucText.innerHTML = `<input type="text" class="form-control" id="rucInput" value="${rucText.innerText}">`;
-                                    telefonoText.innerHTML = `<input type="text" class="form-control" id="telefonoInput" value="${telefonoText.innerText}">`;
-
-                                    editButton.textContent = 'Guardar';
-                                } else {
-                                    // Guardar la información editada
-                                    nombreText.innerHTML = document.getElementById('nombreInput').value;
-                                    dniText.innerHTML = document.getElementById('dniInput').value;
-                                    direccionText.innerHTML = document.getElementById('direccionInput').value;
-                                    companiaText.innerHTML = document.getElementById('companiaInput').value;
-                                    rucText.innerHTML = document.getElementById('rucInput').value;
-                                    telefonoText.innerHTML = document.getElementById('telefonoInput').value;
-
-                                    editButton.textContent = 'Editar';
-                                }
-
-                                // Cambiar el estado de edición
-                                isEditing = !isEditing;
-                            }
-                        </script>
-
-
-                        <!-- Detalles del Producto -->
+                        <!-- Card 2: Detalles del Producto y Observaciones -->
                         <div class="card mb-4">
                             <div class="card-header bg-light d-flex justify-content-between align-items-center">
-                                <h5>Detalles del Producto</h5>
-                                <button class="btn btn-primary btn-sm" id="editProductButton" onclick="toggleProductEdit()">Editar</button>
+                                <h5>Detalles del Producto y Observaciones</h5>
+                                <button class="btn btn-primary btn-sm">Editar</button>
                             </div>
-                            <div class="card-body" id="productDetails">
-                                <p><strong>Productos:</strong> <span id="productoText">Ordenador portátil</span></p>
-                                <p><strong>Categoría:</strong> <span id="categoriaText">Tecnología</span></p>
-                                <p><strong>Descripción:</strong> <span id="descripcionText">Laptop de 15 pulgadas, Intel Core i7, 16GB RAM, 512GB SSD</span></p>
-                                <p><strong>Cantidad:</strong> <span id="cantidadText">10</span></p>
-                                <p><strong>Precio Unitario al por mayor:</strong> <span id="precioUnitarioText">$980</span></p>
-                                <p><strong>Subtotal:</strong> <span id="subtotalText">$9800</span></p>
-                                <p><strong>Precio de envío:</strong> <span id="envioText">$1000</span></p>
-                                <p><strong>Precio Total:</strong> <span id="totalText">$10800</span></p>
+                            <div class="card-body row">
+                                <!-- Columna izquierda: Productos -->
+                                <div class="col">
+                                    <p><strong>Productos:</strong></p>
+                                    <p>2 Poleras azules: $480</p>
+                                    <p>2 Polos franela negro: $480</p>
+                                </div>
+                                <!-- Columna derecha: Observaciones -->
+                                <div class="col">
+                                    <p><strong>Subtotal:</strong> $960</p>
+                                    <p><strong>Envío:</strong> $100</p>
+                                    <p><strong>Total:</strong> $1060</p>
+                                </div>
                             </div>
                         </div>
 
-                        <script>
-                            let isProductEditing = false;
-
-                            function toggleProductEdit() {
-                                const editButton = document.getElementById('editProductButton');
-
-                                // Obtener los elementos de texto
-                                const productoText = document.getElementById('productoText');
-                                const categoriaText = document.getElementById('categoriaText');
-                                const descripcionText = document.getElementById('descripcionText');
-                                const cantidadText = document.getElementById('cantidadText');
-                                const precioUnitarioText = document.getElementById('precioUnitarioText');
-                                const subtotalText = document.getElementById('subtotalText');
-                                const envioText = document.getElementById('envioText');
-                                const totalText = document.getElementById('totalText');
-
-                                if (!isProductEditing) {
-                                    // Cambiar a modo de edición
-                                    productoText.innerHTML = `<input type="text" class="form-control" id="productoInput" value="${productoText.innerText}">`;
-                                    categoriaText.innerHTML = `<input type="text" class="form-control" id="categoriaInput" value="${categoriaText.innerText}">`;
-                                    descripcionText.innerHTML = `<input type="text" class="form-control" id="descripcionInput" value="${descripcionText.innerText}">`;
-                                    cantidadText.innerHTML = `<input type="number" class="form-control" id="cantidadInput" value="${cantidadText.innerText}">`;
-                                    precioUnitarioText.innerHTML = `<input type="number" class="form-control" id="precioUnitarioInput" value="${precioUnitarioText.innerText.replace('$', '')}">`;
-                                    subtotalText.innerHTML = `<input type="number" class="form-control" id="subtotalInput" value="${subtotalText.innerText.replace('$', '')}">`;
-                                    envioText.innerHTML = `<input type="number" class="form-control" id="envioInput" value="${envioText.innerText.replace('$', '')}">`;
-                                    totalText.innerHTML = `<input type="number" class="form-control" id="totalInput" value="${totalText.innerText.replace('$', '')}">`;
-
-                                    editButton.textContent = 'Guardar';
-                                } else {
-                                    // Guardar la información editada
-                                    productoText.innerHTML = document.getElementById('productoInput').value;
-                                    categoriaText.innerHTML = document.getElementById('categoriaInput').value;
-                                    descripcionText.innerHTML = document.getElementById('descripcionInput').value;
-                                    cantidadText.innerHTML = document.getElementById('cantidadInput').value;
-                                    precioUnitarioText.innerHTML = '$' + document.getElementById('precioUnitarioInput').value;
-                                    subtotalText.innerHTML = '$' + document.getElementById('subtotalInput').value;
-                                    envioText.innerHTML = '$' + document.getElementById('envioInput').value;
-                                    totalText.innerHTML = '$' + document.getElementById('totalInput').value;
-
-                                    editButton.textContent = 'Editar';
-                                }
-
-                                // Cambiar el estado de edición
-                                isProductEditing = !isProductEditing;
-                            }
-                        </script>
-
-
-                        <!-- Historial del Pedido -->
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="card mb-4">
-                                    <div class="card-header bg-light">
-                                        <h5>Historial del Pedido</h5>
-                                    </div>
-                                    <div data-simplebar class="card-body" style="max-height: 350px;">
-                                        <ul class="list-group">
-                                            <li class="list-group-item">Pedido creado el: 15/09/2024</li>
-                                            <li class="list-group-item">Última actualización: Estado cambiado a <strong>En progreso</strong> el 16/09/2024</li>
-                                            <li class="list-group-item">Pedido asignado al agente: Juan Pérez el 17/09/2024</li>
-                                            <li class="list-group-item">Producto despachado: 18/09/2024</li>
-                                            <li class="list-group-item">Cambio de estado: En aduanas el 19/09/2024</li>
-                                            <li class="list-group-item">Estado cambiado a: En tránsito el 20/09/2024</li>
-                                            <li class="list-group-item">Pedido entregado al cliente: 22/09/2024</li>
-                                            <li class="list-group-item">Nota del agente: "El cliente solicitó cambiar la dirección de entrega el 20/09/2024"</li>
-                                            <li class="list-group-item">Pedido cerrado: 23/09/2024</li>
-                                        </ul>
-                                    </div>
-                                </div>
-
+                        <div class="card mb-4">
+                            <div class="card-header bg-light">
+                                <h5>Chat con el Importador</h5>
                             </div>
-                            <div class="col-md-6">
-                                <!-- Notas del Agente -->
-                                <div class="card mb-4">
-                                    <div class="card-header bg-light">
-                                        <h5>Notas del Agente</h5>
+                            <div data-simplebar class="card-body" style="max-height: 240px;">
+                                <div class="chat-messages">
+                                    <!-- Mensaje del agente -->
+                                    <div class="d-flex mb-3">
+                                        <div class="avatar me-3">
+                                            <span class="avatar-title bg-primary-subtle text-primary rounded-circle">
+                                                <i class="ri-user-fill"></i>
+                                            </span>
+                                        </div>
+                                        <div>
+                                            <h6 class="mb-1">Agente (Juan Pérez) <small class="text-muted">10:15 AM</small></h6>
+                                            <p class="bg-light p-2 rounded">Hola, el pedido ya está en aduanas. ¿Tienes alguna pregunta?</p>
+                                        </div>
                                     </div>
-                                    <div class="card-body" style="height: 350px">
-                                        <textarea class="form-control mb-3" rows="11" placeholder="Escribe notas o comentarios sobre la gestión de esta orden..."></textarea>
-                                        <button class="btn btn-success w-100">Guardar Nota</button>
+                                    <!-- Mensaje del importador -->
+                                    <div class="d-flex justify-content-end mb-3">
+                                        <div>
+                                            <h6 class="mb-1 text-end">Importador (Luis Gómez) <small class="text-muted">10:18 AM</small></h6>
+                                            <p class="bg-primary text-white p-2 rounded">Gracias por la información. ¿Cuándo se espera la entrega?</p>
+                                        </div>
+                                        <div class="avatar ms-3">
+                                            <span class="avatar-title bg-primary text-white rounded-circle">
+                                                <i class="ri-user-fill"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <!-- Mensaje del agente -->
+                                    <div class="d-flex mb-3">
+                                        <div class="avatar me-3">
+                                            <span class="avatar-title bg-primary-subtle text-primary rounded-circle">
+                                                <i class="ri-user-fill"></i>
+                                            </span>
+                                        </div>
+                                        <div>
+                                            <h6 class="mb-1">Agente (Juan Pérez) <small class="text-muted">10:20 AM</small></h6>
+                                            <p class="bg-light p-2 rounded">Se espera la entrega para el 25/09/2024. Si hay algún cambio, te avisaremos.</p>
+                                        </div>
                                     </div>
                                 </div>
+                            </div>
+                            <div class="card-footer">
+                                <form>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" placeholder="Escribe un mensaje...">
+                                        <button class="btn btn-primary" type="submit">Enviar</button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
 
 
-                    <!-- Información adicional y Notas del Agente -->
+
+
+                    <!-- Información adicional -->
                     <div class="col-md-4">
                         <!-- Estado del Pedido -->
                         <div class="card mb-4">
@@ -229,7 +168,7 @@
                             </div>
                             <div class="card-body">
                                 <p><strong>Estado actual:</strong> <span class="badge bg-warning fs-6">Pendiente</span></p>
-                                <p><strong>Agente asignado:</strong> Agente Perry</p>
+                                <p><strong>Agente asignado:</strong> Sin agente asignado</p>
                                 <p><strong>Fecha estimada de entrega:</strong> 25/09/2024</p>
                             </div>
                         </div>
@@ -239,7 +178,7 @@
                                 <h5>Trayectoria del pedido</h5>
                             </div>
                             <div class="card-body">
-                                <div data-simplebar style="max-height: 300px;">
+                                <div data-simplebar style="max-height: 600px;">
                                     <ul class="list-unstyled activity-wid">
                                         <li class="activity-list d-flex align-items-start mb-4">
                                             <div class="activity-icon avatar-xs me-3">
@@ -322,59 +261,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="card mb-4">
-                            <div class="card-header bg-light">
-                                <h5>Chat con el Importador</h5>
-                            </div>
-                            <div data-simplebar class="card-body" style="max-height: 300px;">
-                                <div class="chat-messages">
-                                    <!-- Mensaje del agente -->
-                                    <div class="d-flex mb-3">
-                                        <div class="avatar me-3">
-                                            <span class="avatar-title bg-primary-subtle text-primary rounded-circle">
-                                                <i class="ri-user-fill"></i>
-                                            </span>
-                                        </div>
-                                        <div>
-                                            <h6 class="mb-1">Agente (Juan Pérez) <small class="text-muted">10:15 AM</small></h6>
-                                            <p class="bg-light p-2 rounded">Hola, el pedido ya está en aduanas. ¿Tienes alguna pregunta?</p>
-                                        </div>
-                                    </div>
-                                    <!-- Mensaje del importador -->
-                                    <div class="d-flex justify-content-end mb-3">
-                                        <div>
-                                            <h6 class="mb-1 text-end">Importador (Luis Gómez) <small class="text-muted">10:18 AM</small></h6>
-                                            <p class="bg-primary text-white p-2 rounded">Gracias por la información. ¿Cuándo se espera la entrega?</p>
-                                        </div>
-                                        <div class="avatar ms-3">
-                                            <span class="avatar-title bg-primary text-white rounded-circle">
-                                                <i class="ri-user-fill"></i>
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <!-- Mensaje del agente -->
-                                    <div class="d-flex mb-3">
-                                        <div class="avatar me-3">
-                                            <span class="avatar-title bg-primary-subtle text-primary rounded-circle">
-                                                <i class="ri-user-fill"></i>
-                                            </span>
-                                        </div>
-                                        <div>
-                                            <h6 class="mb-1">Agente (Juan Pérez) <small class="text-muted">10:20 AM</small></h6>
-                                            <p class="bg-light p-2 rounded">Se espera la entrega para el 25/09/2024. Si hay algún cambio, te avisaremos.</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-footer">
-                                <form>
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" placeholder="Escribe un mensaje...">
-                                        <button class="btn btn-primary" type="submit">Enviar</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
+
 
 
 
