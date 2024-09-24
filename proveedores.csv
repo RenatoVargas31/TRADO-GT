@@ -1,0 +1,4 @@
+id_proveedor,nombreProveedor,telefonoProveedor,rucProveedor,dniProveedor,nombreTienda,enabled
+1,"Ernesto Valdez",978622534,10345678329,34567832,Samsung,1
+2,"Andrés Hurtado",956478612,10456798239,45679823,"San Fernando",1
+3,"Andrés Lujan",934678239,10452019879,45201987,Milo,1

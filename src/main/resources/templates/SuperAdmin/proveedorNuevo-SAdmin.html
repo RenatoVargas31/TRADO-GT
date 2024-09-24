@@ -58,13 +58,12 @@
                                         <span style="display: block; padding-bottom: 10px;">- El nombre ingresado debe coincidir con el registrado en RENIEC.</span>
                                         <span style="display: block; padding-bottom: 10px;">- El apellido ingresado debe coincidir con el registrado en RENIEC.</span>
                                         <h4 class="card-title fw-bold">Datos de registro:</h4>
-                                        <form class="needs-validation" novalidate>
+                                        <form th:object="${proveedor}" th:action="@{/superadmin/proveedorNuevo}" method="post" class="needs-validation" novalidate>
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="mb-4">
-                                                        <label for="validationCustom01" class="form-label">Nombre</label>
-                                                        <input type="text" class="form-control" id="validationCustom01"
-                                                               placeholder="Ingrese los nombres"  required>
+                                                        <label for="nombreProveedor" class="form-label">Nombre</label>
+                                                        <input type="text" class="form-control" id="nombreProveedor" name="nombreProveedor"  placeholder="Ingrese los nombres" required>
                                                         <div class="valid-feedback">
                                                             Looks good!
                                                         </div>
@@ -72,9 +71,8 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="mb-4">
-                                                        <label for="validationCustom02" class="form-label">Apellido</label>
-                                                        <input type="text" class="form-control" id="validationCustom02"
-                                                               placeholder="Ingrese los apellidos"  required>
+                                                        <label for="apellidoProveedor" class="form-label">Apellido</label>
+                                                        <input type="text" class="form-control" id="apellidoProveedor" name="apellidoProveedor" placeholder="Ingrese los apellidos" required>
                                                         <div class="valid-feedback">
                                                             Looks good!
                                                         </div>
@@ -84,9 +82,8 @@
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="mb-4">
-                                                        <label for="validationCustom03" class="form-label">DNI</label>
-                                                        <input type="text" class="form-control" id="validationCustom03"
-                                                               placeholder="Ingrese el DNI" required>
+                                                        <label for="dniProveedor" class="form-label">DNI</label>
+                                                        <input type="text" class="form-control" id="dniProveedor" name="dniProveedor"  placeholder="Ingrese el DNI" required>
                                                         <div class="valid-feedback">
                                                             Looks good!
                                                         </div>
@@ -94,42 +91,37 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="mb-4">
-                                                        <label for="validationCustom04" class="form-label">RUC</label>
-                                                        <input type="text" class="form-control" id="validationCustom04"
-                                                               placeholder="Ingrese el RUC" required>
+                                                        <label for="rucProveedor" class="form-label">RUC</label>
+                                                        <input type="text" class="form-control" id="rucProveedor" name="rucProveedor"  placeholder="Ingrese el RUC" required>
                                                         <div class="valid-feedback">
                                                             Looks good!
                                                         </div>
                                                     </div>
                                                 </div>
-
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="mb-4">
-                                                        <label for="validationCustom05" class="form-label">Teléfono</label>
-                                                        <input type="tel" class="form-control" id="validationCustom05"
-                                                               placeholder="Ingrese el teléfono" required>
+                                                        <label for="telefonoProveedor" class="form-label">Teléfono</label>
+                                                        <input type="tel" class="form-control" id="telefonoProveedor" name="telefonoProveedor" placeholder="Ingrese el teléfono" required>
                                                         <div class="valid-feedback">
                                                             Looks good!
                                                         </div>
                                                     </div>
                                                 </div>
-
                                                 <div class="col-md-6">
                                                     <div class="mb-4">
-                                                        <label for="validationCustom06" class="form-label">Nombre de la Tienda</label>
-                                                        <input type="text" class="form-control" id="validationCustom06"
-                                                               placeholder="Ingrese el nombre de la Tienda" required>
+                                                        <label for="nombreTienda" class="form-label">Nombre de la Tienda</label>
+                                                        <input type="text" class="form-control" id="nombreTienda" name="nombreTienda" placeholder="Ingrese el nombre de la Tienda" required>
                                                         <div class="invalid-feedback">
                                                             Please provide a valid zip.
                                                         </div>
                                                     </div>
-
                                                 </div>
+                                                <input type="hidden" name="enabled" th:value="1" />
                                             </div>
                                             <div>
-                                                <button class="btn btn-primary" type="submit">Registrar</button>
+                                                <button class="btn btn-info" type="submit">Guardar</button>
                                             </div>
                                         </form>
                                     </div>

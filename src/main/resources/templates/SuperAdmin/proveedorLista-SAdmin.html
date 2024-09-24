@@ -63,7 +63,8 @@
                                     <table id="datatable-proveedor-lista" class="table table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                         <thead>
                                         <tr>
-                                            <th>Nombre</th>
+                                            <th>Nombres</th>
+                                            <th>Apellidos</th>
                                             <th>Teléfono</th>
                                             <th>DNI</th>
                                             <th>RUC</th>
@@ -73,94 +74,41 @@
                                         </thead>
 
                                         <tbody>
-                                        <tr>
-                                            <td>Juan Pérez</td>
-                                            <td>912345678</td>
-                                            <td>34567812</td>
-                                            <td>1345678120</td>
-                                            <td>Tienda A</td>
-                                            <td>
-                                                <a href="#" class="btn btn-info btn-sm waves-effect waves-light" title="Editar"><i class="ri-pencil-fill"></i></a>
-                                                <a href="#" class="btn btn-danger btn-sm waves-effect waves-light" title="Eliminar"><i class="ri-delete-bin-fill"></i></a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>María López</td>
-                                            <td>987654321</td>
-                                            <td>37654321</td>
-                                            <td>1376543210</td>
-                                            <td>Tienda B</td>
-                                            <td>
-                                                <a href="#" class="btn btn-info btn-sm waves-effect waves-light" title="Editar"><i class="ri-pencil-fill"></i></a>
-                                                <a href="#" class="btn btn-danger btn-sm waves-effect waves-light" title="Eliminar"><i class="ri-delete-bin-fill"></i></a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Carlos García</td>
-                                            <td>912345679</td>
-                                            <td>31223344</td>
-                                            <td>1312233440</td>
-                                            <td>Tienda C</td>
-                                            <td>
-                                                <a href="/superadmin/proveedorEditar" class="btn btn-info btn-sm waves-effect waves-light" title="Editar"><i class="ri-pencil-fill"></i></a>
-                                                <a href="#" class="btn btn-danger btn-sm waves-effect waves-light" title="Eliminar" data-bs-toggle="modal" data-bs-target="#deleteConfirmModal"><i class="ri-delete-bin-fill"></i></a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Lucía Rodríguez</td>
-                                            <td>987654322</td>
-                                            <td>34332211</td>
-                                            <td>1343322110</td>
-                                            <td>Tienda D</td>
-                                            <td>
-                                                <a href="#" class="btn btn-info btn-sm waves-effect waves-light" title="Editar"><i class="ri-pencil-fill"></i></a>
-                                                <a href="#" class="btn btn-danger btn-sm waves-effect waves-light" title="Eliminar"><i class="ri-delete-bin-fill"></i></a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Pedro Sánchez</td>
-                                            <td>912345680</td>
-                                            <td>35667788</td>
-                                            <td>1356677880</td>
-                                            <td>Tienda E</td>
-                                            <td>
-                                                <a href="#" class="btn btn-info btn-sm waves-effect waves-light" title="Editar"><i class="ri-pencil-fill"></i></a>
-                                                <a href="#" class="btn btn-danger btn-sm waves-effect waves-light" title="Eliminar"><i class="ri-delete-bin-fill"></i></a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Laura Ramírez</td>
-                                            <td>987654323</td>
-                                            <td>39887766</td>
-                                            <td>1398877660</td>
-                                            <td>Tienda F</td>
-                                            <td>
-                                                <a href="#" class="btn btn-info btn-sm waves-effect waves-light" title="Editar"><i class="ri-pencil-fill"></i></a>
-                                                <a href="#" class="btn btn-danger btn-sm waves-effect waves-light" title="Eliminar"><i class="ri-delete-bin-fill"></i></a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Jorge Díaz</td>
-                                            <td>912345681</td>
-                                            <td>36778899</td>
-                                            <td>1367788990</td>
-                                            <td>Tienda G</td>
-                                            <td>
-                                                <a href="#" class="btn btn-info btn-sm waves-effect waves-light" title="Editar"><i class="ri-pencil-fill"></i></a>
-                                                <a href="#" class="btn btn-danger btn-sm waves-effect waves-light" title="Eliminar"><i class="ri-delete-bin-fill"></i></a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Elena Castillo</td>
-                                            <td>987654324</td>
-                                            <td>33445566</td>
-                                            <td>1334455660</td>
-                                            <td>Tienda H</td>
-                                            <td>
-                                                <a href="#" class="btn btn-info btn-sm waves-effect waves-light" title="Editar"><i class="ri-pencil-fill"></i></a>
-                                                <a href="#" class="btn btn-danger btn-sm waves-effect waves-light" title="Eliminar"><i class="ri-delete-bin-fill"></i></a>
-                                            </td>
-                                        </tr>
+                                            <tr th:each="proveedor : ${proveedores}">
+                                                <td th:text="${proveedor.nombreProveedor}">Nombre</td>
+                                                <td th:text="${proveedor.apellidoProveedor}">Apellido</td>
+                                                <td th:text="${proveedor.telefonoProveedor}">Teléfono</td>
+                                                <td th:text="${proveedor.dniProveedor}">DNI</td>
+                                                <td th:text="${proveedor.rucProveedor}">RUC</td>
+                                                <td th:text="${proveedor.nombreTienda}">Tienda</td>
+                                                <td>
+                                                    <form th:action="@{/superadmin/proveedorEditarForm}" method="post" style="display:inline;">
+                                                        <input type="hidden" name="id" th:value="${proveedor.id}" />
+                                                        <button type="submit" class="btn btn-info btn-sm waves-effect waves-light" title="Editar"><i class="ri-pencil-fill"></i></button>
+                                                    </form>
+                                                    <button type="button" class="btn btn-danger btn-sm waves-effect waves-light" title="Eliminar" data-bs-toggle="modal" th:data-bs-target="'#deleteConfirmModal-' + ${proveedor.nombreProveedor} + '-' + ${proveedor.id}">
+                                                        <i class="ri-delete-bin-fill"></i>
+                                                    </button>
+                                                    <!-- Modal de Confirmación de Eliminación -->
+                                                    <div class="modal fade" th:id="'deleteConfirmModal-' + ${proveedor.nombreProveedor} + '-' + ${proveedor.id}" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
+                                                        <div class="modal-dialog">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title" id="deleteConfirmModalLabel">Confirmar Eliminación</h5>
+                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    ¿Estás seguro de que deseas eliminar este Proveedor?
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                                                    <a th:href="@{/superadmin/proveedorBorrar(id=${proveedor.id})}" class="btn btn-danger">Eliminar</a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
                                         </tbody>
                                     </table>
                                 </div>
@@ -206,24 +154,7 @@
 
     <!-- Datatable init js -->
     <script th:src="@{../js/pages/datatables.init.js}"></script>
-        <!-- Modal de Confirmación de Eliminación -->
-        <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="deleteConfirmModalLabel">Confirmar Eliminación</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        ¿Estás seguro de que deseas eliminar este Proveedor?
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="button" class="btn btn-danger">Eliminar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+
     </body>
 
 </html>

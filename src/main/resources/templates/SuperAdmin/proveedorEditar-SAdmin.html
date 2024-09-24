@@ -58,13 +58,13 @@
                                         <span style="display: block; padding-bottom: 10px;">- El nombre ingresado debe coincidir con el registrado en RENIEC.</span>
                                         <span style="display: block; padding-bottom: 10px;">- El apellido ingresado debe coincidir con el registrado en RENIEC.</span>
                                         <h4 class="card-title fw-bold">Datos de registro:</h4>
-                                        <form class="needs-validation" novalidate>
+                                        <form th:object="${proveedor}" th:action="@{/superadmin/proveedorEditar}" method="post" class="needs-validation" novalidate>
+                                            <input type="hidden" th:field="*{id}" />
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="mb-4">
-                                                        <label for="validationCustom01" class="form-label">Nombre</label>
-                                                        <input type="text" class="form-control" id="validationCustom01" value="Carlos"
-                                                               placeholder="Ingrese los nombres" disabled style="background-color: #e9ecef;" required>
+                                                        <label for="nombreProveedor" class="form-label">Nombre</label>
+                                                        <input type="text" class="form-control" id="nombreProveedor" name="nombreProveedor" th:field="*{nombreProveedor}" placeholder="Ingrese los nombres" required readonly style="background-color: #f0f0f0;">
                                                         <div class="valid-feedback">
                                                             Looks good!
                                                         </div>
@@ -72,9 +72,8 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="mb-4">
-                                                        <label for="validationCustom02" class="form-label">Apellido</label>
-                                                        <input type="text" class="form-control" id="validationCustom02" value="García"
-                                                               placeholder="Ingrese los apellidos" disabled style="background-color: #e9ecef;" required>
+                                                        <label for="apellidoProveedor" class="form-label">Apellido</label>
+                                                        <input type="text" class="form-control" id="apellidoProveedor" name="apellidoProveedor" th:field="*{apellidoProveedor}" placeholder="Ingrese los apellidos" required readonly style="background-color: #f0f0f0;">
                                                         <div class="valid-feedback">
                                                             Looks good!
                                                         </div>
@@ -84,9 +83,8 @@
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="mb-4">
-                                                        <label for="validationCustom03" class="form-label">DNI</label>
-                                                        <input type="text" class="form-control" id="validationCustom03" value="31223344"
-                                                               placeholder="Ingrese el DNI" disabled style="background-color: #e9ecef;" required>
+                                                        <label for="dniProveedor" class="form-label">DNI</label>
+                                                        <input type="text" class="form-control" id="dniProveedor" name="dniProveedor" th:field="*{dniProveedor}" placeholder="Ingrese el DNI" required readonly style="background-color: #f0f0f0;">
                                                         <div class="valid-feedback">
                                                             Looks good!
                                                         </div>
@@ -94,42 +92,38 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="mb-4">
-                                                        <label for="validationCustom04" class="form-label">RUC</label>
-                                                        <input type="text" class="form-control" id="validationCustom04" value="1312233440"
-                                                               placeholder="Ingrese el RUC" disabled style="background-color: #e9ecef;" required>
+                                                        <label for="rucProveedor" class="form-label">RUC</label>
+                                                        <input type="text" class="form-control" id="rucProveedor" name="rucProveedor" th:field="*{rucProveedor}" placeholder="Ingrese el RUC" required readonly style="background-color: #f0f0f0;">
                                                         <div class="valid-feedback">
                                                             Looks good!
                                                         </div>
                                                     </div>
                                                 </div>
-
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="mb-4">
-                                                        <label for="validationCustom05" class="form-label">Teléfono</label>
-                                                        <input type="tel" class="form-control" id="validationCustom05" value="912345679"
-                                                               placeholder="Ingrese el teléfono" required>
+                                                        <label for="telefonoProveedor" class="form-label">Teléfono</label>
+                                                        <input type="tel" class="form-control" id="telefonoProveedor" name="telefonoProveedor" th:field="*{telefonoProveedor}" placeholder="Ingrese el teléfono" required>
                                                         <div class="valid-feedback">
                                                             Looks good!
                                                         </div>
                                                     </div>
                                                 </div>
-
                                                 <div class="col-md-6">
                                                     <div class="mb-4">
-                                                        <label for="validationCustom06" class="form-label">Nombre de la Tienda</label>
-                                                        <input type="text" class="form-control" id="validationCustom06" value="Tienda C"
-                                                               placeholder="Ingrese el nombre de la Tienda" required>
+                                                        <label for="nombreTienda" class="form-label">Nombre de la Tienda</label>
+                                                        <input type="text" class="form-control" id="nombreTienda" name="nombreTienda" th:field="*{nombreTienda}" placeholder="Ingrese el nombre de la Tienda" required>
                                                         <div class="invalid-feedback">
                                                             Please provide a valid zip.
                                                         </div>
                                                     </div>
-
                                                 </div>
                                             </div>
                                             <div>
-                                                <button class="btn btn-primary" type="submit">Guardar</button>
+                                                <button class="btn btn-info" type="submit">Guardar</button>
+
+                                                <a th:href="@{/superadmin/proveedorLista}" class="btn btn-danger">Cancelar</a>
                                             </div>
                                         </form>
                                     </div>
