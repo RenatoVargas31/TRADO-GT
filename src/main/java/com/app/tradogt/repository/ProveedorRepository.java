@@ -11,22 +11,30 @@ import java.util.List;
 
 @Repository
 public interface ProveedorRepository extends JpaRepository<Proveedor, Integer> {
-    //Proveedores con enabled = 1
-    List<Proveedor> findAllByEnabled(Byte enabled);
 
-    //Buscar proveedor por id con query method
+
+    //<editor-fold desc="Buscar por Enabled">
+    List<Proveedor> findAllByEnabled(Byte enabled);
+    //</editor-fold>
+
+    //<editor-fold desc="Buscar por ID">
     @Query("SELECT p FROM Proveedor p WHERE p.id = :id")
     Proveedor findByIdProveedor(Integer id);
+    //</editor-fold>
 
-    //Actualizar los atributos del proveedor teniedo en cuenta el id y el obetejo proveedor
+    //<editor-fold desc="Actualizar Proveedor">
     @Modifying
     @Transactional
     @Query("UPDATE Proveedor p SET p.telefonoProveedor = :telefonoProveedor, p.nombreTienda = :nombreTienda WHERE p.id = :id")
     void updateProveedor(String telefonoProveedor, String nombreTienda, Integer id);
+    //</editor-fold>
 
-    //Borrado lógico del proveedor teniendo en cuenta el id y el enabled = 0
+    //<editor-fold desc="Borrar Proveedor">
     @Modifying
     @Transactional
     @Query("UPDATE Proveedor p SET p.enabled = 0 WHERE p.id = :id")
     void deleteProveedor(Integer id);
+    //</editor-fold>
+    //</editor-fold>
+
 }

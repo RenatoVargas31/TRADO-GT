@@ -28,7 +28,7 @@ public class Usuario {
     @NotNull
     @ManyToOne
     @JoinColumn(name = "roles_idRoles", nullable = false)
-    private Role rolesIdroles;
+    private Rol rolesIdroles;
 
     @Size(max = 45)
     @Column(name = "nombreUsuario", length = 45)
@@ -52,8 +52,8 @@ public class Usuario {
 
     @Size(max = 256)
     @NotNull
-    @Column(name = "`contraseñaUsuario`", nullable = false, length = 256)
-    private String contraseñaUsuario;
+    @Column(name = "contrasenaUsuario", nullable = false, length = 256)
+    private String contrasenaUsuario;
 
     @Size(max = 9)
     @Column(name = "telefonoUsuario", length = 9)
