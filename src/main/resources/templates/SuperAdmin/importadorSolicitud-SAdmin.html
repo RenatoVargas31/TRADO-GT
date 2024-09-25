@@ -74,92 +74,56 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr>
-                                            <td>Juan</td>
-                                            <td>Pérez</td>
-                                            <td>30000001</td>
-                                            <td>juan.perez@example.com</td>
-                                            <td>Av. Siempre Viva 123</td>
-                                            <td>San Juan de Miraflores</td>
-                                            <td><a href="#" class="btn btn-success btn-sm waves-effect waves-light" title="Aceptar"><i class="ri-check-line"></i></a>
-                                                <a href="#" class="btn btn-danger btn-sm waves-effect waves-light" title="Rechazar"><i class="ri-close-line"></i></a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>María</td>
-                                            <td>González</td>
-                                            <td>30000002</td>
-                                            <td>maria.gonzalez@example.com</td>
-                                            <td>Calle Falsa 456</td>
-                                            <td>San Martín de Porres</td>
-                                            <td><a href="#" class="btn btn-success btn-sm waves-effect waves-light" title="Aceptar"><i class="ri-check-line"></i></a>
-                                                <a href="#" class="btn btn-danger btn-sm waves-effect waves-light" title="Rechazar"><i class="ri-close-line"></i></a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Carlos</td>
-                                            <td>Rodríguez</td>
-                                            <td>30000003</td>
-                                            <td>carlos.rodriguez@example.com</td>
-                                            <td>Jr. Los Pinos 789</td>
-                                            <td>San Juan de Lurigancho</td>
-                                            <td><a href="#" class="btn btn-success btn-sm waves-effect waves-light" title="Aceptar"><i class="ri-check-line"></i></a>
-                                                <a href="#" class="btn btn-danger btn-sm waves-effect waves-light" title="Rechazar"><i class="ri-close-line"></i></a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Lucía</td>
-                                            <td>Martínez</td>
-                                            <td>30000004</td>
-                                            <td>lucia.martinez@example.com</td>
-                                            <td>Av. Las Flores 101</td>
-                                            <td>San Juan de Miraflores</td>
-                                            <td><a href="#" class="btn btn-success btn-sm waves-effect waves-light" title="Aceptar"><i class="ri-check-line"></i></a>
-                                                <a href="#" class="btn btn-danger btn-sm waves-effect waves-light" title="Rechazar"><i class="ri-close-line"></i></a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Pedro</td>
-                                            <td>Hernández</td>
-                                            <td>30000005</td>
-                                            <td>pedro.hernandez@example.com</td>
-                                            <td>Calle Los Olivos 202</td>
-                                            <td>San Martín de Porres</td>
-                                            <td><a href="#" class="btn btn-success btn-sm waves-effect waves-light" title="Aceptar"><i class="ri-check-line"></i></a>
-                                                <a href="#" class="btn btn-danger btn-sm waves-effect waves-light" title="Rechazar"><i class="ri-close-line"></i></a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Laura</td>
-                                            <td>Torres</td>
-                                            <td>30000006</td>
-                                            <td>laura.torres@example.com</td>
-                                            <td>Jr. Las Palmeras 303</td>
-                                            <td>San Juan de Lurigancho</td>
-                                            <td><a href="#" class="btn btn-success btn-sm waves-effect waves-light" title="Aceptar"><i class="ri-check-line"></i></a>
-                                                <a href="#" class="btn btn-danger btn-sm waves-effect waves-light" title="Rechazar"><i class="ri-close-line"></i></a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Jorge</td>
-                                            <td>Vargas</td>
-                                            <td>30000007</td>
-                                            <td>jorge.vargas@example.com</td>
-                                            <td>Av. Los Cedros 404</td>
-                                            <td>San Juan de Miraflores</td>
-                                            <td><a href="#" class="btn btn-success btn-sm waves-effect waves-light" title="Aceptar"><i class="ri-check-line"></i></a>
-                                                <a href="#" class="btn btn-danger btn-sm waves-effect waves-light" title="Rechazar"><i class="ri-close-line"></i></a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Elena</td>
-                                            <td>Morales</td>
-                                            <td>30000008</td>
-                                            <td>elena.morales@example.com</td>
-                                            <td>Calle Las Magnolias 505</td>
-                                            <td>San Martín de Porres</td>
-                                            <td><a href="#" class="btn btn-success btn-sm waves-effect waves-light" title="Aceptar"><i class="ri-check-line"></i></a>
-                                                <a href="#" class="btn btn-danger btn-sm waves-effect waves-light" title="Rechazar"><i class="ri-close-line"></i></a>
+                                        <tr th:each="solicitud : ${solicitudes}">
+                                            <td th:text="${solicitud.nombreUsuario}">Nombres</td>
+                                            <td th:text="${solicitud.apellidoUsuario}">Apellidos</td>
+                                            <td th:text="${solicitud.dniUsuario}">DNI</td>
+                                            <td th:text="${solicitud.correoUsuario}">Correo Electrónico</td>
+                                            <td th:text="${solicitud.direccionUsuario}">Dirección</td>
+                                            <td th:text="${solicitud.distritosIddistrito.nameDistrito}">Distrito</td>
+                                            <td>
+                                                <button type="button" class="btn btn-success btn-sm waves-effect waves-light" title="Eliminar" data-bs-toggle="modal" th:data-bs-target="'#acceptConfirmModal-' + ${solicitud.nombreUsuario} + '-' + ${solicitud.id}">
+                                                    <i class="ri-check-line"></i>
+                                                </button>
+                                                <!-- Modal de Confirmación de Eliminación -->
+                                                <div class="modal fade" th:id="'acceptConfirmModal-' + ${solicitud.nombreUsuario} + '-' + ${solicitud.id}" tabindex="-1" aria-labelledby="acceptConfirmModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="acceptConfirmModalLabel">Confirmar Aceptación</h5>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body text-wrap text-break">
+                                                                <p>¿Está seguro de aprobar la solicitud de <strong th:text="${solicitud.nombreUsuario} + ' ' + ${solicitud.apellidoUsuario}"></strong>?</p>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                                                <a th:href="@{/superadmin/importadorAceptado(id=${solicitud.id})}" class="btn btn-success">Aprobar</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <button type="button" class="btn btn-danger btn-sm waves-effect waves-light" title="Eliminar" data-bs-toggle="modal" th:data-bs-target="'#deleteConfirmModal-' + ${solicitud.nombreUsuario} + '-' + ${solicitud.id}">
+                                                    <i class="ri-close-line"></i>
+                                                </button>
+                                                <!-- Modal de Confirmación de Eliminación -->
+                                                <div class="modal fade" th:id="'deleteConfirmModal-' + ${solicitud.nombreUsuario} + '-' + ${solicitud.id}" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="deleteConfirmModalLabel">Confirmar Eliminación</h5>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body text-wrap text-break">
+                                                                <p>¿Está seguro de rechazar la solicitud de <strong th:text="${solicitud.nombreUsuario} + ' ' + ${solicitud.apellidoUsuario}"></strong>?</p>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                                                <a th:href="@{/superadmin/importadorRechazado(id=${solicitud.id})}" class="btn btn-danger">Rechazar</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </td>
                                         </tr>
                                         </tbody>

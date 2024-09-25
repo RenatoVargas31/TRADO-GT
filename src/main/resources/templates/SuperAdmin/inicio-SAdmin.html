@@ -74,77 +74,18 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr>
-                                            <td>Juan</td>
-                                            <td>González Pérez</td>
-                                            <td>34567812</td>
-                                            <td>912345678</td>
-                                            <td>juan.perez@example.com</td>
-                                            <td>Norte</td>
-                                            <td><div class="badge bg-success-subtle text-success  font-size-14">Activo</div></td>
-                                        </tr>
-                                        <tr>
-                                            <td>María</td>
-                                            <td>Martínez López</td>
-                                            <td>37654321</td>
-                                            <td>987654321</td>
-                                            <td>maria.lopez@example.com</td>
-                                            <td>Sur</td>
-                                            <td><div class="badge bg-success-subtle text-success  font-size-14">Activo</div></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Carlos</td>
-                                            <td>Fernández García</td>
-                                            <td>31223344</td>
-                                            <td>912345679</td>
-                                            <td>carlos.garcia@example.com</td>
-                                            <td>Este</td>
-                                            <td><div class="badge bg-danger-subtle text-danger  font-size-14">Inactivo</div></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Lucía</td>
-                                            <td>Gómez Rodríguez</td>
-                                            <td>34332211</td>
-                                            <td>987654322</td>
-                                            <td>lucia.rodriguez@example.com</td>
-                                            <td>Oeste</td>
-                                            <td><div class="badge bg-success-subtle text-success  font-size-14">Activo</div></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Pedro</td>
-                                            <td>Hernández Sánchez</td>
-                                            <td>35667788</td>
-                                            <td>912345680</td>
-                                            <td>pedro.sanchez@example.com</td>
-                                            <td>Norte</td>
-                                            <td><div class="badge bg-danger-subtle text-danger  font-size-14">Inactivo</div></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Laura</td>
-                                            <td>Torres Ramírez</td>
-                                            <td>39887766</td>
-                                            <td>987654323</td>
-                                            <td>laura.ramirez@example.com</td>
-                                            <td>Sur</td>
-                                            <td><div class="badge bg-danger-subtle text-danger  font-size-14">Inactivo</div></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Jorge</td>
-                                            <td>Vargas Díaz</td>
-                                            <td>36778899</td>
-                                            <td>912345681</td>
-                                            <td>jorge.diaz@example.com</td>
-                                            <td>Este</td>
-                                            <td><div class="badge bg-success-subtle text-success  font-size-14">Activo</div></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Elena</td>
-                                            <td>Morales Castillo</td>
-                                            <td>33445566</td>
-                                            <td>987654324</td>
-                                            <td>elena.castillo@example.com</td>
-                                            <td>Oeste</td>
-                                            <td><div class="badge bg-danger-subtle text-danger  font-size-14">Inactivo</div></td>
+                                        <tr th:each="administrador : ${administradores}">
+                                            <td th:text="${administrador.nombreUsuario}">Nombres</td>
+                                            <td th:text="${administrador.apellidoUsuario}">Apellidos</td>
+                                            <td th:text="${administrador.dniUsuario}">DNI</td>
+                                            <td th:text="${administrador.telefonoUsuario}">Teléfono</td>
+                                            <td th:text="${administrador.correoUsuario}">Correo Electrónico</td>
+                                            <td th:text="${administrador.zonasIdzona.nameZona}">Zona</td>
+                                            <td>
+                                                <div th:classappend="${administrador.isActive == 1} ? 'badge bg-success-subtle text-success font-size-14' : 'badge bg-danger-subtle text-danger font-size-14'">
+                                                    <span th:text="${administrador.isActive == 1} ? 'Activo' : 'Inactivo'">Estado</span>
+                                                </div>
+                                            </td>
                                         </tr>
                                         </tbody>
                                     </table>
@@ -172,77 +113,18 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr>
-                                            <td>Juan</td>
-                                            <td>Pérez</td>
-                                            <td>ABC123</td>
-                                            <td>Empresa A</td>
-                                            <td>San Juan de Miraflores</td>
-                                            <td>Norte</td>
-                                            <td><div class="badge bg-success-subtle text-success  font-size-14">Activo</div></td>
-                                        </tr>
-                                        <tr>
-                                            <td>María</td>
-                                            <td>González</td>
-                                            <td>DEF456</td>
-                                            <td>Empresa B</td>
-                                            <td>San Martín de Porres</td>
-                                            <td>Sur</td>
-                                            <td><div class="badge bg-danger-subtle text-danger  font-size-14">Inactivo</div></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Carlos</td>
-                                            <td>Rodríguez</td>
-                                            <td>GHI789</td>
-                                            <td>Empresa C</td>
-                                            <td>San Juan de Lurigancho</td>
-                                            <td>Este</td>
-                                            <td><div class="badge bg-success-subtle text-success  font-size-14">Activo</div></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Lucía</td>
-                                            <td>Martínez</td>
-                                            <td>JKL012</td>
-                                            <td>Empresa D</td>
-                                            <td>San Juan de Miraflores</td>
-                                            <td>Oeste</td>
-                                            <td><div class="badge bg-danger-subtle text-danger  font-size-14">Inactivo</div></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Pedro</td>
-                                            <td>Hernández</td>
-                                            <td>MNO345</td>
-                                            <td>Empresa E</td>
-                                            <td>San Martín de Porres</td>
-                                            <td>Norte</td>
-                                            <td><div class="badge bg-success-subtle text-success  font-size-14">Activo</div></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Laura</td>
-                                            <td>Torres</td>
-                                            <td>PQR678</td>
-                                            <td>Empresa F</td>
-                                            <td>San Juan de Lurigancho</td>
-                                            <td>Sur</td>
-                                            <td><div class="badge bg-danger-subtle text-danger  font-size-14">Inactivo</div></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Jorge</td>
-                                            <td>Vargas</td>
-                                            <td>STU901</td>
-                                            <td>Empresa G</td>
-                                            <td>San Juan de Miraflores</td>
-                                            <td>Este</td>
-                                            <td><div class="badge bg-success-subtle text-success  font-size-14">Activo</div></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Elena</td>
-                                            <td>Morales</td>
-                                            <td>VWX234</td>
-                                            <td>Empresa H</td>
-                                            <td>San Martín de Porres</td>
-                                            <td>Oeste</td>
-                                            <td><div class="badge bg-danger-subtle text-danger  font-size-14">Inactivo</div></td>
+                                        <tr th:each="agente : ${agentes}">
+                                            <td th:text="${agente.nombreUsuario}">Nombres</td>
+                                            <td th:text="${agente.apellidoUsuario}">Apellidos</td>
+                                            <td th:text="${agente.codigoDespachador}">Código de despachador</td>
+                                            <td th:text="${agente.razonSocial}">Razón Social</td>
+                                            <td th:text="${agente.distritosIddistrito.nameDistrito}">Distrito</td>
+                                            <td th:text="${agente.zonasIdzona.nameZona}">Zona</td>
+                                            <td>
+                                                <div th:classappend="${agente.isActive == 1} ? 'badge bg-success-subtle text-success font-size-14' : 'badge bg-danger-subtle text-danger font-size-14'">
+                                                    <span th:text="${agente.isActive == 1} ? 'Activo' : 'Inactivo'">Estado</span>
+                                                </div>
+                                            </td>
                                         </tr>
                                         </tbody>
                                     </table>
@@ -271,77 +153,18 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr>
-                                            <td>Juan</td>
-                                            <td>Pérez</td>
-                                            <td>30000001</td>
-                                            <td>juan.perez@example.com</td>
-                                            <td>Av. Siempre Viva 123</td>
-                                            <td>San Juan de Miraflores</td>
-                                            <td><div class="badge bg-success-subtle text-success  font-size-14">Activo</div></td>
-                                        </tr>
-                                        <tr>
-                                            <td>María</td>
-                                            <td>González</td>
-                                            <td>30000002</td>
-                                            <td>maria.gonzalez@example.com</td>
-                                            <td>Calle Falsa 456</td>
-                                            <td>San Martín de Porres</td>
-                                            <td><div class="badge bg-danger-subtle text-danger  font-size-14">Inactivo</div></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Carlos</td>
-                                            <td>Rodríguez</td>
-                                            <td>30000003</td>
-                                            <td>carlos.rodriguez@example.com</td>
-                                            <td>Jr. Los Pinos 789</td>
-                                            <td>San Juan de Lurigancho</td>
-                                            <td><div class="badge bg-success-subtle text-success  font-size-14">Activo</div></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Lucía</td>
-                                            <td>Martínez</td>
-                                            <td>30000004</td>
-                                            <td>lucia.martinez@example.com</td>
-                                            <td>Av. Las Flores 101</td>
-                                            <td>San Juan de Miraflores</td>
-                                            <td><div class="badge bg-danger-subtle text-danger  font-size-14">Inactivo</div></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Pedro</td>
-                                            <td>Hernández</td>
-                                            <td>30000005</td>
-                                            <td>pedro.hernandez@example.com</td>
-                                            <td>Calle Los Olivos 202</td>
-                                            <td>San Martín de Porres</td>
-                                            <td><div class="badge bg-success-subtle text-success  font-size-14">Activo</div></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Laura</td>
-                                            <td>Torres</td>
-                                            <td>30000006</td>
-                                            <td>laura.torres@example.com</td>
-                                            <td>Jr. Las Palmeras 303</td>
-                                            <td>San Juan de Lurigancho</td>
-                                            <td><div class="badge bg-danger-subtle text-danger  font-size-14">Inactivo</div></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Jorge</td>
-                                            <td>Vargas</td>
-                                            <td>30000007</td>
-                                            <td>jorge.vargas@example.com</td>
-                                            <td>Av. Los Cedros 404</td>
-                                            <td>San Juan de Miraflores</td>
-                                            <td><div class="badge bg-success-subtle text-success  font-size-14">Activo</div></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Elena</td>
-                                            <td>Morales</td>
-                                            <td>30000008</td>
-                                            <td>elena.morales@example.com</td>
-                                            <td>Calle Las Magnolias 505</td>
-                                            <td>San Martín de Porres</td>
-                                            <td><div class="badge bg-danger-subtle text-danger  font-size-14">Inactivo</div></td>
+                                        <tr th:each="importador : ${importadores}">
+                                            <td th:text="${importador.nombreUsuario}">Nombres</td>
+                                            <td th:text="${importador.apellidoUsuario}">Apellidos</td>
+                                            <td th:text="${importador.dniUsuario}">DNI</td>
+                                            <td th:text="${importador.correoUsuario}">Correo Electrónico</td>
+                                            <td th:text="${importador.direccionUsuario}">Dirección</td>
+                                            <td th:text="${importador.distritosIddistrito.nameDistrito}">Distrito</td>
+                                            <td>
+                                                <div th:classappend="${importador.isActive == 1} ? 'badge bg-success-subtle text-success font-size-14' : 'badge bg-danger-subtle text-danger font-size-14'">
+                                                    <span th:text="${importador.isActive == 1} ? 'Activo' : 'Inactivo'">Estado</span>
+                                                </div>
+                                            </td>
                                         </tr>
                                         </tbody>
                                     </table>

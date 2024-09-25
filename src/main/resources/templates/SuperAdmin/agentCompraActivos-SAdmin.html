@@ -73,100 +73,36 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr>
-                                            <td>Juan</td>
-                                            <td>Pérez</td>
-                                            <td>ABC123</td>
-                                            <td>JUR01</td>
-                                            <td>San Juan de Miraflores</td>
-                                            <td>Norte</td>
+                                        <tr th:each="usuario : ${usuarios}">
+                                            <td th:text="${usuario.nombreUsuario}">Nombres</td>
+                                            <td th:text="${usuario.apellidoUsuario}">Apellidos</td>
+                                            <td th:text="${usuario.codigoDespachador}">Código de despachador</td>
+                                            <td th:text="${usuario.codigoJurisdiccion}">Jurisdicción</td>
+                                            <td th:text="${usuario.distritosIddistrito.nameDistrito}">Distrito</td>
+                                            <td th:text="${usuario.zonasIdzona.nameZona}">Zona</td>
                                             <td>
                                                 <a href="#" class="btn btn-info btn-sm waves-effect waves-light" title="Editar"><i class="ri-pencil-fill"></i></a>
-                                                <a href="#" class="btn btn-danger btn-sm waves-effect waves-light" title="Eliminar"><i class="ri-indeterminate-circle-fill"></i></a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>María</td>
-                                            <td>González</td>
-                                            <td>DEF456</td>
-                                            <td>JUR02</td>
-                                            <td>San Martín de Porres</td>
-                                            <td>Sur</td>
-                                            <td>
-                                                <a href="#" class="btn btn-info btn-sm waves-effect waves-light" title="Editar"><i class="ri-pencil-fill"></i></a>
-                                                <a href="#" class="btn btn-danger btn-sm waves-effect waves-light" title="Eliminar"><i class="ri-indeterminate-circle-fill"></i></a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Carlos</td>
-                                            <td>Rodríguez</td>
-                                            <td>GHI789</td>
-                                            <td>JUR03</td>
-                                            <td>San Juan de Lurigancho</td>
-                                            <td>Este</td>
-                                            <td>
-                                                <a href="/superadmin/agentCompraEditar" class="btn btn-info btn-sm waves-effect waves-light" title="Editar"><i class="ri-pencil-fill"></i></a>
-                                                <a href="#" class="btn btn-danger btn-sm waves-effect waves-light" title="Eliminar" data-bs-toggle="modal" data-bs-target="#deleteConfirmModal"><i class="ri-indeterminate-circle-fill"></i></a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Lucía</td>
-                                            <td>Martínez</td>
-                                            <td>JKL012</td>
-                                            <td>JUR04</td>
-                                            <td>San Juan de Miraflores</td>
-                                            <td>Oeste</td>
-                                            <td>
-                                                <a href="#" class="btn btn-info btn-sm waves-effect waves-light" title="Editar"><i class="ri-pencil-fill"></i></a>
-                                                <a href="#" class="btn btn-danger btn-sm waves-effect waves-light" title="Eliminar"><i class="ri-indeterminate-circle-fill"></i></a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Pedro</td>
-                                            <td>Hernández</td>
-                                            <td>MNO345</td>
-                                            <td>JUR05</td>
-                                            <td>San Martín de Porres</td>
-                                            <td>Norte</td>
-                                            <td>
-                                                <a href="#" class="btn btn-info btn-sm waves-effect waves-light" title="Editar"><i class="ri-pencil-fill"></i></a>
-                                                <a href="#" class="btn btn-danger btn-sm waves-effect waves-light" title="Eliminar"><i class="ri-indeterminate-circle-fill"></i></a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Laura</td>
-                                            <td>Torres</td>
-                                            <td>PQR678</td>
-                                            <td>JUR06</td>
-                                            <td>San Juan de Lurigancho</td>
-                                            <td>Sur</td>
-                                            <td>
-                                                <a href="#" class="btn btn-info btn-sm waves-effect waves-light" title="Editar"><i class="ri-pencil-fill"></i></a>
-                                                <a href="#" class="btn btn-danger btn-sm waves-effect waves-light" title="Eliminar"><i class="ri-indeterminate-circle-fill"></i></a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Jorge</td>
-                                            <td>Vargas</td>
-                                            <td>STU901</td>
-                                            <td>JUR07</td>
-                                            <td>San Juan de Miraflores</td>
-                                            <td>Este</td>
-                                            <td>
-                                                <a href="#" class="btn btn-info btn-sm waves-effect waves-light" title="Editar"><i class="ri-pencil-fill"></i></a>
-                                                <a href="#" class="btn btn-danger btn-sm waves-effect waves-light" title="Eliminar"><i class="ri-indeterminate-circle-fill"></i></a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Elena</td>
-                                            <td>Morales</td>
-                                            <td>VWX234</td>
-                                            <td>JUR08</td>
-                                            <td>San Martín de Porres</td>
-                                            <td>Oeste</td>
-                                            <td>
-                                                <a href="#" class="btn btn-info btn-sm waves-effect waves-light" title="Editar"><i class="ri-pencil-fill"></i></a>
-                                                <a href="#" class="btn btn-danger btn-sm waves-effect waves-light" title="Eliminar"><i class="ri-indeterminate-circle-fill"></i></a>
+                                                <button type="button" class="btn btn-danger btn-sm waves-effect waves-light" title="Eliminar" data-bs-toggle="modal" th:data-bs-target="'#deleteConfirmModal-' + ${usuario.nombreUsuario} + '-' + ${usuario.id}">
+                                                    <i class="ri-indeterminate-circle-fill"></i>
+                                                </button>
+                                                <!-- Modal de Confirmación de Eliminación -->
+                                                <div class="modal fade" th:id="'deleteConfirmModal-' + ${usuario.nombreUsuario} + '-' + ${usuario.id}" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="deleteConfirmModalLabel">Confirmar Eliminación</h5>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                ¿Estás seguro de que deseas eliminar este Agente de Compra?
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                                                <a th:href="@{/superadmin/agentCompraBorrar(id=${usuario.id})}" class="btn btn-danger">Eliminar</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </td>
                                         </tr>
                                         </tbody>
@@ -215,24 +151,6 @@
     <!-- Datatable init js -->
     <script th:src="@{../js/pages/datatables.init.js}"></script>
 
-    <!-- Modal de Confirmación de Eliminación -->
-        <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="deleteConfirmModalLabel">Confirmar Eliminación</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        ¿Estás seguro de que deseas eliminar este Agente de Compra?
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="button" class="btn btn-danger">Eliminar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
     </body>
 
 </html>

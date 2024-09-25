@@ -105,4 +105,9 @@ public class Usuario {
     @Column(name = "isAccepted", nullable = false)
     private Byte isAccepted;
 
+    @NotNull
+    @ColumnDefault("0")
+    @Column(name = "postulaAgente", nullable = false)
+    private Byte postulaAgente;
+
 }

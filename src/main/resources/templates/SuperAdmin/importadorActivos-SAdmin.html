@@ -74,100 +74,36 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr>
-                                            <td>Juan</td>
-                                            <td>Pérez</td>
-                                            <td>30000001</td>
-                                            <td>juan.perez@example.com</td>
-                                            <td>Av. Siempre Viva 123</td>
-                                            <td>San Juan de Miraflores</td>
+                                        <tr th:each="usuario : ${usuarios}">
+                                            <td th:text="${usuario.nombreUsuario}">Nombres</td>
+                                            <td th:text="${usuario.apellidoUsuario}">Apellidos</td>
+                                            <td th:text="${usuario.dniUsuario}">DNI</td>
+                                            <td th:text="${usuario.correoUsuario}">Correo Electrónico</td>
+                                            <td th:text="${usuario.direccionUsuario}">Dirección</td>
+                                            <td th:text="${usuario.distritosIddistrito.nameDistrito}">Distrito</td>
                                             <td>
                                                 <a href="#" class="btn btn-info btn-sm waves-effect waves-light" title="Editar"><i class="ri-pencil-fill"></i></a>
-                                                <a href="#" class="btn btn-danger btn-sm waves-effect waves-light" title="Eliminar"><i class="ri-indeterminate-circle-fill"></i></a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>María</td>
-                                            <td>González</td>
-                                            <td>30000002</td>
-                                            <td>maria.gonzalez@example.com</td>
-                                            <td>Calle Falsa 456</td>
-                                            <td>San Martín de Porres</td>
-                                            <td>
-                                                <a href="#" class="btn btn-info btn-sm waves-effect waves-light" title="Editar"><i class="ri-pencil-fill"></i></a>
-                                                <a href="#" class="btn btn-danger btn-sm waves-effect waves-light" title="Eliminar"><i class="ri-indeterminate-circle-fill"></i></a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Carlos</td>
-                                            <td>Rodríguez</td>
-                                            <td>30000003</td>
-                                            <td>carlos.rodriguez@example.com</td>
-                                            <td>Jr. Los Pinos 789</td>
-                                            <td>San Juan de Lurigancho</td>
-                                            <td>
-                                                <a href="/superadmin/importadorEditar" class="btn btn-info btn-sm waves-effect waves-light" title="Editar"><i class="ri-pencil-fill"></i></a>
-                                                <a href="#" class="btn btn-danger btn-sm waves-effect waves-light" title="Eliminar" data-bs-toggle="modal" data-bs-target="#deleteConfirmModal"><i class="ri-indeterminate-circle-fill"></i></a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Lucía</td>
-                                            <td>Martínez</td>
-                                            <td>30000004</td>
-                                            <td>lucia.martinez@example.com</td>
-                                            <td>Av. Las Flores 101</td>
-                                            <td>San Juan de Miraflores</td>
-                                            <td>
-                                                <a href="#" class="btn btn-info btn-sm waves-effect waves-light" title="Editar"><i class="ri-pencil-fill"></i></a>
-                                                <a href="#" class="btn btn-danger btn-sm waves-effect waves-light" title="Eliminar"><i class="ri-indeterminate-circle-fill"></i></a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Pedro</td>
-                                            <td>Hernández</td>
-                                            <td>30000005</td>
-                                            <td>pedro.hernandez@example.com</td>
-                                            <td>Calle Los Olivos 202</td>
-                                            <td>San Martín de Porres</td>
-                                            <td>
-                                                <a href="#" class="btn btn-info btn-sm waves-effect waves-light" title="Editar"><i class="ri-pencil-fill"></i></a>
-                                                <a href="#" class="btn btn-danger btn-sm waves-effect waves-light" title="Eliminar"><i class="ri-indeterminate-circle-fill"></i></a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Laura</td>
-                                            <td>Torres</td>
-                                            <td>30000006</td>
-                                            <td>laura.torres@example.com</td>
-                                            <td>Jr. Las Palmeras 303</td>
-                                            <td>San Juan de Lurigancho</td>
-                                            <td>
-                                                <a href="#" class="btn btn-info btn-sm waves-effect waves-light" title="Editar"><i class="ri-pencil-fill"></i></a>
-                                                <a href="#" class="btn btn-danger btn-sm waves-effect waves-light" title="Eliminar"><i class="ri-indeterminate-circle-fill"></i></a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Jorge</td>
-                                            <td>Vargas</td>
-                                            <td>30000007</td>
-                                            <td>jorge.vargas@example.com</td>
-                                            <td>Av. Los Cedros 404</td>
-                                            <td>San Juan de Miraflores</td>
-                                            <td>
-                                                <a href="#" class="btn btn-info btn-sm waves-effect waves-light" title="Editar"><i class="ri-pencil-fill"></i></a>
-                                                <a href="#" class="btn btn-danger btn-sm waves-effect waves-light" title="Eliminar"><i class="ri-indeterminate-circle-fill"></i></a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Elena</td>
-                                            <td>Morales</td>
-                                            <td>30000008</td>
-                                            <td>elena.morales@example.com</td>
-                                            <td>Calle Las Magnolias 505</td>
-                                            <td>San Martín de Porres</td>
-                                            <td>
-                                                <a href="#" class="btn btn-info btn-sm waves-effect waves-light" title="Editar"><i class="ri-pencil-fill"></i></a>
-                                                <a href="#" class="btn btn-danger btn-sm waves-effect waves-light" title="Eliminar"><i class="ri-indeterminate-circle-fill"></i></a>
+                                                <button type="button" class="btn btn-danger btn-sm waves-effect waves-light" title="Eliminar" data-bs-toggle="modal" th:data-bs-target="'#deleteConfirmModal-' + ${usuario.nombreUsuario} + '-' + ${usuario.id}">
+                                                    <i class="ri-indeterminate-circle-fill"></i>
+                                                </button>
+                                                <!-- Modal de Confirmación de Eliminación -->
+                                                <div class="modal fade" th:id="'deleteConfirmModal-' + ${usuario.nombreUsuario} + '-' + ${usuario.id}" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="deleteConfirmModalLabel">Confirmar Eliminación</h5>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                ¿Estás seguro de que deseas eliminar este Importador?
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                                                <a th:href="@{/superadmin/importadorBorrar(id=${usuario.id})}" class="btn btn-danger">Eliminar</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </td>
                                         </tr>
                                         </tbody>
@@ -217,24 +153,6 @@
     <!-- Datatable init js -->
     <script th:src="@{../js/pages/datatables.init.js}"></script>
 
-    <!-- Modal de Confirmación de Eliminación -->
-        <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="deleteConfirmModalLabel">Confirmar Eliminación</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        ¿Estás seguro de que deseas eliminar este Importador?
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="button" class="btn btn-danger">Eliminar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
     </body>
 
 </html>
