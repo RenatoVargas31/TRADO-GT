@@ -45,22 +45,22 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
     //</editor-fold>
 
     //<editor-fold desc="CRUD Importador">
-    //Método pra actualizar el id rol de un usuario a 3 y el postulaAgente a 0
+    //Actualizar el id rol de un usuario a 3 y el postulaAgente a 0
     @Modifying
     @Transactional
     @Query("UPDATE Usuario u SET u.rolesIdroles.id = 3, u.postulaAgente = 0 WHERE u.id = :id")
     void updateImportadorPostulanteApto(Integer id);
-    //Método para actualizar el postulaAgente a 0
+    //Actualizar el postulaAgente a 0
     @Modifying
     @Transactional
     @Query("UPDATE Usuario u SET u.postulaAgente = 0 WHERE u.id = :id")
     void updateImportadorPostulanteNoApto(Integer id);
-    //Método para actualizar el isAccepted a 1 y isActive a 1
+    //Actualizar el isAccepted a 1 y isActive a 1
     @Modifying
     @Transactional
     @Query("UPDATE Usuario u SET u.isAccepted = 1, u.isActive = 1 WHERE u.id = :id")
     void updateImportadorAceptado(Integer id);
-    //Método para borrado total del importador
+    //Borrado total del importador
     @Modifying
     @Transactional
     @Query("DELETE FROM Usuario u WHERE u.id = :id")
