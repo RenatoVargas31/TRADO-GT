@@ -37,10 +37,14 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
     @Query("UPDATE Usuario u SET u.correoUsuario = :correoUsuario, u.telefonoUsuario = :telefonoUsuario, u.zonasIdzona.id= :idZona WHERE u.id = :id")
     void updateAdmZonal(String correoUsuario, String telefonoUsuario, Integer idZona, Integer id);
 
-
     //</editor-fold>
 
     //<editor-fold desc="CRUD Agente de Compra">
+    //Actualizar la direccion, telefono, correo, distrito, zona, codigoJurisdiccion, codigoDespachador y razonSocial
+    @Modifying
+    @Transactional
+    @Query("UPDATE Usuario u SET u.direccionUsuario = :direccionUsuario, u.telefonoUsuario = :telefonoUsuario, u.correoUsuario = :correoUsuario, u.distritosIddistrito.id = :idDistrito, u.zonasIdzona.id = :idZona, u.codigoJurisdiccion = :codigoJurisdiccion, u.codigoDespachador = :codigoDespachador, u.razonSocial = :razonSocial WHERE u.id = :id")
+    void updateAgenteCompra(String direccionUsuario, String telefonoUsuario, String correoUsuario, Integer idDistrito, Integer idZona, String codigoJurisdiccion, String codigoDespachador, String razonSocial, Integer id);
 
     //</editor-fold>
 
@@ -65,5 +69,10 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
     @Transactional
     @Query("DELETE FROM Usuario u WHERE u.id = :id")
     void deleteImportadorRechazado(Integer id);
+    //Actualizar el correo, direccion y distrito
+    @Modifying
+    @Transactional
+    @Query("UPDATE Usuario u SET u.correoUsuario = :correoUsuario, u.direccionUsuario = :direccionUsuario, u.distritosIddistrito.id = :idDistrito WHERE u.id = :id")
+    void updateImportador(String correoUsuario, String direccionUsuario, Integer idDistrito, Integer id);
     //</editor-fold>
 }

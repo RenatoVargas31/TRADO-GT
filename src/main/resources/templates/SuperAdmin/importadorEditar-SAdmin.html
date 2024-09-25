@@ -59,12 +59,13 @@
                                         <span style="display: block; padding-bottom: 10px;">- El apellido ingresado debe coincidir con el registrado en RENIEC.</span>
 
                                         <h4 class="card-title fw-bold">Datos de registro:</h4>
-                                        <form class="needs-validation" novalidate>
+                                        <form class="needs-validation" th:object="${usuario}" action="/superadmin/importadorEditar" method="post" novalidate>
+                                            <input type="hidden" th:field="*{id}" />
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="mb-4">
-                                                        <label for="validationCustom01" class="form-label">Nombre</label>
-                                                        <input type="text" class="form-control" value="Alejandro" id="validationCustom01"
+                                                        <label for="nombreUsuario" class="form-label">Nombre</label>
+                                                        <input type="text" class="form-control" th:field="*{nombreUsuario}" id="nombreUsuario" name="nombreUsuario"
                                                                placeholder="First name" disabled style="background-color: #e9ecef;" required>
                                                         <div class="valid-feedback">
                                                             Looks good!
@@ -73,8 +74,8 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="mb-4">
-                                                        <label for="validationCustom02" class="form-label">Apellido</label>
-                                                        <input type="text" class="form-control" value="Ramirez" id="validationCustom02"
+                                                        <label for="apellidoUsuario" class="form-label">Apellido</label>
+                                                        <input type="text" class="form-control" th:field="*{apellidoUsuario}" id="apellidoUsuario" name="apellidoUsuario"
                                                                placeholder="Last name" disabled style="background-color: #e9ecef;" required>
                                                         <div class="valid-feedback">
                                                             Looks good!
@@ -85,8 +86,8 @@
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="mb-4">
-                                                        <label for="validationCustom03" class="form-label">DNI</label>
-                                                        <input type="text" class="form-control" value="73891212" id="validationCustom03"
+                                                        <label for="dniUsuario" class="form-label">DNI</label>
+                                                        <input type="text" class="form-control" th:field="*{dniUsuario}" id="dniUsuario" name="dniUsuario"
                                                                placeholder="DNI" disabled style="background-color: #e9ecef;" required>
                                                         <div class="valid-feedback">
                                                             Looks good!
@@ -95,50 +96,51 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="mb-4">
-                                                        <label for="validationCustom04" class="form-label">Correo electrónico</label>
-                                                        <input type="email" class="form-control" value="aramires@gmail.com" id="validationCustom04"
+                                                        <label for="correoUsuario" class="form-label">Correo electrónico</label>
+                                                        <input type="email" class="form-control" th:field="*{correoUsuario}" id="correoUsuario" name="correoUsuario"
                                                                placeholder="Correo electrónico" required>
                                                         <div class="valid-feedback">
                                                             Looks good!
                                                         </div>
                                                     </div>
                                                 </div>
-
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="mb-4">
-                                                        <label for="validationCustom05" class="form-label">Dirección</label>
-                                                        <input type="text" class="form-control" value="Av. Nueva Toledo 1234" id="validationCustom05"
-                                                               placeholder="Dirección"  required>
+                                                        <label for="direccionUsuario" class="form-label">Dirección</label>
+                                                        <input type="text" class="form-control" th:field="*{direccionUsuario}" id="direccionUsuario" name="direccionUsuario"
+                                                               placeholder="Dirección" required>
                                                         <div class="valid-feedback">
                                                             Looks good!
                                                         </div>
                                                     </div>
                                                 </div>
-
                                                 <div class="col-md-6">
                                                     <div class="mb-4">
-                                                        <label for="validationCustom06" class="form-label">Distrito</label>
-                                                        <select class="form-select" id="validationCustom06" required>
-                                                            <option selected disabled value="">Cieneguilla</option>
-                                                            <option>...</option>
+                                                        <label for="distritosIddistrito" class="form-label">Distrito</label>
+                                                        <select class="form-select" th:field="*{distritosIddistrito}" id="distritosIddistrito" name="distritosIddistrito" required>
+                                                            <option selected disabled value="">Seleccione un distrito</option>
+                                                            <option th:each="distrito : ${distritos}" th:value="${distrito.id}" th:text="${distrito.nameDistrito}" th:selected="${distrito.id} == ${usuario.distritosIddistrito.id}"></option>
                                                         </select>
                                                         <div class="invalid-feedback">
                                                             Please select a valid state.
                                                         </div>
-
                                                     </div>
-                                                </div>                                            </div>
+                                                </div>
+                                            </div>
+                                            <input type="hidden" name="rolesIdroles" th:value="${rol.id}" />
+                                            <input type="hidden" name="isActive" th:value="${usuario.isActive}" />
+                                            <input type="hidden" name="isAccepted" th:value="${usuario.isAccepted}" />
                                             <div>
                                                 <button class="btn btn-primary" type="submit">Guardar</button>
+                                                <a th:href="${usuario.isActive == 1 ? '/superadmin/importadorActivos' : '/superadmin/importadorInactivos'}" class="btn btn-danger">Cancelar</a>
                                             </div>
                                         </form>
                                     </div>
                                 </div>
                                 <!-- end card -->
                             </div> <!-- end col -->
-
                         </div>
                         <!-- end row -->
 

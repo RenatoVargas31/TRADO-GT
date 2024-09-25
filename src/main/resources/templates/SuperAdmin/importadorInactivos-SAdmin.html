@@ -81,7 +81,10 @@
                                             <td th:text="${usuario.direccionUsuario}">Dirección</td>
                                             <td th:text="${usuario.distritosIddistrito.nameDistrito}">Distrito</td>
                                             <td>
-                                                <a href="#" class="btn btn-info btn-sm waves-effect waves-light" title="Editar"><i class="ri-pencil-fill"></i></a>
+                                                <form th:action="@{/superadmin/importadorEditarForm}" method="post" style="display:inline;">
+                                                    <input type="hidden" name="id" th:value="${usuario.id}" />
+                                                    <button type="submit" class="btn btn-info btn-sm waves-effect waves-light" title="Editar"><i class="ri-pencil-fill"></i></button>
+                                                </form>
                                                 <button type="button" class="btn btn-success btn-sm waves-effect waves-light" title="Eliminar" data-bs-toggle="modal" th:data-bs-target="'#deleteConfirmModal-' + ${usuario.nombreUsuario} + '-' + ${usuario.id}">
                                                     <i class="ri-restart-line"></i>
                                                 </button>

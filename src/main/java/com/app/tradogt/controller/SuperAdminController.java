@@ -3,10 +3,7 @@ package com.app.tradogt.controller;
 import com.app.tradogt.entity.Proveedor;
 import com.app.tradogt.entity.Usuario;
 import com.app.tradogt.helpers.PasswordGenerator;
-import com.app.tradogt.repository.ProveedorRepository;
-import com.app.tradogt.repository.RolRepository;
-import com.app.tradogt.repository.UsuarioRepository;
-import com.app.tradogt.repository.ZonaRepository;
+import com.app.tradogt.repository.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,12 +22,14 @@ public class SuperAdminController {
     final UsuarioRepository usuarioRepository;
     final ZonaRepository zonaRepository;
     final RolRepository rolRepository;
+    final DistritoRepository distritoRepository;
 
-    public SuperAdminController(ProveedorRepository proveedorRepository, UsuarioRepository usuarioRepository, ZonaRepository zonaRepository, RolRepository rolRepository) {
+    public SuperAdminController(ProveedorRepository proveedorRepository, UsuarioRepository usuarioRepository, ZonaRepository zonaRepository, RolRepository rolRepository, DistritoRepository distritoRepository) {
         this.proveedorRepository = proveedorRepository;
         this.usuarioRepository = usuarioRepository;
         this.zonaRepository = zonaRepository;
         this.rolRepository = rolRepository;
+        this.distritoRepository = distritoRepository;
     }
     //</editor-fold>
 
@@ -139,9 +138,29 @@ public class SuperAdminController {
 
 
     //<editor-fold desc="CRUD Agente de Compra (RUD - falta)">
-    @GetMapping("/agentCompraEditar")
-    public String viewAgentCompraEditar() {
+    @PostMapping("/agentCompraEditarForm")
+    public String viewAgentCompraEditarForm(Model model, Integer id) {
+        //Buscar proveedor por id
+        Usuario usuario = usuarioRepository.findByIdUsuario(id);
+        //Enviar a la vista
+        model.addAttribute("usuario", usuario);
+        //Enviar lista de zonas
+        model.addAttribute("zonas", zonaRepository.findAll());
+        //Enviar lista de distritos
+        model.addAttribute("distritos", distritoRepository.findAll());
+        //Enviar rol de id 3 (Agente de Compra)
+        model.addAttribute("rol", rolRepository.findById(3).orElseThrow());
         return "SuperAdmin/agentCompraEditar-SAdmin";
+    }
+    @PostMapping("/agentCompraEditar")
+    public String viewAgentCompraEditar(Usuario usuario) {
+        //Actualizar usuario existente
+        usuarioRepository.updateAgenteCompra(usuario.getDireccionUsuario(), usuario.getTelefonoUsuario(), usuario.getCorreoUsuario(), usuario.getDistritosIddistrito().getId(), usuario.getZonasIdzona().getId(), usuario.getCodigoJurisdiccion(), usuario.getCodigoDespachador(), usuario.getRazonSocial(), usuario.getId());
+        if (usuario.getIsActive() == 1) {
+            return "redirect:/superadmin/agentCompraActivos";
+        } else {
+            return "redirect:/superadmin/agentCompraInactivos";
+        }
     }
 
     @GetMapping("/agentCompraPostula")
@@ -196,9 +215,28 @@ public class SuperAdminController {
     //</editor-fold>
 
     //<editor-fold desc="CRUD Importador (RUD - falta)">
-    @GetMapping("/importadorEditar")
-    public String viewImportadorEditar() {
+    @PostMapping("/importadorEditarForm")
+    public String viewImportadorEditarForm(Model model, Integer id) {
+        //Buscar proveedor por id
+        Usuario usuario = usuarioRepository.findByIdUsuario(id);
+        //Enviar a la vista
+        model.addAttribute("usuario", usuario);
+        //Enviar lista de distritos
+        model.addAttribute("distritos", distritoRepository.findAll());
+        //Enviar rol de id 4 (Importador)
+        model.addAttribute("rol", rolRepository.findById(4).orElseThrow());
         return "SuperAdmin/importadorEditar-SAdmin";
+    }
+
+    @PostMapping("/importadorEditar")
+    public String viewImportadorEditar(Usuario usuario) {
+        //Actualizar usuario existente
+        usuarioRepository.updateImportador(usuario.getCorreoUsuario(), usuario.getDireccionUsuario(), usuario.getDistritosIddistrito().getId(), usuario.getId());
+        if (usuario.getIsActive() == 1) {
+            return "redirect:/superadmin/importadorActivos";
+        } else {
+            return "redirect:/superadmin/importadorInactivos";
+        }
     }
 
     @GetMapping("/importadorSolicitud")
