@@ -57,13 +57,13 @@
                     icon: "error"
                 })
             })
-        }), t("#sa-params1").click(function () {
+        }), t("#sa-registro").click(function () {
             Swal.fire({
-                title: "¿Estás seguro de solicitar reembolso?",
-                text: "¡Esta acción es irreversible!",
+                title: "¿Está seguro de postular como Agente?",
+                text: "Asegurese de haber completado bien sus datos",
                 icon: "warning",
                 showCancelButton: !0,
-                confirmButtonText: "Sí, solicitar reembolso",
+                confirmButtonText: "Sí, postular",
                 cancelButtonText: "No, cancelar",
                 confirmButtonClass: "btn btn-success mt-2",
                 cancelButtonClass: "btn btn-danger ms-2 mt-2",
@@ -71,11 +71,11 @@
             }).then(function (t) {
                 t.value ? Swal.fire({
                     title: "Listo",
-                    text: "Se te enviará un correo con la boleta de devolución",
+                    text: "Un administrador revisará tu solicitud",
                     icon: "success"
                 }) : t.dismiss === Swal.DismissReason.cancel && Swal.fire({
                     title: "Cancelado",
-                    text: "Tu pedido sigue en preceso",
+                    text: "Su solicitud no fue enviada",
                     icon: "error"
                 })
             })
