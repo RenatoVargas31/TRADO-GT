@@ -7,13 +7,11 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 @Data
 @Entity
 @Table(name = "estadocodigos")
-public class Estadocodigo {
+public class EstadoCodigo {
     @Id
     @Column(name = "idEstado", columnDefinition = "int UNSIGNED not null")
     private Long id;
