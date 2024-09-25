@@ -90,82 +90,89 @@
                                                                     <form id="consultaForm2">
                                                                         <div class="modal-body">
                                                                             <!-- Campos del formulario -->
-                                                                            <div class="mb-3 col-md-12">
-                                                                                <label class="form-label fw-bolder fs-5">Ingrese un título *</label>
-                                                                                <input type="text" class="form-control" name="titulo" placeholder="Ingrese el título aquí" maxlength="25" required>
-                                                                                <small class="form-text text-muted">Ingrese un máximo de 25 caracteres</small>
+                                                                            <div class="row mb-3">
+                                                                                <div class="col-md-6" style="display: flex; flex-direction: column; justify-content: space-between;">
+                                                                                    <div>
+                                                                                        <label class="form-label fw-bolder fs-5">Ingrese un título *</label>
+                                                                                        <input type="text" class="form-control" name="titulo" placeholder="Ingrese el título aquí" maxlength="25" required>
+                                                                                        <small class="form-text text-muted">Ingrese un máximo de 25 caracteres</small>
+                                                                                    </div>
+                                                                                    <div>
+                                                                                        <label class="form-label fw-bolder fs-5">¿Cómo calificaría la calidad del producto? ¿Lo recomienda?</label>
+                                                                                        <textarea class="form-control" name="cuerpo" rows="5" placeholder="Ingrese el cuerpo de la publicación aquí" maxlength="250"></textarea>
+                                                                                        <small class="form-text text-muted">Ingrese un máximo de 250 caracteres</small>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-md-6" style="display: flex; flex-direction: column; justify-content: space-between;">
+                                                                                    <div class="container mt-4">
+                                                                                        <form action="#" class="dropzone" id="my-dropzone">
+                                                                                            <div class="dz-message needsclick text-center">
+                                                                                                <div class="border border-primary rounded p-4"> <!-- Contenedor para todo -->
+                                                                                                    <div class="mb-3">
+                                                                                                        <i class="display-4 text-muted ri-upload-cloud-2-line"></i>
+                                                                                                    </div>
+                                                                                                    <h4 class="text-primary">Arrastra tus archivos aquí o haz clic para cargar.</h4>
+                                                                                                    <p class="text-muted">Soporta múltiples archivos. Tamaño máximo: 5 MB por archivo.</p>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div class="fallback">
+                                                                                                <input name="file" type="file" multiple="multiple" class="form-control" />
+                                                                                            </div>
+                                                                                        </form>
+                                                                                    </div>
+
+                                                                                </div>
                                                                             </div>
-                                                                            <div class="mb-3 col-md-12">
-                                                                                <label class="form-label fw-bolder fs-5">¿Cómo calificaría la calidad del producto? ¿Lo recomienda?</label>
-                                                                                <textarea class="form-control" name="cuerpo" rows="5" placeholder="Ingrese el cuerpo de la publicación aquí" maxlength="250"></textarea>
-                                                                                <small class="form-text text-muted">Ingrese un máximo de 250 caracteres</small>
-                                                                            </div>
+
                                                                             <div class="mb-3 col-md-12">
                                                                                 <label class="form-label fw-bolder fs-5">¿Cómo calificaría el tiempo de entrega del pedido?</label>
 
                                                                                 <!-- Contenedor para las estrellas -->
-                                                                                <div class="rating">
-                                                                                    <input type="radio" id="star5" name="rating" value="5" />
-                                                                                    <label for="star5" title="5 estrellas">
-                                                                                        <i class="bi bi-star-fill text-warning"></i>
-                                                                                    </label>
-
-                                                                                    <input type="radio" id="star4" name="rating" value="4" />
-                                                                                    <label for="star4" title="4 estrellas">
-                                                                                        <i class="bi bi-star-fill text-warning"></i>
-                                                                                    </label>
-
-                                                                                    <input type="radio" id="star3" name="rating" value="3" />
-                                                                                    <label for="star3" title="3 estrellas">
-                                                                                        <i class="bi bi-star-fill text-warning"></i>
-                                                                                    </label>
+                                                                                <div class="rating" style="display: flex; justify-content: space-between; width: 300px;">
+                                                                                    <input type="radio" id="star1" name="rating" value="1" />
+                                                                                    <label for="star1" title="1 estrella" style="margin: 0 10px;">1</label>
 
                                                                                     <input type="radio" id="star2" name="rating" value="2" />
-                                                                                    <label for="star2" title="2 estrellas">
-                                                                                        <i class="bi bi-star-fill text-warning"></i>
-                                                                                    </label>
+                                                                                    <label for="star2" title="2 estrellas" style="margin: 0 10px;">2</label>
 
-                                                                                    <input type="radio" id="star1" name="rating" value="1" />
-                                                                                    <label for="star1" title="1 estrella">
-                                                                                        <i class="bi bi-star-fill text-warning"></i>
-                                                                                    </label>
+                                                                                    <input type="radio" id="star3" name="rating" value="3" />
+                                                                                    <label for="star3" title="3 estrellas" style="margin: 0 10px;">3</label>
+
+                                                                                    <input type="radio" id="star4" name="rating" value="4" />
+                                                                                    <label for="star4" title="4 estrellas" style="margin: 0 10px;">4</label>
+
+                                                                                    <input type="radio" id="star5" name="rating" value="5" />
+                                                                                    <label for="star5" title="5 estrellas" style="margin: 0 10px;">5</label>
                                                                                 </div>
 
-                                                                                <small class="form-text text-muted">Seleccione una calificación de 1 a 5 estrellas</small>
+
+                                                                                <small class="form-text text-muted">Seleccione una calificación donde 1 es pésimo y 5 es óptimo</small>
                                                                             </div>
                                                                             <div class="mb-3 col-md-12">
                                                                                 <label class="form-label fw-bolder fs-5">¿Cómo calificaría la atención del agente?</label>
 
-                                                                                <!-- Contenedor para las estrellas -->
-                                                                                <div class="rating">
-                                                                                    <input type="radio" id="agent-star5" name="agent-rating" value="5" />
-                                                                                    <label for="agent-star5" title="5 estrellas">
-                                                                                        <i class="bi bi-star-fill text-warning"></i>
-                                                                                    </label>
+                                                                                <div class="rating" style="display: flex; justify-content: space-between; width: 300px;">
 
-                                                                                    <input type="radio" id="agent-star4" name="agent-rating" value="4" />
-                                                                                    <label for="agent-star4" title="4 estrellas">
-                                                                                        <i class="bi bi-star-fill text-warning"></i>
-                                                                                    </label>
-
-                                                                                    <input type="radio" id="agent-star3" name="agent-rating" value="3" />
-                                                                                    <label for="agent-star3" title="3 estrellas">
-                                                                                        <i class="bi bi-star-fill text-warning"></i>
-                                                                                    </label>
-
-                                                                                    <input type="radio" id="agent-star2" name="agent-rating" value="2" />
-                                                                                    <label for="agent-star2" title="2 estrellas">
-                                                                                        <i class="bi bi-star-fill text-warning"></i>
-                                                                                    </label>
 
                                                                                     <input type="radio" id="agent-star1" name="agent-rating" value="1" />
-                                                                                    <label for="agent-star1" title="1 estrella">
-                                                                                        <i class="bi bi-star-fill text-warning"></i>
-                                                                                    </label>
+                                                                                    <label for="agent-star1" title="1 estrella" style="margin: 0 10px;">1</label>
+
+                                                                                    <input type="radio" id="agent-star2" name="agent-rating" value="2" />
+                                                                                    <label for="agent-star2" title="2 estrellas" style="margin: 0 10px;">2</label>
+
+                                                                                    <input type="radio" id="agent-star3" name="agent-rating" value="3" />
+                                                                                    <label for="agent-star3" title="3 estrellas" style="margin: 0 10px;">3</label>
+
+                                                                                    <input type="radio" id="agent-star4" name="agent-rating" value="4" />
+                                                                                    <label for="agent-star4" title="4 estrellas" style="margin: 0 10px;">4</label>
+
+                                                                                    <input type="radio" id="agent-star5" name="agent-rating" value="5" />
+                                                                                    <label for="agent-star5" title="5 estrellas" style="margin: 0 10px;">5</label>
                                                                                 </div>
 
-                                                                                <small class="form-text text-muted">Seleccione una calificación de 1 a 5 estrellas</small>
-                                                                            </div>
+
+
+                                                                                <small class="form-text text-muted">Seleccione una calificación donde 1 es pésimo y 5 es óptimo</small>   </div>
                                                                         </div>
                                                                         <div class="modal-footer">
                                                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
@@ -483,82 +490,77 @@
                                 <ul class="list-unstyled mb-0 pe-3" data-simplebar style="max-height: 450px;">
                                     <li>
                                         <div class="conversation-list">
-                                            <div class="chat-avatar">
-                                                <img src="/images/users/avatar-2.jpg" alt="avatar-2">
-                                            </div>
-                                            <div class="ctext-wrap">
-                                                <div class="d-flex justify-content-between align-items-start">
-                                                    <div>
-                                                        <div class="conversation-name">Stuardo Lucho </div>
-                                                        <div class="ctext-wrap-content">
-                                                            <p class="mb-0">
-                                                                ¿Cómo puedo hacer una compra en línea a través de su página?  </p>
+                                            <div class="row align-items-start">
+                                                <!-- Columna para la imagen -->
+                                                <div class="col-auto chat-avatar">
+                                                    <img src="/images/users/avatar-3.jpg" alt="avatar-2" class="rounded-circle" style="width: 50px; height: 50px;">
+                                                </div>
+                                                <!-- Columna para el texto -->
+                                                <div class="col">
+                                                    <div class="conversation-name fw-bold text-dark">Walter Black</div>
+                                                    <h6 class="text-muted mb-4">Enviado a las 1:45 del 20 de febrero</h6>
 
-                                                        </div>
-                                                        <p class="chat-time mb-0"><i class="mdi mdi-clock-outline align-middle me-1"></i> 1:15</p>
+                                                    <div class="ctext-wrap-content">
+                                                        <p class="mb-0">¿Qué es un agente de zona y cómo puede ayudarme? </p>
                                                     </div>
-
-                                                    <!-- Icono de ojo al lado derecho del mensaje -->
-                                                    <div class="eye-icon">
-                                                        <a href="/usuario/detalleConsulta" title="Ver más detalles">
-                                                            <i class="mdi mdi-eye" style="font-size: 20px;"></i>
-                                                        </a>
-                                                    </div>
+                                                </div>
+                                                <!-- Icono de ojo al lado derecho del mensaje -->
+                                                <div class="col-auto eye-icon">
+                                                    <a href="/usuario/detalleConsulta" title="Ver más detalles">
+                                                        <i class="mdi mdi-eye" style="font-size: 20px;"></i>
+                                                    </a>
                                                 </div>
                                             </div>
                                         </div>
                                     </li>
-
+                                    <hr>
                                     <li>
                                         <div class="conversation-list">
-                                            <div class="chat-avatar">
-                                                <img src="/images/users/avatar-4.jpg" alt="avatar-2">
-                                            </div>
-                                            <div class="ctext-wrap">
-                                                <div class="d-flex justify-content-between align-items-start">
-                                                    <div>
-                                                        <div class="conversation-name">Aura Cacho </div>
-                                                        <div class="ctext-wrap-content">
-                                                            <p class="mb-0">
-                                                                ¿Qué hago si un agente de zona no me contesta?
-                                                            </p>
-                                                        </div>
-                                                        <p class="chat-time mb-0"><i class="mdi mdi-clock-outline align-middle me-1"></i> 04:49</p>
-                                                    </div>
+                                            <div class="row align-items-start">
+                                                <!-- Columna para la imagen -->
+                                                <div class="col-auto chat-avatar">
+                                                    <img src="/images/users/avatar-2.jpg" alt="avatar-2" class="rounded-circle" style="width: 50px; height: 50px;">
+                                                </div>
+                                                <!-- Columna para el texto -->
+                                                <div class="col">
+                                                    <div class="conversation-name fw-bold text-dark">Stuardo Lucho</div>
+                                                    <h6 class="text-muted mb-4">Enviado a las 1:52 del 25 de febrero</h6>
 
-                                                    <!-- Icono de ojo al lado derecho del mensaje -->
-                                                    <div class="eye-icon">
-                                                        <a href="/usuario/detalleConsulta" title="Ver más detalles">
-                                                            <i class="mdi mdi-eye" style="font-size: 20px;"></i>
-                                                        </a>
+                                                    <div class="ctext-wrap-content">
+                                                        <p class="mb-0">¿Cómo puedo hacer una compra en línea a través de su página?</p>
                                                     </div>
+                                                </div>
+                                                <!-- Icono de ojo al lado derecho del mensaje -->
+                                                <div class="col-auto eye-icon">
+                                                    <a href="/usuario/detalleConsulta" title="Ver más detalles">
+                                                        <i class="mdi mdi-eye" style="font-size: 20px;"></i>
+                                                    </a>
                                                 </div>
                                             </div>
                                         </div>
                                     </li>
+                                    <hr>
                                     <li>
                                         <div class="conversation-list">
-                                            <div class="chat-avatar">
-                                                <img src="/images/users/avatar-3.jpg" alt="avatar-2">
-                                            </div>
-                                            <div class="ctext-wrap">
-                                                <div class="d-flex justify-content-between align-items-start">
-                                                    <div>
-                                                        <div class="conversation-name">Walter Black </div>
-                                                        <div class="ctext-wrap-content">
-                                                            <p class="mb-0">
-                                                                ¿Qué es un agente de zona y cómo puede ayudarme?    </p>
+                                            <div class="row align-items-start">
+                                                <!-- Columna para la imagen -->
+                                                <div class="col-auto chat-avatar">
+                                                    <img src="/images/users/avatar-4.jpg" alt="avatar-2" class="rounded-circle" style="width: 50px; height: 50px;">
+                                                </div>
+                                                <!-- Columna para el texto -->
+                                                <div class="col">
+                                                    <div class="conversation-name fw-bold text-dark">Aura Cacho</div>
+                                                    <h6 class="text-muted mb-4">Enviado a las 2:52 del 23 de febrero</h6>
 
-                                                        </div>
-                                                        <p class="chat-time mb-0"><i class="mdi mdi-clock-outline align-middle me-1"></i> 12:09</p>
+                                                    <div class="ctext-wrap-content">
+                                                        <p class="mb-1">  ¿Qué hago si un agente de zona no me contesta?</p>
                                                     </div>
-
-                                                    <!-- Icono de ojo al lado derecho del mensaje -->
-                                                    <div class="eye-icon">
-                                                        <a href="/usuario/detalleConsulta" title="Ver más detalles">
-                                                            <i class="mdi mdi-eye" style="font-size: 20px;"></i>
-                                                        </a>
-                                                    </div>
+                                                </div>
+                                                <!-- Icono de ojo al lado derecho del mensaje -->
+                                                <div class="col-auto eye-icon">
+                                                    <a href="/usuario/detalleConsulta" title="Ver más detalles">
+                                                        <i class="mdi mdi-eye" style="font-size: 20px;"></i>
+                                                    </a>
                                                 </div>
                                             </div>
                                         </div>
