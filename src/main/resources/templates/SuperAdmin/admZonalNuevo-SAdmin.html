@@ -59,13 +59,12 @@
                                             <span style="display: block; padding-bottom: 10px;">- El apellido ingresado debe coincidir con el registrado en RENIEC.</span>
                                             <span style="display: block; padding-bottom: 10px;">- Solo puede haber 2 administradores zonales por cada zona.</span>
                                         <h4 class="card-title fw-bold">Datos de registro:</h4>
-                                        <form class="needs-validation" novalidate>
+                                        <form th:object="${usuario}" th:action="@{/superadmin/admZonalNuevo}" method="post" class="needs-validation" novalidate>
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="mb-3">
-                                                        <label for="validationCustom01" class="form-label">Nombres</label>
-                                                        <input type="text" class="form-control" id="validationCustom01"
-                                                               placeholder="Ingrese sus nombres"  required>
+                                                        <label for="nombreUsuario" class="form-label">Nombres</label>
+                                                        <input type="text" class="form-control" id="nombreUsuario" name="nombreUsuario" placeholder="Ingrese sus nombres"  required>
                                                         <div class="valid-feedback">
                                                             Looks good!
                                                         </div>
@@ -73,8 +72,8 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="mb-3">
-                                                        <label for="validationCustom02" class="form-label">Apellidos</label>
-                                                        <input type="text" class="form-control" id="validationCustom02"
+                                                        <label for="apellidoUsuario" class="form-label">Apellidos</label>
+                                                        <input type="text" class="form-control" id="apellidoUsuario" name="apellidoUsuario"
                                                                placeholder="Ingrese sus apellidos"  required>
                                                         <div class="valid-feedback">
                                                             Looks good!
@@ -85,8 +84,8 @@
                                             <div class="row">
                                                 <div class="col-md-4">
                                                     <div class="mb-3">
-                                                        <label for="validationCustom03" class="form-label">DNI</label>
-                                                        <input type="text" class="form-control" id="validationCustom03"
+                                                        <label for="dniUsuario" class="form-label">DNI</label>
+                                                        <input type="text" class="form-control" id="dniUsuario" name="dniUsuario"
                                                                placeholder="Ingrese su DNI" required>
                                                         <div class="valid-feedback">
                                                             Looks good!
@@ -95,8 +94,8 @@
                                                 </div>
                                                 <div class="col-md-4">
                                                     <div class="mb-3">
-                                                        <label for="validationCustom04" class="form-label">Teléfono</label>
-                                                        <input type="tel" class="form-control" id="validationCustom04"
+                                                        <label for="telefonoUsuario" class="form-label">Teléfono</label>
+                                                        <input type="tel" class="form-control" id="telefonoUsuario" name="telefonoUsuario"
                                                                placeholder="Ingrese su teléfono" required>
                                                         <div class="valid-feedback">
                                                             Looks good!
@@ -105,8 +104,8 @@
                                                 </div>
                                                 <div class="col-md-4">
                                                     <div class="mb-3">
-                                                        <label for="validationCustom05" class="form-label">Fecha de nacimiento</label>
-                                                        <input type="date" class="form-control" id="validationCustom05" required>
+                                                        <label for="fechaNacimiento" class="form-label">Fecha de nacimiento</label>
+                                                        <input type="date" class="form-control" id="fechaNacimiento" name="fechaNacimiento" required>
                                                         <div class="valid-feedback">
                                                             Looks good!
                                                         </div>
@@ -118,31 +117,29 @@
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="mb-3">
-                                                        <label for="validationCustom06" class="form-label">Correo electrónico</label>
-                                                        <input type="email" class="form-control" id="validationCustom06"
+                                                        <label for="correoUsuario" class="form-label">Correo electrónico</label>
+                                                        <input type="email" class="form-control" id="correoUsuario" name="correoUsuario"
                                                                placeholder="Ingrese su correo electrónico" required>
                                                         <div class="valid-feedback">
                                                             Looks good!
                                                         </div>
                                                     </div>
                                                 </div>
-
                                                 <div class="col-md-6">
                                                     <div class="mb-3">
-                                                        <label for="validationCustom07" class="form-label">Zona</label>
-                                                        <select class="form-select" id="validationCustom07" required>
+                                                        <label for="zonasIdzona" class="form-label">Zona</label>
+                                                        <select class="form-select" id="zonasIdzona" name="zonasIdzona" required>
                                                             <option selected disabled value="">Seleccione una zona</option>
-                                                            <option>Norte</option>
-                                                            <option>Sur</option>
-                                                            <option>Este</option>
-                                                            <option>Oeste</option>
+                                                            <option th:each="zona : ${zonas}" th:value="${zona.id}" th:text="${zona.nameZona}"></option>
                                                         </select>
                                                         <div class="invalid-feedback">
                                                             Please select a valid state.
                                                         </div>
-
                                                     </div>
                                                 </div>
+                                                <input type="hidden" name="rolesIdroles" th:value="${rol.id}" />
+                                                <input type="hidden" name="isActive" th:value="1" />
+                                                <input type="hidden" name="isAccepted" th:value="1" />
                                             </div>
                                             <div>
                                                 <button class="btn btn-primary" type="submit">Registrar</button>

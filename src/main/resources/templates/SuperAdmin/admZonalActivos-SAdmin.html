@@ -73,108 +73,39 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr>
-                                            <td>Juan</td>
-                                            <td>González Pérez</td>
-                                            <td>34567812</td>
-                                            <td>912345678</td>
-                                            <td>juan.perez@example.com</td>
-                                            <td>Norte</td>
-                                            <!--Botones de ver, editar y eliminar con íconos-->
+                                        <tr th:each="usuario : ${usuarios}">
+                                            <td th:text="${usuario.nombreUsuario}">Nombres</td>
+                                            <td th:text="${usuario.apellidoUsuario}">Apellidos</td>
+                                            <td th:text="${usuario.dniUsuario}">DNI</td>
+                                            <td th:text="${usuario.telefonoUsuario}">Teléfono</td>
+                                            <td th:text="${usuario.correoUsuario}">Correo Electrónico</td>
+                                            <td th:text="${usuario.zonasIdzona.nameZona}">Zona</td>
                                             <td>
-                                                
-                                                <a href="#" class="btn btn-info btn-sm waves-effect waves-light" title="Editar"><i class="ri-pencil-fill"></i></a>
-                                                <a href="#" class="btn btn-danger btn-sm waves-effect waves-light" title="Eliminar"><i class="ri-indeterminate-circle-fill "></i></a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>María</td>
-                                            <td>Martínez López</td>
-                                            <td>37654321</td>
-                                            <td>987654321</td>
-                                            <td>maria.lopez@example.com</td>
-                                            <td>Sur</td>
-                                            <td>
-                                                
-                                                <a href="#" class="btn btn-info btn-sm waves-effect waves-light" title="Editar"><i class="ri-pencil-fill"></i></a>
-                                                <a href="#" class="btn btn-danger btn-sm waves-effect waves-light" title="Eliminar"><i class="ri-indeterminate-circle-fill"></i></a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Carlos</td>
-                                            <td>Fernández García</td>
-                                            <td>31223344</td>
-                                            <td>912345679</td>
-                                            <td>carlos.garcia@example.com</td>
-                                            <td>Este</td>
-                                            <td>
-                                                
-                                                <a href="/superadmin/admZonalEditar" class="btn btn-info btn-sm waves-effect waves-light" title="Editar"><i class="ri-pencil-fill"></i></a>
-                                                <a href="#" class="btn btn-danger btn-sm waves-effect waves-light" title="Eliminar" data-bs-toggle="modal" data-bs-target="#deleteConfirmModal"><i class="ri-indeterminate-circle-fill"></i></a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Lucía</td>
-                                            <td>Gómez Rodríguez</td>
-                                            <td>34332211</td>
-                                            <td>987654322</td>
-                                            <td>lucia.rodriguez@example.com</td>
-                                            <td>Oeste</td>
-                                            <td>
-                                                
-                                                <a href="#" class="btn btn-info btn-sm waves-effect waves-light" title="Editar"><i class="ri-pencil-fill"></i></a>
-                                                <a href="#" class="btn btn-danger btn-sm waves-effect waves-light" title="Eliminar"><i class="ri-indeterminate-circle-fill"></i></a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Pedro</td>
-                                            <td>Hernández Sánchez</td>
-                                            <td>35667788</td>
-                                            <td>912345680</td>
-                                            <td>pedro.sanchez@example.com</td>
-                                            <td>Norte</td>
-                                            <td>
-                                                
-                                                <a href="#" class="btn btn-info btn-sm waves-effect waves-light" title="Editar"><i class="ri-pencil-fill"></i></a>
-                                                <a href="#" class="btn btn-danger btn-sm waves-effect waves-light" title="Eliminar"><i class="ri-indeterminate-circle-fill"></i></a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Laura</td>
-                                            <td>Torres Ramírez</td>
-                                            <td>39887766</td>
-                                            <td>987654323</td>
-                                            <td>laura.ramirez@example.com</td>
-                                            <td>Sur</td>
-                                            <td>
-                                                
-                                                <a href="#" class="btn btn-info btn-sm waves-effect waves-light" title="Editar"><i class="ri-pencil-fill"></i></a>
-                                                <a href="#" class="btn btn-danger btn-sm waves-effect waves-light" title="Eliminar"><i class="ri-indeterminate-circle-fill"></i></a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Jorge</td>
-                                            <td>Vargas Díaz</td>
-                                            <td>36778899</td>
-                                            <td>912345681</td>
-                                            <td>jorge.diaz@example.com</td>
-                                            <td>Este</td>
-                                            <td>
-                                                
-                                                <a href="#" class="btn btn-info btn-sm waves-effect waves-light" title="Editar"><i class="ri-pencil-fill"></i></a>
-                                                <a href="#" class="btn btn-danger btn-sm waves-effect waves-light" title="Eliminar"><i class="ri-indeterminate-circle-fill"></i></a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Elena</td>
-                                            <td>Morales Castillo</td>
-                                            <td>33445566</td>
-                                            <td>987654324</td>
-                                            <td>elena.castillo@example.com</td>
-                                            <td>Oeste</td>
-                                            <td>
-                                                <a href="/superadmin/admZonalEditar" class="btn btn-info btn-sm waves-effect waves-light" title="Editar"><i class="ri-pencil-fill"></i></a>
-                                                <a href="#" class="btn btn-danger btn-sm waves-effect waves-light" title="Eliminar"><i class="ri-indeterminate-circle-fill"></i></a>
+                                                <form th:action="@{/superadmin/admZonalEditarForm}" method="post" style="display:inline;">
+                                                    <input type="hidden" name="id" th:value="${usuario.id}" />
+                                                    <button type="submit" class="btn btn-info btn-sm waves-effect waves-light" title="Editar"><i class="ri-pencil-fill"></i></button>
+                                                </form>
+                                                <button type="button" class="btn btn-danger btn-sm waves-effect waves-light" title="Eliminar" data-bs-toggle="modal" th:data-bs-target="'#deleteConfirmModal-' + ${usuario.nombreUsuario} + '-' + ${usuario.id}">
+                                                    <i class="ri-indeterminate-circle-fill"></i>
+                                                </button>
+                                                <!-- Modal de Confirmación de Eliminación -->
+                                                <div class="modal fade" th:id="'deleteConfirmModal-' + ${usuario.nombreUsuario} + '-' + ${usuario.id}" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="deleteConfirmModalLabel">Confirmar Eliminación</h5>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                ¿Estás seguro de que deseas eliminar este Administrador Zonal?
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                                                <a th:href="@{/superadmin/admZonalBorrar(id=${usuario.id})}" class="btn btn-danger">Eliminar</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </td>
                                         </tr>
                                         </tbody>
@@ -222,24 +153,7 @@
 
     <!-- Datatable init js -->
     <script th:src="@{../js/pages/datatables.init.js}"></script>
-        <!-- Modal de Confirmación de Eliminación -->
-        <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="deleteConfirmModalLabel">Confirmar Eliminación</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        ¿Estás seguro de que deseas eliminar este Administrador Zonal?
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="button" class="btn btn-danger">Eliminar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+
     </body>
 
 </html>

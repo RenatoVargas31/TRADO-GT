@@ -1,7 +1,12 @@
 package com.app.tradogt.controller;
 
 import com.app.tradogt.entity.Proveedor;
+import com.app.tradogt.entity.Usuario;
+import com.app.tradogt.helpers.PasswordGenerator;
 import com.app.tradogt.repository.ProveedorRepository;
+import com.app.tradogt.repository.RolRepository;
+import com.app.tradogt.repository.UsuarioRepository;
+import com.app.tradogt.repository.ZonaRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,9 +22,15 @@ public class SuperAdminController {
 
     //<editor-fold desc="Repositories">
     final ProveedorRepository proveedorRepository;
+    final UsuarioRepository usuarioRepository;
+    final ZonaRepository zonaRepository;
+    final RolRepository rolRepository;
 
-    public SuperAdminController(ProveedorRepository proveedorRepository) {
+    public SuperAdminController(ProveedorRepository proveedorRepository, UsuarioRepository usuarioRepository, ZonaRepository zonaRepository, RolRepository rolRepository) {
         this.proveedorRepository = proveedorRepository;
+        this.usuarioRepository = usuarioRepository;
+        this.zonaRepository = zonaRepository;
+        this.rolRepository = rolRepository;
     }
     //</editor-fold>
 
@@ -36,26 +47,84 @@ public class SuperAdminController {
     }
     //</editor-fold>
 
-    //<editor-fold desc="CRUD Administrador Zonal (Completo - falta)">
-    @GetMapping("/admZonalNuevo")
-    public String viewAdmZonalNuevo() {
+    //<editor-fold desc="CRUD Administrador Zonal (Completo - terminado)">
+    //<editor-fold desc="Nuevo Administrador Zonal">
+    @GetMapping("/admZonalNuevoForm")
+    public String viewAdmZonalNuevoForm(Model model) {
+        //Enviar un usuario
+        model.addAttribute("usuario", new Usuario());
+        //Enviar lista de zonas
+        model.addAttribute("zonas", zonaRepository.findAll());
+        //Enviar rol de id 2 (Administrador Zonal)
+        model.addAttribute("rol", rolRepository.findById(2).orElseThrow());
         return "SuperAdmin/admZonalNuevo-SAdmin";
     }
+    @PostMapping("/admZonalNuevo")
+    public String viewAdmZonalNuevoForm(@ModelAttribute Usuario usuario) {
+        //Asignar una contraseña por random de 10 dígitos y que combine número y letras
+        usuario.setContrasenaUsuario(PasswordGenerator.generateRandomPassword());
+        //Guardar usuario
+        usuarioRepository.save(usuario);
+        return "redirect:/superadmin/admZonalNuevoForm";
+    }
+    //</editor-fold>
 
-    @GetMapping("/admZonalEditar")
-    public String viewAdmZonalEditar() {
+    //<editor-fold desc="Editar Administrador Zonal">
+    @PostMapping("/admZonalEditarForm")
+    public String viewAdmZonalEditarForm(Model model, Integer id) {
+        //Buscar proveedor por id
+        Usuario usuario = usuarioRepository.findByIdUsuario(id);
+        //Enviar a la vista
+        model.addAttribute("usuario", usuario);
+        //Enviar lista de zonas
+        model.addAttribute("zonas", zonaRepository.findAll());
+        //Enviar rol de id 2 (Administrador Zonal)
+        model.addAttribute("rol", rolRepository.findById(2).orElseThrow());
         return "SuperAdmin/admZonalEditar-SAdmin";
     }
+    @PostMapping("/admZonalEditar")
+    public String viewAdmZonalEditar(Usuario usuario) {
+        //Actualizar usuario existente
+        usuarioRepository.updateUsuario(usuario.getCorreoUsuario(), usuario.getTelefonoUsuario(), usuario.getZonasIdzona().getId(), usuario.getId());
+        if (usuario.getIsActive() == 1) {
+            return "redirect:/superadmin/admZonalActivos";
+        } else {
+            return "redirect:/superadmin/admZonalInactivos";
+        }
+    }
+    //</editor-fold>
 
+    //<editor-fold desc="Listas Administrador Zonal">
     @GetMapping("/admZonalActivos")
-    public String viewAdmZonalActivos() {
+    //Listar usuarios que tengan id rol 2 (Administrador Zonal) y isActivo 1
+    public String viewAdmZonalActivos(Model model) {
+        List<Usuario> usuarios = usuarioRepository.findAllByRolesIdrolesIdAndIsActive(2, (byte) 1);
+        model.addAttribute("usuarios", usuarios);
         return "SuperAdmin/admZonalActivos-SAdmin";
     }
 
     @GetMapping("/admZonalInactivos")
-    public String viewAdmZonalInactivos() {
+    public String viewAdmZonalInactivos(Model model) {
+        //Listar usuarios que tengan id rol 2 (Administrador Zonal) y isActivo 0
+        List<Usuario> usuarios = usuarioRepository.findAllByRolesIdrolesIdAndIsActive(2, (byte) 0);
+        model.addAttribute("usuarios", usuarios);
         return "SuperAdmin/admZonalInactivos-SAdmin";
     }
+    //</editor-fold>
+    //<editor-fold desc="Baneo y desbaneo de AdministradorZonal">
+    @GetMapping("/admZonalBorrar")
+    public String viewAdmZonalBorrar(Integer id) {
+        //Borrado lógico del proveedor
+        usuarioRepository.deleteUsuario(id);
+        return "redirect:/superadmin/admZonalActivos";
+    }
+    @GetMapping("/admZonalReactivar")
+    public String viewAdmZonalReactivar(Integer id) {
+        //Reactivar usuario
+        usuarioRepository.reactivateUsuario(id);
+        return "redirect:/superadmin/admZonalInactivos";
+    }
+    //</editor-fold>
     //</editor-fold>
 
 
@@ -124,7 +193,7 @@ public class SuperAdminController {
         model.addAttribute("proveedor", new Proveedor());
         return "SuperAdmin/proveedorNuevo-SAdmin";
     }
-    //Funcionalidad de nuevo que recibe el objeto proveedor y lo guarda
+
     @PostMapping("/proveedorNuevo")
     public String viewProveedorNuevo(Proveedor proveedor) {
         //Guardar proveedor
