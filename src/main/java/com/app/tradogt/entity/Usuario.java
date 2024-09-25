@@ -59,6 +59,10 @@ public class Usuario {
     @Column(name = "telefonoUsuario", length = 9)
     private String telefonoUsuario;
 
+    @Size(max = 80)
+    @Column(name = "direccionUsuario", length = 80)
+    private String direccionUsuario;
+
     @Size(max = 20)
     @Column(name = "codigoDespachador", length = 20)
     private String codigoDespachador;
@@ -77,7 +81,7 @@ public class Usuario {
 
     @ManyToOne
     @JoinColumn(name = "estadoCodigoDespachador_idEstado")
-    private Estadocodigo estadocodigodespachadorIdestado;
+    private EstadoCodigo estadocodigodespachadorIdestado;
 
     @ManyToOne
     @JoinColumn(name = "zonas_idZona")

@@ -1,11 +1,9 @@
 package com.app.tradogt.repository;
 
-import com.app.tradogt.entity.Rol;
+import com.app.tradogt.entity.Distrito;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface RolRepository extends JpaRepository<Rol, Integer> {
-    //<editor-fold desc="CRUD Rol">
-    //</editor-fold>
+public interface DistritoRepository extends JpaRepository<Distrito, Integer> {
 }
