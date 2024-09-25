@@ -37,8 +37,10 @@ CREATE TABLE `categoria` (
 
 LOCK TABLES `categoria` WRITE;
 /*!40000 ALTER TABLE `categoria` DISABLE KEYS */;
+INSERT INTO `categoria` VALUES (1,'Ropa Femenina'),(2,'Ropa Masculina'),(3,'Tecnoloía'),(4,'Muebles');
 /*!40000 ALTER TABLE `categoria` ENABLE KEYS */;
 UNLOCK TABLES;
+
 
 --
 -- Table structure for table `chat`
@@ -141,6 +143,7 @@ CREATE TABLE `estadoorden` (
 
 LOCK TABLES `estadoorden` WRITE;
 /*!40000 ALTER TABLE `estadoorden` DISABLE KEYS */;
+INSERT INTO `estadoorden` VALUES (1,'Creado'),(2,'En Validación'),(3,'En proceso'),(4,'Arribo al País'),(5,'En aduanas'),(6,'En Ruta'),(7,'Recibido');
 /*!40000 ALTER TABLE `estadoorden` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -226,11 +229,11 @@ CREATE TABLE `producto` (
   `resolucion` varchar(45) DEFAULT NULL,
   `ram` int DEFAULT NULL,
   `almacenamiento` int DEFAULT NULL,
-  `categoria_idCategoria` int NOT NULL,
+  `subcategoria_idsubcategoria` int NOT NULL,
   PRIMARY KEY (`idProducto`),
   KEY `fk_producto_proveedores1_idx` (`proveedores_id_proveedor`),
-  KEY `fk_producto_categoria1_idx` (`categoria_idCategoria`),
-  CONSTRAINT `fk_producto_categoria1` FOREIGN KEY (`categoria_idCategoria`) REFERENCES `categoria` (`idCategoria`),
+  KEY `fk_producto_subcategoria1_idx` (`subcategoria_idsubcategoria`),
+  CONSTRAINT `fk_producto_subcategoria1` FOREIGN KEY (`subcategoria_idsubcategoria`) REFERENCES `subcategoria` (`idsubcategoria`),
   CONSTRAINT `fk_producto_proveedores1` FOREIGN KEY (`proveedores_id_proveedor`) REFERENCES `proveedores` (`id_proveedor`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -241,6 +244,71 @@ CREATE TABLE `producto` (
 
 LOCK TABLES `producto` WRITE;
 /*!40000 ALTER TABLE `producto` DISABLE KEYS */;
+INSERT INTO producto (
+  nombreProducto, desccripcion, precio, costoEnvio, proveedores_id_proveedor, paisOrigen, colores, talla, material, modelo, resolucion, ram, almacenamiento, subcategoria_idsubcategoria
+)
+VALUES
+-- Producto 1
+('Laptop HP', 'Laptop HP de 15 pulgadas, Intel Core i5', 1200.00, 25.00, 1, 'China', 'Negro', 'N/A', 'Plástico', 'HP15-BS100', '1920x1080', 8, 256, 12),
+-- Producto 2
+('Celular Samsung Galaxy', 'Celular Samsung Galaxy S21, 128GB', 850.00, 15.00, 1, 'Corea del Sur', 'Negro', 'N/A', 'Metal y Vidrio', 'S21', '2400x1080', 8, 128, 14),
+-- Producto 3
+('Polera Adidas', 'Polera deportiva Adidas para hombre', 45.00, 5.00, 2, 'Perú', 'Azul', 'M', 'Algodón', 'AD1234', NULL, NULL, NULL, 7),
+-- Producto 4
+('Juego de comedor', 'Juego de comedor de 6 sillas', 600.00, 50.00, 3, 'Brasil', 'Marrón', 'N/A', 'Madera', 'Comedor-6S', NULL, NULL, NULL, 16),
+-- Producto 5
+('Auriculares Sony', 'Auriculares inalámbricos Sony WH-1000XM4', 350.00, 10.00, 4, 'Japón', 'Negro', 'N/A', 'Plástico', 'WH-1000XM4', '960x540', NULL, NULL, 15),
+-- Producto 6
+('Camiseta Nike', 'Camiseta deportiva Nike para hombre', 35.00, 4.00, 2, 'Perú', 'Rojo', 'L', 'Poliéster', 'NK123', NULL, NULL, NULL, 6),
+-- Producto 7
+('Smartwatch Apple', 'Apple Watch Series 7, 45mm', 400.00, 12.00, 1, 'China', 'Plata', 'N/A', 'Aluminio', 'AW7', '448x368', 1, 32, 14),
+-- Producto 8
+('Tablet Lenovo', 'Tablet Lenovo Tab M10, 64GB', 200.00, 8.00, 1, 'China', 'Negro', 'N/A', 'Plástico', 'TabM10', '1920x1200', 4, 64, 13),
+-- Producto 9
+('Zapatillas Puma', 'Zapatillas Puma deportivas para mujer', 60.00, 5.00, 2, 'Brasil', 'Blanco', '38', 'Cuero', 'PMR450', NULL, NULL, NULL, 5),
+-- Producto 10
+('Monitor LG', 'Monitor LG UltraWide de 34 pulgadas', 500.00, 25.00, 1, 'Corea del Sur', 'Negro', 'N/A', 'Plástico', 'LG34UW', '2560x1080', NULL, NULL, 12),
+-- Producto 11
+('Auriculares JBL', 'Auriculares JBL inalámbricos, modelo TUNE600', 75.00, 8.00, 3, 'México', 'Azul', 'N/A', 'Plástico', 'TUNE600', '1280x720', NULL, NULL, 15),
+-- Producto 12
+('Impresora HP', 'Impresora multifunción HP DeskJet 2675', 80.00, 10.00, 1, 'China', 'Blanco', 'N/A', 'Plástico', 'DJ2675', NULL, NULL, NULL, 12),
+-- Producto 13
+('Sofá de 3 plazas', 'Sofá cómodo de 3 plazas, color gris', 350.00, 30.00, 3, 'Brasil', 'Gris', 'N/A', 'Tela', 'Sofa-3P', NULL, NULL, NULL, 17),
+-- Producto 14
+('Polera Under Armour', 'Polera Under Armour para mujer', 50.00, 6.00, 2, 'Perú', 'Negro', 'M', 'Algodón', 'UA1234', NULL, NULL, NULL, 7),
+-- Producto 15
+('Teclado Logitech', 'Teclado inalámbrico Logitech K380', 40.00, 5.00, 4, 'China', 'Negro', 'N/A', 'Plástico', 'K380', NULL, NULL, NULL, 12),
+-- Producto 16
+('Mochila Nike', 'Mochila deportiva Nike, color negro', 55.00, 5.00, 2, 'Perú', 'Negro', 'N/A', 'Poliéster', 'NK-Mochila', NULL, NULL, NULL, 6),
+-- Producto 17
+('Laptop Dell', 'Laptop Dell Inspiron 14, Core i7', 1300.00, 30.00, 1, 'China', 'Negro', 'N/A', 'Plástico', 'Inspiron14', '1920x1080', 16, 512, 12),
+-- Producto 18
+('Smart TV Samsung', 'Smart TV Samsung 50 pulgadas 4K', 650.00, 20.00, 1, 'Corea del Sur', 'Negro', 'N/A', 'Plástico', 'TV-S50', '3840x2160', NULL, NULL, 14),
+-- Producto 19
+('Reloj Casio', 'Reloj Casio clásico, resistente al agua', 70.00, 5.00, 4, 'Japón', 'Negro', 'N/A', 'Acero', 'F91W', NULL, NULL, NULL, 14),
+-- Producto 20
+('Audífonos Bose', 'Audífonos Bose QC35 II inalámbricos', 300.00, 12.00, 4, 'EEUU', 'Negro', 'N/A', 'Plástico', 'QC35II', '1280x720', NULL, NULL, 15),
+-- Producto 21
+('Polo Adidas', 'Polo deportivo Adidas para mujer', 30.00, 4.00, 2, 'Perú', 'Blanco', 'S', 'Algodón', 'ADPolo123', NULL, NULL, NULL, 6),
+-- Producto 22
+('Cámara Sony', 'Cámara Sony Alpha 6000 con lente 16-50mm', 700.00, 15.00, 4, 'Japón', 'Negro', 'N/A', 'Metal', 'A6000', '1920x1080', NULL, NULL, 14),
+-- Producto 23
+('Escritorio de madera', 'Escritorio de madera con acabado en roble', 250.00, 40.00, 3, 'Brasil', 'Marrón', 'N/A', 'Madera', 'Desk-Roble', NULL, NULL, NULL, 18),
+-- Producto 24
+('Silla gamer', 'Silla gamer con ajuste ergonómico', 180.00, 20.00, 3, 'China', 'Negro y Rojo', 'N/A', 'Cuero sintético', 'SG1000', NULL, NULL, NULL, 19),
+-- Producto 25
+('Laptop Lenovo ThinkPad', 'Laptop Lenovo ThinkPad X1 Carbon, 16GB RAM', 1800.00, 35.00, 1, 'China', 'Negro', 'N/A', 'Plástico', 'X1Carbon', '2560x1440', 16, 512, 12),
+-- Producto 26
+('Cámara GoPro', 'Cámara deportiva GoPro HERO9 Black', 400.00, 10.00, 4, 'EEUU', 'Negro', 'N/A', 'Plástico', 'HERO9', '1920x1080', NULL, NULL, 14),
+-- Producto 27
+('Mesa de comedor', 'Mesa de comedor de 4 puestos', 200.00, 30.00, 3, 'Brasil', 'Marrón', 'N/A', 'Madera', 'MesaComedor4P', NULL, NULL, NULL, 16),
+-- Producto 28
+('Cámara Canon', 'Cámara Canon EOS Rebel T7', 500.00, 18.00, 4, 'Japón', 'Negro', 'N/A', 'Plástico', 'T7', '1920x1080', NULL, NULL, 14),
+-- Producto 29
+('Botas Timberland', 'Botas de cuero Timberland para hombre', 120.00, 8.00, 2, 'EEUU', 'Marrón', '42', 'Cuero', 'TB1234', NULL, NULL, NULL, 9),
+-- Producto 30
+('Juego de sillas', 'Juego de 4 sillas de comedor', 150.00, 25.00, 3, 'Brasil', 'Blanco', 'N/A', 'Madera', 'SillasComedor', NULL, NULL, NULL, 16);
+
 /*!40000 ALTER TABLE `producto` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -376,6 +444,10 @@ CREATE TABLE `subcategoria` (
 
 LOCK TABLES `subcategoria` WRITE;
 /*!40000 ALTER TABLE `subcategoria` DISABLE KEYS */;
+INSERT INTO `subcategoria` VALUES (1,'Blusas',1),(2,'Short',1),(3,'Poleras',1),(4,'Pantalones',1),(5,'Vestidos',1),
+(6,'Polos',2),(7,'Poleras',2),(8,'Camisas',2),(9,'Chompas',2),(10,'Pantalones',2),
+(11,'Computadoras',3),(12,'Laptops',3),(13,'Tablets',3),(14,'Celulares',3),(15,'Auriculares',3),
+(16,'Juego de comedor',4),(17,'Sillones',4),(18,'Armarios',4),(19,'Literas',4),(20,'Estantes',4);
 /*!40000 ALTER TABLE `subcategoria` ENABLE KEYS */;
 UNLOCK TABLES;
 
