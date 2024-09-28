@@ -33,7 +33,7 @@ public class SuperAdminController {
     }
     //</editor-fold>
 
-
+    /*
     //<editor-fold desc="CRUD Menu (R - falta)">
     @GetMapping("/inicio")
     public String viewInicio(Model model) {
@@ -357,6 +357,8 @@ public class SuperAdminController {
     //</editor-fold>
     //</editor-fold>
 
+
+     */
     //<editor-fold desc="Ayuda">
     @GetMapping("/ayuda")
     public String viewAyuda() {

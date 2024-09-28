@@ -12,6 +12,8 @@ import java.util.List;
 @Repository
 public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
 
+    /*
+
     //Buscar por id
     @Query("SELECT u FROM Usuario u WHERE u.id = :id")
     Usuario findByIdUsuario(Integer id);
@@ -75,4 +77,5 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
     @Query("UPDATE Usuario u SET u.correoUsuario = :correoUsuario, u.direccionUsuario = :direccionUsuario, u.distritosIddistrito.id = :idDistrito WHERE u.id = :id")
     void updateImportador(String correoUsuario, String direccionUsuario, Integer idDistrito, Integer id);
     //</editor-fold>
+     */
 }

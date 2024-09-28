@@ -1,24 +1,22 @@
 package com.app.tradogt.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "estadocodigos")
+@Table(name = "estadocodigo")
 public class EstadoCodigo {
     @Id
-    @Column(name = "idEstado", columnDefinition = "int UNSIGNED not null")
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "idEstadoCodigo", nullable = false)
+    private Integer id;
 
     @Size(max = 45)
     @NotNull
-    @Column(name = "nombreEstado", nullable = false, length = 45)
-    private String nombreEstado;
+    @Column(name = "Nombre", nullable = false, length = 45)
+    private String nombre;
 
 }

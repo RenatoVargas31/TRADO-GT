@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public interface ProveedorRepository extends JpaRepository<Proveedor, Integer> {
 
-
+    /*
     //<editor-fold desc="Buscar por Enabled">
     List<Proveedor> findAllByEnabled(Byte enabled);
     //</editor-fold>
@@ -36,5 +36,5 @@ public interface ProveedorRepository extends JpaRepository<Proveedor, Integer> {
     void deleteProveedor(Integer id);
     //</editor-fold>
     //</editor-fold>
-
+    */
 }

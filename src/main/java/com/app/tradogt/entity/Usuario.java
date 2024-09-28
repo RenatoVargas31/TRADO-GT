@@ -6,108 +6,101 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 import org.hibernate.annotations.ColumnDefault;
 
+import java.time.Instant;
 import java.time.LocalDate;
 
 @Data
 @Entity
-@Table(name = "usuarios")
+@Table(name = "usuario")
 public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idUsuarios", nullable = false)
+    @Column(name = "idUsuario", nullable = false)
     private Integer id;
 
-    @ManyToOne
-    @JoinColumn(name = "idCoordinador")
-    private Usuario idCoordinador;
-
-    @ManyToOne
-    @JoinColumn(name = "idAgente")
-    private Usuario idAgente;
-
     @NotNull
     @ManyToOne
-    @JoinColumn(name = "roles_idRoles", nullable = false)
-    private Rol rolesIdroles;
+    @JoinColumn(name = "Rol_idRol", nullable = false)
+    private Rol rolIdrol;
 
-    @Size(max = 45)
-    @Column(name = "nombreUsuario", length = 45)
-    private String nombreUsuario;
+    @ManyToOne
+    @JoinColumn(name = "AdmZonal_idUsuario")
+    private Usuario admzonalIdusuario;
 
-    @Size(max = 45)
-    @Column(name = "apellidoUsuario", length = 45)
-    private String apellidoUsuario;
+    @ManyToOne
+    @JoinColumn(name = "AgentCompra_idUsuario")
+    private Usuario agentcompraIdusuario;
 
-    @Size(max = 8)
-    @Column(name = "dniUsuario", length = 8)
-    private String dniUsuario;
+    @ManyToOne
+    @JoinColumn(name = "Zona_idZona")
+    private Zona zonaIdzona;
+
+    @ManyToOne
+    @JoinColumn(name = "Distrito_idDistrito")
+    private Distrito distritoIddistrito;
 
     @Size(max = 45)
     @NotNull
-    @Column(name = "correoUsuario", nullable = false, length = 45)
-    private String correoUsuario;
+    @Column(name = "Nombre", nullable = false, length = 45)
+    private String nombre;
+
+    @Size(max = 45)
+    @NotNull
+    @Column(name = "Apellido", nullable = false, length = 45)
+    private String apellido;
 
     @Column(name = "FechaNacimiento")
     private LocalDate fechaNacimiento;
 
-    @Size(max = 256)
-    @NotNull
-    @Column(name = "contrasenaUsuario", nullable = false, length = 256)
-    private String contrasenaUsuario;
+    @Size(max = 8)
+    @Column(name = "Dni", length = 8)
+    private String dni;
 
     @Size(max = 9)
-    @Column(name = "telefonoUsuario", length = 9)
-    private String telefonoUsuario;
-
-    @Size(max = 80)
-    @Column(name = "direccionUsuario", length = 80)
-    private String direccionUsuario;
-
-    @Size(max = 20)
-    @Column(name = "codigoDespachador", length = 20)
-    private String codigoDespachador;
-
-    @Size(max = 11)
-    @Column(name = "rucUsuario", length = 11)
-    private String rucUsuario;
+    @Column(name = "Telefono", length = 9)
+    private String telefono;
 
     @Size(max = 45)
-    @Column(name = "razonSocial", length = 45)
+    @Column(name = "Correo", length = 45)
+    private String correo;
+
+    @Size(max = 45)
+    @Column(name = "Contrasena", length = 45)
+    private String contrasena;
+
+    @Size(max = 45)
+    @Column(name = "Ruc", length = 45)
+    private String ruc;
+
+    @Size(max = 45)
+    @Column(name = "RazonSocial", length = 45)
     private String razonSocial;
 
     @Size(max = 45)
-    @Column(name = "codigoJurisdiccion", length = 45)
-    private String codigoJurisdiccion;
+    @Column(name = "Direccion", length = 45)
+    private String direccion;
 
-    @ManyToOne
-    @JoinColumn(name = "estadoCodigoDespachador_idEstado")
-    private EstadoCodigo estadocodigodespachadorIdestado;
-
-    @ManyToOne
-    @JoinColumn(name = "zonas_idZona")
-    private Zona zonasIdzona;
-
-    @ManyToOne
-    @JoinColumn(name = "distritos_idDistrito")
-    private Distrito distritosIddistrito;
-
-    @Size(max = 100)
-    @Column(name = "solicitudAgente", length = 100)
-    private String solicitudAgente;
-
-    @NotNull
     @ColumnDefault("0")
-    @Column(name = "is_active", nullable = false)
-    private Byte isActive;
-
-    @NotNull
-    @ColumnDefault("0")
-    @Column(name = "isAccepted", nullable = false)
+    @Column(name = "isAccepted")
     private Byte isAccepted;
 
-    @NotNull
     @ColumnDefault("0")
-    @Column(name = "postulaAgente", nullable = false)
-    private Byte postulaAgente;
+    @Column(name = "isPostulated")
+    private Byte isPostulated;
+
+    @ColumnDefault("0")
+    @Column(name = "isActivated")
+    private Byte isActivated;
+
+    @Size(max = 45)
+    @Column(name = "Foto", length = 45)
+    private String foto;
+
+    @Size(max = 45)
+    @Column(name = "MotivoBanneo", length = 45)
+    private String motivoBanneo;
+
+    @Column(name = "FechaBanneo")
+    private Instant fechaBanneo;
 
 }

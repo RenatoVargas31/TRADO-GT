@@ -7,7 +7,7 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "zonas")
+@Table(name = "zona")
 public class Zona {
 
     @Id
@@ -15,9 +15,9 @@ public class Zona {
     @Column(name = "idZona", nullable = false)
     private Integer id;
 
-    @Size(max = 10)
+    @Size(max = 45)
     @NotNull
-    @Column(name = "nameZona", nullable = false, length = 10)
-    private String nameZona;
+    @Column(name = "Nombre", nullable = false, length = 45)
+    private String nombre;
 
 }

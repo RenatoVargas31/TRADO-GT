@@ -13,12 +13,12 @@ import lombok.Setter;
 public class Categoria {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "`idCategoria`", nullable = false)
+    @Column(name = "idCategoria", nullable = false)
     private Integer id;
 
     @Size(max = 45)
     @NotNull
-    @Column(name = "nombreCategoria", nullable = false, length = 45)
-    private String nombreCategoria;
+    @Column(name = "Nombre", nullable = false, length = 45)
+    private String nombre;
 
 }
