@@ -75,9 +75,12 @@ CREATE TABLE IF NOT EXISTS `TRADO_DB`.`Usuario` (
   `Ruc` VARCHAR(45) NULL,
   `RazonSocial` VARCHAR(45) NULL,
   `Direccion` VARCHAR(45) NULL,
-  `isAccepted` TINYINT NOT NULL DEFAULT 0,
-  `isPostulated` TINYINT NOT NULL DEFAULT 0,
-  `isActivated` TINYINT NOT NULL DEFAULT 0,
+  `isAccepted` TINYINT NULL DEFAULT 0,
+  `isPostulated` TINYINT NULL DEFAULT 0,
+  `isActivated` TINYINT NULL DEFAULT 0,
+  `Foto` VARCHAR(45) NULL,
+  `MotivoBanneo` VARCHAR(45) NULL,
+  `FechaBanneo` TIMESTAMP NULL,
   PRIMARY KEY (`idUsuario`),
   INDEX `fk_Usuario_Rol_idx` (`Rol_idRol` ASC) VISIBLE,
   INDEX `fk_Usuario_Zona1_idx` (`Zona_idZona` ASC) VISIBLE,
@@ -141,7 +144,7 @@ CREATE TABLE IF NOT EXISTS `TRADO_DB`.`Proveedor` (
   `Ruc` VARCHAR(45) NOT NULL,
   `Dni` VARCHAR(8) NOT NULL,
   `Tienda` VARCHAR(45) NOT NULL,
-  `isDeleted` TINYINT NOT NULL DEFAULT 0,
+  `isDeleted` TINYINT NULL DEFAULT 0,
   PRIMARY KEY (`idProveedor`))
 ENGINE = InnoDB;
 
@@ -192,7 +195,7 @@ CREATE TABLE IF NOT EXISTS `TRADO_DB`.`Producto` (
   `Resolucion` VARCHAR(45) NULL,
   `Ram` VARCHAR(45) NULL,
   `Almacenamiento` VARCHAR(45) NULL,
-  `isDeleted` TINYINT NOT NULL DEFAULT 0,
+  `isDeleted` TINYINT NULL DEFAULT 0,
   PRIMARY KEY (`idProducto`),
   INDEX `fk_Producto_Proveedor1_idx` (`Proveedor_idProveedor` ASC) VISIBLE,
   INDEX `fk_Producto_SubCategoria1_idx` (`SubCategoria_idSubCategoria` ASC) VISIBLE,
@@ -235,22 +238,32 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `TRADO_DB`.`EstadoOrden`
+-- Table `TRADO_DB`.`Valoracion`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `TRADO_DB`.`EstadoOrden` (
-  `idEstadoOrden` INT NOT NULL,
-  `Nombre` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`idEstadoOrden`))
+CREATE TABLE IF NOT EXISTS `TRADO_DB`.`Valoracion` (
+  `idValoracion` INT NOT NULL AUTO_INCREMENT,
+  `Valor` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`idValoracion`))
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `TRADO_DB`.`Valoracion`
+-- Table `TRADO_DB`.`EstadoOrdenAgente`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `TRADO_DB`.`Valoracion` (
-  `idValoracion` INT NOT NULL,
-  `Valor` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`idValoracion`))
+CREATE TABLE IF NOT EXISTS `TRADO_DB`.`EstadoOrdenAgente` (
+  `idEstadoOrdenAgente` INT NOT NULL AUTO_INCREMENT,
+  `Nombre` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`idEstadoOrdenAgente`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `TRADO_DB`.`EstadoOrdenImportador`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `TRADO_DB`.`EstadoOrdenImportador` (
+  `idEstadoOrdenImportador` INT NOT NULL AUTO_INCREMENT,
+  `Nombre` VARCHAR(45) NULL,
+  PRIMARY KEY (`idEstadoOrdenImportador`))
 ENGINE = InnoDB;
 
 
@@ -258,18 +271,20 @@ ENGINE = InnoDB;
 -- Table `TRADO_DB`.`Orden`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `TRADO_DB`.`Orden` (
-  `idOrden` INT NOT NULL,
+  `idOrden` INT NOT NULL AUTO_INCREMENT,
   `Usuario_idUsuario` INT NOT NULL,
   `AgentCompra_idUsuario` INT NULL,
-  `EstadoOrden_idEstadoOrden` INT NOT NULL,
   `Valoracion_idValoracion` INT NULL,
+  `EstadoOrdenAgente_idEstadoOrdenAgente` INT NULL,
+  `EstadoOrdenImportador_idEstadoOrdenImportador` INT NULL,
   `FechaCreacion` TIMESTAMP NOT NULL,
-  `isDeleted` TINYINT NOT NULL DEFAULT 0,
+  `isDeleted` TINYINT NULL DEFAULT 0,
   PRIMARY KEY (`idOrden`),
   INDEX `fk_Orden_Usuario1_idx` (`Usuario_idUsuario` ASC) VISIBLE,
   INDEX `fk_Orden_Usuario2_idx` (`AgentCompra_idUsuario` ASC) VISIBLE,
-  INDEX `fk_Orden_EstadoOrden1_idx` (`EstadoOrden_idEstadoOrden` ASC) VISIBLE,
   INDEX `fk_Orden_Valoracion1_idx` (`Valoracion_idValoracion` ASC) VISIBLE,
+  INDEX `fk_Orden_EstadoOrdenAgente1_idx` (`EstadoOrdenAgente_idEstadoOrdenAgente` ASC) VISIBLE,
+  INDEX `fk_Orden_EstadoOrdenImportador1_idx` (`EstadoOrdenImportador_idEstadoOrdenImportador` ASC) VISIBLE,
   CONSTRAINT `fk_Orden_Usuario1`
     FOREIGN KEY (`Usuario_idUsuario`)
     REFERENCES `TRADO_DB`.`Usuario` (`idUsuario`)
@@ -280,14 +295,19 @@ CREATE TABLE IF NOT EXISTS `TRADO_DB`.`Orden` (
     REFERENCES `TRADO_DB`.`Usuario` (`idUsuario`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Orden_EstadoOrden1`
-    FOREIGN KEY (`EstadoOrden_idEstadoOrden`)
-    REFERENCES `TRADO_DB`.`EstadoOrden` (`idEstadoOrden`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
   CONSTRAINT `fk_Orden_Valoracion1`
     FOREIGN KEY (`Valoracion_idValoracion`)
     REFERENCES `TRADO_DB`.`Valoracion` (`idValoracion`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Orden_EstadoOrdenAgente1`
+    FOREIGN KEY (`EstadoOrdenAgente_idEstadoOrdenAgente`)
+    REFERENCES `TRADO_DB`.`EstadoOrdenAgente` (`idEstadoOrdenAgente`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Orden_EstadoOrdenImportador1`
+    FOREIGN KEY (`EstadoOrdenImportador_idEstadoOrdenImportador`)
+    REFERENCES `TRADO_DB`.`EstadoOrdenImportador` (`idEstadoOrdenImportador`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -297,7 +317,7 @@ ENGINE = InnoDB;
 -- Table `TRADO_DB`.`Chat`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `TRADO_DB`.`Chat` (
-  `idChat` INT NOT NULL,
+  `idChat` INT NOT NULL AUTO_INCREMENT,
   `Usuario_idUsuario` INT NOT NULL,
   `Orden_idOrden` INT NOT NULL,
   `Mensaje` VARCHAR(45) NOT NULL,
@@ -346,7 +366,7 @@ ENGINE = InnoDB;
 -- Table `TRADO_DB`.`ChatBot`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `TRADO_DB`.`ChatBot` (
-  `idChatBot` INT NOT NULL,
+  `idChatBot` INT NOT NULL AUTO_INCREMENT,
   `Usuario_idUsuario` INT NOT NULL,
   `Mensaje` VARCHAR(45) NOT NULL,
   `Respuesta` VARCHAR(45) NULL,
@@ -364,7 +384,7 @@ ENGINE = InnoDB;
 -- Table `TRADO_DB`.`Notificacion`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `TRADO_DB`.`Notificacion` (
-  `idNotificacion` INT NOT NULL,
+  `idNotificacion` INT NOT NULL AUTO_INCREMENT,
   `Usuario_idUsuario` INT NOT NULL,
   `Contenido` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`idNotificacion`),
@@ -381,7 +401,7 @@ ENGINE = InnoDB;
 -- Table `TRADO_DB`.`Pago`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `TRADO_DB`.`Pago` (
-  `idPago` INT NOT NULL,
+  `idPago` INT NOT NULL AUTO_INCREMENT,
   `Orden_idOrden` INT NOT NULL,
   `Metodo` VARCHAR(45) NOT NULL,
   `Monto` DECIMAL(10,2) NOT NULL,
@@ -400,7 +420,7 @@ ENGINE = InnoDB;
 -- Table `TRADO_DB`.`Pregunta`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `TRADO_DB`.`Pregunta` (
-  `idPregunta` INT NOT NULL,
+  `idPregunta` INT NOT NULL AUTO_INCREMENT,
   `Usuario_idUsuario` INT NOT NULL,
   `Contenido` VARCHAR(80) NOT NULL,
   `Fecha` TIMESTAMP NOT NULL,
@@ -418,7 +438,7 @@ ENGINE = InnoDB;
 -- Table `TRADO_DB`.`Resena`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `TRADO_DB`.`Resena` (
-  `idResena` INT NOT NULL,
+  `idResena` INT NOT NULL AUTO_INCREMENT,
   `Foto` VARCHAR(45) NOT NULL,
   `Comentario` VARCHAR(200) NOT NULL,
   `Calidad` VARCHAR(45) NOT NULL,
@@ -445,7 +465,7 @@ ENGINE = InnoDB;
 -- Table `TRADO_DB`.`EstadoCodigo`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `TRADO_DB`.`EstadoCodigo` (
-  `idEstadoCodigo` INT NOT NULL,
+  `idEstadoCodigo` INT NOT NULL AUTO_INCREMENT,
   `Nombre` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`idEstadoCodigo`))
 ENGINE = InnoDB;
@@ -455,7 +475,7 @@ ENGINE = InnoDB;
 -- Table `TRADO_DB`.`CodigoDespachador`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `TRADO_DB`.`CodigoDespachador` (
-  `idCodigoDespachador` INT NOT NULL,
+  `idCodigoDespachador` INT NOT NULL AUTO_INCREMENT,
   `Caracteres` VARCHAR(45) NOT NULL,
   `Distrito_idDistrito` INT NOT NULL,
   `EstadoCodigo_idEstadoCodigo` INT NOT NULL,
