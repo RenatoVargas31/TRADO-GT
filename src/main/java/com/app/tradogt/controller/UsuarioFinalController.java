@@ -2,12 +2,26 @@ package com.app.tradogt.controller;
 
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.data.jpa.repository.JpaRepository;
+import com.app.tradogt.repository.*;
+import com.app.tradogt.entity.Producto;
+import org.springframework.web.bind.annotation.ModelAttribute;
+
+import java.util.List;
+
 
 @Controller
 @RequestMapping("/usuario")
 public class UsuarioFinalController {
+
+    final ProductosRepository productosRepository;
+
+    public UsuarioFinalController(ProductosRepository productosRepository) {
+        this.productosRepository = productosRepository;
+    }
 
     @GetMapping("/inicio")
     public String inicio() {
@@ -15,7 +29,9 @@ public class UsuarioFinalController {
     }
 
     @GetMapping("/misPedidos")
-    public String misPedidos() {
+    public String misPedidos(Model model) {
+        List<Producto> productos = productosRepository.findAll();
+        model.addAttribute("productos", productos);
         return "Usuario/listaOrdenes";
     }
 
