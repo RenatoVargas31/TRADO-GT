@@ -68,61 +68,30 @@
                                 <!--Las modificaciones de ciertos propiedades de la tabla las deben realizar en el archivo js "datatables.init.js",
                                 a su vez si desean crear más datatables también realicelon ahí con su respectivo id, aunque quizá tod0 eso
                                 ya lo sabían xD-->
-                                <table id="datatable-usuariosHabilitados" class="table table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                <table id="datatable-usuariosTotales" class="table table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                     <thead>
                                     <tr>
                                         <th>DNI</th>
                                         <th>Nombre de usuario</th>
                                         <th>Distrito</th>
                                         <th>Correo</th>
-                                        <th>Acciones</th>
+
+                                        <th>Ver</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr>
-                                        <td>70512345</td>
-                                        <td>Juan Pérez</td>
-                                        <td>Surco</td>
-                                        <td>jperez@gmail.com</td>
+                                    <tr th:each="usuario : ${usuarioList}">
+                                        <td th:text="${usuario.dni}"></td>
+                                        <td th:text="${usuario.nombre + ' ' + usuario.apellido}"></td>
+                                        <td th:text="${usuario.distritoIddistrito.nombre}"></td>
+                                        <td th:text="${usuario.correo}"></td>
                                         <td>
-                                            <a href="/agente/infoUsuario" class="btn btn-primary btn-sm waves-effect waves-light" title="Editar"><i class="ri-eye-fill"></i></a>
-                                            <!-- Botón para abrir el modal de baneo-->
-                                            <button type="button" class="btn btn-danger btn-sm waves-effect waves-light" title="Banear" data-bs-toggle="modal" data-bs-target="#banUserModal">
-                                                <i class="ri-lock-fill"></i>
-                                            </button>
+                                            <a th:href="${usuario.isActivated == 0} ? '/agente/infoUsuarioBaneado' : '/agente/infoUsuario'"
+                                               class="btn btn-primary btn-sm waves-effect waves-light" title="Ver">
+                                                <i class="ri-eye-fill"></i>
+                                            </a>
                                         </td>
                                     </tr>
-
-                                    </tbody>
-                                    <!-- Modal de confirmación de baneo -->
-                                    <div class="modal fade" id="banUserModal" tabindex="-1" aria-labelledby="banUserModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="banUserModalLabel">Confirmar baneo</h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <form id="banUserForm">
-                                                        <div class="mb-3">
-                                                            <label for="banReason" class="form-label">Razón del baneo</label>
-                                                            <textarea class="form-control" id="banReason" rows="4" placeholder="Ingresa la razón del baneo" required></textarea>
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                                    <button type="submit" form="banUserForm" class="btn btn-danger">Confirmar baneo</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-
-
-
-
-
                                     </tbody>
                                 </table>
 

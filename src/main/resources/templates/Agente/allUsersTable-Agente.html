@@ -80,164 +80,23 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr>
-                                        <td>70512345</td>
-                                        <td>Juan Pérez</td>
-                                        <td>Surco</td>
-                                        <td>jperez@gmail.com</td>
-                                        <td><span class="badge bg-danger fs-6">Baneado</span></td>
+                                    <tr th:each="usuario : ${usuarioList}">
+                                        <td th:text="${usuario.dni}"></td>
+                                        <td th:text="${usuario.nombre + ' ' + usuario.apellido}"></td>
+                                        <td th:text="${usuario.distritoIddistrito.nombre}"></td>
+                                        <td th:text="${usuario.correo}"></td>
                                         <td>
-                                            <a href="/agente/infoUsuarioBaneado" class="btn btn-primary btn-sm waves-effect waves-light" title="Ver" >
-                                                <i class="ri-eye-fill"></i>
-                                            </a>
-
+                <span th:classappend="${usuario.isActivated == 0} ? 'badge bg-danger fs-6' : 'badge bg-success fs-6'">
+                    <span th:text="${usuario.isActivated == 0} ? 'Desactivado' : 'Habilitado'"></span>
+                </span>
                                         </td>
-
-                                    </tr>
-                                    <tr>
-                                        <td>43287651</td>
-                                        <td>María García</td>
-                                        <td>Barranco</td>
-                                        <td>mgarcia@gmail.com</td>
-                                        <td><span class="badge bg-success fs-6">Habilitado</span></td>
                                         <td>
-                                            <a href="/agente/infoUsuario" class="btn btn-primary btn-sm waves-effect waves-light" title="Ver" >
+                                            <a th:href="${usuario.isActivated == 0} ? '/agente/infoUsuarioBaneado' : '/agente/infoUsuario'"
+                                               class="btn btn-primary btn-sm waves-effect waves-light" title="Ver">
                                                 <i class="ri-eye-fill"></i>
                                             </a>
                                         </td>
                                     </tr>
-                                    <tr>
-                                        <td>89561234</td>
-                                        <td>Carlos Rodríguez</td>
-                                        <td>Barranco</td>
-                                        <td>crodriguez@gmail.com</td>
-                                        <td><span class="badge bg-success fs-6">Habilitado</span></td>
-                                        <td>
-                                            <a href="/agente/infoUsuario" class="btn btn-primary btn-sm waves-effect waves-light" title="Ver" >
-                                                <i class="ri-eye-fill"></i>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>12345678</td>
-                                        <td>Ana Martínez</td>
-                                        <td>Miraflores</td>
-                                        <td>amartinez@gmail.com</td>
-                                        <td><span class="badge bg-success fs-6">Habilitado</span></td>
-                                        <td>
-                                            <a href="/agente/infoUsuario" class="btn btn-primary btn-sm waves-effect waves-light" title="Ver" >
-                                                <i class="ri-eye-fill"></i>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>98765432</td>
-                                        <td>Laura Sánchez</td>
-                                        <td>Ate</td>
-                                        <td>lsanchez@gmail.com</td>
-                                        <td><span class="badge bg-success fs-6">Habilitado</span></td>
-                                        <td>
-                                            <a href="/agente/infoUsuario" class="btn btn-primary btn-sm waves-effect waves-light" title="Ver" >
-                                                <i class="ri-eye-fill"></i>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>35678901</td>
-                                        <td>Pedro Gómez</td>
-                                        <td>Chaclacayo</td>
-                                        <td>pgomez@gmail.com</td>
-                                        <td><span class="badge bg-danger fs-6">Baneado</span></td>
-                                        <td>
-                                            <a href="/agente/infoUsuarioBaneado" class="btn btn-primary btn-sm waves-effect waves-light" title="Ver" >
-                                                <i class="ri-eye-fill"></i>
-                                            </a>
-
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>20458796</td>
-                                        <td>Sofía López</td>
-                                        <td>Santa Anita</td>
-                                        <td>slopez@gmail.com</td>
-                                        <td><span class="badge bg-success fs-6">Habilitado</span></td>
-                                        <td>
-                                            <a href="/agente/infoUsuario" class="btn btn-primary btn-sm waves-effect waves-light" title="Ver" >
-                                                <i class="ri-eye-fill"></i>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>78124569</td>
-                                        <td>Miguel Fernández</td>
-                                        <td>Santa Anita</td>
-                                        <td>mfernandez@gmail.com</td>
-                                        <td><span class="badge bg-danger fs-6">Baneado</span></td>
-                                        <td>
-                                            <a href="/agente/infoUsuarioBaneado" class="btn btn-primary btn-sm waves-effect waves-light" title="Ver" >
-                                                <i class="ri-eye-fill"></i>
-                                            </a>
-
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>64012387</td>
-                                        <td>Elena Torres</td>
-                                        <td>SJL</td>
-                                        <td>etorres@gmail.com</td>
-                                        <td><span class="badge bg-success fs-6">Habilitado</span></td>
-                                        <td>
-                                            <a href="/agente/infoUsuario" class="btn btn-primary btn-sm waves-effect waves-light" title="Ver" >
-                                                <i class="ri-eye-fill"></i>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>56234879</td>
-                                        <td>Javier Ruiz</td>
-                                        <td>Chorrillos</td>
-                                        <td>jruiz@gmail.com</td>
-                                        <td><span class="badge bg-danger fs-6">Baneado</span></td>
-                                        <td>
-                                            <a href="/agente/infoUsuarioBaneado" class="btn btn-primary btn-sm waves-effect waves-light" title="Ver" >
-                                                <i class="ri-eye-fill"></i>
-                                            </a>
-
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>31987654</td>
-                                        <td>Carmen Navarro</td>
-                                        <td>Chorrillos</td>
-                                        <td>cnavarro@gmail.com</td>
-                                        <td><span class="badge bg-success fs-6">Habilitado</span></td>
-                                        <td>
-                                            <a href="/agente/infoUsuario" class="btn btn-primary btn-sm waves-effect waves-light" title="Ver" >
-                                                <i class="ri-eye-fill"></i>
-                                            </a>
-
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>47592031</td>
-                                        <td>Roberto Molina</td>
-                                        <td>SJM</td>
-                                        <td>rmolinas@gmail.com</td>
-                                        <td><span class="badge bg-danger fs-6">Baneado</span></td>
-                                        <td>
-                                            <a href="/agente/infoUsuarioBaneado" class="btn btn-primary btn-sm waves-effect waves-light" title="Ver" >
-                                                <i class="ri-eye-fill"></i>
-                                            </a>
-
-                                        </td>
-                                    </tr>
-                                    </tbody>
-
-
-
-
-
-
                                     </tbody>
                                 </table>
 

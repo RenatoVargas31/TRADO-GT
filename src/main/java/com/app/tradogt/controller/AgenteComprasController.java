@@ -1,12 +1,23 @@
 package com.app.tradogt.controller;
 
+import com.app.tradogt.entity.Usuario;
+import com.app.tradogt.repository.UsuarioRepository;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/agente")
 public class AgenteComprasController {
+    final UsuarioRepository usuarioRepository;
+
+    public AgenteComprasController(UsuarioRepository usuarioRepository) {
+        this.usuarioRepository = usuarioRepository;
+    }
+
 
     @GetMapping("/inicio")
     public String showInicio() {
@@ -72,15 +83,22 @@ public class AgenteComprasController {
 
     //Tableros de USUARIOS
     @GetMapping("/allUsers")
-    public String showAllUsers() {
+    public String showAllUsers(Model model) {
+        List<Usuario> usuarioList = usuarioRepository.findAll();
+        model.addAttribute("usuarioList", usuarioList);
+
         return "Agente/allUsersTable-Agente";
     }
+
+
     @GetMapping("/habilitadosUsers")
-    public String showHabilitadosUsers() {
+    public String showHabilitadosUsers(Model model) {
+        model.addAttribute("usuarioList", usuarioRepository.findByBanned(1));
         return "Agente/habilitadosUsersTable-Agente";
     }
     @GetMapping("/baneadosUsers")
-    public String showBaneadosUsers() {
+    public String showBaneadosUsers(Model model) {
+        model.addAttribute("usuarioList", usuarioRepository.findByBanned(0));
         return "Agente/baneadosUsersTable-Agente";
     }
 

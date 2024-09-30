@@ -12,6 +12,8 @@ import java.util.List;
 @Repository
 public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
 
+    @Query("SELECT u FROM Usuario u WHERE u.isActivated = ?1")
+    List<Usuario> findByBanned(int activated);
     /*
 
     //Buscar por id
