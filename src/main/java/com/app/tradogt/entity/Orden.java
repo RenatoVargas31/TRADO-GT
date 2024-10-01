@@ -6,6 +6,7 @@ import lombok.Data;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.time.Instant;
+import java.util.List;
 
 @Data
 @Entity
@@ -15,6 +16,10 @@ public class Orden {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idOrden", nullable = false)
     private Integer id;
+
+    // Relación uno a muchos con Pago
+    @OneToMany(mappedBy = "orden", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Pago> pagos;
 
     @NotNull
     @ManyToOne
@@ -44,5 +49,6 @@ public class Orden {
     @ColumnDefault("0")
     @Column(name = "isDeleted")
     private Byte isDeleted;
+
 
 }

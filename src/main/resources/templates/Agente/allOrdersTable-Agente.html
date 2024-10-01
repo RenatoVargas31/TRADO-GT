@@ -80,17 +80,25 @@
                   </tr>
                   </thead>
                   <tbody>
-                  <tr>
-                    <td>Juan Pérez</td>
-                    <td>24/07/2003</td>
-                    <td>Tarjeta de crédito</td>
-                    <td>No asignado</td>
-                    <td><span class="badge bg-secondary fs-6">Sin asignar</span></td>
+                  <tr th:each="order : ${listaOrdenes}">
+                    <td th:text="${order.usuarioPropietario}"></td>
+                    <td th:text="${order.fechaCreacion}"></td>
+                    <td th:text="${order.metodoPago}"></td>
+                    <td th:text="${order.agenteCompra}"></td>
+                    <!-- Aquí utilizamos th:switch para manejar diferentes estados -->
+                    <td>
+                      <span th:switch="${order.estadoPedido}">
+                          <span th:case="'Sin asignar'" class="badge bg-secondary fs-6">Sin asignar</span>
+                          <span th:case="'Pendiente'" class="badge bg-warning fs-6">Pendiente</span>
+                          <span th:case="'En proceso'" class="badge bg-info fs-6">En proceso</span>
+                          <span th:case="'Resuelto'" class="badge bg-success fs-6">Resuelto</span>
+                          <span th:case="*">Desconocido</span>  <!-- Este es un caso por defecto -->
+                      </span>
+                    </td>
                     <td>
                       <a href="/agente/detailsOrderSinAsignar" class="btn btn-primary btn-sm waves-effect waves-light" title="Ver" >
                         <i class="ri-eye-fill"></i>
                       </a>
-
                     </td>
                   </tr>
                   </tbody>

@@ -15,7 +15,7 @@ public class EstadoOrdenAgente {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idEstadoOrdenAgente", nullable = false)
-    private Integer id;
+    private Integer idEstadoOrdenAgente;
 
     @Size(max = 45)
     @NotNull

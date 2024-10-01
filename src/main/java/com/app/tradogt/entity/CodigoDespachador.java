@@ -21,8 +21,8 @@ public class CodigoDespachador {
 
     @NotNull
     @ManyToOne
-    @JoinColumn(name = "Distrito_idDistrito", nullable = false)
-    private Distrito distritoIddistrito;
+    @JoinColumn(name = "zona_idZona", nullable = false)
+    private Distrito zonaIdZona;
 
     @NotNull
     @ManyToOne

@@ -79,16 +79,15 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr>
-                                        <td>Juan Pérez</td>
-                                        <td>10/03/2025</td>
-                                        <td>Contra entrega</td>
-                                        <td>Sin asignar</td>
+                                    <tr th:each="order : ${listaOrdenes}">
+                                        <td th:text="${order.usuarioPropietario}"></td>
+                                        <td th:text="${order.fechaCreacion}"></td>
+                                        <td th:text="${order.metodoPago}"></td>
+                                        <td th:text="${order.agenteCompra}"></td>
                                         <td>
                                             <a href="/agente/detailsOrderSinAsignar" class="btn btn-primary btn-sm waves-effect waves-light" title="Ver" >
                                                 <i class="ri-eye-fill"></i>
                                             </a>
-
                                         </td>
                                     </tr>
 

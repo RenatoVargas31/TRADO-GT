@@ -103,4 +103,7 @@ public class Usuario {
     @Column(name = "FechaBanneo")
     private Instant fechaBanneo;
 
+    @OneToOne
+    @JoinColumn(name = "codigodespachador_idCodigoDespachador")
+    private CodigoDespachador codigodespachadorIddespachador;
 }
