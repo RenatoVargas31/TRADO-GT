@@ -8,590 +8,515 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,N
 -- Schema mydb
 -- -----------------------------------------------------
 -- -----------------------------------------------------
--- Schema TRADO_DB
+-- Schema trado_db
 -- -----------------------------------------------------
 
 -- -----------------------------------------------------
--- Schema TRADO_DB
+-- Schema trado_db
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `TRADO_DB` ;
-USE `TRADO_DB` ;
+CREATE SCHEMA IF NOT EXISTS `trado_db` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci ;
+USE `trado_db` ;
 
 -- -----------------------------------------------------
--- Table `TRADO_DB`.`Rol`
+-- Table `trado_db`.`categoria`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `TRADO_DB`.`Rol` (
-                                                `idRol` INT NOT NULL AUTO_INCREMENT,
-                                                `Nombre` VARCHAR(45) NOT NULL,
-    PRIMARY KEY (`idRol`))
-    ENGINE = InnoDB;
-
-INSERT INTO `TRADO_DB`.`Rol` (`Nombre`) VALUES
-                                            ('Administrador'),
-                                            ('Agente de Compra'),
-                                            ('Zonal'),
-                                            ('Usuario Final');
+CREATE TABLE IF NOT EXISTS `trado_db`.`categoria` (
+  `idCategoria` INT NOT NULL AUTO_INCREMENT,
+  `Nombre` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`idCategoria`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `TRADO_DB`.`Zona`
+-- Table `trado_db`.`estadoordenagente`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `TRADO_DB`.`Zona` (
-                                                 `idZona` INT NOT NULL AUTO_INCREMENT,
-                                                 `Nombre` VARCHAR(45) NOT NULL,
-    PRIMARY KEY (`idZona`))
-    ENGINE = InnoDB;
-
-INSERT INTO `TRADO_DB`.`Zona` (`Nombre`) VALUES
-                                             ('Norte'),
-                                             ('Sur'),
-                                             ('Este'),
-                                             ('Oeste');
+CREATE TABLE IF NOT EXISTS `trado_db`.`estadoordenagente` (
+  `idEstadoOrdenAgente` INT NOT NULL AUTO_INCREMENT,
+  `Nombre` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`idEstadoOrdenAgente`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 5
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `TRADO_DB`.`Distrito`
+-- Table `trado_db`.`estadoordenimportador`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `TRADO_DB`.`Distrito` (
-                                                     `idDistrito` INT NOT NULL AUTO_INCREMENT,
-                                                     `Zona_idZona` INT NOT NULL,
-                                                     `Codigo` VARCHAR(45) NOT NULL,
-    `Nombre` VARCHAR(45) NOT NULL,
-    PRIMARY KEY (`idDistrito`),
-    INDEX `fk_Distrito_Zona1_idx` (`Zona_idZona` ASC) VISIBLE,
-    CONSTRAINT `fk_Distrito_Zona1`
+CREATE TABLE IF NOT EXISTS `trado_db`.`estadoordenimportador` (
+  `idEstadoOrdenImportador` INT NOT NULL AUTO_INCREMENT,
+  `Nombre` VARCHAR(45) NULL DEFAULT NULL,
+  PRIMARY KEY (`idEstadoOrdenImportador`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `trado_db`.`zona`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `trado_db`.`zona` (
+  `idZona` INT NOT NULL AUTO_INCREMENT,
+  `Nombre` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`idZona`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 5
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `trado_db`.`distrito`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `trado_db`.`distrito` (
+  `idDistrito` INT NOT NULL AUTO_INCREMENT,
+  `Zona_idZona` INT NOT NULL,
+  `Codigo` VARCHAR(45) NOT NULL,
+  `Nombre` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`idDistrito`),
+  INDEX `fk_Distrito_Zona1_idx` (`Zona_idZona` ASC) VISIBLE,
+  CONSTRAINT `fk_Distrito_Zona1`
     FOREIGN KEY (`Zona_idZona`)
-    REFERENCES `TRADO_DB`.`Zona` (`idZona`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-    ENGINE = InnoDB;
-
--- Distritos del Norte
-INSERT INTO `TRADO_DB`.`Distrito` (`Zona_idZona`, `Codigo`, `Nombre`) VALUES
-                                                                          (1, '01', 'San Isidro'),
-                                                                          (1, '02', 'Miraflores'),
-                                                                          (1, '03', 'San Borja'),
-                                                                          (1, '04', 'Surco');
-
--- Distritos del Sur
-INSERT INTO `TRADO_DB`.`Distrito` (`Zona_idZona`, `Codigo`, `Nombre`) VALUES
-                                                                          (2, '05', 'Barranco'),
-                                                                          (2, '06', 'Chorrillos'),
-                                                                          (2, '07', 'Villa El Salvador'),
-                                                                          (2, '08', 'San Juan de Miraflores');
-
--- Distritos del Este
-INSERT INTO `TRADO_DB`.`Distrito` (`Zona_idZona`, `Codigo`, `Nombre`) VALUES
-                                                                          (3, '09', 'Ate'),
-                                                                          (3, '10', 'San Juan de Lurigancho'),
-                                                                          (3, '11', 'El Agustino'),
-                                                                          (3, '12', 'La Molina');
-
--- Distritos del Oeste
-INSERT INTO `TRADO_DB`.`Distrito` (`Zona_idZona`, `Codigo`, `Nombre`) VALUES
-                                                                          (4, '13', 'Lurín'),
-                                                                          (4, '14', 'Pueblo Libre'),
-                                                                          (4, '15', 'Callao'),
-                                                                          (4, '16', 'Rímac');
+    REFERENCES `trado_db`.`zona` (`idZona`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 43
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `TRADO_DB`.`Usuario`
+-- Table `trado_db`.`rol`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `TRADO_DB`.`Usuario` (
-                                                    `idUsuario` INT NOT NULL AUTO_INCREMENT,
-                                                    `Rol_idRol` INT NOT NULL,
-                                                    `AdmZonal_idUsuario` INT NULL,
-                                                    `AgentCompra_idUsuario` INT NULL,
-                                                    `Zona_idZona` INT NULL,
-                                                    `Distrito_idDistrito` INT NULL,
-                                                    `Nombre` VARCHAR(45) NOT NULL,
-    `Apellido` VARCHAR(45) NOT NULL,
-    `FechaNacimiento` DATE NULL,
-    `Dni` VARCHAR(8) NULL,
-    `Telefono` VARCHAR(9) NULL,
-    `Correo` VARCHAR(45) NULL,
-    `Contrasena` VARCHAR(45) NULL,
-    `Ruc` VARCHAR(45) NULL,
-    `RazonSocial` VARCHAR(45) NULL,
-    `Direccion` VARCHAR(45) NULL,
-    `isAccepted` TINYINT NULL DEFAULT 0,
-    `isPostulated` TINYINT NULL DEFAULT 0,
-    `isActivated` TINYINT NULL DEFAULT 0,
-    `Foto` VARCHAR(45) NULL,
-    `MotivoBanneo` VARCHAR(45) NULL,
-    `FechaBanneo` TIMESTAMP NULL,
-    PRIMARY KEY (`idUsuario`),
-    INDEX `fk_Usuario_Rol_idx` (`Rol_idRol` ASC) VISIBLE,
-    INDEX `fk_Usuario_Zona1_idx` (`Zona_idZona` ASC) VISIBLE,
-    INDEX `fk_Usuario_Distrito1_idx` (`Distrito_idDistrito` ASC) VISIBLE,
-    INDEX `fk_Usuario_Usuario1_idx` (`AdmZonal_idUsuario` ASC) VISIBLE,
-    INDEX `fk_Usuario_Usuario2_idx` (`AgentCompra_idUsuario` ASC) VISIBLE,
-    CONSTRAINT `fk_Usuario_Rol`
-    FOREIGN KEY (`Rol_idRol`)
-    REFERENCES `TRADO_DB`.`Rol` (`idRol`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-    CONSTRAINT `fk_Usuario_Zona1`
-    FOREIGN KEY (`Zona_idZona`)
-    REFERENCES `TRADO_DB`.`Zona` (`idZona`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-    CONSTRAINT `fk_Usuario_Distrito1`
-    FOREIGN KEY (`Distrito_idDistrito`)
-    REFERENCES `TRADO_DB`.`Distrito` (`idDistrito`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-    CONSTRAINT `fk_Usuario_Usuario1`
-    FOREIGN KEY (`AdmZonal_idUsuario`)
-    REFERENCES `TRADO_DB`.`Usuario` (`idUsuario`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-    CONSTRAINT `fk_Usuario_Usuario2`
-    FOREIGN KEY (`AgentCompra_idUsuario`)
-    REFERENCES `TRADO_DB`.`Usuario` (`idUsuario`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-    ENGINE = InnoDB;
-
-INSERT INTO `TRADO_DB`.`Usuario`
-(
-    `Rol_idRol`,
-    `AdmZonal_idUsuario`,
-    `AgentCompra_idUsuario`,
-    `Zona_idZona`,
-    `Distrito_idDistrito`,
-    `Nombre`,
-    `Apellido`,
-    `FechaNacimiento`,
-    `Dni`,
-    `Telefono`,
-    `Correo`,
-    `Contrasena`,
-    `Ruc`,
-    `RazonSocial`,
-    `Direccion`,
-    `isAccepted`,
-    `isPostulated`,
-    `isActivated`,
-    `Foto`,
-    `MotivoBanneo`,
-    `FechaBanneo`
-)
-VALUES
-    (1, NULL, NULL, 1, 1, 'Juan', 'Perez', '1985-06-15', '87654321', '987654321', 'juan.perez@mail.com', 'password123', '12345678912', 'Empresa Perez S.A.', 'Av. Siempre Viva 123', 1, 0, 1, NULL, NULL, NULL),
-    (2, NULL, NULL, 2, 2, 'Maria', 'Lopez', '1990-08-21', '87654322', '987654322', 'maria.lopez@mail.com', 'password123', '12345678913', 'Lopez & Asociados', 'Av. Principal 456', 1, 1, 1, NULL, NULL, NULL),
-    (3, 1, NULL, 3, 3, 'Carlos', 'Gomez', '1978-02-10', '87654323', '987654323', 'carlos.gomez@mail.com', 'password123', '12345678914', 'Distribuidora Gomez', 'Av. Secundaria 789', 0, 1, 1, NULL, 'Inactividad prolongada', '2024-08-01 14:00:00'),
-    (4, NULL, NULL, 4, 4, 'Lucia', 'Diaz', '1995-12-05', '87654324', '987654324', 'lucia.diaz@mail.com', 'password123', '12345678915', 'Consultores Diaz', 'Av. Nueva 101', 1, 0, 0, NULL, NULL, NULL),
-    (1, 2, NULL, 1, 1, 'Roberto', 'Martinez', '1983-07-14', '87654325', '987654325', 'roberto.martinez@mail.com', 'password123', '12345678916', 'Martinez y Cia', 'Av. Antigua 202', 0, 1, 1, NULL, 'Violación de políticas', '2024-07-22 10:30:00'),
-    (2, NULL, NULL, 2, 2, 'Ana', 'Ramirez', '1989-11-30', '87654326', '987654326', 'ana.ramirez@mail.com', 'password123', '12345678917', 'Ramirez Importaciones', 'Calle Luna 305', 1, 0, 1, NULL, NULL, NULL),
-    (3, 3, NULL, 3, 3, 'Jorge', 'Sanchez', '1986-04-18', '87654327', '987654327', 'jorge.sanchez@mail.com', 'password123', '12345678918', 'Sanchez Export', 'Calle Sol 456', 1, 0, 1, NULL, NULL, NULL),
-    (4, NULL, NULL, 4, 4, 'Sofia', 'Fernandez', '1993-01-23', '87654328', '987654328', 'sofia.fernandez@mail.com', 'password123', '12345678919', 'Fernandez Consulting', 'Calle Estrella 789', 1, 1, 0, NULL, NULL, NULL),
-    (1, 4, NULL, 1, 1, 'Pedro', 'Mendoza', '1979-03-09', '87654329', '987654329', 'pedro.mendoza@mail.com', 'password123', '12345678920', 'Mendoza S.A.C.', 'Calle Cometa 101', 0, 1, 1, NULL, 'Incumplimiento de contrato', '2024-06-10 09:15:00'),
-    (2, NULL, NULL, 2, 2, 'Laura', 'Gonzalez', '1991-09-27', '87654330', '987654330', 'laura.gonzalez@mail.com', 'password123', '12345678921', 'Gonzalez Servicios', 'Calle Andromeda 202', 1, 0, 1, NULL, NULL, NULL);
-
--- -----------------------------------------------------
--- Table `TRADO_DB`.`Token`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `TRADO_DB`.`Token` (
-                                                  `idToken` INT NOT NULL AUTO_INCREMENT,
-                                                  `Usuario_idUsuario` INT NOT NULL,
-                                                  `Tipo` VARCHAR(45) NOT NULL,
-    `Duracion` INT NOT NULL,
-    `FechaCreacion` TIMESTAMP NOT NULL,
-    PRIMARY KEY (`idToken`),
-    INDEX `fk_Token_Usuario1_idx` (`Usuario_idUsuario` ASC) VISIBLE,
-    CONSTRAINT `fk_Token_Usuario1`
-    FOREIGN KEY (`Usuario_idUsuario`)
-    REFERENCES `TRADO_DB`.`Usuario` (`idUsuario`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-    ENGINE = InnoDB;
+CREATE TABLE IF NOT EXISTS `trado_db`.`rol` (
+  `idRol` INT NOT NULL AUTO_INCREMENT,
+  `Nombre` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`idRol`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 5
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `TRADO_DB`.`Proveedor`
+-- Table `trado_db`.`estadocodigo`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `TRADO_DB`.`Proveedor` (
-                                                      `idProveedor` INT NOT NULL AUTO_INCREMENT,
-                                                      `Nombre` VARCHAR(45) NOT NULL,
-    `Telefono` VARCHAR(9) NOT NULL,
-    `Ruc` VARCHAR(45) NOT NULL,
-    `Dni` VARCHAR(8) NOT NULL,
-    `Tienda` VARCHAR(45) NOT NULL,
-    `isDeleted` TINYINT NULL DEFAULT 0,
-    PRIMARY KEY (`idProveedor`))
-    ENGINE = InnoDB;
+CREATE TABLE IF NOT EXISTS `trado_db`.`estadocodigo` (
+  `idEstadoCodigo` INT NOT NULL AUTO_INCREMENT,
+  `Nombre` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`idEstadoCodigo`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `TRADO_DB`.`Categoria`
+-- Table `trado_db`.`codigodespachador`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `TRADO_DB`.`Categoria` (
-                                                      `idCategoria` INT NOT NULL AUTO_INCREMENT,
-                                                      `Nombre` VARCHAR(45) NOT NULL,
-    PRIMARY KEY (`idCategoria`))
-    ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `TRADO_DB`.`SubCategoria`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `TRADO_DB`.`SubCategoria` (
-                                                         `idSubCategoria` INT NOT NULL AUTO_INCREMENT,
-                                                         `Nombre` VARCHAR(45) NOT NULL,
-    `Categoria_idCategoria` INT NOT NULL,
-    PRIMARY KEY (`idSubCategoria`),
-    INDEX `fk_SubCategoria_Categoria1_idx` (`Categoria_idCategoria` ASC) VISIBLE,
-    CONSTRAINT `fk_SubCategoria_Categoria1`
-    FOREIGN KEY (`Categoria_idCategoria`)
-    REFERENCES `TRADO_DB`.`Categoria` (`idCategoria`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-    ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `TRADO_DB`.`Producto`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `TRADO_DB`.`Producto` (
-                                                     `idProducto` INT NOT NULL AUTO_INCREMENT,
-                                                     `Proveedor_idProveedor` INT NOT NULL,
-                                                     `SubCategoria_idSubCategoria` INT NOT NULL,
-                                                     `Nombre` VARCHAR(45) NOT NULL,
-    `Cantidad` VARCHAR(45) NOT NULL,
-    `FechaArribo` VARCHAR(45) NOT NULL,
-    `Descripcion` VARCHAR(45) NOT NULL,
-    `Precio` VARCHAR(45) NOT NULL,
-    `Color` VARCHAR(45) NULL,
-    `Talla` VARCHAR(45) NULL,
-    `Material` VARCHAR(45) NULL,
-    `Modelo` VARCHAR(45) NULL,
-    `Resolucion` VARCHAR(45) NULL,
-    `Ram` VARCHAR(45) NULL,
-    `Almacenamiento` VARCHAR(45) NULL,
-    `isDeleted` TINYINT NULL DEFAULT 0,
-    PRIMARY KEY (`idProducto`),
-    INDEX `fk_Producto_Proveedor1_idx` (`Proveedor_idProveedor` ASC) VISIBLE,
-    INDEX `fk_Producto_SubCategoria1_idx` (`SubCategoria_idSubCategoria` ASC) VISIBLE,
-    CONSTRAINT `fk_Producto_Proveedor1`
-    FOREIGN KEY (`Proveedor_idProveedor`)
-    REFERENCES `TRADO_DB`.`Proveedor` (`idProveedor`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-    CONSTRAINT `fk_Producto_SubCategoria1`
-    FOREIGN KEY (`SubCategoria_idSubCategoria`)
-    REFERENCES `TRADO_DB`.`SubCategoria` (`idSubCategoria`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-    ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `TRADO_DB`.`ProductoEnZona`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `TRADO_DB`.`ProductoEnZona` (
-                                                           `Producto_idProducto` INT NOT NULL,
-                                                           `Zona_idZona` INT NOT NULL,
-                                                           `Cantidad` INT NOT NULL,
-                                                           `CostoEnvio` DECIMAL(10,2) NOT NULL,
-    `estadoRepo` TINYINT NOT NULL DEFAULT 0,
-    PRIMARY KEY (`Producto_idProducto`, `Zona_idZona`),
-    INDEX `fk_Producto_has_Zona_Zona1_idx` (`Zona_idZona` ASC) VISIBLE,
-    INDEX `fk_Producto_has_Zona_Producto1_idx` (`Producto_idProducto` ASC) VISIBLE,
-    CONSTRAINT `fk_Producto_has_Zona_Producto1`
-    FOREIGN KEY (`Producto_idProducto`)
-    REFERENCES `TRADO_DB`.`Producto` (`idProducto`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-    CONSTRAINT `fk_Producto_has_Zona_Zona1`
-    FOREIGN KEY (`Zona_idZona`)
-    REFERENCES `TRADO_DB`.`Zona` (`idZona`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-    ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `TRADO_DB`.`Valoracion`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `TRADO_DB`.`Valoracion` (
-                                                       `idValoracion` INT NOT NULL AUTO_INCREMENT,
-                                                       `Valor` VARCHAR(45) NOT NULL,
-    PRIMARY KEY (`idValoracion`))
-    ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `TRADO_DB`.`EstadoOrdenAgente`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `TRADO_DB`.`EstadoOrdenAgente` (
-                                                              `idEstadoOrdenAgente` INT NOT NULL AUTO_INCREMENT,
-                                                              `Nombre` VARCHAR(45) NOT NULL,
-    PRIMARY KEY (`idEstadoOrdenAgente`))
-    ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `TRADO_DB`.`EstadoOrdenImportador`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `TRADO_DB`.`EstadoOrdenImportador` (
-                                                                  `idEstadoOrdenImportador` INT NOT NULL AUTO_INCREMENT,
-                                                                  `Nombre` VARCHAR(45) NULL,
-    PRIMARY KEY (`idEstadoOrdenImportador`))
-    ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `TRADO_DB`.`Orden`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `TRADO_DB`.`Orden` (
-                                                  `idOrden` INT NOT NULL AUTO_INCREMENT,
-                                                  `Usuario_idUsuario` INT NOT NULL,
-                                                  `AgentCompra_idUsuario` INT NULL,
-                                                  `Valoracion_idValoracion` INT NULL,
-                                                  `EstadoOrdenAgente_idEstadoOrdenAgente` INT NULL,
-                                                  `EstadoOrdenImportador_idEstadoOrdenImportador` INT NULL,
-                                                  `FechaCreacion` TIMESTAMP NOT NULL,
-                                                  `isDeleted` TINYINT NULL DEFAULT 0,
-                                                  PRIMARY KEY (`idOrden`),
-    INDEX `fk_Orden_Usuario1_idx` (`Usuario_idUsuario` ASC) VISIBLE,
-    INDEX `fk_Orden_Usuario2_idx` (`AgentCompra_idUsuario` ASC) VISIBLE,
-    INDEX `fk_Orden_Valoracion1_idx` (`Valoracion_idValoracion` ASC) VISIBLE,
-    INDEX `fk_Orden_EstadoOrdenAgente1_idx` (`EstadoOrdenAgente_idEstadoOrdenAgente` ASC) VISIBLE,
-    INDEX `fk_Orden_EstadoOrdenImportador1_idx` (`EstadoOrdenImportador_idEstadoOrdenImportador` ASC) VISIBLE,
-    CONSTRAINT `fk_Orden_Usuario1`
-    FOREIGN KEY (`Usuario_idUsuario`)
-    REFERENCES `TRADO_DB`.`Usuario` (`idUsuario`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-    CONSTRAINT `fk_Orden_Usuario2`
-    FOREIGN KEY (`AgentCompra_idUsuario`)
-    REFERENCES `TRADO_DB`.`Usuario` (`idUsuario`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-    CONSTRAINT `fk_Orden_Valoracion1`
-    FOREIGN KEY (`Valoracion_idValoracion`)
-    REFERENCES `TRADO_DB`.`Valoracion` (`idValoracion`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-    CONSTRAINT `fk_Orden_EstadoOrdenAgente1`
-    FOREIGN KEY (`EstadoOrdenAgente_idEstadoOrdenAgente`)
-    REFERENCES `TRADO_DB`.`EstadoOrdenAgente` (`idEstadoOrdenAgente`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-    CONSTRAINT `fk_Orden_EstadoOrdenImportador1`
-    FOREIGN KEY (`EstadoOrdenImportador_idEstadoOrdenImportador`)
-    REFERENCES `TRADO_DB`.`EstadoOrdenImportador` (`idEstadoOrdenImportador`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-    ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `TRADO_DB`.`Chat`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `TRADO_DB`.`Chat` (
-                                                 `idChat` INT NOT NULL AUTO_INCREMENT,
-                                                 `Usuario_idUsuario` INT NOT NULL,
-                                                 `Orden_idOrden` INT NOT NULL,
-                                                 `Mensaje` VARCHAR(45) NOT NULL,
-    `Tiempo` INT NOT NULL,
-    PRIMARY KEY (`idChat`),
-    INDEX `fk_Chat_Usuario1_idx` (`Usuario_idUsuario` ASC) VISIBLE,
-    INDEX `fk_Chat_Orden1_idx` (`Orden_idOrden` ASC) VISIBLE,
-    CONSTRAINT `fk_Chat_Usuario1`
-    FOREIGN KEY (`Usuario_idUsuario`)
-    REFERENCES `TRADO_DB`.`Usuario` (`idUsuario`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-    CONSTRAINT `fk_Chat_Orden1`
-    FOREIGN KEY (`Orden_idOrden`)
-    REFERENCES `TRADO_DB`.`Orden` (`idOrden`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-    ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `TRADO_DB`.`ProductoEnZonaEnOrden`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `TRADO_DB`.`ProductoEnZonaEnOrden` (
-                                                                  `ProductoEnZona_Producto_idProducto` INT NOT NULL,
-                                                                  `ProductoEnZona_Zona_idZona` INT NOT NULL,
-                                                                  `Orden_idOrden` INT NOT NULL,
-                                                                  `Cantidad` INT NOT NULL,
-                                                                  PRIMARY KEY (`ProductoEnZona_Producto_idProducto`, `ProductoEnZona_Zona_idZona`, `Orden_idOrden`),
-    INDEX `fk_ProductoEnZona_has_Orden_Orden1_idx` (`Orden_idOrden` ASC) VISIBLE,
-    INDEX `fk_ProductoEnZona_has_Orden_ProductoEnZona1_idx` (`ProductoEnZona_Producto_idProducto` ASC, `ProductoEnZona_Zona_idZona` ASC) VISIBLE,
-    CONSTRAINT `fk_ProductoEnZona_has_Orden_ProductoEnZona1`
-    FOREIGN KEY (`ProductoEnZona_Producto_idProducto` , `ProductoEnZona_Zona_idZona`)
-    REFERENCES `TRADO_DB`.`ProductoEnZona` (`Producto_idProducto` , `Zona_idZona`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-    CONSTRAINT `fk_ProductoEnZona_has_Orden_Orden1`
-    FOREIGN KEY (`Orden_idOrden`)
-    REFERENCES `TRADO_DB`.`Orden` (`idOrden`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-    ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `TRADO_DB`.`ChatBot`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `TRADO_DB`.`ChatBot` (
-                                                    `idChatBot` INT NOT NULL AUTO_INCREMENT,
-                                                    `Usuario_idUsuario` INT NOT NULL,
-                                                    `Mensaje` VARCHAR(45) NOT NULL,
-    `Respuesta` VARCHAR(45) NULL,
-    PRIMARY KEY (`idChatBot`),
-    INDEX `fk_ChatBot_Usuario1_idx` (`Usuario_idUsuario` ASC) VISIBLE,
-    CONSTRAINT `fk_ChatBot_Usuario1`
-    FOREIGN KEY (`Usuario_idUsuario`)
-    REFERENCES `TRADO_DB`.`Usuario` (`idUsuario`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-    ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `TRADO_DB`.`Notificacion`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `TRADO_DB`.`Notificacion` (
-                                                         `idNotificacion` INT NOT NULL AUTO_INCREMENT,
-                                                         `Usuario_idUsuario` INT NOT NULL,
-                                                         `Contenido` VARCHAR(45) NOT NULL,
-    PRIMARY KEY (`idNotificacion`),
-    INDEX `fk_Notificacion_Usuario1_idx` (`Usuario_idUsuario` ASC) VISIBLE,
-    CONSTRAINT `fk_Notificacion_Usuario1`
-    FOREIGN KEY (`Usuario_idUsuario`)
-    REFERENCES `TRADO_DB`.`Usuario` (`idUsuario`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-    ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `TRADO_DB`.`Pago`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `TRADO_DB`.`Pago` (
-                                                 `idPago` INT NOT NULL AUTO_INCREMENT,
-                                                 `Orden_idOrden` INT NOT NULL,
-                                                 `Metodo` VARCHAR(45) NOT NULL,
-    `Monto` DECIMAL(10,2) NOT NULL,
-    `Fecha` TIMESTAMP NOT NULL,
-    PRIMARY KEY (`idPago`),
-    INDEX `fk_Pago_Orden1_idx` (`Orden_idOrden` ASC) VISIBLE,
-    CONSTRAINT `fk_Pago_Orden1`
-    FOREIGN KEY (`Orden_idOrden`)
-    REFERENCES `TRADO_DB`.`Orden` (`idOrden`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-    ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `TRADO_DB`.`Pregunta`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `TRADO_DB`.`Pregunta` (
-                                                     `idPregunta` INT NOT NULL AUTO_INCREMENT,
-                                                     `Usuario_idUsuario` INT NOT NULL,
-                                                     `Contenido` VARCHAR(80) NOT NULL,
-    `Fecha` TIMESTAMP NOT NULL,
-    PRIMARY KEY (`idPregunta`),
-    INDEX `fk_Consulta_Usuario1_idx` (`Usuario_idUsuario` ASC) VISIBLE,
-    CONSTRAINT `fk_Consulta_Usuario1`
-    FOREIGN KEY (`Usuario_idUsuario`)
-    REFERENCES `TRADO_DB`.`Usuario` (`idUsuario`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-    ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `TRADO_DB`.`Resena`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `TRADO_DB`.`Resena` (
-                                                   `idResena` INT NOT NULL AUTO_INCREMENT,
-                                                   `Foto` VARCHAR(45) NOT NULL,
-    `Comentario` VARCHAR(200) NOT NULL,
-    `Calidad` VARCHAR(45) NOT NULL,
-    `TiempoEntrega` VARCHAR(45) NOT NULL,
-    `Producto_idProducto` INT NOT NULL,
-    `Usuario_idUsuario` INT NOT NULL,
-    PRIMARY KEY (`idResena`),
-    INDEX `fk_Resena_Producto1_idx` (`Producto_idProducto` ASC) VISIBLE,
-    INDEX `fk_Resena_Usuario1_idx` (`Usuario_idUsuario` ASC) VISIBLE,
-    CONSTRAINT `fk_Resena_Producto1`
-    FOREIGN KEY (`Producto_idProducto`)
-    REFERENCES `TRADO_DB`.`Producto` (`idProducto`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-    CONSTRAINT `fk_Resena_Usuario1`
-    FOREIGN KEY (`Usuario_idUsuario`)
-    REFERENCES `TRADO_DB`.`Usuario` (`idUsuario`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-    ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `TRADO_DB`.`EstadoCodigo`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `TRADO_DB`.`EstadoCodigo` (
-                                                         `idEstadoCodigo` INT NOT NULL AUTO_INCREMENT,
-                                                         `Nombre` VARCHAR(45) NOT NULL,
-    PRIMARY KEY (`idEstadoCodigo`))
-    ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `TRADO_DB`.`CodigoDespachador`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `TRADO_DB`.`CodigoDespachador` (
-                                                              `idCodigoDespachador` INT NOT NULL AUTO_INCREMENT,
-                                                              `Caracteres` VARCHAR(45) NOT NULL,
-    `Distrito_idDistrito` INT NOT NULL,
-    `EstadoCodigo_idEstadoCodigo` INT NOT NULL,
-    PRIMARY KEY (`idCodigoDespachador`),
-    INDEX `fk_CodigoDespachador_Distrito1_idx` (`Distrito_idDistrito` ASC) VISIBLE,
-    INDEX `fk_CodigoDespachador_EstadoCodigo1_idx` (`EstadoCodigo_idEstadoCodigo` ASC) VISIBLE,
-    CONSTRAINT `fk_CodigoDespachador_Distrito1`
-    FOREIGN KEY (`Distrito_idDistrito`)
-    REFERENCES `TRADO_DB`.`Distrito` (`idDistrito`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-    CONSTRAINT `fk_CodigoDespachador_EstadoCodigo1`
+CREATE TABLE IF NOT EXISTS `trado_db`.`codigodespachador` (
+  `idCodigoDespachador` INT NOT NULL AUTO_INCREMENT,
+  `Caracteres` VARCHAR(45) NOT NULL,
+  `EstadoCodigo_idEstadoCodigo` INT NOT NULL,
+  `zona_idZona` INT NOT NULL,
+  PRIMARY KEY (`idCodigoDespachador`),
+  INDEX `fk_CodigoDespachador_EstadoCodigo1_idx` (`EstadoCodigo_idEstadoCodigo` ASC) VISIBLE,
+  INDEX `fk_codigodespachador_zona1_idx` (`zona_idZona` ASC) VISIBLE,
+  CONSTRAINT `fk_CodigoDespachador_EstadoCodigo1`
     FOREIGN KEY (`EstadoCodigo_idEstadoCodigo`)
-    REFERENCES `TRADO_DB`.`EstadoCodigo` (`idEstadoCodigo`)
+    REFERENCES `trado_db`.`estadocodigo` (`idEstadoCodigo`),
+  CONSTRAINT `fk_codigodespachador_zona1`
+    FOREIGN KEY (`zona_idZona`)
+    REFERENCES `trado_db`.`zona` (`idZona`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
-    ENGINE = InnoDB;
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `TRADO_DB`.`UsuarioRespuesta`
+-- Table `trado_db`.`usuario`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `TRADO_DB`.`UsuarioRespuesta` (
-                                                             `Pregunta_idPregunta` INT NOT NULL,
-                                                             `Usuario_idUsuario` INT NOT NULL,
-                                                             `Contenido` VARCHAR(100) NOT NULL,
-    `Fecha` TIMESTAMP NOT NULL,
-    PRIMARY KEY (`Pregunta_idPregunta`, `Usuario_idUsuario`),
-    INDEX `fk_Pregunta_has_Usuario_Usuario1_idx` (`Usuario_idUsuario` ASC) VISIBLE,
-    INDEX `fk_Pregunta_has_Usuario_Pregunta1_idx` (`Pregunta_idPregunta` ASC) VISIBLE,
-    CONSTRAINT `fk_Pregunta_has_Usuario_Pregunta1`
-    FOREIGN KEY (`Pregunta_idPregunta`)
-    REFERENCES `TRADO_DB`.`Pregunta` (`idPregunta`)
+CREATE TABLE IF NOT EXISTS `trado_db`.`usuario` (
+  `idUsuario` INT NOT NULL AUTO_INCREMENT,
+  `Rol_idRol` INT NOT NULL,
+  `AdmZonal_idUsuario` INT NULL DEFAULT NULL,
+  `AgentCompra_idUsuario` INT NULL DEFAULT NULL,
+  `Zona_idZona` INT NULL DEFAULT NULL,
+  `Distrito_idDistrito` INT NULL DEFAULT NULL,
+  `Nombre` VARCHAR(45) NOT NULL,
+  `Apellido` VARCHAR(45) NOT NULL,
+  `FechaNacimiento` DATE NULL DEFAULT NULL,
+  `Dni` VARCHAR(8) NULL DEFAULT NULL,
+  `Telefono` VARCHAR(9) NULL DEFAULT NULL,
+  `Correo` VARCHAR(45) NULL DEFAULT NULL,
+  `Contrasena` VARCHAR(45) NULL DEFAULT NULL,
+  `Ruc` VARCHAR(45) NULL DEFAULT NULL,
+  `RazonSocial` VARCHAR(45) NULL DEFAULT NULL,
+  `Direccion` VARCHAR(45) NULL DEFAULT NULL,
+  `isAccepted` TINYINT NULL DEFAULT '0',
+  `isPostulated` TINYINT NULL DEFAULT '0',
+  `isActivated` TINYINT NULL DEFAULT '0',
+  `Foto` VARCHAR(45) NULL DEFAULT NULL,
+  `MotivoBanneo` VARCHAR(45) NULL DEFAULT NULL,
+  `FechaBanneo` TIMESTAMP NULL DEFAULT NULL,
+  `codigodespachador_idCodigoDespachador` INT NOT NULL,
+  PRIMARY KEY (`idUsuario`),
+  INDEX `fk_Usuario_Rol_idx` (`Rol_idRol` ASC) VISIBLE,
+  INDEX `fk_Usuario_Zona1_idx` (`Zona_idZona` ASC) VISIBLE,
+  INDEX `fk_Usuario_Distrito1_idx` (`Distrito_idDistrito` ASC) VISIBLE,
+  INDEX `fk_Usuario_Usuario1_idx` (`AdmZonal_idUsuario` ASC) VISIBLE,
+  INDEX `fk_Usuario_Usuario2_idx` (`AgentCompra_idUsuario` ASC) VISIBLE,
+  INDEX `fk_usuario_codigodespachador1_idx` (`codigodespachador_idCodigoDespachador` ASC) VISIBLE,
+  CONSTRAINT `fk_Usuario_Distrito1`
+    FOREIGN KEY (`Distrito_idDistrito`)
+    REFERENCES `trado_db`.`distrito` (`idDistrito`),
+  CONSTRAINT `fk_Usuario_Rol`
+    FOREIGN KEY (`Rol_idRol`)
+    REFERENCES `trado_db`.`rol` (`idRol`),
+  CONSTRAINT `fk_Usuario_Usuario1`
+    FOREIGN KEY (`AdmZonal_idUsuario`)
+    REFERENCES `trado_db`.`usuario` (`idUsuario`),
+  CONSTRAINT `fk_Usuario_Usuario2`
+    FOREIGN KEY (`AgentCompra_idUsuario`)
+    REFERENCES `trado_db`.`usuario` (`idUsuario`),
+  CONSTRAINT `fk_Usuario_Zona1`
+    FOREIGN KEY (`Zona_idZona`)
+    REFERENCES `trado_db`.`zona` (`idZona`),
+  CONSTRAINT `fk_usuario_codigodespachador1`
+    FOREIGN KEY (`codigodespachador_idCodigoDespachador`)
+    REFERENCES `trado_db`.`codigodespachador` (`idCodigoDespachador`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-    CONSTRAINT `fk_Pregunta_has_Usuario_Usuario1`
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+AUTO_INCREMENT = 3
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `trado_db`.`valoracion`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `trado_db`.`valoracion` (
+  `idValoracion` INT NOT NULL AUTO_INCREMENT,
+  `Valor` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`idValoracion`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `trado_db`.`orden`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `trado_db`.`orden` (
+  `idOrden` INT NOT NULL AUTO_INCREMENT,
+  `Usuario_idUsuario` INT NOT NULL,
+  `AgentCompra_idUsuario` INT NULL DEFAULT NULL,
+  `Valoracion_idValoracion` INT NULL DEFAULT NULL,
+  `EstadoOrdenAgente_idEstadoOrdenAgente` INT NULL DEFAULT NULL,
+  `EstadoOrdenImportador_idEstadoOrdenImportador` INT NULL DEFAULT NULL,
+  `FechaCreacion` TIMESTAMP NOT NULL,
+  `isDeleted` TINYINT NULL DEFAULT '0',
+  PRIMARY KEY (`idOrden`),
+  INDEX `fk_Orden_Usuario1_idx` (`Usuario_idUsuario` ASC) VISIBLE,
+  INDEX `fk_Orden_Usuario2_idx` (`AgentCompra_idUsuario` ASC) VISIBLE,
+  INDEX `fk_Orden_Valoracion1_idx` (`Valoracion_idValoracion` ASC) VISIBLE,
+  INDEX `fk_Orden_EstadoOrdenAgente1_idx` (`EstadoOrdenAgente_idEstadoOrdenAgente` ASC) VISIBLE,
+  INDEX `fk_Orden_EstadoOrdenImportador1_idx` (`EstadoOrdenImportador_idEstadoOrdenImportador` ASC) VISIBLE,
+  CONSTRAINT `fk_Orden_EstadoOrdenAgente1`
+    FOREIGN KEY (`EstadoOrdenAgente_idEstadoOrdenAgente`)
+    REFERENCES `trado_db`.`estadoordenagente` (`idEstadoOrdenAgente`),
+  CONSTRAINT `fk_Orden_EstadoOrdenImportador1`
+    FOREIGN KEY (`EstadoOrdenImportador_idEstadoOrdenImportador`)
+    REFERENCES `trado_db`.`estadoordenimportador` (`idEstadoOrdenImportador`),
+  CONSTRAINT `fk_Orden_Usuario1`
     FOREIGN KEY (`Usuario_idUsuario`)
-    REFERENCES `TRADO_DB`.`Usuario` (`idUsuario`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-    ENGINE = InnoDB;
+    REFERENCES `trado_db`.`usuario` (`idUsuario`),
+  CONSTRAINT `fk_Orden_Usuario2`
+    FOREIGN KEY (`AgentCompra_idUsuario`)
+    REFERENCES `trado_db`.`usuario` (`idUsuario`),
+  CONSTRAINT `fk_Orden_Valoracion1`
+    FOREIGN KEY (`Valoracion_idValoracion`)
+    REFERENCES `trado_db`.`valoracion` (`idValoracion`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `trado_db`.`chat`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `trado_db`.`chat` (
+  `idChat` INT NOT NULL AUTO_INCREMENT,
+  `Usuario_idUsuario` INT NOT NULL,
+  `Orden_idOrden` INT NOT NULL,
+  `Mensaje` VARCHAR(45) NOT NULL,
+  `Tiempo` INT NOT NULL,
+  PRIMARY KEY (`idChat`),
+  INDEX `fk_Chat_Usuario1_idx` (`Usuario_idUsuario` ASC) VISIBLE,
+  INDEX `fk_Chat_Orden1_idx` (`Orden_idOrden` ASC) VISIBLE,
+  CONSTRAINT `fk_Chat_Orden1`
+    FOREIGN KEY (`Orden_idOrden`)
+    REFERENCES `trado_db`.`orden` (`idOrden`),
+  CONSTRAINT `fk_Chat_Usuario1`
+    FOREIGN KEY (`Usuario_idUsuario`)
+    REFERENCES `trado_db`.`usuario` (`idUsuario`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `trado_db`.`chatbot`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `trado_db`.`chatbot` (
+  `idChatBot` INT NOT NULL AUTO_INCREMENT,
+  `Usuario_idUsuario` INT NOT NULL,
+  `Mensaje` VARCHAR(45) NOT NULL,
+  `Respuesta` VARCHAR(45) NULL DEFAULT NULL,
+  PRIMARY KEY (`idChatBot`),
+  INDEX `fk_ChatBot_Usuario1_idx` (`Usuario_idUsuario` ASC) VISIBLE,
+  CONSTRAINT `fk_ChatBot_Usuario1`
+    FOREIGN KEY (`Usuario_idUsuario`)
+    REFERENCES `trado_db`.`usuario` (`idUsuario`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `trado_db`.`notificacion`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `trado_db`.`notificacion` (
+  `idNotificacion` INT NOT NULL AUTO_INCREMENT,
+  `Usuario_idUsuario` INT NOT NULL,
+  `Contenido` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`idNotificacion`),
+  INDEX `fk_Notificacion_Usuario1_idx` (`Usuario_idUsuario` ASC) VISIBLE,
+  CONSTRAINT `fk_Notificacion_Usuario1`
+    FOREIGN KEY (`Usuario_idUsuario`)
+    REFERENCES `trado_db`.`usuario` (`idUsuario`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `trado_db`.`pago`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `trado_db`.`pago` (
+  `idPago` INT NOT NULL AUTO_INCREMENT,
+  `Orden_idOrden` INT NOT NULL,
+  `Metodo` VARCHAR(45) NOT NULL,
+  `Monto` DECIMAL(10,2) NOT NULL,
+  `Fecha` TIMESTAMP NOT NULL,
+  PRIMARY KEY (`idPago`),
+  INDEX `fk_Pago_Orden1_idx` (`Orden_idOrden` ASC) VISIBLE,
+  CONSTRAINT `fk_Pago_Orden1`
+    FOREIGN KEY (`Orden_idOrden`)
+    REFERENCES `trado_db`.`orden` (`idOrden`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `trado_db`.`pregunta`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `trado_db`.`pregunta` (
+  `idPregunta` INT NOT NULL AUTO_INCREMENT,
+  `Usuario_idUsuario` INT NOT NULL,
+  `Contenido` VARCHAR(80) NOT NULL,
+  `Fecha` TIMESTAMP NOT NULL,
+  PRIMARY KEY (`idPregunta`),
+  INDEX `fk_Consulta_Usuario1_idx` (`Usuario_idUsuario` ASC) VISIBLE,
+  CONSTRAINT `fk_Consulta_Usuario1`
+    FOREIGN KEY (`Usuario_idUsuario`)
+    REFERENCES `trado_db`.`usuario` (`idUsuario`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `trado_db`.`proveedor`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `trado_db`.`proveedor` (
+  `idProveedor` INT NOT NULL AUTO_INCREMENT,
+  `Nombre` VARCHAR(45) NOT NULL,
+  `Telefono` VARCHAR(9) NOT NULL,
+  `Ruc` VARCHAR(45) NOT NULL,
+  `Dni` VARCHAR(8) NOT NULL,
+  `Tienda` VARCHAR(45) NOT NULL,
+  `isDeleted` TINYINT NULL DEFAULT '0',
+  PRIMARY KEY (`idProveedor`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `trado_db`.`subcategoria`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `trado_db`.`subcategoria` (
+  `idSubCategoria` INT NOT NULL AUTO_INCREMENT,
+  `Nombre` VARCHAR(45) NOT NULL,
+  `Categoria_idCategoria` INT NOT NULL,
+  PRIMARY KEY (`idSubCategoria`),
+  INDEX `fk_SubCategoria_Categoria1_idx` (`Categoria_idCategoria` ASC) VISIBLE,
+  CONSTRAINT `fk_SubCategoria_Categoria1`
+    FOREIGN KEY (`Categoria_idCategoria`)
+    REFERENCES `trado_db`.`categoria` (`idCategoria`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `trado_db`.`producto`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `trado_db`.`producto` (
+  `idProducto` INT NOT NULL AUTO_INCREMENT,
+  `Proveedor_idProveedor` INT NOT NULL,
+  `SubCategoria_idSubCategoria` INT NOT NULL,
+  `Nombre` VARCHAR(45) NOT NULL,
+  `Cantidad` VARCHAR(45) NOT NULL,
+  `FechaArribo` VARCHAR(45) NOT NULL,
+  `Descripcion` VARCHAR(45) NOT NULL,
+  `Precio` VARCHAR(45) NOT NULL,
+  `Color` VARCHAR(45) NULL DEFAULT NULL,
+  `Talla` VARCHAR(45) NULL DEFAULT NULL,
+  `Material` VARCHAR(45) NULL DEFAULT NULL,
+  `Modelo` VARCHAR(45) NULL DEFAULT NULL,
+  `Resolucion` VARCHAR(45) NULL DEFAULT NULL,
+  `Ram` VARCHAR(45) NULL DEFAULT NULL,
+  `Almacenamiento` VARCHAR(45) NULL DEFAULT NULL,
+  `isDeleted` TINYINT NULL DEFAULT '0',
+  PRIMARY KEY (`idProducto`),
+  INDEX `fk_Producto_Proveedor1_idx` (`Proveedor_idProveedor` ASC) VISIBLE,
+  INDEX `fk_Producto_SubCategoria1_idx` (`SubCategoria_idSubCategoria` ASC) VISIBLE,
+  CONSTRAINT `fk_Producto_Proveedor1`
+    FOREIGN KEY (`Proveedor_idProveedor`)
+    REFERENCES `trado_db`.`proveedor` (`idProveedor`),
+  CONSTRAINT `fk_Producto_SubCategoria1`
+    FOREIGN KEY (`SubCategoria_idSubCategoria`)
+    REFERENCES `trado_db`.`subcategoria` (`idSubCategoria`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `trado_db`.`productoenzona`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `trado_db`.`productoenzona` (
+  `Producto_idProducto` INT NOT NULL,
+  `Zona_idZona` INT NOT NULL,
+  `Cantidad` INT NOT NULL,
+  `CostoEnvio` DECIMAL(10,2) NOT NULL,
+  `estadoRepo` TINYINT NOT NULL DEFAULT '0',
+  PRIMARY KEY (`Producto_idProducto`, `Zona_idZona`),
+  INDEX `fk_Producto_has_Zona_Zona1_idx` (`Zona_idZona` ASC) VISIBLE,
+  INDEX `fk_Producto_has_Zona_Producto1_idx` (`Producto_idProducto` ASC) VISIBLE,
+  CONSTRAINT `fk_Producto_has_Zona_Producto1`
+    FOREIGN KEY (`Producto_idProducto`)
+    REFERENCES `trado_db`.`producto` (`idProducto`),
+  CONSTRAINT `fk_Producto_has_Zona_Zona1`
+    FOREIGN KEY (`Zona_idZona`)
+    REFERENCES `trado_db`.`zona` (`idZona`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `trado_db`.`productoenzonaenorden`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `trado_db`.`productoenzonaenorden` (
+  `ProductoEnZona_Producto_idProducto` INT NOT NULL,
+  `ProductoEnZona_Zona_idZona` INT NOT NULL,
+  `Orden_idOrden` INT NOT NULL,
+  `Cantidad` INT NOT NULL,
+  PRIMARY KEY (`ProductoEnZona_Producto_idProducto`, `ProductoEnZona_Zona_idZona`, `Orden_idOrden`),
+  INDEX `fk_ProductoEnZona_has_Orden_Orden1_idx` (`Orden_idOrden` ASC) VISIBLE,
+  INDEX `fk_ProductoEnZona_has_Orden_ProductoEnZona1_idx` (`ProductoEnZona_Producto_idProducto` ASC, `ProductoEnZona_Zona_idZona` ASC) VISIBLE,
+  CONSTRAINT `fk_ProductoEnZona_has_Orden_Orden1`
+    FOREIGN KEY (`Orden_idOrden`)
+    REFERENCES `trado_db`.`orden` (`idOrden`),
+  CONSTRAINT `fk_ProductoEnZona_has_Orden_ProductoEnZona1`
+    FOREIGN KEY (`ProductoEnZona_Producto_idProducto` , `ProductoEnZona_Zona_idZona`)
+    REFERENCES `trado_db`.`productoenzona` (`Producto_idProducto` , `Zona_idZona`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `trado_db`.`resena`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `trado_db`.`resena` (
+  `idResena` INT NOT NULL AUTO_INCREMENT,
+  `Foto` VARCHAR(45) NOT NULL,
+  `Comentario` VARCHAR(200) NOT NULL,
+  `Calidad` VARCHAR(45) NOT NULL,
+  `TiempoEntrega` VARCHAR(45) NOT NULL,
+  `Producto_idProducto` INT NOT NULL,
+  `Usuario_idUsuario` INT NOT NULL,
+  PRIMARY KEY (`idResena`),
+  INDEX `fk_Resena_Producto1_idx` (`Producto_idProducto` ASC) VISIBLE,
+  INDEX `fk_Resena_Usuario1_idx` (`Usuario_idUsuario` ASC) VISIBLE,
+  CONSTRAINT `fk_Resena_Producto1`
+    FOREIGN KEY (`Producto_idProducto`)
+    REFERENCES `trado_db`.`producto` (`idProducto`),
+  CONSTRAINT `fk_Resena_Usuario1`
+    FOREIGN KEY (`Usuario_idUsuario`)
+    REFERENCES `trado_db`.`usuario` (`idUsuario`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `trado_db`.`token`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `trado_db`.`token` (
+  `idToken` INT NOT NULL AUTO_INCREMENT,
+  `Usuario_idUsuario` INT NOT NULL,
+  `Tipo` VARCHAR(45) NOT NULL,
+  `Duracion` INT NOT NULL,
+  `FechaCreacion` TIMESTAMP NOT NULL,
+  PRIMARY KEY (`idToken`),
+  INDEX `fk_Token_Usuario1_idx` (`Usuario_idUsuario` ASC) VISIBLE,
+  CONSTRAINT `fk_Token_Usuario1`
+    FOREIGN KEY (`Usuario_idUsuario`)
+    REFERENCES `trado_db`.`usuario` (`idUsuario`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `trado_db`.`usuariorespuesta`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `trado_db`.`usuariorespuesta` (
+  `Pregunta_idPregunta` INT NOT NULL,
+  `Usuario_idUsuario` INT NOT NULL,
+  `Contenido` VARCHAR(100) NOT NULL,
+  `Fecha` TIMESTAMP NOT NULL,
+  PRIMARY KEY (`Pregunta_idPregunta`, `Usuario_idUsuario`),
+  INDEX `fk_Pregunta_has_Usuario_Usuario1_idx` (`Usuario_idUsuario` ASC) VISIBLE,
+  INDEX `fk_Pregunta_has_Usuario_Pregunta1_idx` (`Pregunta_idPregunta` ASC) VISIBLE,
+  CONSTRAINT `fk_Pregunta_has_Usuario_Pregunta1`
+    FOREIGN KEY (`Pregunta_idPregunta`)
+    REFERENCES `trado_db`.`pregunta` (`idPregunta`),
+  CONSTRAINT `fk_Pregunta_has_Usuario_Usuario1`
+    FOREIGN KEY (`Usuario_idUsuario`)
+    REFERENCES `trado_db`.`usuario` (`idUsuario`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
 
 
 SET SQL_MODE=@OLD_SQL_MODE;
