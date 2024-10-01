@@ -3,10 +3,23 @@ package com.app.tradogt.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import com.app.tradogt.repository.*;
+import org.springframework.ui.Model;
+import com.app.tradogt.entity.Usuario;
+
+import java.util.List;
+
 
 @Controller
 @RequestMapping("/adminzonal")
 public class AdminZonalController {
+
+    final UsuarioRepository usuarioRepository;
+
+    public AdminZonalController(UsuarioRepository usuarioRepository) {
+        this.usuarioRepository = usuarioRepository;
+    }
+
     @GetMapping("/vacio")
     public String home() {
         return "AdminZonal/starter-AdminZonal";
@@ -39,7 +52,13 @@ public class AdminZonalController {
     public String showPassword() { return "AdminZonal/password"; }
 
     @GetMapping("/gestionAgente")
-    public String showGestionAgente() { return "AdminZonal/gestionAgente-AdminZonal"; }
+    public String showGestionAgente(Model model) {
+
+        List<Object[]> usuarioDetails = usuarioRepository.getUsuarioOrderProductDetails();
+        model.addAttribute("usuarioDetails", usuarioDetails);
+
+
+        return "AdminZonal/gestionAgente-AdminZonal"; }
 
     @GetMapping("/nuevoAgente")
     public String showNuevoAgente() { return "AdminZonal/nuevoAgente-AdminZonal"; }

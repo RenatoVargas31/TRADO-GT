@@ -293,111 +293,17 @@
                                     </thead>
 
                                     <tbody>
-                                    <tr>
-                                        <td>Tiger Nixon</td>
-                                        <td>Casaca</td>
-                                        <td>Ropa</td>
-                                        <td>61</td>
-                                        <td>CREADO</td>
-                                        <td>Anna Ramirez</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Garrett Winters</td>
-                                        <td>Pantalones</td>
-                                        <td>Ropa</td>
-                                        <td>63</td>
-                                        <td>EN VALIDACIÓN</td>
-                                        <td>Carlos Romero</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Ashton Cox</td>
-                                        <td>Zapatos</td>
-                                        <td>Calzado</td>
-                                        <td>66</td>
-                                        <td>EN PROCESO</td>
-                                        <td>Artisanal Kale</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Cedric Kelly</td>
-                                        <td>Chaqueta</td>
-                                        <td>Ropa</td>
-                                        <td>22</td>
-                                        <td>ARRIBO AL PAÍS</td>
-                                        <td>Anna Ramirez</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Airi Satou</td>
-                                        <td>Sombrero</td>
-                                        <td>Accesorios</td>
-                                        <td>33</td>
-                                        <td>EN ADUANAS</td>
-                                        <td>Carlos Romero</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Brielle Williamson</td>
-                                        <td>Mochila</td>
-                                        <td>Accesorios</td>
-                                        <td>61</td>
-                                        <td>EN RUTA</td>
-                                        <td>Artisanal Kale</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Herrod Chandler</td>
-                                        <td>Gafas de sol</td>
-                                        <td>Accesorios</td>
-                                        <td>59</td>
-                                        <td>RECIBIDO</td>
-                                        <td>Anna Ramirez</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Rhona Davidson</td>
-                                        <td>Bufanda</td>
-                                        <td>Accesorios</td>
-                                        <td>55</td>
-                                        <td>CREADO</td>
-                                        <td>Carlos Romero</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Cedric Kelly</td>
-                                        <td>Chaqueta</td>
-                                        <td>Ropa</td>
-                                        <td>22</td>
-                                        <td>ARRIBO AL PAÍS</td>
-                                        <td>Anna Ramirez</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Airi Satou</td>
-                                        <td>Sombrero</td>
-                                        <td>Accesorios</td>
-                                        <td>33</td>
-                                        <td>EN ADUANAS</td>
-                                        <td>Carlos Romero</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Brielle Williamson</td>
-                                        <td>Mochila</td>
-                                        <td>Accesorios</td>
-                                        <td>61</td>
-                                        <td>EN RUTA</td>
-                                        <td>Artisanal Kale</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Herrod Chandler</td>
-                                        <td>Gafas de sol</td>
-                                        <td>Accesorios</td>
-                                        <td>59</td>
-                                        <td>RECIBIDO</td>
-                                        <td>Anna Ramirez</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Rhona Davidson</td>
-                                        <td>Bufanda</td>
-                                        <td>Accesorios</td>
-                                        <td>55</td>
-                                        <td>CREADO</td>
-                                        <td>Carlos Romero</td>
-                                    </tr>
+                                        <tr th:each="usuarioDetails : ${usuarioDetails}">
+                                            <td th:text="${usuarioDetails[1] + ', ' + usuarioDetails[2]}">Usuario</td>
+                                            <td th:text="${usuarioDetails[3]}">Producto</td>
+                                            <td th:text="${usuarioDetails[4]}">Categoria</td>
+                                            <td th:text="${usuarioDetails[6]}">Cantidad</td>
+                                            <td th:text="${usuarioDetails[5]}">Estado</td>
+                                            <td th:text="${usuarioDetails[7] + ', ' + usuarioDetails[8]}">Agente</td>
+                                        </tr>
+
                                     </tbody>
+
                                 </table>
 
                             </div>

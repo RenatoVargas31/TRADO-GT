@@ -14,6 +14,22 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
 
     @Query("SELECT u FROM Usuario u WHERE u.isActivated = ?1")
     List<Usuario> findByBanned(int activated);
+
+
+    @Query(value = "SELECT u.id, u.nombre, u.apellido, p.nombre , c.nombre , eoi.nombre, pzo.cantidad ,a.nombre, a.apellido " +
+            "FROM Usuario u " +
+            "LEFT JOIN u.agentcompraIdusuario a " +
+            "INNER JOIN Orden o ON o.usuarioIdusuario.id = u.id " +
+            "INNER JOIN o.estadoordenimportadorIdestadoordenimportador eoi " +
+            "INNER JOIN ProductoEnZonaEnOrden pzo ON pzo.ordenIdorden.id = o.id " +
+            "INNER JOIN ProductoEnZona pz ON pz.productoIdproducto = pzo.productoEnZona.productoIdproducto " +
+            "INNER JOIN pz.productoIdproducto p " + // Aquí se accede al producto a través de la relación
+            "INNER JOIN p.subcategoriaIdsubcategoria sc " +
+            "INNER JOIN sc.categoriaIdcategoria c " +
+            "WHERE u.rolIdrol.id = 4")
+    List<Object[]> getUsuarioOrderProductDetails();
+
+
     /*
 
     //Buscar por id
