@@ -55,6 +55,10 @@ public class AdminZonalController {
     public String showGestionAgente(Model model) {
         List<Object[]> usuarioDetails = usuarioRepository.getUsuarioOrderProductDetails();
         model.addAttribute("usuarioDetails", usuarioDetails);
+
+        List<Object[]> agentes = usuarioRepository.getAgenteDetailsNative();
+        model.addAttribute("agentes", agentes);
+
         return "AdminZonal/gestionAgente-AdminZonal"; }
 
     @GetMapping("/nuevoAgente")

@@ -2,8 +2,8 @@ package com.app.tradogt.repository;
 
 import com.app.tradogt.entity.Usuario;
 import jakarta.transaction.Transactional;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -29,6 +29,31 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
             "WHERE u.rolIdrol.id = 4")
     List<Object[]> getUsuarioOrderProductDetails();
 
+
+
+    @Query(value = """
+        SELECT 
+            a.idUsuario AS AgenteID,
+            a.Nombre AS AgenteNombre,
+            a.Apellido AS AgenteApellido,
+            az.Nombre AS AdminZonalNombre,
+            az.Apellido AS AdminZonalApellido,
+            d.Nombre AS DistritoNombre,
+            (SELECT COUNT(u.idUsuario) FROM usuario u WHERE u.AgentCompra_idUsuario = a.idUsuario AND u.Rol_idRol = 4) AS NumeroDeUsuarios,
+            (SELECT AVG(o.Valoracion_idValoracion) FROM Orden o WHERE o.AgentCompra_idUsuario = a.idUsuario) AS ValoracionAgente,
+            (SELECT COUNT(o.idOrden) FROM Orden o WHERE o.AgentCompra_idUsuario = a.idUsuario AND o.EstadoOrdenAgente_idEstadoOrdenAgente = 5) AS Finalizados
+        FROM 
+            usuario a
+        LEFT JOIN 
+            usuario az ON a.AdmZonal_idUsuario = az.idUsuario
+        INNER JOIN 
+            Distrito d ON d.idDistrito = a.Distrito_idDistrito
+        INNER JOIN 
+            Orden o ON o.AgentCompra_idUsuario = a.idUsuario
+        WHERE 
+            az.idUsuario = 3
+    """, nativeQuery = true)
+    List<Object[]> getAgenteDetailsNative();
 
     /*
 
