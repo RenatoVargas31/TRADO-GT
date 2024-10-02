@@ -53,11 +53,8 @@ public class AdminZonalController {
 
     @GetMapping("/gestionAgente")
     public String showGestionAgente(Model model) {
-
         List<Object[]> usuarioDetails = usuarioRepository.getUsuarioOrderProductDetails();
         model.addAttribute("usuarioDetails", usuarioDetails);
-
-
         return "AdminZonal/gestionAgente-AdminZonal"; }
 
     @GetMapping("/nuevoAgente")
