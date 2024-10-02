@@ -383,7 +383,7 @@ CREATE TABLE IF NOT EXISTS `trado_db`.`producto` (
   `SubCategoria_idSubCategoria` INT NOT NULL,
   `Nombre` VARCHAR(45) NOT NULL,
   `Cantidad` VARCHAR(45) NOT NULL,
-  `FechaArribo` VARCHAR(45) NOT NULL,
+  `FechaArribo` TIMESTAMP NOT NULL,
   `Descripcion` VARCHAR(45) NOT NULL,
   `Precio` VARCHAR(45) NOT NULL,
   `Color` VARCHAR(45) NULL DEFAULT NULL,
