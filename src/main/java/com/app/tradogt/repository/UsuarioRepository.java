@@ -5,7 +5,12 @@ import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.stereotype.*;
+import org.springframework.data.jpa.repository.*;
+
 
 import java.util.List;
 
@@ -54,6 +59,35 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
             az.idUsuario = 3
     """, nativeQuery = true)
     List<Object[]> getAgenteDetailsNative();
+
+
+    @Query(value = """
+        SELECT 
+            a.idUsuario AS AgenteID,
+            a.Nombre AS AgenteNombre,
+            a.Apellido AS AgenteApellido,
+            a.Dni AS AgenteDni,
+            a.Correo AS AgenteCorreo,
+            a.Telefono AS AgenteTelefono,
+            z.Nombre AS ZonaNombre,
+            d.Nombre AS DistritoNombre,
+            a.Direccion AS AgenteDireccion,
+            cd.Caracteres AS CaracteresDespachador,
+            a.Ruc AS AgenteRUC,
+            a.RazonSocial AS RazonSocial
+        FROM 
+            usuario a
+        INNER JOIN 
+            Zona z ON z.idZona = a.Zona_idZona
+        INNER JOIN 
+            Distrito d ON d.idDistrito = a.Distrito_idDistrito
+        INNER JOIN 
+            codigodespachador cd ON cd.Distrito_idDistrito = d.idDistrito
+        WHERE 
+            a.idUsuario = :usuarioId
+    """, nativeQuery = true)
+    List<Object[]> getAgenteDetailsById(@Param("usuarioId") Integer usuarioId);
+
 
     /*
 

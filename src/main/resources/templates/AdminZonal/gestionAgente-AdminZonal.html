@@ -55,7 +55,7 @@
                             <div class="col-md-4" th:each="agente : ${agentes}">
                                 <div class="card">
                                     <div class="card-body">
-                                        <a href="/adminzonal/verAgente">
+                                        <a th:href="@{/adminzonal/verAgente/{id}(id=${agente[0]})}">
                                             <div class="d-flex">
                                                 <div class="flex-1 overflow-hidden">
                                                     <p class="text-truncate font-size-14 mb-2" th:text="${agente[5]}">Distrito</p> <!-- DistritoNombre -->
