@@ -167,5 +167,26 @@ public interface OrdenRepository extends JpaRepository<Orden, Integer> {
     List<Object[]> getOrderDetailsAsDtoNativeResuelto();
 
 
+    //Lista de orden por fecha de creación y fecha de abordo
+    @Query(value = "SELECT o.idOrden AS id,\n" +
+            "       p.Nombre AS nombre_producto,\n" +
+            "       c.Nombre AS categoria,\n" +
+            "       DATE_FORMAT(p.FechaArribo, '%d/%m/%y') AS fecha_arribo,\n" +
+            "       DATE_FORMAT(o.FechaCreacion, '%d/%m/%y') AS fecha_creacion\n" +
+            "FROM `TRADO_DB`.`Orden` o\n" +
+            "JOIN `TRADO_DB`.`ProductoEnZonaEnOrden` pzo\n" +
+            "    ON o.idOrden = pzo.Orden_idOrden\n" +
+            "JOIN `TRADO_DB`.`ProductoEnZona` pz\n" +
+            "    ON pzo.ProductoEnZona_Producto_idProducto = pz.Producto_idProducto\n" +
+            "JOIN `TRADO_DB`.`Producto` p\n" +
+            "    ON pz.Producto_idProducto = p.idProducto\n" +
+            "JOIN `TRADO_DB`.`SubCategoria` sc\n" +
+            "    ON p.SubCategoria_idSubCategoria = sc.idSubCategoria\n" +
+            "JOIN `TRADO_DB`.`Categoria` c\n" +
+            "    ON sc.Categoria_idCategoria = c.idCategoria\n" +
+            "WHERE pz.Zona_idZona = 1;", nativeQuery = true)
+
+    List<Object[]> findOrdersByZone();
+
 
 }

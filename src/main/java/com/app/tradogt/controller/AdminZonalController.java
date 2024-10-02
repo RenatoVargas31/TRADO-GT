@@ -20,10 +20,15 @@ import java.util.Optional;
 @RequestMapping("/adminzonal")
 public class AdminZonalController {
 
+    //Reposirotios
+    final OrdenRepository ordenRepository;
     final UsuarioRepository usuarioRepository;
+    final ProductosRepository productosRepository;
 
-    public AdminZonalController(UsuarioRepository usuarioRepository) {
+    public AdminZonalController(OrdenRepository ordenRepository, UsuarioRepository usuarioRepository, ProductosRepository productosRepository) {
+        this.ordenRepository = ordenRepository;
         this.usuarioRepository = usuarioRepository;
+        this.productosRepository = productosRepository;
     }
 
     @GetMapping("/vacio")
@@ -37,12 +42,20 @@ public class AdminZonalController {
     }
 
     @GetMapping("/fechasArribo")
-    public String showFechasArribo() {
+    public String showFechasArribo(Model model) {
+
+        //Añadir codigo
+        List<Object[]> ordenesConFechas = ordenRepository.findOrdersByZone();
+        model.addAttribute("ordenesConFechas", ordenesConFechas);
         return "AdminZonal/tablaFechaArribo-AdminZonal";
     }
 
     @GetMapping("/reposicionProductos")
-    public String showReposicionProductos() {
+    public String showReposicionProductos(Model model) {
+
+        //Añadir código
+        List<Object[]> productos = productosRepository.findOrdersByRepo();
+        model.addAttribute("productos", productos);
         return "AdminZonal/tablaReposicionProductos-AdminZonal";
     }
     @GetMapping("/faq")
