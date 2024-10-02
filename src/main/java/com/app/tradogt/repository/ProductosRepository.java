@@ -27,4 +27,18 @@ public interface ProductosRepository extends JpaRepository<Producto, Integer> {
             "ORDER BY p.nombre;", nativeQuery = true)
     List<Object[]> findOrdersByRepo();
 
+
+    @Query(value = "SELECT p.idProducto AS idProducto, " +  // Agregamos el idProducto aquí
+            "p.Nombre AS Producto, " +
+            "p.Precio AS Precio, " +
+            "pzo.Cantidad AS Cantidad, " +
+            "pz.CostoEnvio AS CostoEnvio " +
+            "FROM producto p " +
+            "JOIN productoenzona pz ON p.idProducto = pz.Producto_idProducto " +
+            "JOIN productoenzonaenorden pzo ON pz.Producto_idProducto = pzo.ProductoEnZona_Producto_idProducto " +
+            "AND pz.Zona_idZona = pzo.ProductoEnZona_Zona_idZona " +
+            "JOIN orden o ON pzo.Orden_idOrden = o.idOrden " +
+            "WHERE o.idOrden = :idOrden", nativeQuery = true)
+    List<Object[]> findProductDetailsByOrderId(Integer idOrden);
+
 }

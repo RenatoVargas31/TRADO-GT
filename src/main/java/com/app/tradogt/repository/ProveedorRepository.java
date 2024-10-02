@@ -1,5 +1,6 @@
 package com.app.tradogt.repository;
 
+import com.app.tradogt.dto.ProveedorInfoAgtDto;
 import com.app.tradogt.entity.Proveedor;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -37,4 +38,18 @@ public interface ProveedorRepository extends JpaRepository<Proveedor, Integer> {
     //</editor-fold>
     //</editor-fold>
     */
+
+    @Query(value = "SELECT prov.idProveedor AS idProveedor, " +
+            "prov.Nombre AS Proveedor, " +
+            "prov.Telefono AS Telefono, " +
+            "prov.Tienda AS Tienda " +
+            "FROM proveedor prov " +
+            "JOIN producto p ON prov.idProveedor = p.Proveedor_idProveedor " +
+            "JOIN productoenzona pz ON p.idProducto = pz.Producto_idProducto " +
+            "JOIN productoenzonaenorden pzo ON pz.Producto_idProducto = pzo.ProductoEnZona_Producto_idProducto " +
+            "AND pz.Zona_idZona = pzo.ProductoEnZona_Zona_idZona " +
+            "JOIN orden o ON pzo.Orden_idOrden = o.idOrden " +
+            "WHERE o.idOrden = :idOrden", nativeQuery = true)
+    List<Object[]> findProveedorByOrderId(Integer idOrden);
+
 }
