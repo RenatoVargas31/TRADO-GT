@@ -56,7 +56,6 @@
                         <div class="card mb-4">
                             <div class="card-header bg-light d-flex justify-content-between align-items-center">
                                 <h5>Información del Comprador y Orden</h5>
-                                <button class="btn btn-primary btn-sm">Editar</button>
                             </div>
                             <div class="card-body row">
                                 <!-- Columna izquierda: Datos personales -->
@@ -74,9 +73,9 @@
                                     <p><strong>Fecha de la orden:</strong> <span th:text="${#dates.format(orden.fechaCreacion, 'dd-MM-yyyy')}"></span></p>
                                     <p><strong>Número de orden:</strong> <span th:text="${orden.id}"></span></p>
                                     <p><strong>Distrito:</strong> <span th:text="${usuario.distritoIddistrito.nombre}"></span></p>
-                                    <p><strong>Compañía Vendedora:</strong> Vendedor S.A.</p>
-                                    <p><strong>Contacto Vendedor:</strong> Ana Gómez</p>
-                                    <p><strong>Teléfono Vendedor:</strong> 555-1234</p>
+                                    <p><strong>Compañía Vendedora:</strong> <span th:text="${proveedor.nombreTienda}"></span></p>
+                                    <p><strong>Contacto Vendedor:</strong> <span th:text="${proveedor.nombreProvedor}"></span></p>
+                                    <p><strong>Teléfono Vendedor:</strong> <span th:text="${proveedor.telefonoProovedor}"></span></p>
                                 </div>
 
                             </div>
@@ -86,21 +85,22 @@
                         <div class="card mb-4">
                             <div class="card-header bg-light d-flex justify-content-between align-items-center">
                                 <h5>Detalles del Producto y Observaciones</h5>
-                                <button class="btn btn-primary btn-sm">Editar</button>
                             </div>
                             <div class="card-body row">
                                 <!-- Columna izquierda: Productos -->
                                 <div class="col">
                                     <p><strong>Productos:</strong></p>
-                                    <p>2 Poleras azules: $480</p>
-                                    <p>2 Polos franela negro: $480</p>
+                                    <div th:each="producto : ${listaProductos}">
+                                        <p th:text="${producto.cantidadProducto} + ' ' + ${producto.nombreProducto} + ': $' + ${producto.precioProducto}"></p>
+                                    </div>
                                 </div>
                                 <!-- Columna derecha: Observaciones -->
                                 <div class="col">
-                                    <p><strong>Subtotal:</strong> $960</p>
-                                    <p><strong>Envío:</strong> $100</p>
-                                    <p><strong>Total:</strong> $1060</p>
+                                    <p><strong>Subtotal:</strong> <span th:text="'$'+${subtotal}"></span></p>
+                                    <p><strong>Envío:</strong> <span th:text="'$'+${totalEnvio}"></span></p>
+                                    <p><strong>Total:</strong> <span th:text="'$'+${total}"></span></p>
                                 </div>
+
                             </div>
                         </div>
                         <!-- Estado del Pedido -->
@@ -108,10 +108,33 @@
                             <div class="card-header bg-light d-flex justify-content-between align-items-center">
                                 <h5>Estado del Pedido</h5>
                                 <!-- Botón Eliminar solo si el estado es "Pendiente" -->
-                                <button th:if="${orden.estadoordenagenteIdestadoordenagente.nombre == 'Pendiente'}"
-                                        class="btn btn-danger btn-sm">
+                                <button type="button" class="btn btn-danger btn-sm" th:if="${orden.estadoordenagenteIdestadoordenagente.nombre == 'Pendiente'}"
+                                        data-bs-toggle="modal" data-bs-target="#deleteModal">
                                     Eliminar
                                 </button>
+
+                                <!-- Modal de confirmación -->
+                                <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="deleteModalLabel">Confirmar eliminación</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                ¿Estás seguro que deseas eliminar esta orden? Las órdenes solo pueden eliminarse previa coordinación con el usuario mediante el chat entre el agente y el usuario final (importador).
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                                <!-- Formulario de eliminación dentro del modal -->
+                                                <form th:action="@{/agente/deleteOrder}" method="post">
+                                                    <input type="hidden" th:name="idOrden" th:value="${orden.id}"/>
+                                                    <button type="submit" class="btn btn-danger">Confirmar eliminación</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
 
                             </div>
                             <div class="card-body">

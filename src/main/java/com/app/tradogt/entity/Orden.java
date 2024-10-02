@@ -21,6 +21,7 @@ public class Orden {
     @OneToMany(mappedBy = "orden", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Pago> pagos;
 
+
     @NotNull
     @ManyToOne
     @JoinColumn(name = "Usuario_idUsuario", nullable = false)
