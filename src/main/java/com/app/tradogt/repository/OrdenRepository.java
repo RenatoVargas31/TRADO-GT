@@ -4,6 +4,7 @@ import com.app.tradogt.dto.OrdenCompraAgtDto;
 import com.app.tradogt.entity.Orden;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -188,5 +189,7 @@ public interface OrdenRepository extends JpaRepository<Orden, Integer> {
 
     List<Object[]> findOrdersByZone();
 
+    @Query("SELECT f FROM Orden f WHERE (f.usuarioIdusuario.id = :idUsuario)")
+    List<Orden> finByUsuario(@Param("idUsuario") Integer idUsuario);
 
 }

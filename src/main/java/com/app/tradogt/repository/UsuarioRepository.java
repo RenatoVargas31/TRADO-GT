@@ -20,6 +20,9 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
     @Query("SELECT u FROM Usuario u WHERE u.isActivated = ?1")
     List<Usuario> findByBanned(int activated);
 
+    @Query("SELECT u FROM Usuario u WHERE u.rolIdrol.id = 3")
+    List<Usuario> allUsersFinales();
+
 
     @Query(value = "SELECT u.id, u.nombre, u.apellido, p.nombre , c.nombre , eoi.nombre, pzo.cantidad ,a.nombre, a.apellido " +
             "FROM Usuario u " +

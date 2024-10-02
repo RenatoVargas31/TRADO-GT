@@ -84,16 +84,16 @@
                                 </div>
                                 <div class="card-body row">
                                     <div class="col">
-                                        <p><strong>Nombres:</strong> Jesús Andrés</p>
-                                        <p><strong>DNI:</strong> 74294745</p>
-                                        <p><strong>Correo electrónico:</strong> consulta@universidadSideralCarrion.com </p>
-                                        <p><strong>Dirección:</strong> Los Olivos</p>
+                                        <p><strong>Nombres:</strong> <span th:text="${usuario.nombre}"></span> </p>
+                                        <p><strong>DNI:</strong> <span th:text="${usuario.dni}"></span></p>
+                                        <p><strong>Correo electrónico:</strong> c<span th:text="${usuario.correo}"></span> </p>
+                                        <p><strong>Dirección:</strong> <span th:text="${usuario.direccion}"></span></p>
                                     </div>
                                     <div class="col">
-                                        <p><strong>Apellidos:</strong> Luján Carrión</p>
-                                        <p><strong>RUC:</strong> 12867901</p>
-                                        <p><strong>Teléfono:</strong> 931356990</p>
-                                        <p><strong>Fecha de nacimiento:</strong> 01/01/1990</p>
+                                        <p><strong>Apellidos:</strong> <span th:text="${usuario.apellido}"></span></p>
+                                        <p><strong>RUC:</strong> <span th:text="${usuario.ruc}"></span></p>
+                                        <p><strong>Teléfono:</strong> <span th:text="${usuario.telefono}"></span></p>
+                                        <p><strong>Fecha de nacimiento:</strong> <span th:text="${usuario.fechaNacimiento}"></span></p>
                                     </div>
                                 </div>
 
@@ -113,7 +113,6 @@
                                         <thead>
                                         <tr>
                                             <th>Fecha de creación</th>
-                                            <th>Método de pago</th>
                                             <th>Agente asignado</th>
                                             <th>Estado</th>
                                             <th>Ver</th>
@@ -121,44 +120,10 @@
                                         </thead>
 
                                         <tbody>
-                                        <tr>
-                                            <td>25/07/2024</td>
-                                            <td>Tarjeta de débito</td>
-                                            <td>Lucas Pastor</td>
-                                            <td>Pendiente</td>
-                                            <td>
-                                                <a href="/agente/detailsOrderEnProgreso" class="btn btn-primary btn-sm waves-effect waves-light" title="Ver" >
-                                                    <i class="ri-eye-fill"></i>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>25/07/2024</td>
-                                            <td>Tarjeta de débito</td>
-                                            <td>Lucas Pastor</td>
-                                            <td>Pendiente</td>
-                                            <td>
-                                                <a href="/agente/detailsOrderEnProgreso" class="btn btn-primary btn-sm waves-effect waves-light" title="Ver" >
-                                                    <i class="ri-eye-fill"></i>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>25/07/2024</td>
-                                            <td>Tarjeta de débito</td>
-                                            <td>Lucas Pastor</td>
-                                            <td>Pendiente</td>
-                                            <td>
-                                                <a href="/agente/detailsOrderEnProgreso" class="btn btn-primary btn-sm waves-effect waves-light" title="Ver" >
-                                                    <i class="ri-eye-fill"></i>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>25/07/2024</td>
-                                            <td>Tarjeta de débito</td>
-                                            <td>Lucas Pastor</td>
-                                            <td>Pendiente</td>
+                                        <tr th:each="orden : ${ordenes}">
+                                            <td th:text="${orden.fechaCreacion}"></td>
+                                            <td th:text="${orden.agentcompraIdusuario.nombre} + ${orden.agentcompraIdusuario.apellido}"></td>
+                                            <td th:text="${orden.estadoordenagenteIdestadoordenagente.nombre}"></td>
                                             <td>
                                                 <a href="/agente/detailsOrderEnProgreso" class="btn btn-primary btn-sm waves-effect waves-light" title="Ver" >
                                                     <i class="ri-eye-fill"></i>

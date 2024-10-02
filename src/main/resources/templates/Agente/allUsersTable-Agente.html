@@ -86,12 +86,12 @@
                                         <td th:text="${usuario.distritoIddistrito.nombre}"></td>
                                         <td th:text="${usuario.correo}"></td>
                                         <td>
-                <span th:classappend="${usuario.isActivated == 0} ? 'badge bg-danger fs-6' : 'badge bg-success fs-6'">
-                    <span th:text="${usuario.isActivated == 0} ? 'Desactivado' : 'Habilitado'"></span>
-                </span>
+                                            <span th:classappend="${usuario.isActivated == 0} ? 'badge bg-danger fs-6' : 'badge bg-success fs-6'">
+                                                <span th:text="${usuario.isActivated == 0} ? 'Desactivado' : 'Habilitado'"></span>
+                                            </span>
                                         </td>
                                         <td>
-                                            <a th:href="${usuario.isActivated == 0} ? '/agente/infoUsuarioBaneado' : '/agente/infoUsuario'"
+                                            <a th:href="${usuario.isActivated == 0} ? '/agente/infoUsuarioBaneado?idUsuario=' + ${usuario.id}  : '/agente/infoUsuario?idUsuario=' + ${usuario.id}"
                                                class="btn btn-primary btn-sm waves-effect waves-light" title="Ver">
                                                 <i class="ri-eye-fill"></i>
                                             </a>

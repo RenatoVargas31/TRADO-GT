@@ -285,7 +285,7 @@ public class AgenteComprasController {
     //Tableros de USUARIOS
     @GetMapping("/allUsers")
     public String showAllUsers(Model model) {
-        List<Usuario> usuarioList = usuarioRepository.findAll();
+        List<Usuario> usuarioList = usuarioRepository.allUsersFinales();
         model.addAttribute("usuarioList", usuarioList);
 
         return "Agente/allUsersTable-Agente";
@@ -305,7 +305,9 @@ public class AgenteComprasController {
 
     //Información sobre usuarios asignados a agentes
     @GetMapping("/infoUsuario")
-    public String showInfoUser(){
+    public String showInfoUser(Model model, @RequestParam("idUsuario") Integer idUsuario){
+        model.addAttribute("usuario", usuarioRepository.findById(idUsuario).get());
+        model.addAttribute("ordenes", ordenRepository.finByUsuario(idUsuario));
         return "Agente/detallesUsuarios-Agente";
     }
     @GetMapping("/infoUsuarioBaneado")
@@ -324,7 +326,5 @@ public class AgenteComprasController {
     public String showFaq() {
         return "Agente/faq-Agente";
     }
-
-
 
 }
