@@ -161,7 +161,7 @@ CREATE TABLE IF NOT EXISTS `trado_db`.`usuario` (
   `Foto` VARCHAR(45) NULL DEFAULT NULL,
   `MotivoBanneo` VARCHAR(45) NULL DEFAULT NULL,
   `FechaBanneo` TIMESTAMP NULL DEFAULT NULL,
-  `codigodespachador_idCodigoDespachador` INT NOT NULL,
+  `codigodespachador_idCodigoDespachador` INT NULL DEFAULT NULL,
   PRIMARY KEY (`idUsuario`),
   INDEX `fk_Usuario_Rol_idx` (`Rol_idRol` ASC) VISIBLE,
   INDEX `fk_Usuario_Zona1_idx` (`Zona_idZona` ASC) VISIBLE,
