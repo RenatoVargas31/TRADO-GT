@@ -43,6 +43,10 @@ public class Orden {
     private EstadoOrdenImportador estadoordenimportadorIdestadoordenimportador;
 
     @NotNull
+    @Column(name = "FechaArribo")
+    private Instant fechaArribo;
+
+    @NotNull
     @Column(name = "FechaCreacion", nullable = false)
     private Instant fechaCreacion;
 

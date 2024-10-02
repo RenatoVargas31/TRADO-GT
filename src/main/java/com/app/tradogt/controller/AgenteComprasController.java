@@ -1,6 +1,7 @@
 package com.app.tradogt.controller;
 
 import com.app.tradogt.dto.OrdenCompraAgtDto;
+import com.app.tradogt.entity.Orden;
 import com.app.tradogt.entity.Usuario;
 import com.app.tradogt.repository.OrdenRepository;
 import com.app.tradogt.repository.UsuarioRepository;
@@ -8,8 +9,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Controller
@@ -43,10 +46,13 @@ public class AgenteComprasController {
         List<OrdenCompraAgtDto> listaOrdenes = resultados.stream()
                 .map(result -> new OrdenCompraAgtDto(
                         (String) result[0],  // usuarioPropietario
-                        (String) result[1],  // fechaCreacion
-                        (String) result[2],  // metodoPago
-                        (String) result[3],  // agenteCompra
-                        (String) result[4]   // estadoPedido
+                        (Integer) result[1],  // idUsuario
+                        (String) result[2],  // fechaCreacion
+                        (String) result[3],  // metodoPago
+                        (String) result[4],  // agenteCompra
+                        (Long) result[5],  //idAgenteCompra
+                        (String) result[6], //idEstadoPedido
+                        (Integer) result[7] //idOrden
                 ))
                 .collect(Collectors.toList());
         model.addAttribute("listaOrdenes", listaOrdenes);
@@ -61,10 +67,13 @@ public class AgenteComprasController {
         List<OrdenCompraAgtDto> listaOrdenes = resultados.stream()
                 .map(result -> new OrdenCompraAgtDto(
                         (String) result[0],  // usuarioPropietario
-                        (String) result[1],  // fechaCreacion
-                        (String) result[2],  // metodoPago
-                        (String) result[3],  // agenteCompra
-                        (String) result[4]   // estadoPedido
+                        (Integer) result[1],  // idUsuario
+                        (String) result[2],  // fechaCreacion
+                        (String) result[3],  // metodoPago
+                        (String) result[4],  // agenteCompra
+                        (Long) result[5],  //idAgenteCompra
+                        (String) result[6], //idEstadoPedido
+                        (Integer) result[7] //idOrden
                 ))
                 .collect(Collectors.toList());
         model.addAttribute("listaOrdenes", listaOrdenes);
@@ -80,10 +89,13 @@ public class AgenteComprasController {
         List<OrdenCompraAgtDto> listaOrdenes = resultados.stream()
                 .map(result -> new OrdenCompraAgtDto(
                         (String) result[0],  // usuarioPropietario
-                        (String) result[1],  // fechaCreacion
-                        (String) result[2],  // metodoPago
-                        (String) result[3],  // agenteCompra
-                        (String) result[4]   // estadoPedido
+                        (Integer) result[1],  // idUsuario
+                        (String) result[2],  // fechaCreacion
+                        (String) result[3],  // metodoPago
+                        (String) result[4],  // agenteCompra
+                        (Long) result[5],  //idAgenteCompra
+                        (String) result[6], //idEstadoPedido
+                        (Integer) result[7] //idOrden
                 ))
                 .collect(Collectors.toList());
         model.addAttribute("listaOrdenes", listaOrdenes);
@@ -98,10 +110,13 @@ public class AgenteComprasController {
         List<OrdenCompraAgtDto> listaOrdenes = resultados.stream()
                 .map(result -> new OrdenCompraAgtDto(
                         (String) result[0],  // usuarioPropietario
-                        (String) result[1],  // fechaCreacion
-                        (String) result[2],  // metodoPago
-                        (String) result[3],  // agenteCompra
-                        (String) result[4]   // estadoPedido
+                        (Integer) result[1],  // idUsuario
+                        (String) result[2],  // fechaCreacion
+                        (String) result[3],  // metodoPago
+                        (String) result[4],  // agenteCompra
+                        (Long) result[5],  //idAgenteCompra
+                        (String) result[6], //idEstadoPedido
+                        (Integer) result[7] //idOrden
                 ))
                 .collect(Collectors.toList());
         model.addAttribute("listaOrdenes", listaOrdenes);
@@ -116,10 +131,13 @@ public class AgenteComprasController {
         List<OrdenCompraAgtDto> listaOrdenes = resultados.stream()
                 .map(result -> new OrdenCompraAgtDto(
                         (String) result[0],  // usuarioPropietario
-                        (String) result[1],  // fechaCreacion
-                        (String) result[2],  // metodoPago
-                        (String) result[3],  // agenteCompra
-                        (String) result[4]   // estadoPedido
+                        (Integer) result[1],  // idUsuario
+                        (String) result[2],  // fechaCreacion
+                        (String) result[3],  // metodoPago
+                        (String) result[4],  // agenteCompra
+                        (Long) result[5],  //idAgenteCompra
+                        (String) result[6], //idEstadoPedido
+                        (Integer) result[7] //idOrden
                 ))
                 .collect(Collectors.toList());
         model.addAttribute("listaOrdenes", listaOrdenes);
@@ -127,6 +145,7 @@ public class AgenteComprasController {
     }
     @GetMapping("/perfil")
     public String showPerfil() {
+
         return "Agente/profile-Agente";
     }
 
@@ -153,6 +172,27 @@ public class AgenteComprasController {
     @GetMapping("/detailsOrderCancelada")
     public String showInfoOrderCancelada() {
         return "Agente/detallesCanceladoProducto-Agente";
+    }
+
+    //Información de órdenes de usuarios asignados (este es el definitivo xD)
+    @GetMapping("/detailsOrder")
+    public String showDetails(Model model, @RequestParam ("idOrden") int idOrden,
+                                           @RequestParam ("idUsuario") int idUsuario){
+
+         Optional<Orden> optionalOrden = ordenRepository.findById(idOrden);
+
+         if(optionalOrden.isPresent()){
+
+             Orden orden = optionalOrden.get();
+             model.addAttribute("orden",orden);
+             //Info de usuario que vemos en detalles de ordenes
+             Usuario usuario = usuarioRepository.findById(idUsuario).get();
+             model.addAttribute("usuario",usuario);
+             return "Agente/detailsOrder-Agente";
+         } else{
+             return "redirect:/agente/allOrders";
+         }
+
     }
 
 

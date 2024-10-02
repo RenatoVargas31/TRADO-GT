@@ -96,7 +96,7 @@
                       </span>
                     </td>
                     <td>
-                      <a href="/agente/detailsOrderSinAsignar" class="btn btn-primary btn-sm waves-effect waves-light" title="Ver" >
+                      <a th:href="@{'/agente/detailsOrder?idOrden=' + ${order.idOrden} + '&idUsuario=' + ${order.idUsuarioAsignado} }" class="btn btn-primary btn-sm waves-effect waves-light" title="Ver" >
                         <i class="ri-eye-fill"></i>
                       </a>
                     </td>
