@@ -171,7 +171,7 @@ public interface OrdenRepository extends JpaRepository<Orden, Integer> {
     @Query(value = "SELECT o.idOrden AS id,\n" +
             "       p.Nombre AS nombre_producto,\n" +
             "       c.Nombre AS categoria,\n" +
-            "       DATE_FORMAT(p.FechaArribo, '%d/%m/%y') AS fecha_arribo,\n" +
+            "       DATE_FORMAT(o.FechaArribo, '%d/%m/%y') AS fecha_arribo,\n" +
             "       DATE_FORMAT(o.FechaCreacion, '%d/%m/%y') AS fecha_creacion\n" +
             "FROM `TRADO_DB`.`Orden` o\n" +
             "JOIN `TRADO_DB`.`ProductoEnZonaEnOrden` pzo\n" +

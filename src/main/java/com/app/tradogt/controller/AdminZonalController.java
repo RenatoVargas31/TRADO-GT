@@ -1,5 +1,6 @@
 package com.app.tradogt.controller;
 
+import com.app.tradogt.entity.Producto;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,11 +25,13 @@ public class AdminZonalController {
     final OrdenRepository ordenRepository;
     final UsuarioRepository usuarioRepository;
     final ProductosRepository productosRepository;
+    final ProductoEnZonaRepository productoEnZonaRepository;
 
-    public AdminZonalController(OrdenRepository ordenRepository, UsuarioRepository usuarioRepository, ProductosRepository productosRepository) {
+    public AdminZonalController(OrdenRepository ordenRepository, UsuarioRepository usuarioRepository, ProductosRepository productosRepository, ProductoEnZonaRepository productoEnZonaRepository) {
         this.ordenRepository = ordenRepository;
         this.usuarioRepository = usuarioRepository;
         this.productosRepository = productosRepository;
+        this.productoEnZonaRepository = productoEnZonaRepository;
     }
 
     @GetMapping("/vacio")
@@ -58,6 +61,16 @@ public class AdminZonalController {
         model.addAttribute("productos", productos);
         return "AdminZonal/tablaReposicionProductos-AdminZonal";
     }
+
+    //Editar el estado de reposición
+    /*@PostMapping("/editarEstadoRepo")
+    public String editarEstadoRepo(Producto producto) {
+
+        //Actualizar el estado
+
+        return "redirect:/adminzonal/reposicionProductos";
+    }*/
+
     @GetMapping("/faq")
     public String showFaq() {
         return "AdminZonal/faq";
