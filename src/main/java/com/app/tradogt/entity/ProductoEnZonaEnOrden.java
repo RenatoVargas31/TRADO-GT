@@ -11,21 +11,20 @@ public class ProductoEnZonaEnOrden {
     @EmbeddedId
     private ProductoEnZonaEnOrdenId id;
 
-    @MapsId("productoenzonaId")
+    @MapsId("productoEnZonaId")
     @ManyToOne
     @JoinColumns({
-            @JoinColumn(name = "ProductoEnZona_Producto_idProducto", referencedColumnName = "Producto_idProducto", nullable = false),
-            @JoinColumn(name = "ProductoEnZona_Zona_idZona", referencedColumnName = "Zona_idZona", nullable = false)
+            @JoinColumn(name = "productoEnZona_Producto_idProducto", referencedColumnName = "producto_idProducto", nullable = false),
+            @JoinColumn(name = "productoEnZona_Zona_idZona", referencedColumnName = "zona_idZona", nullable = false)
     })
     private ProductoEnZona productoEnZona;
 
     @MapsId("ordenIdorden")
     @ManyToOne
-    @JoinColumn(name = "Orden_idOrden", nullable = false)
+    @JoinColumn(name = "orden_idOrden", nullable = false)
     private Orden ordenIdorden;
 
     @NotNull
-    @Column(name = "Cantidad", nullable = false)
+    @Column(name = "cantidad", nullable = false)
     private Integer cantidad;
-
 }

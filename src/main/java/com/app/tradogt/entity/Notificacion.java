@@ -5,14 +5,12 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
-import java.time.Instant;
-
 @Data
 @Entity
-@Table(name = "Pregunta")
-public class Pregunta {
+@Table(name = "Notificacion")
+public class Notificacion {
     @Id
-    @Column(name = "idPregunta", nullable = false)
+    @Column(name = "idNotificacion", nullable = false)
     private Integer id;
 
     @NotNull
@@ -20,13 +18,9 @@ public class Pregunta {
     @JoinColumn(name = "usuario_idUsuario", nullable = false)
     private Usuario usuarioIdusuario;
 
-    @Size(max = 80)
+    @Size(max = 45)
     @NotNull
-    @Column(name = "contenido", nullable = false, length = 80)
+    @Column(name = "contenido", nullable = false, length = 45)
     private String contenido;
-
-    @NotNull
-    @Column(name = "fecha", nullable = false)
-    private Instant fecha;
 
 }

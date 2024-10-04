@@ -9,32 +9,32 @@ import java.math.BigDecimal;
 
 @Data
 @Entity
-@Table(name = "productoEnZona")
+@Table(name = "ProductoEnZona")
 public class ProductoEnZona {
     @EmbeddedId
     private ProductoEnZonaId id;
 
     @MapsId("productoIdproducto")
     @ManyToOne
-    @JoinColumn(name = "Producto_idProducto", nullable = false)
+    @JoinColumn(name = "producto_idProducto", nullable = false)
     private Producto productoIdproducto;
 
     @MapsId("zonaIdzona")
     @ManyToOne
-    @JoinColumn(name = "Zona_idZona", nullable = false)
+    @JoinColumn(name = "zona_idZona", nullable = false)
     private Zona zonaIdzona;
 
     @NotNull
-    @Column(name = "Cantidad", nullable = false)
+    @Column(name = "cantidad", nullable = false)
     private Integer cantidad;
 
     @NotNull
-    @Column(name = "CostoEnvio", nullable = false, precision = 10, scale = 2)
+    @Column(name = "costoEnvio", nullable = false, precision = 10, scale = 2)
     private BigDecimal costoEnvio;
 
     @NotNull
     @ColumnDefault("0")
     @Column(name = "estadoRepo", nullable = false)
-    private Byte estadoRepo;
+    private Byte estadoRepo = 0;
 
 }

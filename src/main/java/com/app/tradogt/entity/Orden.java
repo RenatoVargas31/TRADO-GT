@@ -6,54 +6,49 @@ import lombok.Data;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.List;
 
 @Data
 @Entity
-@Table(name = "orden")
+@Table(name = "Orden")
 public class Orden {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idOrden", nullable = false)
     private Integer id;
 
-    // Relación uno a muchos con Pago
-    @OneToMany(mappedBy = "orden", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Pago> pagos;
-
-
     @NotNull
     @ManyToOne
-    @JoinColumn(name = "Usuario_idUsuario", nullable = false)
+    @JoinColumn(name = "usuario_idUsuario", nullable = false)
     private Usuario usuarioIdusuario;
 
     @ManyToOne
-    @JoinColumn(name = "AgentCompra_idUsuario")
+    @JoinColumn(name = "agentCompra_idUsuario")
     private Usuario agentcompraIdusuario;
 
     @ManyToOne
-    @JoinColumn(name = "Valoracion_idValoracion")
-    private Valoracion valoracionIdvaloracion;
+    @JoinColumn(name = "estadoOrden_idEstadoOrden")
+    private EstadoOrden estadoordenIdestadoorden;
 
-    @ManyToOne
-    @JoinColumn(name = "EstadoOrdenAgente_idEstadoOrdenAgente")
-    private EstadoOrdenAgente estadoordenagenteIdestadoordenagente;
-
-    @ManyToOne
-    @JoinColumn(name = "EstadoOrdenImportador_idEstadoOrdenImportador")
-    private EstadoOrdenImportador estadoordenimportadorIdestadoordenimportador;
-
-    @NotNull
-    @Column(name = "FechaArribo")
-    private Instant fechaArribo;
-
-    @NotNull
-    @Column(name = "FechaCreacion", nullable = false)
+    @Column(name = "fechaCreacion")
     private Instant fechaCreacion;
+
+    @Column(name = "fechaArribo")
+    private LocalDate fechaArribo;
+
+    @Column(name = "valoracionAgente")
+    private Byte valoracionAgente;
 
     @ColumnDefault("0")
     @Column(name = "isDeleted")
     private Byte isDeleted;
 
+    @Column(name = "fueRapido")
+    private Byte fueRapido;
+
+    @NotNull
+    @ColumnDefault("1")
+    @Column(name = "esCarrito", nullable = false)
+    private Byte esCarrito = 1;
 
 }

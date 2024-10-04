@@ -7,7 +7,7 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "distrito")
+@Table(name = "Distrito")
 public class Distrito {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,17 +16,17 @@ public class Distrito {
 
     @NotNull
     @ManyToOne
-    @JoinColumn(name = "Zona_idZona", nullable = false)
+    @JoinColumn(name = "zona_idZona", nullable = false)
     private Zona zonaIdzona;
 
     @Size(max = 45)
     @NotNull
-    @Column(name = "Codigo", nullable = false, length = 45)
+    @Column(name = "codigo", nullable = false, length = 45)
     private String codigo;
 
     @Size(max = 45)
     @NotNull
-    @Column(name = "Nombre", nullable = false, length = 45)
+    @Column(name = "nombre", nullable = false, length = 45)
     private String nombre;
 
 }

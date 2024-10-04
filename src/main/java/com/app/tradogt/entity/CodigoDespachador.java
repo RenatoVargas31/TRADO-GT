@@ -7,26 +7,19 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "codigodespachador")
+@Table(name = "CodigoDespachador")
 public class CodigoDespachador {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idCodigoDespachador", nullable = false)
     private Integer id;
 
-    @Size(max = 45)
     @NotNull
-    @Column(name = "Caracteres", nullable = false, length = 45)
-    private String caracteres;
+    @Column(name = "codigo", nullable = false)
+    private Integer codigo;
 
     @NotNull
     @ManyToOne
-    @JoinColumn(name = "zona_idZona", nullable = false)
-    private Distrito zonaIdZona;
-
-    @NotNull
-    @ManyToOne
-    @JoinColumn(name = "EstadoCodigo_idEstadoCodigo", nullable = false)
+    @JoinColumn(name = "estadoCodigo_idEstadoCodigo", nullable = false)
     private EstadoCodigo estadocodigoIdestadocodigo;
 
 }

@@ -7,16 +7,15 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "estadocodigo")
+@Table(name = "EstadoCodigo")
 public class EstadoCodigo {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idEstadoCodigo", nullable = false)
     private Integer id;
 
     @Size(max = 45)
     @NotNull
-    @Column(name = "Nombre", nullable = false, length = 45)
-    private String nombre;
+    @Column(name = "estado", nullable = false, length = 45)
+    private String estado;
 
 }

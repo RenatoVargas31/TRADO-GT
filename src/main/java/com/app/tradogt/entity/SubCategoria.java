@@ -9,16 +9,22 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "valoracion")
-public class Valoracion {
+@Table(name = "SubCategoria")
+public class SubCategoria {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idValoracion", nullable = false)
+    @Column(name = "idSubCategoria", nullable = false)
     private Integer id;
 
     @Size(max = 45)
     @NotNull
-    @Column(name = "Valor", nullable = false, length = 45)
-    private String valor;
+    @Column(name = "nombre", nullable = false, length = 45)
+    private String nombre;
+
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "Categoria_idCategoria", nullable = false)
+    private Categoria categoriaIdcategoria;
 
 }
