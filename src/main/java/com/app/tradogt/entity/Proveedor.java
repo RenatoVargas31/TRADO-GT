@@ -23,6 +23,12 @@ public class Proveedor {
     @Column(name = "Nombre", nullable = false, length = 45)
     private String nombre;
 
+    @Size(max = 45)
+    @NotNull
+    @Column(name = "Apellido", nullable = false, length = 45)
+    private String apellido;
+
+
     @Size(max = 9)
     @NotNull
     @Column(name = "Telefono", nullable = false, length = 9)
@@ -43,8 +49,9 @@ public class Proveedor {
     @Column(name = "Tienda", nullable = false, length = 45)
     private String tienda;
 
-    @ColumnDefault("0")
+
     @Column(name = "isDeleted")
-    private Byte isDeleted;
+    private Byte isDeleted = 0;
+
 
 }
