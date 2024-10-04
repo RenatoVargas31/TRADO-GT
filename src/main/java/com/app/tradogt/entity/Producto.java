@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 
 @Data
 @Entity
-@Table(name = "producto")
+@Table(name = "Producto")
 public class Producto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,69 +21,81 @@ public class Producto {
 
     @NotNull
     @ManyToOne
-    @JoinColumn(name = "Proveedor_idProveedor", nullable = false)
+    @JoinColumn(name = "proveedor_idProveedor", nullable = false)
     private Proveedor proveedorIdproveedor;
 
     @NotNull
     @ManyToOne
-    @JoinColumn(name = "SubCategoria_idSubCategoria", nullable = false)
-    private Subcategoria subcategoriaIdsubcategoria;
+    @JoinColumn(name = "subCategoria_idSubCategoria", nullable = false)
+    private SubCategoria subcategoriaIdsubcategoria;
 
     @Size(max = 45)
     @NotNull
-    @Column(name = "Nombre", nullable = false, length = 45)
+    @Column(name = "nombre", nullable = false, length = 45)
     private String nombre;
 
-    @Size(max = 45)
+    @Size(max = 250)
     @NotNull
-    @Column(name = "Cantidad", nullable = false, length = 45)
-    private String cantidad;
-
-    @Size(max = 45)
-    @NotNull
-    @Column(name = "FechaArribo", nullable = false, length = 45)
-    private String fechaArribo;
-
-    @Size(max = 45)
-    @NotNull
-    @Column(name = "Descripcion", nullable = false, length = 45)
+    @Column(name = "descripcion", nullable = false, length = 250)
     private String descripcion;
 
-    @Size(max = 45)
     @NotNull
-    @Column(name = "Precio", nullable = false, length = 45)
-    private String precio;
+    @Column(name = "precio", nullable = false, precision = 10, scale = 2)
+    private BigDecimal precio;
 
     @Size(max = 45)
-    @Column(name = "Color", length = 45)
+    @NotNull
+    @Column(name = "color", nullable = false, length = 45)
     private String color;
 
     @Size(max = 45)
-    @Column(name = "Talla", length = 45)
+    @Column(name = "talla", length = 45)
     private String talla;
 
     @Size(max = 45)
-    @Column(name = "Material", length = 45)
+    @Column(name = "material", length = 45)
     private String material;
 
     @Size(max = 45)
-    @Column(name = "Modelo", length = 45)
+    @Column(name = "modelo", length = 45)
     private String modelo;
 
     @Size(max = 45)
-    @Column(name = "Resolucion", length = 45)
+    @Column(name = "resolucion", length = 45)
     private String resolucion;
 
     @Size(max = 45)
-    @Column(name = "Ram", length = 45)
+    @Column(name = "ram", length = 45)
     private String ram;
 
     @Size(max = 45)
-    @Column(name = "Almacenamiento", length = 45)
+    @Column(name = "almacenamiento", length = 45)
     private String almacenamiento;
 
+    @NotNull
     @ColumnDefault("0")
-    @Column(name = "isDeleted")
-    private Byte isDeleted;
+    @Column(name = "isDeleted", nullable = false)
+    private Byte isDeleted = 0;
+
+    @NotNull
+    @Column(name = "peso", nullable = false, precision = 10, scale = 2)
+    private BigDecimal peso;
+
+    @Size(max = 45)
+    @NotNull
+    @Column(name = "marca", nullable = false, length = 45)
+    private String marca;
+
+    @Size(max = 45)
+    @Column(name = "ancho", length = 45)
+    private String ancho;
+
+    @Size(max = 45)
+    @Column(name = "alto", length = 45)
+    private String alto;
+
+    @Size(max = 45)
+    @Column(name = "profundidad", length = 45)
+    private String profundidad;
 
 }

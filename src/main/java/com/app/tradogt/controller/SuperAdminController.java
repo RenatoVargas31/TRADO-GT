@@ -304,7 +304,7 @@ public class SuperAdminController {
         return "SuperAdmin/productoLista-SAdmin";
     }
     //</editor-fold>
-
+    */
     //<editor-fold desc="CRUD Proveedores (Completo - terminado)">
     //<editor-fold desc="Nuevo Proveedor">
     @GetMapping("/proveedorNuevoForm")
@@ -324,7 +324,7 @@ public class SuperAdminController {
     @GetMapping("/proveedorLista")
     public String viewProveedorLista(Model model) {
         //Lista de proveedores activos
-        List<Proveedor> proveedores = proveedorRepository.findAllByEnabled((byte) 1);
+        List<Proveedor> proveedores = proveedorRepository.findAllByIsDeleted((byte) 0);
         //Enviar a la vista
         model.addAttribute("proveedores", proveedores);
         return "SuperAdmin/proveedorLista-SAdmin";
@@ -343,7 +343,7 @@ public class SuperAdminController {
     @PostMapping("/proveedorEditar")
     public String viewProveedorEditar(Proveedor proveedor) {
         //Actualizar proveedor existente
-        proveedorRepository.updateProveedor(proveedor.getTelefonoProveedor(),proveedor.getNombreTienda(), proveedor.getId());
+        proveedorRepository.updateProveedor(proveedor.getTelefono(),proveedor.getTienda(), proveedor.getId());
         return "redirect:/superadmin/proveedorLista";
     }
     //</editor-fold>
@@ -357,8 +357,6 @@ public class SuperAdminController {
     //</editor-fold>
     //</editor-fold>
 
-
-     */
     //<editor-fold desc="Ayuda">
     @GetMapping("/ayuda")
     public String viewAyuda() {

@@ -11,7 +11,7 @@ import java.util.Set;
 
 @Data
 @Entity
-@Table(name = "proveedor")
+@Table(name = "Proveedor")
 public class Proveedor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,31 +20,32 @@ public class Proveedor {
 
     @Size(max = 45)
     @NotNull
-    @Column(name = "Nombre", nullable = false, length = 45)
+    @Column(name = "nombre", nullable = false, length = 45)
     private String nombre;
 
     @Size(max = 9)
     @NotNull
-    @Column(name = "Telefono", nullable = false, length = 9)
+    @Column(name = "telefono", nullable = false, length = 9)
     private String telefono;
 
     @Size(max = 45)
     @NotNull
-    @Column(name = "Ruc", nullable = false, length = 45)
+    @Column(name = "ruc", nullable = false, length = 45)
     private String ruc;
 
     @Size(max = 8)
     @NotNull
-    @Column(name = "Dni", nullable = false, length = 8)
+    @Column(name = "dni", nullable = false, length = 8)
     private String dni;
 
     @Size(max = 45)
     @NotNull
-    @Column(name = "Tienda", nullable = false, length = 45)
+    @Column(name = "tienda", nullable = false, length = 45)
     private String tienda;
 
+    @NotNull
     @ColumnDefault("0")
-    @Column(name = "isDeleted")
-    private Byte isDeleted;
+    @Column(name = "isDeleted", nullable = false)
+    private Byte isDeleted = 0;
 
 }

@@ -75,22 +75,22 @@
 
                                         <tbody>
                                             <tr th:each="proveedor : ${proveedores}">
-                                                <td th:text="${proveedor.nombreProveedor}">Nombre</td>
-                                                <td th:text="${proveedor.apellidoProveedor}">Apellido</td>
-                                                <td th:text="${proveedor.telefonoProveedor}">Teléfono</td>
-                                                <td th:text="${proveedor.dniProveedor}">DNI</td>
-                                                <td th:text="${proveedor.rucProveedor}">RUC</td>
-                                                <td th:text="${proveedor.nombreTienda}">Tienda</td>
+                                                <td th:text="${proveedor.nombre}">Nombre</td>
+                                                <td th:text="${proveedor.apellido}">Apellido</td>
+                                                <td th:text="${proveedor.telefono}">Teléfono</td>
+                                                <td th:text="${proveedor.dni}">DNI</td>
+                                                <td th:text="${proveedor.ruc}">RUC</td>
+                                                <td th:text="${proveedor.tienda}">Tienda</td>
                                                 <td>
                                                     <form th:action="@{/superadmin/proveedorEditarForm}" method="post" style="display:inline;">
                                                         <input type="hidden" name="id" th:value="${proveedor.id}" />
                                                         <button type="submit" class="btn btn-info btn-sm waves-effect waves-light" title="Editar"><i class="ri-pencil-fill"></i></button>
                                                     </form>
-                                                    <button type="button" class="btn btn-danger btn-sm waves-effect waves-light" title="Eliminar" data-bs-toggle="modal" th:data-bs-target="'#deleteConfirmModal-' + ${proveedor.nombreProveedor} + '-' + ${proveedor.id}">
+                                                    <button type="button" class="btn btn-danger btn-sm waves-effect waves-light" title="Eliminar" data-bs-toggle="modal" th:data-bs-target="'#deleteConfirmModal-' + ${proveedor.nombre} + '-' + ${proveedor.id}">
                                                         <i class="ri-delete-bin-fill"></i>
                                                     </button>
                                                     <!-- Modal de Confirmación de Eliminación -->
-                                                    <div class="modal fade" th:id="'deleteConfirmModal-' + ${proveedor.nombreProveedor} + '-' + ${proveedor.id}" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
+                                                    <div class="modal fade" th:id="'deleteConfirmModal-' + ${proveedor.nombre} + '-' + ${proveedor.id}" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
                                                         <div class="modal-dialog">
                                                             <div class="modal-content">
                                                                 <div class="modal-header">

@@ -8,33 +8,33 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.time.LocalDate;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "pago")
+@Table(name = "Pago")
 public class Pago {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idPago", nullable = false)
     private Integer id;
 
     @NotNull
     @ManyToOne
-    @JoinColumn(name = "Orden_idOrden", nullable = false)
-    private Orden orden;
+    @JoinColumn(name = "orden_idOrden", nullable = false)
+    private Orden ordenIdorden;
 
     @Size(max = 45)
     @NotNull
-    @Column(name = "Metodo", nullable = false, length = 45)
+    @Column(name = "metodo", nullable = false, length = 45)
     private String metodo;
 
     @NotNull
-    @Column(name = "Monto", nullable = false, precision = 10, scale = 2)
+    @Column(name = "monto", nullable = false, precision = 10, scale = 2)
     private BigDecimal monto;
 
     @NotNull
-    @Column(name = "Fecha", nullable = false)
-    private Instant fecha;
+    @Column(name = "fecha", nullable = false)
+    private LocalDate fecha;
 
 }

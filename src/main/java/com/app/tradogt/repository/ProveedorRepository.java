@@ -13,9 +13,9 @@ import java.util.List;
 @Repository
 public interface ProveedorRepository extends JpaRepository<Proveedor, Integer> {
 
-    /*
+
     //<editor-fold desc="Buscar por Enabled">
-    List<Proveedor> findAllByEnabled(Byte enabled);
+    List<Proveedor> findAllByIsDeleted(Byte isDeleted);
     //</editor-fold>
 
     //<editor-fold desc="Buscar por ID">
@@ -26,18 +26,17 @@ public interface ProveedorRepository extends JpaRepository<Proveedor, Integer> {
     //<editor-fold desc="Actualizar Proveedor">
     @Modifying
     @Transactional
-    @Query("UPDATE Proveedor p SET p.telefonoProveedor = :telefonoProveedor, p.nombreTienda = :nombreTienda WHERE p.id = :id")
+    @Query("UPDATE Proveedor p SET p.telefono = :telefonoProveedor, p.tienda = :nombreTienda WHERE p.id = :id")
     void updateProveedor(String telefonoProveedor, String nombreTienda, Integer id);
     //</editor-fold>
 
     //<editor-fold desc="Borrar Proveedor">
     @Modifying
     @Transactional
-    @Query("UPDATE Proveedor p SET p.enabled = 0 WHERE p.id = :id")
+    @Query("UPDATE Proveedor p SET p.isDeleted = 1 WHERE p.id = :id")
     void deleteProveedor(Integer id);
     //</editor-fold>
     //</editor-fold>
-    */
 
     @Query(value = "SELECT prov.idProveedor AS idProveedor, " +
             "prov.Nombre AS Proveedor, " +

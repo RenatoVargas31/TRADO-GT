@@ -7,12 +7,13 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.Hibernate;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 @Getter
 @Setter
 @Embeddable
-public class ProductoEnZonaId implements java.io.Serializable {
+public class ProductoEnZonaId implements Serializable {
     @NotNull
     @Column(name = "Producto_idProducto", nullable = false)
     private Integer productoIdproducto;

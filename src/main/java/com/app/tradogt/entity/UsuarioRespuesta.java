@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import org.springframework.jmx.export.annotation.ManagedOperationParameter;
 
 import java.time.Instant;
 
@@ -14,11 +15,12 @@ public class UsuarioRespuesta {
     @EmbeddedId
     private UsuarioRespuestaId id;
 
+    @MapsId("preguntaIdpregunta")
     @ManyToOne
     @JoinColumn(name = "Pregunta_idPregunta", nullable = false)
     private Pregunta preguntaIdpregunta;
 
-    @MapsId
+    @MapsId("usuarioIdusuario")
     @ManyToOne
     @JoinColumn(name = "Usuario_idUsuario", nullable = false)
     private Usuario usuarioIdusuario;

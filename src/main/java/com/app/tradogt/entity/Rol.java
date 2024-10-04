@@ -9,7 +9,7 @@ import lombok.Setter;
 
 @Data
 @Entity
-@Table(name = "rol")
+@Table(name = "Rol")
 public class Rol {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,7 +18,7 @@ public class Rol {
 
     @Size(max = 45)
     @NotNull
-    @Column(name = "Nombre", nullable = false, length = 45)
+    @Column(name = "nombre", nullable = false, length = 45)
     private String nombre;
 
 }

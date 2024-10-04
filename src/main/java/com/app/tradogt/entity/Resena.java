@@ -7,41 +7,33 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "resena")
+@Table(name = "Resena")
 public class Resena {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idResena", nullable = false)
     private Integer id;
-
-    @Size(max = 45)
-    @NotNull
-    @Column(name = "Foto", nullable = false, length = 45)
-    private String foto;
-
-    @Size(max = 200)
-    @NotNull
-    @Column(name = "Comentario", nullable = false, length = 200)
-    private String comentario;
-
-    @Size(max = 45)
-    @NotNull
-    @Column(name = "Calidad", nullable = false, length = 45)
-    private String calidad;
-
-    @Size(max = 45)
-    @NotNull
-    @Column(name = "TiempoEntrega", nullable = false, length = 45)
-    private String tiempoEntrega;
 
     @NotNull
     @ManyToOne
     @JoinColumn(name = "Producto_idProducto", nullable = false)
     private Producto productoIdproducto;
 
+    @Size(max = 100)
     @NotNull
-    @ManyToOne
-    @JoinColumn(name = "Usuario_idUsuario", nullable = false)
-    private Usuario usuarioIdusuario;
+    @Column(name = "foto", nullable = false, length = 100)
+    private String foto;
+
+    @Size(max = 250)
+    @NotNull
+    @Column(name = "comentario", nullable = false, length = 250)
+    private String comentario;
+
+    @NotNull
+    @Column(name = "calidad", nullable = false)
+    private Byte calidad;
+
+    @NotNull
+    @Column(name = "calificacion", nullable = false)
+    private Byte calificacion;
 
 }

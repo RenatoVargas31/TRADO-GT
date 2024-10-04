@@ -9,17 +9,15 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "estadoordenagente")
-public class EstadoOrdenAgente {
-
+@Table(name = "EstadoOrden")
+public class EstadoOrden {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idEstadoOrdenAgente", nullable = false)
-    private Integer idEstadoOrdenAgente;
+    @Column(name = "idEstadoOrden", nullable = false)
+    private Integer id;
 
     @Size(max = 45)
     @NotNull
-    @Column(name = "Nombre", nullable = false, length = 45)
+    @Column(name = "nombre", nullable = false, length = 45)
     private String nombre;
 
 }
