@@ -30,8 +30,8 @@ public class UsuarioFinalController {
 
     @GetMapping("/misPedidos")
     public String misPedidos(Model model) {
-        List<Producto> productos = productosRepository.findAll();
-        model.addAttribute("productos", productos);
+        /*List<Producto> productos = productosRepository.findAll();
+        model.addAttribute("productos", productos); */
         return "Usuario/listaOrdenes";
     }
 
@@ -46,6 +46,11 @@ public class UsuarioFinalController {
     @GetMapping("/tracking")
     public String tracking() {
         return "Usuario/trackingOrd";
+    }
+
+    @GetMapping("/editOrden")
+    public String editOrden() {
+        return "Usuario/trackingOrdEdit";
     }
 
     @GetMapping("/categoriaMujer")

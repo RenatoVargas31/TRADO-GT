@@ -86,7 +86,7 @@
 
                                     <div class="page-title-right">
                                         <ol class="breadcrumb m-0">
-                                            <li class="breadcrumb-item active">Home</li>
+                                            <li class="breadcrumb-item active">Inicio</li>
                                             <li class="breadcrumb-item active">Lista de pedidos</li>
                                             <li class="breadcrumb-item"><a href="javascript: void(0);">Tracking</a></li>
                                         </ol>
@@ -100,7 +100,8 @@
                                 <div class="col-12">
                                     <div class="card">
                                         <div class="card-body">
-                                            <h4 class=" mb-4">Orden de compra</h4>
+                                            <!-- Título Principal -->
+                                            <h4 class="mb-4">Orden de compra</h4>
 
                                             <!-- Datos Personales y Fecha/No. de Orden -->
                                             <div class="row mb-4">
@@ -122,7 +123,7 @@
                                             <div class="row mb-4">
                                                 <div class="col-md-6 col-sm-12">
                                                     <h5>Vendedor</h5>
-                                                    <p><strong>Compañía:</strong>  Vendedor S.A </p>
+                                                    <p><strong>Compañía:</strong> Vendedor S.A</p>
                                                     <p><strong>Contacto:</strong> Ana Gómez</p>
                                                     <p><strong>Domicilio:</strong> Calle Falsa 123</p>
                                                     <p><strong>Teléfono:</strong> 555-1234</p>
@@ -137,34 +138,83 @@
                                             </div>
 
                                             <!-- Productos y Observaciones/Resumen -->
-                                            <div class="row">
-                                                <div class="col-md-6 col-sm-12">
+                                            <div class="row mb-4">
+                                                <div class="col-md-12 col-sm-12">
                                                     <h5>Productos</h5>
-                                                    <p>2 Poleras azules: $480</p>
-                                                    <p>2 Polos franela negro: $480</p>
+                                                    <ul class="list-group list-group-flush">
+                                                        <!-- Fila de encabezado para la lista de productos -->
+                                                        <li class="list-group-item d-flex justify-content-between align-items-center bg-light font-weight-bold">
+                                                            <div class="col-md-2">Cantidad</div>
+                                                            <div class="col-md-6">Nombre del Producto</div>
+                                                            <div class="col-md-2">Costo</div>
+                                                            <div class="col-md-2"></div> <!-- Espacio reservado para el botón de acción -->
+                                                        </li>
+                                                        <!-- Fila de productos con botón -->
+                                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                            <div class="col-md-2">20</div>
+                                                            <div class="col-md-6">Poleras Celine</div>
+                                                            <div class="col-md-2">$480</div>
+                                                            <div class="col-md-2">
+                                                                <button type="button" class="btn btn-sm btn-outline-primary">Reseña</button>
+                                                            </div>
+                                                        </li>
+                                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                            <div class="col-md-2">20</div>
+                                                            <div class="col-md-6">Poleras Celine</div>
+                                                            <div class="col-md-2">$480</div>
+                                                            <div class="col-md-2">
+                                                                <button type="button" class="btn btn-sm btn-outline-primary">Reseña</button>
+                                                            </div>
+                                                        </li>
+                                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                            <div class="col-md-2">20</div>
+                                                            <div class="col-md-6">Poleras Celine</div>
+                                                            <div class="col-md-2">$480</div>
+                                                            <div class="col-md-2">
+                                                                <button type="button" class="btn btn-sm btn-outline-primary">Reseña</button>
+                                                            </div>
+                                                        </li>
+                                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                            <div class="col-md-2">20</div>
+                                                            <div class="col-md-6">Poleras Celine</div>
+                                                            <div class="col-md-2">$480</div>
+                                                            <div class="col-md-2">
+                                                                <button type="button" class="btn btn-sm btn-outline-primary">Reseña</button>
+                                                            </div>
+                                                        </li>
+
+                                                    </ul>
                                                 </div>
-                                                <div class="col-md-6 col-sm-12">
+                                            </div>
+                                            <div class="row mb-4">
+                                                <div class="col-md-12 col-sm-12">
                                                     <h5>Observaciones</h5>
-                                                    <p><strong>Subtotal:</strong> $960</p>
-                                                    <p><strong>Envío:</strong> $100</p>
-                                                    <p><strong>Total:</strong> $1060</p>
+                                                    <ul class="list-group list-group-flush">
+                                                        <li class="list-group-item d-flex justify-content-between align-items-center bg-light font-weight-bold">
+                                                            <div class="col-md-3">Subtotal</div>
+                                                            <div class="col-md-3">Costo de envío</div>
+                                                            <div class="col-md-3">Total</div>
+                                                        </li>
+                                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                            <div class="col-md-3">$960</div>
+                                                            <div class="col-md-3">$100</div>
+                                                            <div class="col-md-3">$1060</div>
+                                                        </li>
+                                                    </ul>
                                                 </div>
                                             </div>
+
                                         </div>
 
-                                        <!-- Botones de acciones -->
-
-                                        <div class="row mb-10 justify-content-end mr-3"> <!-- Add a margin to the right of the row -->
-                                            <div class="d-flex align-items-center">
-                                                <button type="button" class="btn btn-primary waves-effect waves-light  me-3 mb-5" onclick="descargarHTML()">Descargar HTML</button>
-                                                <button type="button" class="btn btn-primary waves-effect waves-light mb-5 me-3" onclick="descargarPDF()">Descargar PDF</button>
-                                            </div>
+                                        <!-- Botones de acciones alineados al lado derecho inferior -->
+                                        <div class="card-footer d-flex justify-content-end">
+                                            <button type="button" class="btn btn-primary me-3" onclick="descargarHTML()">Descargar HTML</button>
+                                            <button type="button" class="btn btn-primary me-3" onclick="descargarPDF()">Descargar PDF</button>
                                         </div>
-
                                     </div>
+
                                 </div>
                             </div>
-
                             <div class="col-lg-4 col-md-10 col-sm-12">
                                 <div class="row">
                                     <div class="col-lg-12 col-md-12 col-sm-12">
@@ -260,37 +310,66 @@
 
                                 <div class="row">
                                     <div class="col-lg-12">
-                                        <div class="card">
-                                            <div class="card-body">
-                                                <h4 class="card-title mb-4">Chat</h4>
-
-                                                <div data-simplebar style="max-height: 400px;">
-                                                    <!-- Chat Container -->
-                                                    <div class="chat-container">
-                                                        <div class="chat-box">
-                                                            <!-- Messages -->
-                                                            <div class="chat-message">
-                                                                <div class="message-header">User 1</div>
-                                                                <div class="message-body">Hello! How can I help you today?</div>
-                                                            </div>
-                                                            <div class="chat-message">
-                                                                <div class="message-header">User 2</div>
-                                                                <div class="message-body">I have a question about my order.</div>
-                                                            </div>
+                                        <div class="card mb-8">
+                                            <div class="card-header bg-light">
+                                                <h5>Chatea con tu Agente</h5>
+                                            </div>
+                                            <!-- Contenedor para los mensajes del chat -->
+                                            <div data-simplebar class="card-body" style="max-height: 500px; overflow-y: auto;">
+                                                <div class="chat-messages">
+                                                    <!-- Mensaje del agente -->
+                                                    <div class="d-flex mb-3">
+                                                        <div class="avatar me-3">
+                                                            <span class="avatar-title bg-primary-subtle text-primary rounded-circle" style="width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; border-radius: 50%;">
+                                                                <i class="ri-user-fill"></i>
+                                                            </span>
                                                         </div>
-                                                        <!-- Message Input -->
-                                                        <div class="message-input">
-                                                            <input type="text" class="form-control" placeholder="Type a message...">
-                                                            <button class="btn btn-primary mt-2">Send</button>
+
+                                                        <div>
+                                                            <h6 class="mb-1">Juan Pérez (Agente) <small class="text-muted">10:15 AM</small></h6>
+                                                            <p class="bg-light p-2 rounded">Hola, el pedido ya está en aduanas. ¿Tienes alguna pregunta?</p>
+                                                        </div>
+                                                    </div>
+                                                    <!-- Mensaje del importador -->
+                                                    <div class="d-flex justify-content-end mb-3">
+                                                        <div>
+                                                            <h6 class="mb-1 text-end">Luis Gómez <small class="text-muted">10:18 AM</small></h6>
+                                                            <p class="bg-primary text-white p-2 rounded">Gracias por la información. ¿Cuándo se espera la entrega?</p>
+                                                        </div>
+
+                                                        <div class="avatar ms-3">
+    <span class="avatar-title bg-primary text-white rounded-circle" style="width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; border-radius: 50%;">
+        <i class="ri-user-fill"></i>
+    </span>
+                                                        </div>
+
+                                                    </div>
+                                                    <!-- Mensaje del agente -->
+                                                    <div class="d-flex mb-3">
+                                                        <div class="avatar me-3">
+                                                            <span class="avatar-title bg-primary-subtle text-primary rounded-circle" style="width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; border-radius: 50%;">
+                                                                <i class="ri-user-fill"></i>
+                                                            </span>
+                                                        </div>
+                                                        <div>
+                                                            <h6 class="mb-1">Juan Pérez (Agente) <small class="text-muted">10:20 AM</small></h6>
+                                                            <p class="bg-light p-2 rounded">Se espera la entrega para el 25/09/2024. Si hay algún cambio, te avisaremos.</p>
                                                         </div>
                                                     </div>
                                                 </div>
-
+                                            </div>
+                                            <!-- Pie del chat para enviar mensajes -->
+                                            <div class="card-footer">
+                                                <form>
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control" placeholder="Escribe un mensaje...">
+                                                        <button class="btn btn-primary" type="submit">Enviar</button>
+                                                    </div>
+                                                </form>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                         </div>

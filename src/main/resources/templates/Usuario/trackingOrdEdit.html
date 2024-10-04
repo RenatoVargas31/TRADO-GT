@@ -1,0 +1,416 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+
+<!-- Mirrored from themesdesign.in/nazox/layouts/pages-starter.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 30 Aug 2024 19:31:37 GMT -->
+<head>
+
+  <meta charset="utf-8" />
+  <title>Editar Orden</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta th:replace="~{Common/cssBase :: css_Base}">
+
+  <!-- App favicon -->
+  <style>
+    .chat-container {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    .chat-box {
+      flex: 1;
+      overflow-y: auto;
+      margin-bottom: 10px;
+    }
+
+    .chat-message {
+      padding: 10px;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .message-header {
+      font-weight: bold;
+    }
+
+    .message-body {
+      margin-top: 5px;
+    }
+
+    .message-input {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .message-input input {
+      border-radius: 0;
+    }
+
+    .message-input button {
+      border-radius: 0;
+    }
+
+  </style>
+
+</head>
+
+<body data-sidebar="dark">
+
+<!-- <body data-layout="horizontal" data-topbar="dark"> -->
+
+<!-- Begin page -->
+<div id="layout-wrapper">
+
+
+  <header th:replace="~{Usuario/fragments/navbar :: nav_bar}"></header>
+
+  <!-- ========== Left Sidebar Start ========== -->
+  <div th:replace="~{Usuario/fragments/sidebar :: side_bar}"></div>
+  <!-- Left Sidebar End -->
+
+
+
+  <!-- ============================================================== -->
+  <!-- Start right Content here -->
+  <!-- ============================================================== -->
+  <div class="main-content">
+
+    <div class="page-content">
+      <div class="container-fluid">
+
+        <!-- start page title -->
+        <div class="row">
+          <div class="col-12">
+            <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+              <h4 class="mb-sm-0">Editar Orden de compra</h4>
+
+              <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                  <li class="breadcrumb-item active">Inicio</li>
+                  <li class="breadcrumb-item active">Lista de pedidos</li>
+                  <li class="breadcrumb-item"><a href="javascript: void(0);">Edición de orden</a></li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- end page title -->
+        <div class="row">
+          <div class="col-lg-12 col-md-10 col-sm-12">
+            <div class="col-12">
+              <div class="card">
+                <div class="card-body">
+                  <!-- Título Principal -->
+                  <h4 class="mb-4">Orden de compra</h4>
+
+                  <!-- Datos Personales y Fecha/No. de Orden -->
+                  <div class="row mb-4">
+                    <div class="col-md-6 col-sm-12">
+                      <h5>Datos personales</h5>
+                      <p><strong>Nombre de comprador:</strong> Juan Pérez</p>
+                      <p><strong>Número DNI:</strong> 12345678</p>
+                      <p><strong>Domicilio:</strong> Av. Siempre Viva 742</p>
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                      <h5>Fecha y Número de Orden</h5>
+                      <p><strong>Fecha:</strong> 2024-09-17</p>
+                      <p><strong>No. de orden:</strong> ORD123456</p>
+                      <p><strong>Ciudad, Estado:</strong> Springfield, IL</p>
+                    </div>
+                  </div>
+
+                  <!-- Datos del Vendedor y del Comprador -->
+                  <div class="row mb-4">
+                    <div class="col-md-6 col-sm-12">
+                      <h5>Vendedor</h5>
+                      <p><strong>Compañía:</strong> Vendedor S.A</p>
+                      <p><strong>Contacto:</strong> Ana Gómez</p>
+                      <p><strong>Domicilio:</strong> Calle Falsa 123</p>
+                      <p><strong>Teléfono:</strong> 555-1234</p>
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                      <h5>Comprador</h5>
+                      <p><strong>Compañía:</strong> Comprador Ltda.</p>
+                      <p><strong>Contacto:</strong> Laura Martínez</p>
+                      <p><strong>Domicilio:</strong> Av. Siempre Viva 742</p>
+                      <p><strong>Teléfono:</strong> 555-6789</p>
+                    </div>
+                  </div>
+
+                  <!-- Productos y Observaciones/Resumen -->
+                  <div class="row mb-4">
+                    <div class="col-md-12 col-sm-12">
+                      <h5>Productos</h5>
+                      <ul class="list-group list-group-flush">
+                        <!-- Fila de encabezado para la lista de productos -->
+                        <li class="list-group-item d-flex justify-content-between align-items-center bg-light font-weight-bold">
+                          <div class="col-md-2">Cantidad</div>
+                          <div class="col-md-6">Nombre del Producto</div>
+                          <div class="col-md-2">Costo</div>
+                          <div class="col-md-2"></div> <!-- Espacio reservado para el botón de acción -->
+                        </li>
+                        <!-- Fila de productos con botón -->
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                          <div class="col-md-2">20</div>
+                          <div class="col-md-6">Poleras Celine</div>
+                          <div class="col-md-2">$480</div>
+                          <div class="col-md-2">
+                            <button type="button" class="btn btn-success btn-sm waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#editProductModal" title="Editar"><i class="ri-pencil-fill"></i></button>
+                            <button type="button" class="btn btn-danger btn-sm waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#deleteProductModal" title="Eliminar"><i class="ri-delete-bin-fill"></i></button>
+                          </div>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                          <div class="col-md-2">20</div>
+                          <div class="col-md-6">Poleras Celine</div>
+                          <div class="col-md-2">$480</div>
+                          <div class="col-md-2">
+                            <button type="button" class="btn btn-success btn-sm waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#editProductModal" title="Editar"><i class="ri-pencil-fill"></i></button>
+                            <button type="button" class="btn btn-danger btn-sm waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#deleteProductModal" title="Eliminar"><i class="ri-delete-bin-fill"></i></button>
+                          </div>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                          <div class="col-md-2">20</div>
+                          <div class="col-md-6">Poleras Celine</div>
+                          <div class="col-md-2">$480</div>
+                          <div class="col-md-2">
+                            <button type="button" class="btn btn-success btn-sm waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#editProductModal" title="Editar"><i class="ri-pencil-fill"></i></button>
+                            <button type="button" class="btn btn-danger btn-sm waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#deleteProductModal" title="Eliminar"><i class="ri-delete-bin-fill"></i></button>
+                          </div>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                          <div class="col-md-2">20</div>
+                          <div class="col-md-6">Poleras Celine</div>
+                          <div class="col-md-2">$480</div>
+                          <div class="col-md-2">
+                            <button type="button" class="btn btn-success btn-sm waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#editProductModal" title="Editar"><i class="ri-pencil-fill"></i></button>
+                            <button type="button" class="btn btn-danger btn-sm waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#deleteProductModal" title="Eliminar"><i class="ri-delete-bin-fill"></i></button>
+                          </div>
+                        </li>
+
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="row mb-4">
+                    <div class="col-md-12 col-sm-12">
+                      <h5>Observaciones</h5>
+                      <ul class="list-group list-group-flush">
+                        <li class="list-group-item d-flex justify-content-between align-items-center bg-light font-weight-bold">
+                          <div class="col-md-3">Subtotal</div>
+                          <div class="col-md-3">Costo de envío</div>
+                          <div class="col-md-3">Total</div>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                          <div class="col-md-3">$960</div>
+                          <div class="col-md-3">$100</div>
+                          <div class="col-md-3">$1060</div>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+
+                </div>
+
+                <!-- Botones de acciones alineados al lado derecho inferior -->
+                <div class="card-footer d-flex justify-content-end">
+                  <a type="button" class="btn btn-danger me-3" data-bs-toggle="modal" data-bs-target="#cancelEdit">Cancelar</a>
+                  <a type="button" class="btn btn-success me-3" data-bs-toggle="modal" data-bs-target="#saveEdit">Guardar</a>
+
+                  <!-- Primer Modal: Confirmar Guardar Cambios -->
+                  <div class="modal fade" id="saveEdit" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="saveEditLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="saveEditLabel">Guardar Cambios</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                          <p>¿Está seguro de que desea guardar los cambios?</p>
+                        </div>
+                        <div class="modal-footer">
+                          <button class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                          <!-- Botón para abrir el segundo modal -->
+                          <button class="btn btn-success" data-bs-target="#refundModal" data-bs-toggle="modal" data-bs-dismiss="modal">Sí</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Segundo Modal: Confirmación de Reembolso -->
+                  <div class="modal fade" id="refundModal" tabindex="-1" role="dialog" aria-labelledby="refundModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="refundModalLabel">Reembolso Procesado</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                          <p>El reembolso ha sido realizado correctamente al banco correspondiente.</p>
+                        </div>
+                        <div class="modal-footer">
+                          <a th:href="@{/usuario/misPedidos}" class="btn btn-primary">Regresar</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="modal fade" id="cancelEdit" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="cancelEditLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="cancelEditLabel">Cancelar Edición</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                          <p>¿Estás seguro de que deseas cancelar la edición? Los cambios no se guardarán.</p>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No, continuar editando</button>
+                          <a th:href="@{/usuario/misPedidos}" class="btn btn-danger">Sí, cancelar edición</a>
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+
+
+                  <!-- Modal para Editar Producto -->
+                  <div class="modal fade" id="editProductModal" tabindex="-1" aria-labelledby="editProductLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="editProductLabel">Editar Cantidad de Producto</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                          <form>
+                            <div class="mb-3">
+                              <label for="productQuantity" class="form-label">Cantidad</label>
+                              <input type="number" class="form-control" id="productQuantity" value="20" min="1">
+                            </div>
+                            <div class="mb-3">
+                              <label for="productName" class="form-label">Nombre del Producto</label>
+                              <input type="text" class="form-control" id="productName" value="Poleras Celine" disabled>
+                            </div>
+                          </form>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                          <button type="button" class="btn btn-primary">Guardar Cambios</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Modal para Confirmar Eliminación -->
+                  <div class="modal fade" id="deleteProductModal" tabindex="-1" aria-labelledby="deleteProductLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="deleteProductLabel">Confirmar Eliminación</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                          <p>¿Estás seguro de que deseas eliminar <strong>Poleras Celine</strong> de la lista?</p>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                          <button type="button" class="btn btn-danger">Eliminar</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- End Page-content -->
+    <footer class="footer">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-sm-6">
+            <script>document.write(new Date().getFullYear())</script> © TRADO.
+          </div>
+          <div class="col-sm-6">
+            <div class="text-sm-end d-none d-sm-block">
+              Crafted with <i class="mdi mdi-heart text-danger"></i> by TelesoftGT
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+  <!-- end main content-->
+
+</div>
+<!-- END layout-wrapper -->
+
+<!-- Right Sidebar -->
+<!-- /Right-bar -->
+
+<!-- Right bar overlay-->
+<div class="rightbar-overlay"></div>
+
+<!-- JAVASCRIPT -->
+<span th:replace="~{Common/jsBase :: js_Base}"></span>
+
+<!-- <script>
+  function descargarPDF() {
+    const { jsPDF } = window.jspdf; // Acceso a jsPDF desde el espacio global
+    const doc = new jsPDF(); // Crear una nueva instancia de jsPDF
+
+    // Selecciona el contenido del div que quieres convertir en PDF
+    const elemento = document.querySelector('.card-body');
+
+    // Usa html2canvas para capturar el contenido del div como imagen
+    html2canvas(elemento).then(canvas => {
+      const imgData = canvas.toDataURL('image/png'); // Convierte el canvas a imagen
+      const imgWidth = 210; // Ancho de la página A4 en mm (jsPDF usa mm)
+      const pageHeight = 295; // Alto de la página A4 en mm
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+      let position = 0;
+
+      // Añadir la imagen al PDF
+      doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+
+      // Descargar el PDF
+      doc.save('orden_de_compra.pdf');
+    });
+  }
+</script> -->
+
+
+<script>
+  function descargarHTML() {
+    // Selecciona el contenido que deseas descargar (el div con la clase 'card-body')
+    const elemento = document.querySelector('.card-body').innerHTML;
+
+    // Crea un blob con el contenido en formato HTML
+    const blob = new Blob([elemento], { type: 'text/html' });
+
+    // Crea un enlace para descargar el archivo
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'orden_de_compra.html'; // Nombre del archivo a descargar
+
+    // Simula un clic para iniciar la descarga
+    link.click();
+
+    // Limpia el objeto URL creado
+    URL.revokeObjectURL(link.href);
+  }
+</script>
+
+
+
+
+<script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js}"></script>
+<script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js}"></script>
+</body>
+
+<!-- Mirrored from themesdesign.in/nazox/layouts/pages-starter.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 30 Aug 2024 19:31:37 GMT -->
+</html>

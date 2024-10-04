@@ -8,6 +8,44 @@
   <!-- CSS BASE -->
   <meta th:replace="~{Common/cssBase :: css_Base}">
   <!-- End CSS BASE -->
+
+  <style>
+    .product-img {
+      overflow: hidden; /* Asegura que la imagen no sobresalga del contenedor */
+      width: 300px; /* Ajusta el tamaño del contenedor según tus necesidades */
+      height: 300px; /* Ajusta el tamaño del contenedor según tus necesidades */
+      position: relative;
+    }
+
+    .zoom-image {
+      width: 100%; /* Hace que la imagen ocupe todo el contenedor */
+      transition: transform 0.3s ease; /* Suaviza el efecto de zoom */
+    }
+
+    .product-img:hover .zoom-image {
+      transform: scale(1.2); /* Aumenta el tamaño de la imagen al pasar el cursor */
+    }
+    .product-img {
+      display: flex; /* Utiliza flexbox para centrar el contenido */
+      justify-content: center; /* Centra horizontalmente */
+      align-items: center; /* Centra verticalmente */
+      height: 400px; /* Ajusta la altura según tus necesidades */
+      overflow: hidden; /* Asegúrate de que las imágenes no sobresalgan */
+    }
+
+    .zoom-image {
+      width: auto; /* Mantiene la proporción de la imagen */
+      max-width: 90%; /* Aumenta el tamaño máximo de la imagen */
+      max-height: 90%; /* Aumenta el tamaño máximo de la imagen */
+      transition: transform 0.3s ease; /* Suaviza el efecto de zoom */
+    }
+
+    .product-img:hover .zoom-image {
+      transform: scale(1.2); /* Efecto de zoom al pasar el cursor */
+    }
+
+
+  </style>
 </head>
 
 <body data-sidebar="dark">
@@ -38,7 +76,7 @@
 
               <div class="page-title-right">
                 <ol class="breadcrumb m-0">
-                  <li class="breadcrumb-item active">Home</li>
+                  <li class="breadcrumb-item active">Inicio</li>
                   <li class="breadcrumb-item active">Productos</li>
                   <li class="breadcrumb-item"><a href="javascript: void(0);">Detalles</a></li>
                 </ol>
@@ -55,11 +93,43 @@
             <div class="card">
               <div class="card-body">
                 <div class="row">
-                  <div class="col-xl-5">
+
+                  <div class="col-xl-6">
                     <div class="product-detail">
                       <div class="row">
-                        <div class="col-3">
-                          <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                        <!-- Sección principal de imágenes y botones de acción -->
+                        <div class="col-md-10 col-12">
+                          <div class="tab-content d-flex justify-content-center align-items-center" id="v-pills-tabContent">
+                            <!-- Producto 1 -->
+                            <div class="tab-pane fade show active" id="product-1" role="tabpanel">
+                              <div class="product-img text-center" style="width: 100%; height: 400px; display: flex; justify-content: center; align-items: center;">
+                                <img th:src="@{../images/product/img-1.png}" alt="img-1" class="img-fluid zoom-image" data-zoom="assets/images/product/img-1.png" style="max-width: 100%; height: auto;">
+                              </div>
+                            </div>
+
+                            <!-- Producto 2 -->
+                            <div class="tab-pane fade" id="product-2" role="tabpanel">
+                              <div class="product-img text-center" style="width: 100%; height: 400px; display: flex; justify-content: center; align-items: center;">
+                                <img th:src="@{../images/product/img-5.png}" alt="img-5" class="img-fluid zoom-image" style="max-width: 100%; height: auto;">
+                              </div>
+                            </div>
+                            <!-- Producto 3 -->
+                            <div class="tab-pane fade" id="product-3" role="tabpanel">
+                              <div class="product-img text-center" style="width: 100%; height: 400px; display: flex; justify-content: center; align-items: center;">
+                                <img th:src="@{../images/product/img-3.png}" alt="img-3" class="img-fluid zoom-image" style="max-width: 100%; height: auto;">
+                              </div>
+                            </div>
+                            <!-- Producto 4 -->
+                            <div class="tab-pane fade" id="product-4" role="tabpanel">
+                              <div class="product-img text-center" style="width: 100%; height: 400px; display: flex; justify-content: center; align-items: center;">
+                                <img th:src="@{../images/product/img-4.png}" alt="img-4" class="img-fluid zoom-image" style="max-width: 100%; height: auto;">
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <!-- Sidebar de imágenes (se ajusta el ancho en diferentes dispositivos) -->
+                        <div class="col-md-2 col-12">
+                          <div class="nav flex-md-column flex-row nav-pills justify-content-center" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                             <a class="nav-link active" id="product-1-tab" data-bs-toggle="pill" href="#product-1" role="tab">
                               <img th:src="@{../images/product/img-1.png}" alt="img-1" class="img-fluid mx-auto d-block tab-img rounded">
                             </a>
@@ -74,122 +144,94 @@
                             </a>
                           </div>
                         </div>
-                        <div class="col-md-8 col-9">
-                          <div class="tab-content" id="v-pills-tabContent">
-                            <div class="tab-pane fade show active" id="product-1" role="tabpanel">
-                              <div class="product-img">
-                                <img th:src="@{../images/product/img-1.png}" alt="img-1" class="img-fluid mx-auto d-block" data-zoom="assets/images/product/img-1.png">
-                              </div>
-                            </div>
-                            <div class="tab-pane fade" id="product-2" role="tabpanel">
-                              <div class="product-img">
-                                <img th:src="@{../images/product/img-5.png}" alt="img-5" class="img-fluid mx-auto d-block">
-                              </div>
-                            </div>
-                            <div class="tab-pane fade" id="product-3" role="tabpanel">
-                              <div class="product-img">
-                                <img th:src="@{../images/product/img-3.png}"alt="img-3" class="img-fluid mx-auto d-block">
-                              </div>
-                            </div>
-                            <div class="tab-pane fade" id="product-4" role="tabpanel">
-                              <div class="product-img">
-                                <img th:src="@{../images/product/img-4.png}" alt="img-4" class="img-fluid mx-auto d-block">
-                              </div>
-                            </div>
+                        <!-- Botones de acción -->
+                        <div class="row text-center mt-3">
+                          <div class="col-6">
+                            <a href="/usuario/carrito" class="btn btn-primary btn-block waves-effect waves-light">
+                              Añadir al carrito
+                            </a>
                           </div>
-                          <div class="row text-center mt-2">
-                            <div class="col-sm-6">
-                              <div class="d-grid">
-                                <a href="/usuario/carrito" type="button" class="btn btn-primary waves-effect waves-light mt-2">
-                                  Añadir al carrito
-                                </a>
-                              </div>
-                            </div>
-                            <div class="col-sm-6">
-                              <div class="d-grid">
-                                <a href="/usuario/checkout" type="button" class="btn btn-light waves-effect  mt-2 waves-light">
-                                  Comprar ahora
-                                </a>
-                              </div>
-                            </div>
+                          <div class="col-6">
+                            <a href="/usuario/checkout" class="btn btn-light btn-block waves-effect">
+                              Comprar ahora
+                            </a>
                           </div>
-
                         </div>
                       </div>
                     </div>
+
+
                     <!-- end product img -->
                   </div>
-                  <div class="col-xl-7">
+                  <div class="col-xl-6">
                     <div class="mt-4 mt-xl-3">
                       <a href="#" class="text-primary">T-shirt</a>
-                      <h5 class="mt-1 mb-3">Full sleeve Blue color t-shirt</h5>
+                      <h5 class="mt-1 mb-3"  style="font-size: 24px;">Full sleeve Blue color t-shirt</h5>
 
                       <div class="d-inline-flex">
-                        <div class="text-muted me-3">
-                          <span class="mdi mdi-star text-warning"></span>
-                          <span class="mdi mdi-star text-warning"></span>
-                          <span class="mdi mdi-star text-warning"></span>
-                          <span class="mdi mdi-star text-warning"></span>
-                          <span class="mdi mdi-star"></span>
-                        </div>
-                        <div class="text-muted">( 132 )</div>
+                        <div class="text-muted me-2" style="font-size: 18px;">
+                        <span class="mdi mdi-star text-warning"></span>
+                        <span class="mdi mdi-star text-warning"></span>
+                        <span class="mdi mdi-star text-warning"></span>
+                        <span class="mdi mdi-star text-warning"></span>
+                        <span class="mdi mdi-star"></span>
                       </div>
+                        <div class="text-muted" style="font-size: 18px;">4.1 ( 132 )</div>
+                      </div>
+                      <h5 class="mt-2" style="font-size: 24px;">
+                        S/240 <span style="font-size: 12px; color: #888;">por cada 10 unidades</span>
+                      </h5>
+                      <p class="mt-2" style="font-size: 14px;">Costo por unidad: S/10</p>
 
-                      <h5 class="mt-2"><del class="text-muted me-2">S/252</del>S/240 <span class="text-danger font-size-12 ms-2">25 % Off</span></h5>
                       <p class="mt-3">Medidas de modelo La modelo mide 168 cm y usa talla S/26. Su pecho mide 81 cm, su cintura, 63 cm y su cadera, 89 cm.</p>
                       <hr class="my-4">
-
-                      <!-- Falta completar aquì -->
-
-                      <div class="row">
+                      <div class="row mt-4">
                         <div class="col-6">
                           <h5 class="font-size-14">Especificaciones :</h5>
                           <ul class="list-unstyled product-desc-list">
                             <li><i class="mdi mdi-circle-medium me-1 align-middle"></i> Manga larga</li>
                             <li><i class="mdi mdi-circle-medium me-1 align-middle"></i> Algodón</li>
-                            <li><i class="mdi mdi-circle-medium me-1 align-middle"></i> Toda las tallas disponibles</li>
+                            <li><i class="mdi mdi-circle-medium me-1 align-middle"></i> Disponibilidad en las tallas S, M y L</li>
+                            <li><i class="mdi mdi-circle-medium me-1 align-middle"></i> Unidades en Stock: 500</li>
                           </ul>
                         </div>
-                        <div class="col-6">
+                        <div class="col-12 col-md-6">
                           <div class="product-color mt-3">
                             <h5 class="font-size-14">Tamaño :</h5>
-                            <div class="btn-group justify-content-center" role="group">
+                            <div class="btn-group d-flex justify-content-center flex-wrap" role="group">
                               <!-- Botón Tamaño S -->
                               <input type="radio" class="btn-check" name="size" id="sizeS" autocomplete="off" checked>
-                              <label class="btn btn-outline-primary" for="sizeS" style="width: 50px; height: 40px;">
+                              <label class="btn btn-outline-primary m-1" for="sizeS" style="width: 50px; height: 40px;">
                                 S
                               </label>
 
                               <!-- Botón Tamaño M -->
                               <input type="radio" class="btn-check" name="size" id="sizeM" autocomplete="off">
-                              <label class="btn btn-outline-primary" for="sizeM" style="width: 50px; height: 40px;">
+                              <label class="btn btn-outline-primary m-1" for="sizeM" style="width: 50px; height: 40px;">
                                 M
                               </label>
 
                               <!-- Botón Tamaño L -->
                               <input type="radio" class="btn-check" name="size" id="sizeL" autocomplete="off">
-                              <label class="btn btn-outline-primary" for="sizeL" style="width: 50px; height: 40px;">
+                              <label class="btn btn-outline-primary m-1" for="sizeL" style="width: 50px; height: 40px;">
                                 L
-                              </label>
-
-                              <!-- Botón Tamaño XL -->
-                              <input type="radio" class="btn-check" name="size" id="sizeXL" autocomplete="off">
-                              <label class="btn btn-outline-primary" for="sizeXL" style="width: 50px; height: 40px;">
-                                XL
                               </label>
                             </div>
                           </div>
                         </div>
+                        <hr class="my-4">
+                        <div class="provider-info d-flex align-items-center">
+                          <img th:src="@{../images/product/iconoProvedor.png}"  alt="Proveedor Icono" class="me-2" style="width: 40px; height: 40px;">
+                          <span class="provider-name">Nombre del Proveedor</span>
+                        </div>
                       </div>
-
-
                     </div>
                   </div>
                 </div>
                 <!-- end row -->
 
                 <div class="mt-4">
-                  <h5 class="font-size-14 mb-3">Descripción del producto: </h5>
+                  <!--<h5 class="font-size-14 mb-3">Descripción del producto: </h5> -->
                   <div class="product-desc">
                     <ul class="nav nav-tabs nav-tabs-custom" role="tablist">
                       <li class="nav-item">
@@ -212,6 +254,10 @@
                             <tbody>
                             <tr>
                               <th scope="row" style="width: 400px;">Categoría</th>
+                              <td>Moda Femenina</td>
+                            </tr>
+                            <tr>
+                              <th scope="row">Subcategoría</th>
                               <td>Polera</td>
                             </tr>
                             <tr>
@@ -241,41 +287,90 @@
                 </div>
 
                 <div class="mt-4">
-                  <h5 class="font-size-14">Comentarios : </h5>
-                  <div class="d-inline-flex mb-3">
-                    <div class="text-muted me-3">
-                      <span class="mdi mdi-star text-warning"></span>
-                      <span class="mdi mdi-star text-warning"></span>
-                      <span class="mdi mdi-star text-warning"></span>
-                      <span class="mdi mdi-star text-warning"></span>
-                      <span class="mdi mdi-star"></span>
-                    </div>
-                    <div class="text-muted">( 132  comentarios)</div>
-                  </div>
-                  <div class="border p-4 rounded">
-                    <div class="d-flex border-bottom pb-3">
-                      <div class="flex-1">
-                        <p class="text-muted mb-2">¡Buen producto! Es muy suave y comodo usarlo</p>
-                        <h5 class="font-size-15 mb-3">James</h5>
+                  <h5 class="font-size-14">Otras recomendaciones:</h5>
+                  <div class="row">
+                    <!-- Card 1 -->
+                    <div class="col-md-4">
+                      <div class="card">
+                        <div class="card-img-top d-flex justify-content-center align-items-center" style="height: 200px;">
+                          <img th:src="@{../images/product/img-1.png}" alt="Product 1" style="max-height: 100%; max-width: 100%; object-fit: cover;">
+                        </div>
+                        <div class="card-body">
+                          <a href="#" class="text-primary">T-shirt</a>
+                          <h5 class="mt-1 mb-3"  style="font-size: 14px;">Full sleeve Blue color t-shirt</h5>
+                          <div class="d-inline-flex">
+                            <div class="text-muted me-2" style="font-size: 12px;">
+                              <span class="mdi mdi-star text-warning"></span>
+                              <span class="mdi mdi-star text-warning"></span>
+                              <span class="mdi mdi-star text-warning"></span>
+                              <span class="mdi mdi-star text-warning"></span>
+                              <span class="mdi mdi-star"></span>
+                            </div>
+                            <div class="text-muted" style="font-size: 12px;">4.1 ( 132 )</div>
+                          </div>
+                          <h5 class="mt-2" style="font-size: 14px;">S/100 <span style="font-size: 12px; color: #888;">por cada 10 unidades</span></h5>
+                          <p class="mt-2" style="font-size: 14px;">Costo por unidad: S/10</p>
+                          <a href="#" class="btn btn-primary">Ver más</a>
+                        </div>
                       </div>
-                      <p class="float-sm-end font-size-12">11 Enero, 2020</p>
                     </div>
-                    <div class="d-flex border-bottom py-3">
-                      <div class="flex-1">
-                        <p class="text-muted mb-2">¡Buen producto! Es muy suave y comodo usarlo</p>
-                        <h5 class="font-size-15 mb-3">David</h5>
+
+                    <!-- Card 2 -->
+                    <div class="col-md-4">
+                      <div class="card">
+                        <div class="card-img-top d-flex justify-content-center align-items-center" style="height: 200px;">
+                          <img th:src="@{../images/product/img-2.png}" alt="Product 2" style="max-height: 100%; max-width: 100%; object-fit: cover;">
+                        </div>
+                        <div class="card-body">
+                          <a href="#" class="text-primary">T-shirt</a>
+                          <h5 class="mt-1 mb-3"  style="font-size: 14px;">Full sleeve Blue color t-shirt</h5>
+                          <div class="d-inline-flex">
+                            <div class="text-muted me-2" style="font-size: 12px;">
+                              <span class="mdi mdi-star text-warning"></span>
+                              <span class="mdi mdi-star text-warning"></span>
+                              <span class="mdi mdi-star text-warning"></span>
+                              <span class="mdi mdi-star text-warning"></span>
+                              <span class="mdi mdi-star"></span>
+                            </div>
+                            <div class="text-muted" style="font-size: 12px;">4.1 ( 132 )</div>
+                          </div>
+                          <h5 class="mt-2" style="font-size: 14px;">S/100 <span style="font-size: 12px; color: #888;">por cada 10 unidades</span></h5>
+                          <p class="mt-2" style="font-size: 14px;">Costo por unidad: S/10</p>
+                          <a href="#" class="btn btn-primary">Ver más</a>
+                        </div>
                       </div>
-                      <p class="float-sm-end font-size-12">22 Enero, 2020</p>
                     </div>
-                    <div class="d-flex py-3">
-                      <div class="flex-1">
-                        <p class="text-muted mb-2">¡Buen producto! Es muy suave y comodo usarlo</p>
-                        <h5 class="font-size-15 mb-3">Scott</h5>
+
+                    <!-- Card 3 -->
+                    <div class="col-md-4">
+                      <div class="card">
+                        <div class="card-img-top d-flex justify-content-center align-items-center" style="height: 200px;">
+                          <img th:src="@{../images/product/img-3.png}" alt="Product 3" style="max-height: 100%; max-width: 100%; object-fit: cover;">
+                        </div>
+                        <div class="card-body">
+                          <a href="#" class="text-primary">T-shirt</a>
+                          <h5 class="mt-1 mb-3"  style="font-size: 14px;">Full sleeve Blue color t-shirt</h5>
+                          <div class="d-inline-flex">
+                            <div class="text-muted me-2" style="font-size: 12px;">
+                              <span class="mdi mdi-star text-warning"></span>
+                              <span class="mdi mdi-star text-warning"></span>
+                              <span class="mdi mdi-star text-warning"></span>
+                              <span class="mdi mdi-star text-warning"></span>
+                              <span class="mdi mdi-star"></span>
+                            </div>
+                            <div class="text-muted" style="font-size: 12px;">4.1 ( 132 )</div>
+                          </div>
+                          <h5 class="mt-2" style="font-size: 14px;">S/100 <span style="font-size: 12px; color: #888;">por cada 10 unidades</span></h5>
+                          <p class="mt-2" style="font-size: 14px;">Costo por unidad: S/10</p>
+                          <a href="#" class="btn btn-primary">Ver más</a>
+                        </div>
                       </div>
-                      <p class="float-sm-end font-size-12">04 Enero, 2020</p>
                     </div>
                   </div>
                 </div>
+
+
+
               </div>
             </div>
             <!-- end card -->
