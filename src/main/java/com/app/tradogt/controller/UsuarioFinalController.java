@@ -122,4 +122,11 @@ public class UsuarioFinalController {
     public  String showpassword(){
         return "Usuario/password-usuario";
     }
+
+
+    //Preguntas Soporte técnico
+    @GetMapping("/soporte")
+    public String showSoporte(){
+        return "Usuario/soporte-usuario";
+    }
 }

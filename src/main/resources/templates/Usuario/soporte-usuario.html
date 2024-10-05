@@ -1,0 +1,258 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <title>Ayuda | TRADO</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- CSS BASE -->
+  <meta th:replace="~{Common/cssBase :: css_Base}">
+  <!-- End CSS BASE -->
+
+</head>
+
+<body data-sidebar="dark">
+
+<!-- <body data-layout="horizontal" data-topbar="dark"> -->
+
+<!-- Begin page -->
+<div id="layout-wrapper">
+
+  <!-- ========== NavBar Start ========== -->
+  <header th:replace="~{Usuario/fragments/navbar :: nav_bar}"></header>
+  <!-- Navbar End -->
+  <!-- ========== Left Sidebar Start ========== -->
+  <div th:replace="~{Usuario/fragments/sidebar :: side_bar}"></div>
+  <!-- Left Sidebar End -->
+  <!-- ============================================================== -->
+  <!-- Start right Content here -->
+  <!-- ============================================================== -->
+  <div class="main-content">
+
+    <div class="page-content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12">
+            <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+              <h4 class="mb-sm-0">Soporte Técnico</h4>
+
+              <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                  <li class="breadcrumb-item active">Inicio</li>
+                  <li class="breadcrumb-item"><a href="javascript: void(0);">Soporte técnico</a></li>
+                </ol>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- end page title -->
+
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="card">
+              <div class="card-body">
+                <div class="row mt-4">
+                  <div class="col-lg-12">
+                    <div class="text-center">
+                      <h4>Soporte técnico para nuestros importadores</h4>
+                      <p class="text-muted text-center mx-auto mt-4 w-75">
+                        Estamos aquí para ayudarte. Sabemos lo importante que es tener claridad y soluciones rápidas para tus pedidos. A continuación, encontrarás respuestas a las preguntas más comunes que nuestros usuarios nos hacen sobre sus compras y el estado de sus pedidos.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row mt-1 justify-content-center">
+                  <div class="col-lg-10">
+                    <div>
+                      <div class="tab-content pt-5">
+                        <div class="tab-pane fade show active" id="faq-gen-ques" role="tabpanel">
+                          <div>
+
+                            <div id="gen-question-accordion" class="custom-accordion-arrow">
+                              <div class="card">
+                                <a href="#gen-question-collapseOne" class="text-reset" data-bs-toggle="collapse"
+                                   aria-expanded="true"
+                                   aria-controls="gen-question-collapseOne">
+                                  <div class="card-header" id="gen-question-headingOne">
+                                    <h5 class="font-size-14 m-0">
+                                      <i class="mdi mdi-chevron-up accor-arrow-icon"></i>¿Cómo puedo rastrear el estado de mi pedido?
+
+                                    </h5>
+                                  </div>
+                                </a>
+
+                                <div id="gen-question-collapseOne" class="collapse show"
+                                     aria-labelledby="gen-question-headingOne" data-bs-parent="#gen-question-accordion">
+                                  <div class="card-body">
+                                    Puedes rastrear el estado de tu pedido accediendo a tu cuenta en la plataforma y seleccionando la opción "Mis pedidos". Allí, verás el estado de tu envío en tiempo real. Los posibles estados son:
+                                    <br>
+                                    <ul>
+                                      <li>
+                                        CREADO
+                                      </li>
+                                      <li>
+                                        EN VALIDACIÓN
+                                      </li>
+                                      <li>
+                                        EN PROCESO
+                                      </li>
+                                      <li>
+                                        ARRIBO AL PAÍS
+                                      </li>
+                                      <li>
+                                        EN ADUANAS
+                                      </li>
+                                      <li>
+                                        EN RUTA
+                                      </li>
+                                      <li>
+                                        RECIBIDO
+                                      </li>
+                                    </ul>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="card">
+                                <a href="#gen-question-collapseTwo" class="collapsed" data-bs-toggle="collapse"
+                                   aria-expanded="false"
+                                   aria-controls="gen-question-collapseTwo">
+                                  <div class="card-header" id="gen-question-headingTwo">
+                                    <h5 class="font-size-14 m-0">
+                                      <i class="mdi mdi-chevron-up accor-arrow-icon"></i> ¿Por qué mi pedido sigue en “En Validación” por tanto tiempo?
+                                    </h5>
+                                  </div>
+                                </a>
+                                <div id="gen-question-collapseTwo" class="collapse" aria-labelledby="gen-question-headingTwo"
+                                     data-bs-parent="#gen-question-accordion">
+                                  <div class="card-body">
+                                    El estado “En Validación” significa que tu pedido está siendo revisado por nuestro equipo para asegurar que todos los detalles sean correctos. Esto incluye la verificación de los productos y los documentos de importación. Si lleva más tiempo del esperado, te recomendamos ponerte en contacto con nuestro equipo de soporte.
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="card">
+                                <a href="#gen-question-collapseThree" class="collapsed" data-bs-toggle="collapse"
+                                   aria-expanded="false"
+                                   aria-controls="gen-question-collapseThree">
+                                  <div class="card-header" id="gen-question-headingThree">
+                                    <h5 class="font-size-14 m-0">
+                                      <i class="mdi mdi-chevron-up accor-arrow-icon"></i> ¿Cómo puedo cambiar o cancelar un pedido?
+                                    </h5>
+                                  </div>
+                                </a>
+                                <div id="gen-question-collapseThree" class="collapse"
+                                     aria-labelledby="gen-question-headingThree" data-bs-parent="#gen-question-accordion">
+                                  <div class="card-body">
+                                    Si deseas cambiar o cancelar un pedido, debes hacerlo antes de que el estado cambie a "En Proceso". Dirígete a la sección "Mis pedidos" en tu cuenta y selecciona el pedido que deseas modificar o cancelar.
+
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="card">
+                                <a href="#gen-question-collapse4" class="collapsed" data-bs-toggle="collapse"
+                                   aria-expanded="false"
+                                   aria-controls="gen-question-collapse4">
+                                  <div class="card-header" id="gen-question-heading4">
+                                    <h5 class="font-size-14 m-0">
+                                      <i class="mdi mdi-chevron-up accor-arrow-icon"></i>  ¿Qué significa el estado “En Aduanas”?
+                                    </h5>
+                                  </div>
+                                </a>
+                                <div id="gen-question-collapse4" class="collapse"
+                                     aria-labelledby="gen-question-heading4" data-bs-parent="#gen-question-accordion">
+                                  <div class="card-body">
+                                    El estado “En Aduanas” indica que tu pedido ha llegado al país y está siendo procesado por las autoridades aduaneras. Este proceso puede incluir la revisión de documentos y el pago de impuestos o aranceles.
+                                    Una vez aprobado, el pedido pasará al siguiente estado: "En Ruta".
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="card">
+                                <a href="#gen-question-collapse5" class="collapsed" data-bs-toggle="collapse"
+                                   aria-expanded="false"
+                                   aria-controls="gen-question-collapse5">
+                                  <div class="card-header" id="gen-question-heading5">
+                                    <h5 class="font-size-14 m-0">
+                                      <i class="mdi mdi-chevron-up accor-arrow-icon"></i> Mi pedido está marcado como “En Ruta”, pero no ha llegado. ¿Qué debo hacer?
+                                    </h5>
+                                  </div>
+                                </a>
+                                <div id="gen-question-collapse5" class="collapse"
+                                     aria-labelledby="gen-question-heading5" data-bs-parent="#gen-question-accordion">
+                                  <div class="card-body">
+                                    Si tu pedido está en el estado "En Ruta" pero aún no lo has recibido dentro del tiempo estimado, verifica que la dirección de entrega sea correcta en los detalles del pedido.
+                                    Si todo está bien, contáctanos para rastrear el pedido con el transportista y proporcionarte una actualización.
+
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="card">
+                                <a href="#gen-question-collapse6" class="collapsed" data-bs-toggle="collapse"
+                                   aria-expanded="false"
+                                   aria-controls="gen-question-collapse6">
+                                  <div class="card-header" id="gen-question-heading6">
+                                    <h5 class="font-size-14 m-0">
+                                      <i class="mdi mdi-chevron-up accor-arrow-icon"></i> ¿Cómo puedo obtener una factura para mi pedido?
+                                    </h5>
+                                  </div>
+                                </a>
+                                <div id="gen-question-collapse6" class="collapse"
+                                     aria-labelledby="gen-question-heading6" data-bs-parent="#gen-question-accordion">
+                                  <div class="card-body">
+                                    Para descargar la factura de tu pedido, inicia sesión en tu cuenta y dirígete a "Mis pedidos".
+                                    Selecciona el pedido para el cual necesitas la factura y encontrarás una opción para descargarla en formato PDF. Si no puedes acceder a la factura, contacta a nuestro soporte.
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
+
+
+
+                            <p class="text-muted text-center mx-auto mt-4 w-75">
+                              ¿Tienes una consulta que no está en nuestras preguntas frecuentes? Escríbenos a: <a href="https://accounts.google.com/InteractiveLogin/signinchooser?continue=https%3A%2F%2Fmail.google.com%2Fmail%2F%3Fhl%3Des&emr=1&hl=es&ltmpl=default&ltmplcache=2&osid=1&passive=true&rm=false&scc=1&service=mail&ss=1&ifkv=ARpgrqeJ260x9rChQD5hPXYE9L-3J6c0StogURed8Ek16zlGdbJd5ODASkzL8I55b-SDzhPPdSMS8g&ddm=0&flowName=GlifWebSignIn&flowEntry=ServiceLogin" target=»_blank»>trado@gmail.com</a>.
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- end row -->
+
+      </div> <!-- container-fluid -->
+    </div>
+    <!-- End Page-content -->
+
+    <footer class="footer">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-sm-6">
+            <script>document.write(new Date().getFullYear())</script> © TRADO.
+          </div>
+          <div class="col-sm-6">
+            <div class="text-sm-end d-none d-sm-block">
+              Crafted with <i class="mdi mdi-heart text-danger"></i> by TelesoftGT
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+  <!-- end main content-->
+</div>
+<!-- END layout-wrapper -->
+
+
+<!-- JAVASCRIPT BASE-->
+<span th:replace="~{Common/jsBase :: js_Base}"></span>
+<!-- End JAVASCRIPT BASE-->
+</body>
+
+</html>
