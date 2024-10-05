@@ -32,7 +32,7 @@ public class Orden {
     private EstadoOrden estadoordenIdestadoorden;
 
     @Column(name = "fechaCreacion")
-    private Instant fechaCreacion;
+    private LocalDate fechaCreacion;
 
     @Column(name = "fechaArribo")
     private LocalDate fechaArribo;
@@ -58,5 +58,6 @@ public class Orden {
 
     @Column(name = "costoTotal", precision = 10, scale = 2)
     private BigDecimal costoTotal;
+
 
 }
