@@ -2,12 +2,13 @@ package com.app.tradogt.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 import org.hibernate.annotations.ColumnDefault;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDate;
-import java.util.List;
 
 @Data
 @Entity
@@ -50,5 +51,12 @@ public class Orden {
     @ColumnDefault("1")
     @Column(name = "esCarrito", nullable = false)
     private Byte esCarrito = 1;
+
+    @Size(max = 45)
+    @Column(name = "codigo", length = 45)
+    private String codigo;
+
+    @Column(name = "costoTotal", precision = 10, scale = 2)
+    private BigDecimal costoTotal;
 
 }
