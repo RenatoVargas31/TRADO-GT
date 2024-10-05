@@ -172,7 +172,7 @@
                   </div>
                   <div class="col-xl-6">
                     <div class="mt-4 mt-xl-3">
-                      <a href="#" class="text-primary">T-shirt</a>
+                      <a class="text-primary">Categoría, Subcategoría</a>
                       <h5 class="mt-1 mb-3"  style="font-size: 24px;">Full sleeve Blue color t-shirt</h5>
 
                       <div class="d-inline-flex">
@@ -185,6 +185,7 @@
                       </div>
                         <div class="text-muted" style="font-size: 18px;">4.1 ( 132 )</div>
                       </div>
+                      <span class="product-ribbon badge bg-warning">NK128</span><br>
                       <h5 class="mt-2" style="font-size: 24px;">
                         S/240 <span style="font-size: 12px; color: #888;">por cada 10 unidades</span>
                       </h5>
@@ -311,14 +312,14 @@
                   <h5 class="font-size-14">Otras recomendaciones:</h5>
                   <div class="row">
                     <!-- Card 1 -->
-                    <div class="col-md-4">
-                      <div class="card">
+                    <div class="col-md-3">
+                      <div class="card d-flex align-items-center justify-content-center">
                         <a href="/usuario/productoDetalles" class="text-decoration-none">
                         <div class="card-img-top d-flex justify-content-center align-items-center" style="height: 200px;">
                           <img th:src="@{../images/product/img-1.png}" alt="Product 1" style="max-height: 100%; max-width: 100%; object-fit: cover;">
                         </div>
-                        <div class="card-body">
-                          <a href="#" class="text-primary">T-shirt</a>
+                        <div class="card-body ">
+                          <a  class="text-primary d-flex  align-items-center justify-content-center">Categoría, Subcategoría</a>
                           <h5 class="mt-1 mb-3"  style="font-size: 14px;">Full sleeve Blue color t-shirt</h5>
                           <div class="d-inline-flex">
                             <div class="text-muted me-2" style="font-size: 12px;">
@@ -332,59 +333,103 @@
                           </div>
                           <h5 class="mt-2" style="font-size: 14px;">S/100 <span style="font-size: 12px; color: #888;">por cada 10 unidades</span></h5>
                           <p class="mt-2" style="font-size: 14px;">Costo por unidad: S/10</p>
-                        </div></a>
+                          <div class="provider-info d-flex ">
+                            <img th:src="@{../images/product/iconoProvedor.png}" alt="Proveedor Icono" class="rounded-circle me-2" style="width: 30px; height: 30px;">
+                            <span class="provider-name">Nombre del provedor</span>
+                          </div>
+                        </div>
+                        </a>
                       </div>
                     </div>
 
                     <!-- Card 2 -->
-                    <div class="col-md-4">
-                      <div class="card">
+                    <div class="col-md-3">
+                      <div class="card d-flex align-items-center justify-content-center">
                         <a href="/usuario/productoDetalles" class="text-decoration-none">
-                        <div class="card-img-top d-flex justify-content-center align-items-center" style="height: 200px;">
-                          <img th:src="@{../images/product/img-2.png}" alt="Product 2" style="max-height: 100%; max-width: 100%; object-fit: cover;">
-                        </div>
-                        <div class="card-body">
-                          <a href="#" class="text-primary">T-shirt</a>
-                          <h5 class="mt-1 mb-3"  style="font-size: 14px;">Full sleeve Blue color t-shirt</h5>
-                          <div class="d-inline-flex">
-                            <div class="text-muted me-2" style="font-size: 12px;">
-                              <span class="mdi mdi-star text-warning"></span>
-                              <span class="mdi mdi-star text-warning"></span>
-                              <span class="mdi mdi-star text-warning"></span>
-                              <span class="mdi mdi-star text-warning"></span>
-                              <span class="mdi mdi-star"></span>
-                            </div>
-                            <div class="text-muted" style="font-size: 12px;">4.1 ( 132 )</div>
+                          <div class="card-img-top d-flex justify-content-center align-items-center" style="height: 200px;">
+                            <img th:src="@{../images/product/img-1.png}" alt="Product 1" style="max-height: 100%; max-width: 100%; object-fit: cover;">
                           </div>
-                          <h5 class="mt-2" style="font-size: 14px;">S/100 <span style="font-size: 12px; color: #888;">por cada 10 unidades</span></h5>
-                          <p class="mt-2" style="font-size: 14px;">Costo por unidad: S/10</p>
-                        </div></a>
+                          <div class="card-body ">
+                            <a  class="text-primary d-flex  align-items-center justify-content-center">Categoría, Subcategoría</a>
+                            <h5 class="mt-1 mb-3"  style="font-size: 14px;">Full sleeve Blue color t-shirt</h5>
+                            <div class="d-inline-flex">
+                              <div class="text-muted me-2" style="font-size: 12px;">
+                                <span class="mdi mdi-star text-warning"></span>
+                                <span class="mdi mdi-star text-warning"></span>
+                                <span class="mdi mdi-star text-warning"></span>
+                                <span class="mdi mdi-star text-warning"></span>
+                                <span class="mdi mdi-star"></span>
+                              </div>
+                              <div class="text-muted" style="font-size: 12px;">4.1 ( 132 )</div>
+                            </div>
+                            <h5 class="mt-2" style="font-size: 14px;">S/100 <span style="font-size: 12px; color: #888;">por cada 10 unidades</span></h5>
+                            <p class="mt-2" style="font-size: 14px;">Costo por unidad: S/10</p>
+                            <div class="provider-info d-flex ">
+                              <img th:src="@{../images/product/iconoProvedor.png}" alt="Proveedor Icono" class="rounded-circle me-2" style="width: 30px; height: 30px;">
+                              <span class="provider-name">Nombre del provedor</span>
+                            </div>
+                          </div>
+                        </a>
                       </div>
                     </div>
 
                     <!-- Card 3 -->
-                    <div class="col-md-4">
-                      <div class="card">
+                    <div class="col-md-3">
+                      <div class="card d-flex align-items-center justify-content-center">
                         <a href="/usuario/productoDetalles" class="text-decoration-none">
-                        <div class="card-img-top d-flex justify-content-center align-items-center" style="height: 200px;">
-                          <img th:src="@{../images/product/img-3.png}" alt="Product 3" style="max-height: 100%; max-width: 100%; object-fit: cover;">
-                        </div>
-                        <div class="card-body">
-                          <a href="#" class="text-primary">T-shirt</a>
-                          <h5 class="mt-1 mb-3"  style="font-size: 14px;">Full sleeve Blue color t-shirt</h5>
-                          <div class="d-inline-flex">
-                            <div class="text-muted me-2" style="font-size: 12px;">
-                              <span class="mdi mdi-star text-warning"></span>
-                              <span class="mdi mdi-star text-warning"></span>
-                              <span class="mdi mdi-star text-warning"></span>
-                              <span class="mdi mdi-star text-warning"></span>
-                              <span class="mdi mdi-star"></span>
-                            </div>
-                            <div class="text-muted" style="font-size: 12px;">4.1 ( 132 )</div>
+                          <div class="card-img-top d-flex justify-content-center align-items-center" style="height: 200px;">
+                            <img th:src="@{../images/product/img-1.png}" alt="Product 1" style="max-height: 100%; max-width: 100%; object-fit: cover;">
                           </div>
-                          <h5 class="mt-2" style="font-size: 14px;">S/100 <span style="font-size: 12px; color: #888;">por cada 10 unidades</span></h5>
-                          <p class="mt-2" style="font-size: 14px;">Costo por unidad: S/10</p>
-                        </div>
+                          <div class="card-body ">
+                            <a  class="text-primary d-flex  align-items-center justify-content-center">Categoría, Subcategoría</a>
+                            <h5 class="mt-1 mb-3"  style="font-size: 14px;">Full sleeve Blue color t-shirt</h5>
+                            <div class="d-inline-flex">
+                              <div class="text-muted me-2" style="font-size: 12px;">
+                                <span class="mdi mdi-star text-warning"></span>
+                                <span class="mdi mdi-star text-warning"></span>
+                                <span class="mdi mdi-star text-warning"></span>
+                                <span class="mdi mdi-star text-warning"></span>
+                                <span class="mdi mdi-star"></span>
+                              </div>
+                              <div class="text-muted" style="font-size: 12px;">4.1 ( 132 )</div>
+                            </div>
+                            <h5 class="mt-2" style="font-size: 14px;">S/100 <span style="font-size: 12px; color: #888;">por cada 10 unidades</span></h5>
+                            <p class="mt-2" style="font-size: 14px;">Costo por unidad: S/10</p>
+                            <div class="provider-info d-flex ">
+                              <img th:src="@{../images/product/iconoProvedor.png}" alt="Proveedor Icono" class="rounded-circle me-2" style="width: 30px; height: 30px;">
+                              <span class="provider-name">Nombre del provedor</span>
+                            </div>
+                          </div>
+                        </a>
+                      </div>
+                    </div>
+                    <!-- Card 4-->
+                    <div class="col-md-3">
+                      <div class="card d-flex align-items-center justify-content-center">
+                        <a href="/usuario/productoDetalles" class="text-decoration-none">
+                          <div class="card-img-top d-flex justify-content-center align-items-center" style="height: 200px;">
+                            <img th:src="@{../images/product/img-1.png}" alt="Product 1" style="max-height: 100%; max-width: 100%; object-fit: cover;">
+                          </div>
+                          <div class="card-body ">
+                            <a  class="text-primary d-flex  align-items-center justify-content-center">Categoría, Subcategoría</a>
+                            <h5 class="mt-1 mb-3"  style="font-size: 14px;">Full sleeve Blue color t-shirt</h5>
+                            <div class="d-inline-flex">
+                              <div class="text-muted me-2" style="font-size: 12px;">
+                                <span class="mdi mdi-star text-warning"></span>
+                                <span class="mdi mdi-star text-warning"></span>
+                                <span class="mdi mdi-star text-warning"></span>
+                                <span class="mdi mdi-star text-warning"></span>
+                                <span class="mdi mdi-star"></span>
+                              </div>
+                              <div class="text-muted" style="font-size: 12px;">4.1 ( 132 )</div>
+                            </div>
+                            <h5 class="mt-2" style="font-size: 14px;">S/100 <span style="font-size: 12px; color: #888;">por cada 10 unidades</span></h5>
+                            <p class="mt-2" style="font-size: 14px;">Costo por unidad: S/10</p>
+                            <div class="provider-info d-flex ">
+                              <img th:src="@{../images/product/iconoProvedor.png}" alt="Proveedor Icono" class="rounded-circle me-2" style="width: 30px; height: 30px;">
+                              <span class="provider-name">Nombre del provedor</span>
+                            </div>
+                          </div>
                         </a>
                       </div>
                     </div>
