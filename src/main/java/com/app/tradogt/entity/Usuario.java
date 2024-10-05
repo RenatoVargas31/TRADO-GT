@@ -98,12 +98,8 @@ public class Usuario {
     @Column(name = "isActivated", nullable = false)
     private Byte isActivated = 0;
 
-    @ManyToOne
-    @JoinColumn(name = "codigoDespachador_idCodigoDespachador")
-    private CodigoDespachador codigodespachadorIdcodigodespachador;
-
-    @ManyToOne
-    @JoinColumn(name = "codigoJurisdiccion_idCodigoJurisdiccion")
-    private CodigoJurisdiccion codigojurisdiccionIdcodigojurisdiccion;
+    @Size(max = 45)
+    @Column(name = "codigoDespachador", length = 45)
+    private String codigoDespachador;
 
 }
