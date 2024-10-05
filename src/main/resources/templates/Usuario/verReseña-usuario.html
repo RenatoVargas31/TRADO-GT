@@ -1,0 +1,279 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Ver Publicación</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- CSS BASE -->
+    <meta th:replace="~{Common/cssBase :: css_Base}">
+    <!-- End CSS BASE -->
+</head>
+
+<body data-sidebar="dark">
+
+<!-- <body data-layout="horizontal" data-topbar="dark"> -->
+
+<!-- Begin page -->
+<div id="layout-wrapper">
+
+    <!-- ========== NavBar Start ========== -->
+    <header th:replace="~{Usuario/fragments/navbar :: nav_bar}"></header>
+    <!-- Navbar End -->
+    <!-- ========== Left Sidebar Start ========== -->
+    <div th:replace="~{Usuario/fragments/sidebar :: side_bar}"></div>
+    <!-- Left Sidebar End -->
+    <!-- ============================================================== -->
+    <!-- Start right Content here -->
+    <!-- ============================================================== -->
+    <div class="main-content">
+        <div class="page-content">
+            <div class="container-fluid">
+
+                <!-- start page title -->
+                <div class="row">
+                    <div class="col-12">
+                        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                            <h4 class="mb-sm-0">Publicación</h4>
+
+                            <div class="page-title-right">
+                                <ol class="breadcrumb m-0">
+                                    <li class="breadcrumb-item active">Inicio</li>
+                                    <li class="breadcrumb-item active">Foro</li>
+                                    <li class="breadcrumb-item active">Reseñas</li>
+                                    <li class="breadcrumb-item"><a href="javascript: void(0);">Ver</a></li>
+
+                                </ol>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <!-- end page title -->
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-9 justify-content-center">
+                                        <h5 class="text-center">Amo esta Camisa Azul</h5>
+                                        <p class="text-justify">
+                                            Hace unos meses, importé una camisa azul para mi negocio a través de TRADO, y debo decir que superó mis expectativas en todos los sentidos. Elegí esta camisa por su diseño elegante y material de alta calidad, y no me decepcionó.
+
+                                            La tela es suave y cómoda, lo que la hace ideal para usar durante todo el día. Además, los detalles en el diseño, como los botones y el acabado, demuestran una excelente atención al detalle. He recibido muchos cumplidos por la camisa, y mis clientes también están encantados con ella.
+
+                                            Recomiendo encarecidamente esta camisa azul a cualquier persona que busque una prenda que combine estilo y comodidad. La calidad del material y la confección son impresionantes, y definitivamente vale la pena la inversión.
+                                        </p>
+                                    </div>
+
+                                    <div class="col-md-3 text-center">
+                                        <div class="product-img">
+                                            <img th:src="@{../images/product/img-5.png}" alt="img-5" class="img-fluid mx-auto d-block">
+                                        </div>
+                                        <div class="text-center p-3">
+                                            <p class="font-size-12 mb-1">Categoría, Subcategoría</p>
+                                            <h5 class="font-size-15"><a href="#" class="text-reset">Nombre del producto</a></h5>
+                                            <span class="product-ribbon badge bg-warning">NK128</span><br>
+                                            <div class="d-inline-flex align-items-center mb-2">
+                                                <div class="text-muted me-2" style="font-size: 12px;">
+                                                    <span class="mdi mdi-star text-warning"></span>
+                                                    <span class="mdi mdi-star text-warning"></span>
+                                                    <span class="mdi mdi-star text-warning"></span>
+                                                    <span class="mdi mdi-star text-warning"></span>
+                                                    <span class="mdi mdi-star"></span>
+                                                </div>
+                                            </div>
+                                            <div class="provider-info d-flex align-items-center justify-content-center">
+                                                <img th:src="@{../images/product/iconoProvedor.png}" alt="Proveedor Icono" class="rounded-circle me-2" style="width: 30px; height: 30px;">
+                                                <span class="provider-name">Nombre del provedor</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12  mt-2">
+                                        <div class="d-flex ">
+                                            <p class="mt-2 card-title-desc me-2" style="font-size: 12px;">
+                                                <span>Publicado en </span><span>11 de Octubre de 2024 por</span>
+                                            </p>
+                                        </div>
+                                        <div >
+                                            <img th:src="@{../images/product/iconoProvedor.png}" alt="Proveedor Icono" class="rounded-circle me-2" style="width: 40px; height: 40px;">
+                                            <span class="provider-name">Nombre del Usuario</span>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                        <!-- Sección para añadir comentarios -->
+                        <div class="card mt-4">
+                            <div class="card-body">
+                                <h6>Añadir un Comentario</h6>
+                                <form id="comment-form">
+                                    <div class="mb-3">
+                                        <label for="comment-text" class="form-label">Comentario:</label>
+                                        <textarea class="form-control" id="comment-text" rows="3" placeholder="Escribe tu comentario aquí..."></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Enviar</button>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="card mt-4">
+                            <div class="card-body">
+                                <h6>Ver comentarios</h6>
+                                <div class="border p-4 rounded">
+                                    <div class="d-flex border-bottom pb-3">
+                                        <div class="flex-1">
+                                            <p class="text-muted mb-2">To an English person, it will seem like simplified English, as a skeptical Cambridge</p>
+                                            <h5 class="font-size-15 mb-3">James</h5>
+
+                                            <ul class="list-inline product-review-link mb-0">
+                                                <li class="list-inline-item">
+                                                    <a href="#" onclick="showReplyForm(event, 'reply-form-1')"><i class="mdi mdi-message-text align-middle me-1"></i> Comment</a>
+                                                </li>
+                                            </ul>
+
+                                            <div id="reply-form-1" class="reply-form" style="display: none; margin-top: 10px;">
+                                                <form>
+                                                    <div class="mb-3">
+                                                        <label for="reply-text" class="form-label">Tu respuesta:</label>
+                                                        <textarea class="form-control" id="reply-text" rows="3"></textarea>
+                                                    </div>
+                                                    <button type="submit" class="btn btn-primary">Publicar</button>
+                                                    <button type="button" class="btn btn-danger" onclick="hideReplyForm('reply-form-1')">Cancelar</button>
+                                                </form>
+                                            </div>
+                                        </div>
+
+                                        <script>
+                                            function showReplyForm(event, formId) {
+                                                event.preventDefault();
+                                                document.getElementById(formId).style.display = 'block';
+                                            }
+
+                                            function hideReplyForm(formId) {
+                                                document.getElementById(formId).style.display = 'none';
+                                            }
+                                        </script>
+
+                                        <p class="float-sm-end font-size-12">11 Feb, 2020</p>
+                                    </div>
+
+                                    <div class="d-flex border-bottom pb-3">
+                                        <div class="flex-1">
+                                            <p class="text-muted mb-2">To an English person, it will seem like simplified English, as a skeptical Cambridge</p>
+                                            <h5 class="font-size-15 mb-3">James</h5>
+
+                                            <ul class="list-inline product-review-link mb-0">
+                                                <li class="list-inline-item">
+                                                    <a href="#" onclick="showReplyForm(event, 'reply-form-2')"><i class="mdi mdi-message-text align-middle me-1"></i> Comment</a>
+                                                </li>
+                                            </ul>
+
+                                            <div id="reply-form-2" class="reply-form" style="display: none; margin-top: 10px;">
+                                                <form>
+                                                    <div class="mb-3">
+                                                        <label for="reply-text" class="form-label">Tu respuesta:</label>
+                                                        <textarea class="form-control" id="reply-text2" rows="3"></textarea>
+                                                    </div>
+                                                    <button type="submit" class="btn btn-primary">Publicar</button>
+                                                    <button type="button" class="btn btn-danger" onclick="hideReplyForm('reply-form-2')">Cancelar</button>
+                                                </form>
+                                            </div>
+                                        </div>
+
+                                        <script>
+                                            function showReplyForm(event, formId) {
+                                                event.preventDefault();
+                                                document.getElementById(formId).style.display = 'block';
+                                            }
+
+                                            function hideReplyForm(formId) {
+                                                document.getElementById(formId).style.display = 'none';
+                                            }
+                                        </script>
+
+                                        <p class="float-sm-end font-size-12">11 Feb, 2020</p>
+                                    </div>
+
+                                    <div class="d-flex border-bottom pb-3">
+                                        <div class="flex-1">
+                                            <p class="text-muted mb-2">To an English person, it will seem like simplified English, as a skeptical Cambridge</p>
+                                            <h5 class="font-size-15 mb-3">James</h5>
+
+                                            <ul class="list-inline product-review-link mb-0">
+                                                <li class="list-inline-item">
+                                                    <a href="#" onclick="showReplyForm(event, 'reply-form-3')"><i class="mdi mdi-message-text align-middle me-1"></i> Comment</a>
+                                                </li>
+                                            </ul>
+
+                                            <div id="reply-form-3" class="reply-form" style="display: none; margin-top: 10px;">
+                                                <form>
+                                                    <div class="mb-3">
+                                                        <label for="reply-text" class="form-label">Tu respuesta:</label>
+                                                        <textarea class="form-control" id="reply-text3" rows="3"></textarea>
+                                                    </div>
+                                                    <button type="submit" class="btn btn-primary">Publicar</button>
+                                                    <button type="button" class="btn btn-danger" onclick="hideReplyForm('reply-form-3')">Cancelar</button>
+                                                </form>
+                                            </div>
+                                        </div>
+
+                                        <script>
+                                            function showReplyForm(event, formId) {
+                                                event.preventDefault();
+                                                document.getElementById(formId).style.display = 'block';
+                                            }
+
+                                            function hideReplyForm(formId) {
+                                                document.getElementById(formId).style.display = 'none';
+                                            }
+                                        </script>
+
+                                        <p class="float-sm-end font-size-12">11 Feb, 2020</p>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div> <!-- container-fluid -->
+            </div>
+        </div>
+    </div>
+
+
+</div> <!-- container-fluid -->
+</div>
+<!-- End Page-content -->
+<footer class="footer">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-6">
+                <script>document.write(new Date().getFullYear())</script> © TRADO.
+            </div>
+            <div class="col-sm-6">
+                <div class="text-sm-end d-none d-sm-block">
+                    Crafted with <i class="mdi mdi-heart text-danger"></i> by TelesoftGT
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+</div>
+<!-- end main content-->
+</div>
+<!-- END layout-wrapper -->
+
+
+<!-- JAVASCRIPT BASE-->
+<span th:replace="~{Common/jsBase :: js_Base}"></span>
+<!-- End JAVASCRIPT BASE-->
+</body>
+
+</html>

@@ -87,30 +87,30 @@ public class UsuarioFinalController {
     public String showordenCompra() {
         return "Usuario/orden-compra-usuario";
     }
-    @GetMapping("/foro")
-    public String showForo() {
-        return "Usuario/foro";
+    @GetMapping("/reseñas")
+    public String showResenhas() {
+        return "Usuario/reseñas-usuario";
     }
 
-    @GetMapping("/foroConsultas")
-    public String showForoConsultas() {
-        return "Usuario/consulta";
+    @GetMapping("/comunidad")
+    public String showComunidad() {
+        return "Usuario/comunidad-usuario";
     }
     @GetMapping("/foroProblema")
     public String showForoProblema() {
         return "Usuario/problema-soluciones";
     }
-    @GetMapping("/detalleConsulta")
+    @GetMapping("/verPublicacion")
     public String showDetalleConsultas() {
-        return "Usuario/viewConsulta";
+        return "Usuario/verPublicacion-usuario";
     }
     @GetMapping("/detalleProblema")
     public String showDetalleProblema() {
         return "Usuario/viewProblema";
     }
-    @GetMapping("/detalleForo")
+    @GetMapping("/verReseña")
     public String showDetalleForo() {
-        return "Usuario/viewForo";
+        return "Usuario/verReseña-usuario";
     }
 
     @GetMapping("/solicitud")
@@ -128,5 +128,15 @@ public class UsuarioFinalController {
     @GetMapping("/soporte")
     public String showSoporte(){
         return "Usuario/soporte-usuario";
+    }
+    @GetMapping("/nuevaPublicación")
+    public String nuevaPublicacion(){
+
+        return "Usuario/nuevaPublicacion-usuario";
+    }
+    @GetMapping("/nuevaReseña")
+    public String nuevaResenha(){
+
+        return "Usuario/nuevaReseña-usuario";
     }
 }

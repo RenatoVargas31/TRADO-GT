@@ -10,6 +10,14 @@
   <!-- End CSS BASE -->
 
   <style>
+
+    .product-img img {
+      transition: transform .2s; /* Animation */
+    }
+    .product-img:hover img {
+      transform: scale(3.0); /* (150% zoom) */
+    }
+
     .product-img {
       overflow: hidden; /* Asegura que la imagen no sobresalga del contenedor */
       width: 300px; /* Ajusta el tamaño del contenedor según tus necesidades */
@@ -98,15 +106,14 @@
                     <div class="product-detail">
                       <div class="row">
                         <!-- Sección principal de imágenes y botones de acción -->
-                        <div class="col-md-10 col-12">
+                        <div class="col-md-8 col-12">
                           <div class="tab-content d-flex justify-content-center align-items-center" id="v-pills-tabContent">
                             <!-- Producto 1 -->
                             <div class="tab-pane fade show active" id="product-1" role="tabpanel">
                               <div class="product-img text-center" style="width: 100%; height: 400px; display: flex; justify-content: center; align-items: center;">
-                                <img th:src="@{../images/product/img-1.png}" alt="img-1" class="img-fluid zoom-image" data-zoom="assets/images/product/img-1.png" style="max-width: 100%; height: auto;">
+                                <img th:src="@{../images/product/img-1.png}" alt="img-1" class="img-fluid zoom-image" data-action="zoom" data-original="assets/images/product/img-1.png" style="max-width: 100%; height: auto;">
                               </div>
                             </div>
-
                             <!-- Producto 2 -->
                             <div class="tab-pane fade" id="product-2" role="tabpanel">
                               <div class="product-img text-center" style="width: 100%; height: 400px; display: flex; justify-content: center; align-items: center;">
@@ -128,7 +135,7 @@
                           </div>
                         </div>
                         <!-- Sidebar de imágenes (se ajusta el ancho en diferentes dispositivos) -->
-                        <div class="col-md-2 col-12">
+                        <div class="col-md-4 col-12">
                           <div class="nav flex-md-column flex-row nav-pills justify-content-center" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                             <a class="nav-link active" id="product-1-tab" data-bs-toggle="pill" href="#product-1" role="tab">
                               <img th:src="@{../images/product/img-1.png}" alt="img-1" class="img-fluid mx-auto d-block tab-img rounded">
@@ -243,9 +250,23 @@
                     </ul>
                     <div class="tab-content border border-top-0 p-4">
                       <div class="tab-pane fade show active" id="desc" role="tabpanel">
-                        <div>
-                          <p>Este producto es una camiseta de manga larga de color azul, diseñada para ofrecer confort y estilo en cualquier ocasión. Fabricada con algodón de alta calidad, es suave al tacto y transpirable, ideal para el uso diario. Con un diseño minimalista, cuenta con un gráfico en el pecho que le da un toque moderno. </p>
-                          <p>La camiseta está disponible en todas las tallas, lo que asegura un ajuste adecuado para diferentes tipos de cuerpo. Perfecta para combinar con jeans o pantalones casuales, esta prenda es una opción versátil para cualquier guardarropa.</p>
+                        <div> <p>Este producto es una camiseta de manga larga de color azul, diseñada para ofrecer confort y estilo en cualquier ocasión.
+                          Fabricada con algodón de alta calidad, es suave al tacto y transpirable, ideal para el uso diario.
+                          Con un diseño minimalista, cuenta con un gráfico discreto en el pecho que le da un toque moderno y elegante.</p>
+                          <p>La camiseta está disponible en todas las tallas, asegurando un ajuste adecuado para diferentes tipos de cuerpo.
+                            Está confeccionada con costuras reforzadas para mayor durabilidad y resistencia, incluso con el uso frecuente.
+                            Es perfecta para combinar con jeans, pantalones casuales o incluso bajo un blazer, lo que la convierte en una opción versátil para cualquier guardarropa.</p>
+                          <p>Además, esta camiseta es fácil de cuidar, ya que es apta para lavar a máquina y mantiene su forma y color lavado tras lavado.
+                            Ideal tanto para hombres como para mujeres, es una prenda unisex que proporciona estilo y comodidad durante todo el año.</p>
+                          <p>Características destacadas:</p>
+                          <ul> <li>Material: 100% algodón de alta calidad</li>
+                            <li>Color: Azul</li>
+                            <li>Diseño minimalista con gráfico discreto en el pecho</li>
+                            <li>Disponible en todas las tallas</li>
+                            <li>Adecuada para uso diario y fácil de combinar</li>
+                            <li>Costuras reforzadas para mayor durabilidad</li>
+                            <li>Apta para lavar a máquina</li>
+                          </ul>
                         </div>
                       </div>
                       <div class="tab-pane fade " id="specifi" role="tabpanel">
@@ -292,6 +313,7 @@
                     <!-- Card 1 -->
                     <div class="col-md-4">
                       <div class="card">
+                        <a href="/usuario/productoDetalles" class="text-decoration-none">
                         <div class="card-img-top d-flex justify-content-center align-items-center" style="height: 200px;">
                           <img th:src="@{../images/product/img-1.png}" alt="Product 1" style="max-height: 100%; max-width: 100%; object-fit: cover;">
                         </div>
@@ -310,14 +332,14 @@
                           </div>
                           <h5 class="mt-2" style="font-size: 14px;">S/100 <span style="font-size: 12px; color: #888;">por cada 10 unidades</span></h5>
                           <p class="mt-2" style="font-size: 14px;">Costo por unidad: S/10</p>
-                          <a href="#" class="btn btn-primary">Ver más</a>
-                        </div>
+                        </div></a>
                       </div>
                     </div>
 
                     <!-- Card 2 -->
                     <div class="col-md-4">
                       <div class="card">
+                        <a href="/usuario/productoDetalles" class="text-decoration-none">
                         <div class="card-img-top d-flex justify-content-center align-items-center" style="height: 200px;">
                           <img th:src="@{../images/product/img-2.png}" alt="Product 2" style="max-height: 100%; max-width: 100%; object-fit: cover;">
                         </div>
@@ -336,14 +358,14 @@
                           </div>
                           <h5 class="mt-2" style="font-size: 14px;">S/100 <span style="font-size: 12px; color: #888;">por cada 10 unidades</span></h5>
                           <p class="mt-2" style="font-size: 14px;">Costo por unidad: S/10</p>
-                          <a href="#" class="btn btn-primary">Ver más</a>
-                        </div>
+                        </div></a>
                       </div>
                     </div>
 
                     <!-- Card 3 -->
                     <div class="col-md-4">
                       <div class="card">
+                        <a href="/usuario/productoDetalles" class="text-decoration-none">
                         <div class="card-img-top d-flex justify-content-center align-items-center" style="height: 200px;">
                           <img th:src="@{../images/product/img-3.png}" alt="Product 3" style="max-height: 100%; max-width: 100%; object-fit: cover;">
                         </div>
@@ -362,8 +384,8 @@
                           </div>
                           <h5 class="mt-2" style="font-size: 14px;">S/100 <span style="font-size: 12px; color: #888;">por cada 10 unidades</span></h5>
                           <p class="mt-2" style="font-size: 14px;">Costo por unidad: S/10</p>
-                          <a href="#" class="btn btn-primary">Ver más</a>
                         </div>
+                        </a>
                       </div>
                     </div>
                   </div>
