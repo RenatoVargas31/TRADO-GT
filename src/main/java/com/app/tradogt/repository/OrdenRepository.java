@@ -11,161 +11,171 @@ import java.util.List;
 
 @Repository
 public interface OrdenRepository extends JpaRepository<Orden, Integer> {
-/*
+
     //Órdenes totales (no eliminadas)
     @Query(value = """
         SELECT
-             CONCAT(u.Nombre, ' ', u.Apellido) AS usuarioPropietario,
-             u.idUsuario AS idUsuarioPropietario,
-             DATE_FORMAT(o.FechaCreacion, '%d-%m-%Y') AS fechaCreacion,
-             p.Metodo AS metodoPago,
-             CASE
-                 WHEN o.AgentCompra_idUsuario IS NULL THEN 'No asignado'
-                 ELSE a.Nombre
-             END AS agenteCompra,
-             COALESCE(a.idUsuario, 0) AS idAgenteCompra,  -- Aquí usamos COALESCE para devolver 0 si es NULL
-             eo.Nombre AS estadoPedido,
-             o.idOrden AS idOrden
-         FROM
-             orden o
-         JOIN
-             usuario u ON o.Usuario_idUsuario = u.idUsuario
-         LEFT JOIN
-             pago p ON p.Orden_idOrden = o.idOrden
-         LEFT JOIN
-             usuario a ON a.idUsuario = o.AgentCompra_idUsuario
-         LEFT JOIN
-             estadoordenagente eo ON eo.idEstadoOrdenAgente = o.EstadoOrdenAgente_idEstadoOrdenAgente
-         WHERE
-             o.isDeleted = 0  -- Solo mostrar órdenes que no han sido eliminadas
-         ORDER BY
-             o.FechaCreacion DESC;
+                                           CONCAT(u.Nombre, ' ', u.Apellido) AS usuarioPropietario,
+                                           u.idUsuario AS idUsuarioPropietario,
+                                           DATE_FORMAT(o.FechaCreacion, '%d-%m-%Y') AS fechaCreacion,
+                                           p.Metodo AS metodoPago,
+                                           CASE
+                                               WHEN o.AgentCompra_idUsuario IS NULL THEN 'No asignado'
+                                               ELSE a.Nombre
+                                           END AS agenteCompra,
+                                           COALESCE(a.idUsuario, 0) AS idAgenteCompra,  -- Aquí usamos COALESCE para devolver 0 si es NULL
+                                           eo.Nombre AS estadoPedido,
+                                           o.idOrden AS idOrden
+                                       FROM
+                                           Orden o
+                                       JOIN
+                                           Usuario u ON o.Usuario_idUsuario = u.idUsuario
+                                       LEFT JOIN
+                                        Pago p ON p.Orden_idOrden = o.idOrden
+                                       LEFT JOIN
+                                           Usuario a ON a.idUsuario = o.AgentCompra_idUsuario
+                                       LEFT JOIN
+                                           EstadoOrden eo ON eo.idEstadoOrden = o.EstadoOrden_idEstadoOrden
+                                       WHERE
+                                           o.isDeleted = 0  -- Solo mostrar órdenes que no han sido eliminadas
+                                           and a.idUsuario = ?1
+                                       ORDER BY
+                                           o.FechaCreacion DESC;
         
                                  
     """, nativeQuery = true)
-    List<Object[]> getOrderDetailsAsDtoNative();
+    List<Object[]> getOrderDetailsAsDtoNative(Integer idOrden);
 
     //Órdenes sin asignar
     @Query(value = """
     SELECT
-        CONCAT(u.Nombre, ' ', u.Apellido) AS usuarioPropietario,
-        u.idUsuario AS idUsuarioPropietario,
-        DATE_FORMAT(o.FechaCreacion, '%d-%m-%Y') AS fechaCreacion,
-        p.Metodo AS metodoPago,
-        'No asignado' AS agenteCompra,
-        NULL AS idAgenteCompra,
-        eo.Nombre AS estadoPedido,
-        o.idOrden AS idOrden
-    FROM
-        orden o
-    JOIN
-        usuario u ON o.Usuario_idUsuario = u.idUsuario
-    LEFT JOIN
-        pago p ON p.Orden_idOrden = o.idOrden
-    LEFT JOIN
-        estadoordenagente eo ON eo.idEstadoOrdenAgente = o.EstadoOrdenAgente_idEstadoOrdenAgente
-    WHERE
-        eo.Nombre = 'Sin asignar' AND o.isDeleted = 0  -- Filtra por estado 'Sin asignar' y solo no eliminadas
-    ORDER BY
-        o.FechaCreacion DESC;
+                                           CONCAT(u.Nombre, ' ', u.Apellido) AS usuarioPropietario,
+                                           u.idUsuario AS idUsuarioPropietario,
+                                           DATE_FORMAT(o.FechaCreacion, '%d-%m-%Y') AS fechaCreacion,
+                                           p.Metodo AS metodoPago,
+                                           CASE
+                                               WHEN o.AgentCompra_idUsuario IS NULL THEN 'No asignado'
+                                               ELSE a.Nombre
+                                           END AS agenteCompra,
+                                           COALESCE(a.idUsuario, 0) AS idAgenteCompra,  -- Aquí usamos COALESCE para devolver 0 si es NULL
+                                           eo.Nombre AS estadoPedido,
+                                           o.idOrden AS idOrden
+                                       FROM
+                                           Orden o
+                                       JOIN
+                                           Usuario u ON o.Usuario_idUsuario = u.idUsuario
+                                       LEFT JOIN
+                                        Pago p ON p.Orden_idOrden = o.idOrden
+                                       LEFT JOIN
+                                           Usuario a ON a.idUsuario = o.AgentCompra_idUsuario
+                                       LEFT JOIN
+                                           EstadoOrden eo ON eo.idEstadoOrden = o.EstadoOrden_idEstadoOrden
+                                       WHERE
+                                           eo.Nombre = 'CREADO' AND o.isDeleted = 0  -- Solo mostrar órdenes que no han sido eliminadas
+                                           and a.idUsuario = ?1
+                                       ORDER BY
+                                           o.FechaCreacion DESC;
 """, nativeQuery = true)
-    List<Object[]> getOrderDetailsAsDtoNativeSinAsignar();
+    List<Object[]> getOrderDetailsAsDtoNativeSinAsignar(Integer idOrden);
 
 
     //Órdenes pendientes
     @Query(value = """
     SELECT
-        CONCAT(u.Nombre, ' ', u.Apellido) AS usuarioPropietario,
-        u.idUsuario AS idUsuarioPropietario,
-        DATE_FORMAT(o.FechaCreacion, '%d-%m-%Y') AS fechaCreacion,
-        p.Metodo AS metodoPago,
-        CASE
-            WHEN o.AgentCompra_idUsuario IS NULL THEN 'No asignado'
-            ELSE a.Nombre
-        END AS agenteCompra,
-        COALESCE(a.idUsuario, 0) AS idAgenteCompra,
-        eo.Nombre AS estadoPedido,
-        o.idOrden AS idOrden
-    FROM
-        orden o
-    JOIN
-        usuario u ON o.Usuario_idUsuario = u.idUsuario
-    LEFT JOIN
-        pago p ON p.Orden_idOrden = o.idOrden
-    LEFT JOIN
-        usuario a ON a.idUsuario = o.AgentCompra_idUsuario
-    LEFT JOIN
-        estadoordenagente eo ON eo.idEstadoOrdenAgente = o.EstadoOrdenAgente_idEstadoOrdenAgente
-    WHERE
-        eo.Nombre = 'Pendiente' AND o.isDeleted = 0  -- Filtra por estado 'Pendiente' y solo no eliminadas
-    ORDER BY
-        o.FechaCreacion DESC;
+                                           CONCAT(u.Nombre, ' ', u.Apellido) AS usuarioPropietario,
+                                           u.idUsuario AS idUsuarioPropietario,
+                                           DATE_FORMAT(o.FechaCreacion, '%d-%m-%Y') AS fechaCreacion,
+                                           p.Metodo AS metodoPago,
+                                           CASE
+                                               WHEN o.AgentCompra_idUsuario IS NULL THEN 'No asignado'
+                                               ELSE a.Nombre
+                                           END AS agenteCompra,
+                                           COALESCE(a.idUsuario, 0) AS idAgenteCompra,  -- Aquí usamos COALESCE para devolver 0 si es NULL
+                                           eo.Nombre AS estadoPedido,
+                                           o.idOrden AS idOrden
+                                       FROM
+                                           Orden o
+                                       JOIN
+                                           Usuario u ON o.Usuario_idUsuario = u.idUsuario
+                                       LEFT JOIN
+                                        Pago p ON p.Orden_idOrden = o.idOrden
+                                       LEFT JOIN
+                                           Usuario a ON a.idUsuario = o.AgentCompra_idUsuario
+                                       LEFT JOIN
+                                           EstadoOrden eo ON eo.idEstadoOrden = o.EstadoOrden_idEstadoOrden
+                                       WHERE
+                                           eo.Nombre = 'EN VALIDACION' AND o.isDeleted = 0  -- Solo mostrar órdenes que no han sido eliminadas
+                                           and a.idUsuario = ?1
+                                       ORDER BY
+                                           o.FechaCreacion DESC;
 """, nativeQuery = true)
-    List<Object[]> getOrderDetailsAsDtoNativePendiente();
+    List<Object[]> getOrderDetailsAsDtoNativePendiente(Integer idOrden);
 
 
     //Órdenes en proceso
     @Query(value = """
     SELECT
-        CONCAT(u.Nombre, ' ', u.Apellido) AS usuarioPropietario,
-        u.idUsuario AS idUsuarioPropietario,
-        DATE_FORMAT(o.FechaCreacion, '%d-%m-%Y') AS fechaCreacion,
-        p.Metodo AS metodoPago,
-        CASE
-            WHEN o.AgentCompra_idUsuario IS NULL THEN 'No asignado'
-            ELSE a.Nombre
-        END AS agenteCompra,
-        COALESCE(a.idUsuario, 0) AS idAgenteCompra,
-        eo.Nombre AS estadoPedido,
-        o.idOrden AS idOrden
-    FROM
-        orden o
-    JOIN
-        usuario u ON o.Usuario_idUsuario = u.idUsuario
-    LEFT JOIN
-        pago p ON p.Orden_idOrden = o.idOrden
-    LEFT JOIN
-        usuario a ON a.idUsuario = o.AgentCompra_idUsuario
-    LEFT JOIN
-        estadoordenagente eo ON eo.idEstadoOrdenAgente = o.EstadoOrdenAgente_idEstadoOrdenAgente
-    WHERE
-        eo.Nombre = 'En proceso' AND o.isDeleted = 0  -- Filtra por estado 'En proceso' y solo no eliminadas
-    ORDER BY
-        o.FechaCreacion DESC;
+                                           CONCAT(u.Nombre, ' ', u.Apellido) AS usuarioPropietario,
+                                           u.idUsuario AS idUsuarioPropietario,
+                                           DATE_FORMAT(o.FechaCreacion, '%d-%m-%Y') AS fechaCreacion,
+                                           p.Metodo AS metodoPago,
+                                           CASE
+                                               WHEN o.AgentCompra_idUsuario IS NULL THEN 'No asignado'
+                                               ELSE a.Nombre
+                                           END AS agenteCompra,
+                                           COALESCE(a.idUsuario, 0) AS idAgenteCompra,  -- Aquí usamos COALESCE para devolver 0 si es NULL
+                                           eo.Nombre AS estadoPedido,
+                                           o.idOrden AS idOrden
+                                       FROM
+                                           Orden o
+                                       JOIN
+                                           Usuario u ON o.Usuario_idUsuario = u.idUsuario
+                                       LEFT JOIN
+                                        Pago p ON p.Orden_idOrden = o.idOrden
+                                       LEFT JOIN
+                                           Usuario a ON a.idUsuario = o.AgentCompra_idUsuario
+                                       LEFT JOIN
+                                           EstadoOrden eo ON eo.idEstadoOrden = o.EstadoOrden_idEstadoOrden
+                                       WHERE
+                                           eo.Nombre IN ('EN PROCESO','ARRIBO AL PAIS','EN ADUANAS','EN RUTA') AND o.isDeleted = 0  -- Solo mostrar órdenes que no han sido eliminadas
+                                           and a.idUsuario = ?1
+                                       ORDER BY
+                                           o.FechaCreacion DESC;
 """, nativeQuery = true)
-    List<Object[]> getOrderDetailsAsDtoNativeEnProceso();
+    List<Object[]> getOrderDetailsAsDtoNativeEnProceso(Integer idOrden);
 
 
     //Órdenes en resueltas
     @Query(value = """
     SELECT
-        CONCAT(u.Nombre, ' ', u.Apellido) AS usuarioPropietario,
-        u.idUsuario AS idUsuarioPropietario,
-        DATE_FORMAT(o.FechaCreacion, '%d-%m-%Y') AS fechaCreacion,
-        p.Metodo AS metodoPago,
-        CASE
-            WHEN o.AgentCompra_idUsuario IS NULL THEN 'No asignado'
-            ELSE a.Nombre
-        END AS agenteCompra,
-        COALESCE(a.idUsuario, 0) AS idAgenteCompra,
-        eo.Nombre AS estadoPedido,
-        o.idOrden AS idOrden
-    FROM
-        orden o
-    JOIN
-        usuario u ON o.Usuario_idUsuario = u.idUsuario
-    LEFT JOIN
-        pago p ON p.Orden_idOrden = o.idOrden
-    LEFT JOIN
-        usuario a ON a.idUsuario = o.AgentCompra_idUsuario
-    LEFT JOIN
-        estadoordenagente eo ON eo.idEstadoOrdenAgente = o.EstadoOrdenAgente_idEstadoOrdenAgente
-    WHERE
-        eo.Nombre = 'Resuelto' AND o.isDeleted = 0  -- Filtra por estado 'Resuelto' y solo no eliminadas
-    ORDER BY
-        o.FechaCreacion DESC;
+                                           CONCAT(u.Nombre, ' ', u.Apellido) AS usuarioPropietario,
+                                           u.idUsuario AS idUsuarioPropietario,
+                                           DATE_FORMAT(o.FechaCreacion, '%d-%m-%Y') AS fechaCreacion,
+                                           p.Metodo AS metodoPago,
+                                           CASE
+                                               WHEN o.AgentCompra_idUsuario IS NULL THEN 'No asignado'
+                                               ELSE a.Nombre
+                                           END AS agenteCompra,
+                                           COALESCE(a.idUsuario, 0) AS idAgenteCompra,  -- Aquí usamos COALESCE para devolver 0 si es NULL
+                                           eo.Nombre AS estadoPedido,
+                                           o.idOrden AS idOrden
+                                       FROM
+                                           Orden o
+                                       JOIN
+                                           Usuario u ON o.Usuario_idUsuario = u.idUsuario
+                                       LEFT JOIN
+                                        Pago p ON p.Orden_idOrden = o.idOrden
+                                       LEFT JOIN
+                                           Usuario a ON a.idUsuario = o.AgentCompra_idUsuario
+                                       LEFT JOIN
+                                           EstadoOrden eo ON eo.idEstadoOrden = o.EstadoOrden_idEstadoOrden
+                                       WHERE
+                                           eo.Nombre = 'RECIBIDO' AND o.isDeleted = 0  -- Solo mostrar órdenes que no han sido eliminadas
+                                           and a.idUsuario = ?1
+                                       ORDER BY
+                                           o.FechaCreacion DESC;
 """, nativeQuery = true)
-    List<Object[]> getOrderDetailsAsDtoNativeResuelto();
+    List<Object[]> getOrderDetailsAsDtoNativeResuelto(Integer idOrden);
 
 
     //Lista de orden por fecha de creación y fecha de abordo
@@ -191,5 +201,5 @@ public interface OrdenRepository extends JpaRepository<Orden, Integer> {
 
     @Query("SELECT f FROM Orden f WHERE (f.usuarioIdusuario.id = :idUsuario)")
     List<Orden> finByUsuario(@Param("idUsuario") Integer idUsuario);
-*/
+
 }

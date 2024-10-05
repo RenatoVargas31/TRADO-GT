@@ -10,7 +10,7 @@ import java.util.List;
 
 @Repository
 public interface ProductosRepository extends JpaRepository<Producto, Integer> {
-/*
+
     @Query(value = "SELECT \n" +
             "    p.nombre AS nombre_producto,\n" +
             "    c.nombre AS categoria,\n" +
@@ -28,17 +28,20 @@ public interface ProductosRepository extends JpaRepository<Producto, Integer> {
     List<Object[]> findOrdersByRepo();
 
 
-    @Query(value = "SELECT p.idProducto AS idProducto, " +  // Agregamos el idProducto aquí
-            "p.Nombre AS Producto, " +
-            "p.Precio AS Precio, " +
-            "pzo.Cantidad AS Cantidad, " +
-            "pz.CostoEnvio AS CostoEnvio " +
-            "FROM producto p " +
-            "JOIN productoenzona pz ON p.idProducto = pz.Producto_idProducto " +
-            "JOIN productoenzonaenorden pzo ON pz.Producto_idProducto = pzo.ProductoEnZona_Producto_idProducto " +
-            "AND pz.Zona_idZona = pzo.ProductoEnZona_Zona_idZona " +
-            "JOIN orden o ON pzo.Orden_idOrden = o.idOrden " +
-            "WHERE o.idOrden = :idOrden", nativeQuery = true)
+    @Query(value = """
+
+            SELECT p.idProducto AS idProducto,\s
+                p.Nombre AS Producto,\s
+                p.Precio AS Precio,\s
+                pzo.Cantidad AS Cantidad,\s
+                pz.CostoEnvio AS CostoEnvio\s
+                FROM Producto p\s
+                JOIN ProductoEnZona pz ON p.idProducto = pz.Producto_idProducto\s
+                JOIN ProductoEnZonaEnOrden pzo ON pz.Producto_idProducto = pzo.ProductoEnZona_Producto_idProducto\s
+                AND pz.Zona_idZona = pzo.ProductoEnZona_Zona_idZona\s
+                JOIN Orden o ON pzo.Orden_idOrden = o.idOrden\s
+                WHERE o.idOrden = ?1;
+    """, nativeQuery = true)
     List<Object[]> findProductDetailsByOrderId(Integer idOrden);
-*/
+
 }

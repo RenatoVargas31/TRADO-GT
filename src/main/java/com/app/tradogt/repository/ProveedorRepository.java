@@ -37,18 +37,20 @@ public interface ProveedorRepository extends JpaRepository<Proveedor, Integer> {
     void deleteProveedor(Integer id);
     //</editor-fold>
     //</editor-fold>
-    /*
-    @Query(value = "SELECT prov.idProveedor AS idProveedor, " +
-            "prov.Nombre AS Proveedor, " +
-            "prov.Telefono AS Telefono, " +
-            "prov.Tienda AS Tienda " +
-            "FROM proveedor prov " +
-            "JOIN producto p ON prov.idProveedor = p.Proveedor_idProveedor " +
-            "JOIN productoenzona pz ON p.idProducto = pz.Producto_idProducto " +
-            "JOIN productoenzonaenorden pzo ON pz.Producto_idProducto = pzo.ProductoEnZona_Producto_idProducto " +
-            "AND pz.Zona_idZona = pzo.ProductoEnZona_Zona_idZona " +
-            "JOIN orden o ON pzo.Orden_idOrden = o.idOrden " +
-            "WHERE o.idOrden = :idOrden", nativeQuery = true)
+
+    @Query(value = """
+        SELECT prov.idProveedor AS idProveedor,\s
+                    prov.Nombre AS Proveedor,\s
+                    prov.Telefono AS Telefono,\s
+                    prov.Tienda AS Tienda\s
+                    FROM Proveedor prov\s
+                    JOIN Producto p ON prov.idProveedor = p.Proveedor_idProveedor\s
+                    JOIN ProductoEnZona pz ON p.idProducto = pz.Producto_idProducto\s
+                    JOIN ProductoEnZonaEnOrden pzo ON pz.Producto_idProducto = pzo.ProductoEnZona_Producto_idProducto\s
+                    AND pz.Zona_idZona = pzo.ProductoEnZona_Zona_idZona\s
+                    JOIN Orden o ON pzo.Orden_idOrden = o.idOrden\s
+                    WHERE o.idOrden = ?1;
+    """, nativeQuery = true)
     List<Object[]> findProveedorByOrderId(Integer idOrden);
-    */
+
 }
