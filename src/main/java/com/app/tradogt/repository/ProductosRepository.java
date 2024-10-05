@@ -10,7 +10,7 @@ import java.util.List;
 
 @Repository
 public interface ProductosRepository extends JpaRepository<Producto, Integer> {
-
+/*
     @Query(value = "SELECT \n" +
             "    p.nombre AS nombre_producto,\n" +
             "    c.nombre AS categoria,\n" +
@@ -40,5 +40,5 @@ public interface ProductosRepository extends JpaRepository<Producto, Integer> {
             "JOIN orden o ON pzo.Orden_idOrden = o.idOrden " +
             "WHERE o.idOrden = :idOrden", nativeQuery = true)
     List<Object[]> findProductDetailsByOrderId(Integer idOrden);
-
+*/
 }

@@ -48,4 +48,9 @@ public class Proveedor {
     @Column(name = "isDeleted", nullable = false)
     private Byte isDeleted = 0;
 
+    @Size(max = 45)
+    @NotNull
+    @Column(name = "apellido", nullable = false, length = 45)
+    private String apellido;
+
 }

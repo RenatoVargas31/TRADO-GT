@@ -26,6 +26,7 @@ import java.util.stream.Collectors;
 @Controller
 @RequestMapping("/agente")
 public class AgenteComprasController {
+    /*
     final UsuarioRepository usuarioRepository;
     final OrdenRepository ordenRepository;
     private final ProveedorRepository proveedorRepository;
@@ -326,5 +327,5 @@ public class AgenteComprasController {
     public String showFaq() {
         return "Agente/faq-Agente";
     }
-
+*/
 }

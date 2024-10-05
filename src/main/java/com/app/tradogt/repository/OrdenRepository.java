@@ -11,7 +11,7 @@ import java.util.List;
 
 @Repository
 public interface OrdenRepository extends JpaRepository<Orden, Integer> {
-
+/*
     //Órdenes totales (no eliminadas)
     @Query(value = """
         SELECT
@@ -191,5 +191,5 @@ public interface OrdenRepository extends JpaRepository<Orden, Integer> {
 
     @Query("SELECT f FROM Orden f WHERE (f.usuarioIdusuario.id = :idUsuario)")
     List<Orden> finByUsuario(@Param("idUsuario") Integer idUsuario);
-
+*/
 }

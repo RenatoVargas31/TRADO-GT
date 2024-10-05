@@ -66,7 +66,7 @@
                                                 <div class="col-md-6">
                                                     <div class="mb-3">
                                                         <label for="nombreUsuario" class="form-label">Nombres</label>
-                                                        <input type="text" class="form-control" id="nombreUsuario" name="nombreUsuario" th:field="*{nombreUsuario}" placeholder="Ingrese sus nombres" disabled style="background-color: #e9ecef;" required>
+                                                        <input type="text" class="form-control" id="nombreUsuario" name="nombre" th:field="*{nombre}" placeholder="Ingrese sus nombres" disabled style="background-color: #e9ecef;" required>
                                                         <div class="valid-feedback">
                                                             Looks good!
                                                         </div>
@@ -75,8 +75,8 @@
                                                 <div class="col-md-6">
                                                     <div class="mb-3">
                                                         <label for="apellidoUsuario" class="form-label">Apellidos</label>
-                                                        <input type="text" class="form-control" id="apellidoUsuario" name="apellidoUsuario"
-                                                               th:field="*{apellidoUsuario}" placeholder="Ingrese sus apellidos" disabled style="background-color: #e9ecef;" required>
+                                                        <input type="text" class="form-control" id="apellidoUsuario" name="apellido"
+                                                               th:field="*{apellido}" placeholder="Ingrese sus apellidos" disabled style="background-color: #e9ecef;" required>
                                                         <div class="valid-feedback">
                                                             Looks good!
                                                         </div>
@@ -87,8 +87,8 @@
                                                 <div class="col-md-4">
                                                     <div class="mb-3">
                                                         <label for="dniUsuario" class="form-label">DNI</label>
-                                                        <input type="text" class="form-control" id="dniUsuario" name="dniUsuario"
-                                                               th:field="*{dniUsuario}" placeholder="Ingrese su DNI" disabled style="background-color: #e9ecef;" required>
+                                                        <input type="text" class="form-control" id="dniUsuario" name="dni"
+                                                               th:field="*{dni}" placeholder="Ingrese su DNI" disabled style="background-color: #e9ecef;" required>
                                                         <div class="valid-feedback">
                                                             Looks good!
                                                         </div>
@@ -97,8 +97,8 @@
                                                 <div class="col-md-4">
                                                     <div class="mb-3">
                                                         <label for="telefonoUsuario" class="form-label">Teléfono</label>
-                                                        <input type="tel" class="form-control" id="telefonoUsuario" name="telefonoUsuario"
-                                                               th:field="*{telefonoUsuario}" placeholder="Ingrese su teléfono" required>
+                                                        <input type="tel" class="form-control" id="telefonoUsuario" name="telefono"
+                                                               th:field="*{telefono}" placeholder="Ingrese su teléfono" required>
                                                         <div class="valid-feedback">
                                                             Looks good!
                                                         </div>
@@ -118,8 +118,8 @@
                                                 <div class="col-md-6">
                                                     <div class="mb-3">
                                                         <label for="correoUsuario" class="form-label">Correo electrónico</label>
-                                                        <input type="email" class="form-control" id="correoUsuario" name="correoUsuario"
-                                                               th:field="*{correoUsuario}" placeholder="Ingrese su correo electrónico" required>
+                                                        <input type="email" class="form-control" id="correoUsuario" name="correo"
+                                                               th:field="*{correo}" placeholder="Ingrese su correo electrónico" required>
                                                         <div class="valid-feedback">
                                                             Looks good!
                                                         </div>
@@ -127,23 +127,23 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="mb-3">
-                                                        <label for="zonasIdzona" class="form-label">Zona</label>
-                                                        <select class="form-select" id="zonasIdzona" name="zonasIdzona" required>
+                                                        <label for="zonaIdzona" class="form-label">Zona</label>
+                                                        <select class="form-select" id="zonaIdzona" name="zonaIdzona" required>
                                                             <option disabled value="">Seleccione una zona</option>
-                                                            <option th:each="zona : ${zonas}" th:value="${zona.id}" th:text="${zona.nameZona}" th:selected="${zona.id} == ${usuario.zonasIdzona.id}"></option>
+                                                            <option th:each="zona : ${zonas}" th:value="${zona.id}" th:text="${zona.nombre}" th:selected="${zona.id} == ${usuario.zonaIdzona.id}"></option>
                                                         </select>
                                                         <div class="invalid-feedback">
                                                             Please select a valid state.
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <input type="hidden" name="rolesIdroles" th:value="${rol.id}" />
-                                                <input type="hidden" name="isActive" th:value="${usuario.isActive}" />
+                                                <input type="hidden" name="rolIdrol" th:value="${rol.id}" />
+                                                <input type="hidden" name="isActivated" th:value="${usuario.isActivated}" />
                                                 <input type="hidden" name="isAccepted" th:value="${usuario.isAccepted}" />
                                             </div>
                                             <div>
                                                 <button class="btn btn-info" type="submit">Guardar</button>
-                                                <a th:href="${usuario.isActive == 1 ? '/superadmin/admZonalActivos' : '/superadmin/admZonalInactivos'}" class="btn btn-danger">Cancelar</a>
+                                                <a th:href="${usuario.isActivated == 1 ? '/superadmin/admZonalActivos' : '/superadmin/admZonalInactivos'}" class="btn btn-danger">Cancelar</a>
                                             </div>
                                         </form>
                                     </div>

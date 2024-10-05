@@ -14,20 +14,20 @@ import java.util.List;
 public interface ProveedorRepository extends JpaRepository<Proveedor, Integer> {
 
 
-    //<editor-fold desc="Buscar por Enabled">
+    //<editor-fold desc="Buscar por isDeleted">
     List<Proveedor> findAllByIsDeleted(Byte isDeleted);
     //</editor-fold>
 
     //<editor-fold desc="Buscar por ID">
     @Query("SELECT p FROM Proveedor p WHERE p.id = :id")
-    Proveedor findByIdProveedor(Integer id);
+    Proveedor buscarProveedorPorID(Integer id);
     //</editor-fold>
 
     //<editor-fold desc="Actualizar Proveedor">
     @Modifying
     @Transactional
-    @Query("UPDATE Proveedor p SET p.telefono = :telefonoProveedor, p.tienda = :nombreTienda WHERE p.id = :id")
-    void updateProveedor(String telefonoProveedor, String nombreTienda, Integer id);
+    @Query("UPDATE Proveedor p SET p.telefono = :telefono, p.tienda = :tienda WHERE p.id = :id")
+    void updateProveedor(String telefono, String tienda, Integer id);
     //</editor-fold>
 
     //<editor-fold desc="Borrar Proveedor">
@@ -37,7 +37,7 @@ public interface ProveedorRepository extends JpaRepository<Proveedor, Integer> {
     void deleteProveedor(Integer id);
     //</editor-fold>
     //</editor-fold>
-
+    /*
     @Query(value = "SELECT prov.idProveedor AS idProveedor, " +
             "prov.Nombre AS Proveedor, " +
             "prov.Telefono AS Telefono, " +
@@ -50,5 +50,5 @@ public interface ProveedorRepository extends JpaRepository<Proveedor, Integer> {
             "JOIN orden o ON pzo.Orden_idOrden = o.idOrden " +
             "WHERE o.idOrden = :idOrden", nativeQuery = true)
     List<Object[]> findProveedorByOrderId(Integer idOrden);
-
+    */
 }

@@ -16,7 +16,7 @@ import java.util.List;
 
 @Repository
 public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
-
+    /*
     @Query("SELECT u FROM Usuario u WHERE u.isActivated = ?1")
     List<Usuario> findByBanned(int activated);
 
@@ -90,8 +90,10 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
             a.idUsuario = :usuarioId
     """, nativeQuery = true)
     List<Object[]> getAgenteDetailsById(@Param("usuarioId") Integer usuarioId);
-
-
+    */
+    //Buscar por ID
+    //Buscar por Rol y activo
+    List<Usuario> findAllByRolIdrolNombreAndIsActivated(String nombre, Byte isActivated);
     /*
 
     //Buscar por id

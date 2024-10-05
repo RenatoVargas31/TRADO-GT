@@ -20,7 +20,7 @@ import java.util.Optional;
 @Controller
 @RequestMapping("/adminzonal")
 public class AdminZonalController {
-
+    /*
     //Reposirotios
     final OrdenRepository ordenRepository;
     final UsuarioRepository usuarioRepository;
@@ -69,7 +69,7 @@ public class AdminZonalController {
         //Actualizar el estado
 
         return "redirect:/adminzonal/reposicionProductos";
-    }*/
+    }
 
     @GetMapping("/faq")
     public String showFaq() {
@@ -90,12 +90,12 @@ public class AdminZonalController {
 
         List<Object[]> agentes = usuarioRepository.getAgenteDetailsNative();
         model.addAttribute("agentes", agentes);
-        /*
+
         List<Usuario> usuarios = usuarioRepository.findAllById();
         model.addAttribute("usuarios", usuarios);
 
 
-         */
+
         return "AdminZonal/gestionAgente-AdminZonal"; }
 
     @GetMapping("/nuevoAgente")
@@ -125,5 +125,5 @@ public class AdminZonalController {
     }
 
 
-
+*/
 }

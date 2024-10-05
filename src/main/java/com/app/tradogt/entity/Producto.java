@@ -98,4 +98,9 @@ public class Producto {
     @Column(name = "profundidad", length = 45)
     private String profundidad;
 
+    @Size(max = 45)
+    @NotNull
+    @Column(name = "codigo", nullable = false, length = 45)
+    private String codigo;
+
 }

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/superadmin")
@@ -49,7 +50,7 @@ public class SuperAdminController {
         model.addAttribute("importadores", importadores);
         return "SuperAdmin/inicio-SAdmin";
     }
-
+    */
     @GetMapping("/dashboard")
     public String viewDashboard() {
         return "SuperAdmin/dashboard-SAdmin";
@@ -65,13 +66,13 @@ public class SuperAdminController {
         //Enviar lista de zonas
         model.addAttribute("zonas", zonaRepository.findAll());
         //Enviar rol de id 2 (Administrador Zonal)
-        model.addAttribute("rol", rolRepository.findById(2).orElseThrow());
+        model.addAttribute("rol", rolRepository.findByNombre("Administrador Zonal"));
         return "SuperAdmin/admZonalNuevo-SAdmin";
     }
     @PostMapping("/admZonalNuevo")
     public String viewAdmZonalNuevoForm(@ModelAttribute Usuario usuario) {
         //Asignar una contraseña por random de 10 dígitos y que combine número y letras
-        usuario.setContrasenaUsuario(PasswordGenerator.generateRandomPassword());
+        usuario.setContrasena(PasswordGenerator.generateRandomPassword());
         //Guardar usuario
         usuarioRepository.save(usuario);
         return "redirect:/superadmin/admZonalNuevoForm";
@@ -81,21 +82,26 @@ public class SuperAdminController {
     //<editor-fold desc="Editar Administrador Zonal">
     @PostMapping("/admZonalEditarForm")
     public String viewAdmZonalEditarForm(Model model, Integer id) {
-        //Buscar proveedor por id
-        Usuario usuario = usuarioRepository.findByIdUsuario(id);
-        //Enviar a la vista
+        // Buscar proveedor por id y obtener el usuario directamente
+        Usuario usuario = usuarioRepository.findById(id).get();
+        // Enviar a la vista
         model.addAttribute("usuario", usuario);
-        //Enviar lista de zonas
+        // Enviar lista de zonas
         model.addAttribute("zonas", zonaRepository.findAll());
-        //Enviar rol de id 2 (Administrador Zonal)
-        model.addAttribute("rol", rolRepository.findById(2).orElseThrow());
+        // Enviar rol de id 2 (Administrador Zonal)
+        model.addAttribute("rol", rolRepository.findByNombre("Administrador Zonal"));
         return "SuperAdmin/admZonalEditar-SAdmin";
     }
     @PostMapping("/admZonalEditar")
     public String viewAdmZonalEditar(Usuario usuario) {
-        //Actualizar usuario existente
-        usuarioRepository.updateAdmZonal(usuario.getCorreoUsuario(), usuario.getTelefonoUsuario(), usuario.getZonasIdzona().getId(), usuario.getId());
-        if (usuario.getIsActive() == 1) {
+        //Actualizar usuario existente con Optional
+        Usuario usuarioActual = usuarioRepository.findById(usuario.getId()).get();
+        usuarioActual.setCorreo(usuario.getCorreo());
+        usuarioActual.setTelefono(usuario.getTelefono());
+        usuarioActual.setZonaIdzona(usuario.getZonaIdzona());
+        usuarioRepository.save(usuarioActual);
+
+        if (usuario.getIsActivated() == 1) {
             return "redirect:/superadmin/admZonalActivos";
         } else {
             return "redirect:/superadmin/admZonalInactivos";
@@ -107,7 +113,7 @@ public class SuperAdminController {
     @GetMapping("/admZonalActivos")
     //Listar usuarios que tengan id rol 2 (Administrador Zonal) y isActivo 1
     public String viewAdmZonalActivos(Model model) {
-        List<Usuario> usuarios = usuarioRepository.findAllByRolesIdrolesIdAndIsActive(2, (byte) 1);
+        List<Usuario> usuarios = usuarioRepository.findAllByRolIdrolNombreAndIsActivated("Administrador Zonal", (byte) 1);
         model.addAttribute("usuarios", usuarios);
         return "SuperAdmin/admZonalActivos-SAdmin";
     }
@@ -115,7 +121,7 @@ public class SuperAdminController {
     @GetMapping("/admZonalInactivos")
     public String viewAdmZonalInactivos(Model model) {
         //Listar usuarios que tengan id rol 2 (Administrador Zonal) y isActivo 0
-        List<Usuario> usuarios = usuarioRepository.findAllByRolesIdrolesIdAndIsActive(2, (byte) 0);
+        List<Usuario> usuarios = usuarioRepository.findAllByRolIdrolNombreAndIsActivated("Administrador Zonal", (byte) 0);
         model.addAttribute("usuarios", usuarios);
         return "SuperAdmin/admZonalInactivos-SAdmin";
     }
@@ -123,20 +129,28 @@ public class SuperAdminController {
     //<editor-fold desc="Baneo y desbaneo de AdministradorZonal">
     @GetMapping("/admZonalBorrar")
     public String viewAdmZonalBorrar(Integer id) {
-        //Borrado lógico del proveedor
-        usuarioRepository.deleteUsuario(id);
+        // Retrieve the user by id
+        Usuario usuario = usuarioRepository.findById(id).get();
+        // Set isActivated to 0 for logical deletion
+        usuario.setIsActivated((byte) 0);
+        // Save the updated user
+        usuarioRepository.save(usuario);
         return "redirect:/superadmin/admZonalActivos";
     }
     @GetMapping("/admZonalReactivar")
     public String viewAdmZonalReactivar(Integer id) {
-        //Reactivar usuario
-        usuarioRepository.reactivateUsuario(id);
+        // Retrieve the user by id
+        Usuario usuario = usuarioRepository.findById(id).get();
+        // Set isActivated to 0 for logical deletion
+        usuario.setIsActivated((byte) 1);
+        // Save the updated user
+        usuarioRepository.save(usuario);
         return "redirect:/superadmin/admZonalInactivos";
     }
     //</editor-fold>
     //</editor-fold>
 
-
+    /*
     //<editor-fold desc="CRUD Agente de Compra (RUD - falta)">
     @PostMapping("/agentCompraEditarForm")
     public String viewAgentCompraEditarForm(Model model, Integer id) {
@@ -289,7 +303,7 @@ public class SuperAdminController {
         return "redirect:/superadmin/importadorSolicitud";
     }
     //</editor-fold>
-
+    */
     //<editor-fold desc="CRUD Productos (Completo - falta)">
     @GetMapping("/productoNuevo")
     public String viewProductoNuevo() {
@@ -304,7 +318,7 @@ public class SuperAdminController {
         return "SuperAdmin/productoLista-SAdmin";
     }
     //</editor-fold>
-    */
+
     //<editor-fold desc="CRUD Proveedores (Completo - terminado)">
     //<editor-fold desc="Nuevo Proveedor">
     @GetMapping("/proveedorNuevoForm")
@@ -334,7 +348,7 @@ public class SuperAdminController {
     @PostMapping("/proveedorEditarForm")
     public String viewProveedorEditarForm(Model model, Integer id) {
         //Buscar proveedor por id
-        Proveedor proveedor = proveedorRepository.findByIdProveedor(id);
+        Proveedor proveedor = proveedorRepository.buscarProveedorPorID(id);
         //Enviar a la vista
         model.addAttribute("proveedor", proveedor);
         return "SuperAdmin/proveedorEditar-SAdmin";
