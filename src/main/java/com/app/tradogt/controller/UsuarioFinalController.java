@@ -1,16 +1,19 @@
 package com.app.tradogt.controller;
 
 
+import com.app.tradogt.entity.Orden;
+import com.app.tradogt.entity.ProductoEnZonaEnOrden;
+import com.app.tradogt.entity.Usuario;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 import com.app.tradogt.repository.*;
 import com.app.tradogt.entity.Producto;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @Controller
@@ -18,9 +21,16 @@ import java.util.List;
 public class UsuarioFinalController {
 
     final ProductosRepository productosRepository;
+    final OrdenRepository ordenRepository;
+    final UsuarioRepository usuarioRepository;
+    final ProductoEnZonaEnOrdenRepository productoEnZonaEnOrdenRepository;
 
-    public UsuarioFinalController(ProductosRepository productosRepository) {
+
+    public UsuarioFinalController(ProductosRepository productosRepository, OrdenRepository ordenRepository, UsuarioRepository usuarioRepository, ProductoEnZonaEnOrdenRepository productoEnZonaEnOrdenRepository1, ProductoEnZonaEnOrdenRepository productoEnZonaEnOrdenRepository) {
         this.productosRepository = productosRepository;
+        this.ordenRepository = ordenRepository;
+        this.usuarioRepository = usuarioRepository;
+        this.productoEnZonaEnOrdenRepository = productoEnZonaEnOrdenRepository;
     }
 
     @GetMapping("/inicio")
@@ -30,9 +40,42 @@ public class UsuarioFinalController {
 
     @GetMapping("/misPedidos")
     public String misPedidos(Model model) {
-        /*List<Producto> productos = productosRepository.findAll();
-        model.addAttribute("productos", productos); */
+        // Imprimir los elementos de la lista
+        List<Orden> misOrdenes = ordenRepository.findAllByEsCarritoAndIsDeleted(0,0);
+        model.addAttribute("misOrdenes", misOrdenes);
         return "Usuario/listaOrdenes";
+    }
+    //Borrar una orden
+    @GetMapping("/deleteOrden")
+    public String deleteOrden(Model model, @RequestParam("codigo") String codigo, RedirectAttributes attr) {
+
+
+        Optional<Orden> orden = ordenRepository.findByCodigo(codigo);
+
+        if (orden.isPresent()) {
+            Orden ord = orden.get();
+            ord.setIsDeleted((byte) 1);
+            ordenRepository.save(ord);
+            String correo = ord.getUsuarioIdusuario().getCorreo();
+            attr.addFlashAttribute("mensaje", "Orden eliminado: se a realizar el rembolso al " + correo);
+        }else {
+            attr.addFlashAttribute("error", "Orden no encontrado");
+        }
+        return "redirect:/usuario/misPedidos";
+    }
+    //Guardar la calificación del Agente de Compra
+    @PostMapping("/calificarAgente")
+    public String saveCalificacion(@RequestParam("ordenCodigo") String ordenCodigo,
+                                   @RequestParam("valoracionAgente") int valoracionAgente,RedirectAttributes attr){
+
+        Optional<Orden> orden = ordenRepository.findByCodigo(ordenCodigo);
+        if (orden.isPresent()){
+            Orden ord = orden.get();
+            ord.setValoracionAgente((byte) valoracionAgente);
+            ordenRepository.save(ord);
+            attr.addFlashAttribute("msg", "¡Valoración guardado correctamente!");
+        }
+        return "redirect:/usuario/misPedidos";
     }
 
     @GetMapping("/perfil")
@@ -43,8 +86,19 @@ public class UsuarioFinalController {
         return "Usuario/formOrdenes";
     }
 
-    @GetMapping("/tracking")
-    public String tracking() {
+    @GetMapping("/tracking/{id}")
+    public String tracking(@PathVariable("id") int id, Model model) {
+
+        //Lista de todos los productos de mi orden
+        List<ProductoEnZonaEnOrden> listaProductosEnOrden = productoEnZonaEnOrdenRepository.findByordenIdordenId((Integer) id);
+
+        //Buscar Usuario :'v
+        Optional<Orden> orden = ordenRepository.findById(id);
+        if (orden.isPresent()) {
+            model.addAttribute("orden", orden.get());
+            model.addAttribute("listaProductosEnOrden", listaProductosEnOrden);
+        }
+
         return "Usuario/trackingOrd";
     }
 

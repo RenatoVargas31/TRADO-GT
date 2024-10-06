@@ -12,35 +12,6 @@
 
     <!-- App favicon -->
     <style>
-        .chat-container {
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-        }
-
-        .chat-box {
-            flex: 1;
-            overflow-y: auto;
-            margin-bottom: 10px;
-        }
-
-        .chat-message {
-            padding: 10px;
-            border-bottom: 1px solid #ddd;
-        }
-
-        .message-header {
-            font-weight: bold;
-        }
-
-        .message-body {
-            margin-top: 5px;
-        }
-
-        .message-input {
-            display: flex;
-            flex-direction: column;
-        }
 
         .message-input input {
             border-radius: 0;
@@ -100,6 +71,7 @@
                                 <div class="col-12">
                                     <div class="card">
                                         <div class="card-body">
+
                                             <!-- Título Principal -->
                                             <h4 class="mb-4">Orden de compra</h4>
 
@@ -107,8 +79,8 @@
                                             <div class="row mb-4">
                                                 <div class="col-md-6 col-sm-12">
                                                     <h5>Datos personales</h5>
-                                                    <p><strong>Nombre de comprador:</strong> Juan Pérez</p>
-                                                    <p><strong>Número DNI:</strong> 12345678</p>
+                                                    <p><strong>Nombre de comprador: </strong><span th:text="${orden.usuarioIdusuario.nombre} + ' ' + ${orden.usuarioIdusuario.apellido}"></span></p>
+                                                    <p><strong>Número DNI: </strong> <span th:text="${orden.usuarioIdusuario.dni}"></span></p>
                                                     <p><strong>Domicilio:</strong> Av. Siempre Viva 742</p>
                                                 </div>
                                                 <div class="col-md-6 col-sm-12">
@@ -141,43 +113,19 @@
                                             <div class="row mb-4">
                                                 <div class="col-md-12 col-sm-12">
                                                     <h5>Productos</h5>
-                                                    <ul class="list-group list-group-flush">
+                                                    <ul class="list-group list-group-flush" >
                                                         <!-- Fila de encabezado para la lista de productos -->
                                                         <li class="list-group-item d-flex justify-content-between align-items-center bg-light font-weight-bold">
-                                                            <div class="col-md-2">Cantidad</div>
-                                                            <div class="col-md-6">Nombre del Producto</div>
-                                                            <div class="col-md-2">Costo</div>
+                                                            <div class="col-md-2" >Cantidad</div>
+                                                            <div class="col-md-6" >Nombre del producto</div>
+                                                            <div class="col-md-2" >Costo unitario</div>
                                                             <div class="col-md-2"></div> <!-- Espacio reservado para el botón de acción -->
                                                         </li>
                                                         <!-- Fila de productos con botón -->
-                                                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                            <div class="col-md-2">20</div>
-                                                            <div class="col-md-6">Poleras Celine</div>
-                                                            <div class="col-md-2">$480</div>
-                                                            <div class="col-md-2">
-                                                                <a th:href="@{/usuario/nuevaReseña}" type="button" class="btn btn-sm btn-outline-primary">Reseña</a>
-                                                            </div>
-                                                        </li>
-                                                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                            <div class="col-md-2">20</div>
-                                                            <div class="col-md-6">Poleras Celine</div>
-                                                            <div class="col-md-2">$480</div>
-                                                            <div class="col-md-2">
-                                                                <a th:href="@{/usuario/nuevaReseña}" type="button" class="btn btn-sm btn-outline-primary">Reseña</a>
-                                                            </div>
-                                                        </li>
-                                                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                            <div class="col-md-2">20</div>
-                                                            <div class="col-md-6">Poleras Celine</div>
-                                                            <div class="col-md-2">$480</div>
-                                                            <div class="col-md-2">
-                                                                <a th:href="@{/usuario/nuevaReseña}" type="button" class="btn btn-sm btn-outline-primary">Reseña</a>
-                                                            </div>
-                                                        </li>
-                                                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                            <div class="col-md-2">20</div>
-                                                            <div class="col-md-6">Poleras Celine</div>
-                                                            <div class="col-md-2">$480</div>
+                                                        <li class="list-group-item d-flex justify-content-between align-items-center" th:each="producto : ${listaProductosEnOrden}">
+                                                            <div class="col-md-2" th:text="${producto.productoEnZona.cantidad}"></div>
+                                                            <div class="col-md-6" th:text="${producto.productoEnZona.productoIdproducto.nombre}"></div>
+                                                            <div class="col-md-2" th:text="'S/ ' + ${producto.productoEnZona.productoIdproducto.precio}"></div>
                                                             <div class="col-md-2">
                                                                 <a th:href="@{/usuario/nuevaReseña}" type="button" class="btn btn-sm btn-outline-primary">Reseña</a>
                                                             </div>

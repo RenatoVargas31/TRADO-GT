@@ -1,13 +1,13 @@
 <!doctype html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 
-    
+
 <!-- Mirrored from themesdesign.in/nazox/layouts/ecommerce-orders.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 30 Aug 2024 19:31:25 GMT -->
 <head>
-        
-        <meta charset="utf-8" />
-        <title>Lista Ordenes</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta charset="utf-8" />
+    <title>Lista Ordenes</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- DataTables -->
     <link th:href="@{../libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css}" rel="stylesheet" type="text/css" />
@@ -24,702 +24,220 @@
 
 </head>
 
-    <body data-sidebar="dark">
-    
-    <!-- <body data-layout="horizontal" data-topbar="dark"> -->
+<body data-sidebar="dark">
 
-        <!-- Begin page -->
-        <div id="layout-wrapper">
+<!-- <body data-layout="horizontal" data-topbar="dark"> -->
+
+<!-- Begin page -->
+<div id="layout-wrapper">
 
 
-            <header th:replace="~{Usuario/fragments/navbar :: nav_bar}"></header>
+    <header th:replace="~{Usuario/fragments/navbar :: nav_bar}"></header>
 
-            <!-- ========== Left Sidebar Start ========== -->
-            <div th:replace="~{Usuario/fragments/sidebar :: side_bar}"></div>
-            <!-- Left Sidebar End -->
+    <!-- ========== Left Sidebar Start ========== -->
+    <div th:replace="~{Usuario/fragments/sidebar :: side_bar}"></div>
+    <!-- Left Sidebar End -->
 
-            
 
-            <!-- ============================================================== -->
-            <!-- Start right Content here -->
-            <!-- ============================================================== -->
-            <div class="main-content">
 
-                <div class="page-content">
-                    <div class="container-fluid">
+    <!-- ============================================================== -->
+    <!-- Start right Content here -->
+    <!-- ============================================================== -->
+    <div class="main-content">
 
-                        <!-- start page title -->
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                                    <h4 class="mb-sm-0">Tu lista de ordenes</h4>
+        <div class="page-content">
+            <div class="container-fluid">
 
-                                    <div class="page-title-right">
-                                        <ol class="breadcrumb m-0">
-                                            <li class="breadcrumb-item"><a href="javascript: void(0);">Inicio</a></li>
-                                            <li class="breadcrumb-item active">Lista de pedidos</li>
-                                        </ol>
-                                    </div>
+                <!-- start page title -->
+                <div class="row">
+                    <div class="col-12">
+                        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                            <h4 class="mb-sm-0">Tu lista de ordenes</h4>
 
-                                </div>
+                            <div class="page-title-right">
+                                <ol class="breadcrumb m-0">
+                                    <li class="breadcrumb-item"><a href="javascript: void(0);">Inicio</a></li>
+                                    <li class="breadcrumb-item active">Lista de pedidos</li>
+                                </ol>
                             </div>
-                        </div>
-                        <!-- end page title -->
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="card">
-                                    <div class="card-body">
 
-                                        <h4 class="card-title">Lista de Pedidos</h4> <p class="card-title-desc"> En esta sección, podrás ver la lista de pedidos que has realizado como usuario.
-                                        Aquí encontrarás información sobre el estado de cada uno de tus pedidos, así como el agente asignado que te asistirá.
-                                        Además, tendrás la opción de eliminar un pedido si este aún no ha sido procesado. </p>
-                                        <table id="datatable-buttons" class="table table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
-                                            <thead>
-                                            <tr>
-                                                <th>Código</th>
-                                                <th>Producto</th>
-                                                <th>Precio</th>
-                                                <th>Cantidad</th>
-                                                <th>Fecha</th>
-                                                <th>Estado</th>
-                                                <th>Agente</th>
-                                                <th>Acción</th>
-                                            </tr>
-                                            </thead>
-
-
-                                            <tbody>
-                                            <tr>
-                                                <td>#NZ1579</td>
-                                                <td>Crocs de Tiburon</td>
-                                                <td>S/. 25</td>
-                                                <td>30</td>
-                                                <td>01/09/2023</td>
-                                                <td>Creado</td>
-                                                <td> -- </td>
-                                                <td>
-                                                    <a href="/usuario/tracking" class="btn btn-primary btn-sm waves-effect waves-light" title="Editar"><i class="ri-eye-fill"></i></a>
-                                                    <a href="/usuario/editOrden" class="btn btn-success btn-sm waves-effect waves-light" title="Editar"><i class="ri-pencil-fill"></i></a>
-                                                    <a href="#" class="btn btn-warning btn-sm waves-effect waves-light" title="Calificar Agente"><i class="ri-star-fill"></i></a>
-                                                    <a  href="javascript:void(0);" class="btn btn-danger btn-sm waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#deleteProductModal"  title="Eliminar" >
-                                                        <i class="ri-indeterminate-circle-fill"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>#NZ1346</td>
-                                                <td>Bomber Jacket</td>
-                                                <td>S/. 45</td>
-                                                <td>30</td>
-                                                <td>01/09/2023</td>
-                                                <td>Creado</td>
-                                                <td>Anna Ramirez</td>
-                                                <td>
-                                                    <a href="/usuario/tracking" class="btn btn-primary btn-sm waves-effect waves-light" title="Editar"><i class="ri-eye-fill"></i></a>
-                                                    <a href="/usuario/editOrden" class="btn btn-success btn-sm waves-effect waves-light" title="Editar"><i class="ri-pencil-fill"></i></a>
-                                                    <a href="#" class="btn btn-warning btn-sm waves-effect waves-light" title="Calificar Agente"><i class="ri-star-fill"></i></a>
-                                                    <a  href="javascript:void(0);" class="btn btn-danger btn-sm waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#deleteProductModal"  title="Eliminar" >
-                                                        <i class="ri-indeterminate-circle-fill"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>#NZ1579</td>
-                                                <td>Crocs de Tiburon</td>
-                                                <td>S/. 25</td>
-                                                <td>30</td>
-                                                <td>01/09/2023</td>
-                                                <td>Procesado</td>
-                                                <td> -- </td>
-                                                <td>
-                                                    <a href="/usuario/tracking" class="btn btn-primary btn-sm waves-effect waves-light" title="Editar"><i class="ri-eye-fill"></i></a>
-                                                    <a href="/usuario/editOrden" class="btn btn-success btn-sm waves-effect waves-light" title="Editar"><i class="ri-pencil-fill"></i></a>
-                                                    <a href="#" class="btn btn-warning btn-sm waves-effect waves-light" title="Calificar Agente"><i class="ri-star-fill"></i></a>
-                                                    <a  href="javascript:void(0);" class="btn btn-danger btn-sm waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#deleteProductModal"  title="Eliminar" >
-                                                        <i class="ri-indeterminate-circle-fill"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>#NZ1579</td>
-                                                <td>Crocs de Tiburon</td>
-                                                <td>S/. 25</td>
-                                                <td>30</td>
-                                                <td>01/09/2023</td>
-                                                <td>Creado</td>
-                                                <td> -- </td>
-                                                <td>
-                                                    <a href="/usuario/tracking" class="btn btn-primary btn-sm waves-effect waves-light" title="Editar"><i class="ri-eye-fill"></i></a>
-                                                    <a href="/usuario/editOrden" class="btn btn-success btn-sm waves-effect waves-light" title="Editar"><i class="ri-pencil-fill"></i></a>
-                                                    <a href="#" class="btn btn-warning btn-sm waves-effect waves-light" title="Calificar Agente"><i class="ri-star-fill"></i></a>
-                                                    <a  href="javascript:void(0);" class="btn btn-danger btn-sm waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#deleteProductModal"  title="Eliminar" >
-                                                        <i class="ri-indeterminate-circle-fill"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>#NZ1346</td>
-                                                <td>Bomber Jacket</td>
-                                                <td>S/. 45</td>
-                                                <td>30</td>
-                                                <td>01/09/2023</td>
-                                                <td>Creado</td>
-                                                <td>Anna Ramirez</td>
-                                                <td>
-                                                    <a href="/usuario/tracking" class="btn btn-primary btn-sm waves-effect waves-light" title="Editar"><i class="ri-eye-fill"></i></a>
-                                                    <a href="/usuario/editOrden" class="btn btn-success btn-sm waves-effect waves-light" title="Editar"><i class="ri-pencil-fill"></i></a>
-                                                    <a href="#" class="btn btn-warning btn-sm waves-effect waves-light" title="Calificar Agente"><i class="ri-star-fill"></i></a>
-                                                    <a  href="javascript:void(0);" class="btn btn-danger btn-sm waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#deleteProductModal"  title="Eliminar" >
-                                                        <i class="ri-indeterminate-circle-fill"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>#NZ1579</td>
-                                                <td>Crocs de Tiburon</td>
-                                                <td>S/. 25</td>
-                                                <td>30</td>
-                                                <td>01/09/2023</td>
-                                                <td>Procesado</td>
-                                                <td> -- </td>
-                                                <td>
-                                                    <a href="/usuario/tracking" class="btn btn-primary btn-sm waves-effect waves-light" title="Editar"><i class="ri-eye-fill"></i></a>
-                                                    <a href="/usuario/editOrden" class="btn btn-success btn-sm waves-effect waves-light" title="Editar"><i class="ri-pencil-fill"></i></a>
-                                                    <a href="#" class="btn btn-warning btn-sm waves-effect waves-light" title="Calificar Agente"><i class="ri-star-fill"></i></a>
-                                                    <a  href="javascript:void(0);" class="btn btn-danger btn-sm waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#deleteProductModal"  title="Eliminar" >
-                                                        <i class="ri-indeterminate-circle-fill"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>#NZ1579</td>
-                                                <td>Crocs de Tiburon</td>
-                                                <td>S/. 25</td>
-                                                <td>30</td>
-                                                <td>01/09/2023</td>
-                                                <td>Creado</td>
-                                                <td> -- </td>
-                                                <td>
-                                                    <a href="/usuario/tracking" class="btn btn-primary btn-sm waves-effect waves-light" title="Ver"><i class="ri-eye-fill"></i></a>
-                                                    <a href="/usuario/editOrden" class="btn btn-success btn-sm waves-effect waves-light" title="Editar"><i class="ri-pencil-fill"></i></a>
-                                                    <a href="#" class="btn btn-warning btn-sm waves-effect waves-light" title="Calificar Agente"><i class="ri-star-fill"></i></a>
-                                                    <a  href="javascript:void(0);" class="btn btn-danger btn-sm waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#deleteProductModal"  title="Eliminar" >
-                                                        <i class="ri-indeterminate-circle-fill"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>#NZ1346</td>
-                                                <td>Bomber Jacket</td>
-                                                <td>S/. 45</td>
-                                                <td>30</td>
-                                                <td>01/09/2023</td>
-                                                <td>Creado</td>
-                                                <td>Anna Ramirez</td>
-                                                <td>
-                                                    <a href="/usuario/tracking" class="btn btn-primary btn-sm waves-effect waves-light" title="Ver"><i class="ri-eye-fill"></i></a>
-                                                    <a href="/usuario/editOrden" class="btn btn-success btn-sm waves-effect waves-light" title="Editar"><i class="ri-pencil-fill"></i></a>
-                                                    <a href="#" class="btn btn-warning btn-sm waves-effect waves-light" title="Calificar Agente"><i class="ri-star-fill"></i></a>
-                                                    <a  href="javascript:void(0);" class="btn btn-danger btn-sm waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#deleteProductModal"  title="Eliminar" >
-                                                        <i class="ri-indeterminate-circle-fill"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>#NZ1579</td>
-                                                <td>Crocs de Tiburon</td>
-                                                <td>S/. 25</td>
-                                                <td>30</td>
-                                                <td>01/09/2023</td>
-                                                <td>Procesado</td>
-                                                <td> -- </td>
-                                                <td>
-                                                    <a href="/usuario/tracking" class="btn btn-primary btn-sm waves-effect waves-light" title="Ver"><i class="ri-eye-fill"></i></a>
-                                                    <a href="/usuario/editOrden" class="btn btn-success btn-sm waves-effect waves-light" title="Editar"><i class="ri-pencil-fill"></i></a>
-                                                    <a href="#" class="btn btn-warning btn-sm waves-effect waves-light" title="Calificar Agente"><i class="ri-star-fill"></i></a>
-                                                    <a  href="javascript:void(0);" class="btn btn-danger btn-sm waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#deleteProductModal"  title="Eliminar" >
-                                                        <i class="ri-indeterminate-circle-fill"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>#NZ1579</td>
-                                                <td>Crocs de Tiburon</td>
-                                                <td>S/. 25</td>
-                                                <td>30</td>
-                                                <td>01/09/2023</td>
-                                                <td>Creado</td>
-                                                <td> -- </td>
-                                                <td>
-                                                    <a href="/usuario/tracking" class="btn btn-primary btn-sm waves-effect waves-light" title="Ver"><i class="ri-eye-fill"></i></a>
-                                                    <a href="/usuario/editOrden" class="btn btn-success btn-sm waves-effect waves-light" title="Editar"><i class="ri-pencil-fill"></i></a>
-                                                    <a href="#" class="btn btn-warning btn-sm waves-effect waves-light" title="Calificar Agente"><i class="ri-star-fill"></i></a>
-                                                    <a  href="javascript:void(0);" class="btn btn-danger btn-sm waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#deleteProductModal"  title="Eliminar" >
-                                                        <i class="ri-indeterminate-circle-fill"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>#NZ1346</td>
-                                                <td>Bomber Jacket</td>
-                                                <td>S/. 45</td>
-                                                <td>30</td>
-                                                <td>01/09/2023</td>
-                                                <td>Creado</td>
-                                                <td>Anna Ramirez</td>
-                                                <td>
-                                                    <a href="/usuario/tracking" class="btn btn-primary btn-sm waves-effect waves-light" title="Ver"><i class="ri-eye-fill"></i></a>
-                                                    <a href="/usuario/editOrden" class="btn btn-success btn-sm waves-effect waves-light" title="Editar"><i class="ri-pencil-fill"></i></a>
-                                                    <a href="#" class="btn btn-warning btn-sm waves-effect waves-light" title="Calificar Agente"><i class="ri-star-fill"></i></a>
-                                                    <a  href="javascript:void(0);" class="btn btn-danger btn-sm waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#deleteProductModal"  title="Eliminar" >
-                                                        <i class="ri-indeterminate-circle-fill"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>#NZ1579</td>
-                                                <td>Crocs de Tiburon</td>
-                                                <td>S/. 25</td>
-                                                <td>30</td>
-                                                <td>01/09/2023</td>
-                                                <td>Procesado</td>
-                                                <td> -- </td>
-                                                <td>
-                                                    <a href="/usuario/tracking" class="btn btn-primary btn-sm waves-effect waves-light" title="Ver"><i class="ri-eye-fill"></i></a>
-                                                    <a href="/usuario/editOrden" class="btn btn-success btn-sm waves-effect waves-light" title="Editar"><i class="ri-pencil-fill"></i></a>
-                                                    <a href="#" class="btn btn-warning btn-sm waves-effect waves-light" title="Calificar Agente"><i class="ri-star-fill"></i></a>
-                                                    <a  href="javascript:void(0);" class="btn btn-danger btn-sm waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#deleteProductModal"  title="Eliminar" >
-                                                        <i class="ri-indeterminate-circle-fill"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>#NZ1579</td>
-                                                <td>Crocs de Tiburon</td>
-                                                <td>S/. 25</td>
-                                                <td>30</td>
-                                                <td>01/09/2023</td>
-                                                <td>Creado</td>
-                                                <td> -- </td>
-                                                <td>
-                                                    <a href="/usuario/tracking" class="btn btn-primary btn-sm waves-effect waves-light" title="Ver"><i class="ri-eye-fill"></i></a>
-                                                    <a href="/usuario/editOrden" class="btn btn-success btn-sm waves-effect waves-light" title="Editar"><i class="ri-pencil-fill"></i></a>
-                                                    <a href="#" class="btn btn-warning btn-sm waves-effect waves-light" title="Calificar Agente"><i class="ri-star-fill"></i></a>
-                                                    <a  href="javascript:void(0);" class="btn btn-danger btn-sm waves-effect waves-light" title="Eliminar" >
-                                                        <i class="ri-indeterminate-circle-fill"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>#NZ1346</td>
-                                                <td>Bomber Jacket</td>
-                                                <td>S/. 45</td>
-                                                <td>30</td>
-                                                <td>01/09/2023</td>
-                                                <td>Creado</td>
-                                                <td>Anna Ramirez</td>
-                                                <td>
-                                                    <a href="/usuario/tracking" class="btn btn-primary btn-sm waves-effect waves-light" title="Ver"><i class="ri-eye-fill"></i></a>
-                                                    <a href="/usuario/editOrden" class="btn btn-success btn-sm waves-effect waves-light" title="Editar"><i class="ri-pencil-fill"></i></a>
-                                                    <a href="#" class="btn btn-warning btn-sm waves-effect waves-light" title="Calificar Agente"><i class="ri-star-fill"></i></a>
-                                                    <a  href="javascript:void(0);" class="btn btn-danger btn-sm waves-effect waves-light" title="Eliminar" >
-                                                        <i class="ri-indeterminate-circle-fill"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>#NZ1579</td>
-                                                <td>Crocs de Tiburon</td>
-                                                <td>S/. 25</td>
-                                                <td>30</td>
-                                                <td>01/09/2023</td>
-                                                <td>Procesado</td>
-                                                <td> -- </td>
-                                                <td>
-                                                    <a href="/usuario/tracking" class="btn btn-primary btn-sm waves-effect waves-light" title="Ver"><i class="ri-eye-fill"></i></a>
-                                                    <a href="/usuario/editOrden" class="btn btn-success btn-sm waves-effect waves-light" title="Editar"><i class="ri-pencil-fill"></i></a>
-                                                    <a href="#" class="btn btn-warning btn-sm waves-effect waves-light" title="Calificar Agente"><i class="ri-star-fill"></i></a>
-                                                    <a  href="javascript:void(0);" class="btn btn-danger btn-sm waves-effect waves-light" title="Eliminar" >
-                                                        <i class="ri-indeterminate-circle-fill"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>#NZ1579</td>
-                                                <td>Crocs de Tiburon</td>
-                                                <td>S/. 25</td>
-                                                <td>30</td>
-                                                <td>01/09/2023</td>
-                                                <td>Creado</td>
-                                                <td> -- </td>
-                                                <td>
-                                                    <a href="/usuario/tracking" class="btn btn-primary btn-sm waves-effect waves-light" title="Ver"><i class="ri-eye-fill"></i></a>
-                                                    <a href="/usuario/editOrden" class="btn btn-success btn-sm waves-effect waves-light" title="Editar"><i class="ri-pencil-fill"></i></a>
-                                                    <a href="#" class="btn btn-warning btn-sm waves-effect waves-light" title="Calificar Agente"><i class="ri-star-fill"></i></a>
-                                                    <a  href="javascript:void(0);" class="btn btn-danger btn-sm waves-effect waves-light" title="Eliminar" >
-                                                        <i class="ri-indeterminate-circle-fill"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>#NZ1346</td>
-                                                <td>Bomber Jacket</td>
-                                                <td>S/. 45</td>
-                                                <td>30</td>
-                                                <td>01/09/2023</td>
-                                                <td>Creado</td>
-                                                <td>Anna Ramirez</td>
-                                                <td>
-                                                    <a href="/usuario/tracking" class="btn btn-primary btn-sm waves-effect waves-light" title="Ver"><i class="ri-eye-fill"></i></a>
-                                                    <a href="/usuario/editOrden" class="btn btn-success btn-sm waves-effect waves-light" title="Editar"><i class="ri-pencil-fill"></i></a>
-                                                    <a href="#" class="btn btn-warning btn-sm waves-effect waves-light" title="Calificar Agente"><i class="ri-star-fill"></i></a>
-                                                    <a  href="javascript:void(0);" class="btn btn-danger btn-sm waves-effect waves-light" title="Eliminar" >
-                                                        <i class="ri-indeterminate-circle-fill"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>#NZ1579</td>
-                                                <td>Crocs de Tiburon</td>
-                                                <td>S/. 25</td>
-                                                <td>30</td>
-                                                <td>01/09/2023</td>
-                                                <td>Procesado</td>
-                                                <td> -- </td>
-                                                <td>
-                                                    <a href="/usuario/tracking" class="btn btn-primary btn-sm waves-effect waves-light" title="Ver"><i class="ri-eye-fill"></i></a>
-                                                    <a href="/usuario/editOrden" class="btn btn-success btn-sm waves-effect waves-light" title="Editar"><i class="ri-pencil-fill"></i></a>
-                                                    <a href="#" class="btn btn-warning btn-sm waves-effect waves-light" title="Calificar Agente"><i class="ri-star-fill"></i></a>
-                                                    <a  href="javascript:void(0);" class="btn btn-danger btn-sm waves-effect waves-light" title="Eliminar" >
-                                                        <i class="ri-indeterminate-circle-fill"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>#NZ1579</td>
-                                                <td>Crocs de Tiburon</td>
-                                                <td>S/. 25</td>
-                                                <td>30</td>
-                                                <td>01/09/2023</td>
-                                                <td>Creado</td>
-                                                <td> -- </td>
-                                                <td>
-                                                    <a href="/usuario/tracking" class="btn btn-primary btn-sm waves-effect waves-light" title="Ver"><i class="ri-eye-fill"></i></a>
-                                                    <a href="/usuario/editOrden" class="btn btn-success btn-sm waves-effect waves-light" title="Editar"><i class="ri-pencil-fill"></i></a>
-                                                    <a href="#" class="btn btn-warning btn-sm waves-effect waves-light" title="Calificar Agente"><i class="ri-star-fill"></i></a>
-                                                    <a  href="javascript:void(0);" class="btn btn-danger btn-sm waves-effect waves-light" title="Eliminar" >
-                                                        <i class="ri-indeterminate-circle-fill"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>#NZ1346</td>
-                                                <td>Bomber Jacket</td>
-                                                <td>S/. 45</td>
-                                                <td>30</td>
-                                                <td>01/09/2023</td>
-                                                <td>Creado</td>
-                                                <td>Anna Ramirez</td>
-                                                <td>
-                                                    <a href="/usuario/tracking" class="btn btn-primary btn-sm waves-effect waves-light" title="Ver"><i class="ri-eye-fill"></i></a>
-                                                    <a href="/usuario/editOrden" class="btn btn-success btn-sm waves-effect waves-light" title="Editar"><i class="ri-pencil-fill"></i></a>
-                                                    <a href="#" class="btn btn-warning btn-sm waves-effect waves-light" title="Calificar Agente"><i class="ri-star-fill"></i></a>
-                                                    <a  href="javascript:void(0);" class="btn btn-danger btn-sm waves-effect waves-light" title="Eliminar" >
-                                                        <i class="ri-indeterminate-circle-fill"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>#NZ1579</td>
-                                                <td>Crocs de Tiburon</td>
-                                                <td>S/. 25</td>
-                                                <td>30</td>
-                                                <td>01/09/2023</td>
-                                                <td>Procesado</td>
-                                                <td> -- </td>
-                                                <td>
-                                                    <a href="/usuario/tracking" class="btn btn-primary btn-sm waves-effect waves-light" title="Ver"><i class="ri-eye-fill"></i></a>
-                                                    <a href="/usuario/editOrden" class="btn btn-success btn-sm waves-effect waves-light" title="Editar"><i class="ri-pencil-fill"></i></a>
-                                                    <a href="#" class="btn btn-warning btn-sm waves-effect waves-light" title="Calificar Agente"><i class="ri-star-fill"></i></a>
-                                                    <a  href="javascript:void(0);" class="btn btn-danger btn-sm waves-effect waves-light" title="Eliminar" >
-                                                        <i class="ri-indeterminate-circle-fill"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>#NZ1579</td>
-                                                <td>Crocs de Tiburon</td>
-                                                <td>S/. 25</td>
-                                                <td>30</td>
-                                                <td>01/09/2023</td>
-                                                <td>Creado</td>
-                                                <td> -- </td>
-                                                <td>
-                                                    <a href="/usuario/tracking" class="btn btn-primary btn-sm waves-effect waves-light" title="Ver"><i class="ri-eye-fill"></i></a>
-                                                    <a href="/usuario/editOrden" class="btn btn-success btn-sm waves-effect waves-light" title="Editar"><i class="ri-pencil-fill"></i></a>
-                                                    <a href="#" class="btn btn-warning btn-sm waves-effect waves-light" title="Calificar Agente"><i class="ri-star-fill"></i></a>
-                                                    <a  href="javascript:void(0);" class="btn btn-danger btn-sm waves-effect waves-light" title="Eliminar" >
-                                                        <i class="ri-indeterminate-circle-fill"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>#NZ1346</td>
-                                                <td>Bomber Jacket</td>
-                                                <td>S/. 45</td>
-                                                <td>30</td>
-                                                <td>01/09/2023</td>
-                                                <td>Creado</td>
-                                                <td>Anna Ramirez</td>
-                                                <td>
-                                                    <a href="/usuario/tracking" class="btn btn-primary btn-sm waves-effect waves-light" title="Ver"><i class="ri-eye-fill"></i></a>
-                                                    <a href="/usuario/editOrden" class="btn btn-success btn-sm waves-effect waves-light" title="Editar"><i class="ri-pencil-fill"></i></a>
-                                                    <a href="#" class="btn btn-warning btn-sm waves-effect waves-light" title="Calificar Agente"><i class="ri-star-fill"></i></a>
-                                                    <a  href="javascript:void(0);" class="btn btn-danger btn-sm waves-effect waves-light" title="Eliminar" >
-                                                        <i class="ri-indeterminate-circle-fill"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>#NZ1579</td>
-                                                <td>Crocs de Tiburon</td>
-                                                <td>S/. 25</td>
-                                                <td>30</td>
-                                                <td>01/09/2023</td>
-                                                <td>Procesado</td>
-                                                <td> -- </td>
-                                                <td>
-                                                    <a href="/usuario/tracking" class="btn btn-primary btn-sm waves-effect waves-light" title="Ver"><i class="ri-eye-fill"></i></a>
-                                                    <a href="/usuario/editOrden" class="btn btn-success btn-sm waves-effect waves-light" title="Editar"><i class="ri-pencil-fill"></i></a>
-                                                    <a href="#" class="btn btn-warning btn-sm waves-effect waves-light" title="Calificar Agente"><i class="ri-star-fill"></i></a>
-                                                    <a  href="javascript:void(0);" class="btn btn-danger btn-sm waves-effect waves-light" title="Eliminar" >
-                                                        <i class="ri-indeterminate-circle-fill"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>#NZ1579</td>
-                                                <td>Crocs de Tiburon</td>
-                                                <td>S/. 25</td>
-                                                <td>30</td>
-                                                <td>01/09/2023</td>
-                                                <td>Creado</td>
-                                                <td> -- </td>
-                                                <td>
-                                                    <a href="/usuario/tracking" class="btn btn-primary btn-sm waves-effect waves-light" title="Ver"><i class="ri-eye-fill"></i></a>
-                                                    <a href="/usuario/editOrden" class="btn btn-success btn-sm waves-effect waves-light" title="Editar"><i class="ri-pencil-fill"></i></a>
-                                                    <a href="#" class="btn btn-warning btn-sm waves-effect waves-light" title="Calificar Agente"><i class="ri-star-fill"></i></a>
-                                                    <a  href="javascript:void(0);" class="btn btn-danger btn-sm waves-effect waves-light" title="Eliminar" >
-                                                        <i class="ri-indeterminate-circle-fill"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>#NZ1346</td>
-                                                <td>Bomber Jacket</td>
-                                                <td>S/. 45</td>
-                                                <td>30</td>
-                                                <td>01/09/2023</td>
-                                                <td>Creado</td>
-                                                <td>Anna Ramirez</td>
-                                                <td>
-                                                    <a href="/usuario/tracking" class="btn btn-primary btn-sm waves-effect waves-light" title="Ver"><i class="ri-eye-fill"></i></a>
-                                                    <a href="/usuario/editOrden" class="btn btn-success btn-sm waves-effect waves-light" title="Editar"><i class="ri-pencil-fill"></i></a>
-                                                    <a href="#" class="btn btn-warning btn-sm waves-effect waves-light" title="Calificar Agente"><i class="ri-star-fill"></i></a>
-                                                    <a  href="javascript:void(0);" class="btn btn-danger btn-sm waves-effect waves-light" title="Eliminar" >
-                                                        <i class="ri-indeterminate-circle-fill"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>#NZ1579</td>
-                                                <td>Crocs de Tiburon</td>
-                                                <td>S/. 25</td>
-                                                <td>30</td>
-                                                <td>01/09/2023</td>
-                                                <td>Procesado</td>
-                                                <td> -- </td>
-                                                <td>
-                                                    <a href="/usuario/tracking" class="btn btn-primary btn-sm waves-effect waves-light" title="Ver"><i class="ri-eye-fill"></i></a>
-                                                    <a href="/usuario/editOrden" class="btn btn-success btn-sm waves-effect waves-light" title="Editar"><i class="ri-pencil-fill"></i></a>
-                                                    <a href="#" class="btn btn-warning btn-sm waves-effect waves-light" title="Calificar Agente"><i class="ri-star-fill"></i></a>
-                                                    <a  href="javascript:void(0);" class="btn btn-danger btn-sm waves-effect waves-light" title="Eliminar" >
-                                                        <i class="ri-indeterminate-circle-fill"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>#NZ1579</td>
-                                                <td>Crocs de Tiburon</td>
-                                                <td>S/. 25</td>
-                                                <td>30</td>
-                                                <td>01/09/2023</td>
-                                                <td>Creado</td>
-                                                <td> -- </td>
-                                                <td>
-                                                    <a href="/usuario/tracking" class="btn btn-primary btn-sm waves-effect waves-light" title="Ver"><i class="ri-eye-fill"></i></a>
-                                                    <a href="/usuario/editOrden" class="btn btn-success btn-sm waves-effect waves-light" title="Editar"><i class="ri-pencil-fill"></i></a>
-                                                    <a href="#" class="btn btn-warning btn-sm waves-effect waves-light" title="Calificar Agente"><i class="ri-star-fill"></i></a>
-                                                    <a  href="javascript:void(0);" class="btn btn-danger btn-sm waves-effect waves-light" title="Eliminar" >
-                                                        <i class="ri-indeterminate-circle-fill"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>#NZ1346</td>
-                                                <td>Bomber Jacket</td>
-                                                <td>S/. 45</td>
-                                                <td>30</td>
-                                                <td>01/09/2023</td>
-                                                <td>Creado</td>
-                                                <td>Anna Ramirez</td>
-                                                <td>
-                                                    <a href="/usuario/tracking" class="btn btn-primary btn-sm waves-effect waves-light" title="Ver"><i class="ri-eye-fill"></i></a>
-                                                    <a href="/usuario/editOrden" class="btn btn-success btn-sm waves-effect waves-light" title="Editar"><i class="ri-pencil-fill"></i></a>
-                                                    <a  href="javascript:void(0);" class="btn btn-danger btn-sm waves-effect waves-light" title="Eliminar" >
-                                                        <i class="ri-indeterminate-circle-fill"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>#NZ1579</td>
-                                                <td>Crocs de Tiburon</td>
-                                                <td>S/. 25</td>
-                                                <td>30</td>
-                                                <td>01/09/2023</td>
-                                                <td>Procesado</td>
-                                                <td> -- </td>
-                                                <td>
-                                                    <a href="/usuario/tracking" class="btn btn-primary btn-sm waves-effect waves-light" title="Ver"><i class="ri-eye-fill"></i></a>
-                                                    <a href="/usuario/editOrden" class="btn btn-success btn-sm waves-effect waves-light" title="Editar"><i class="ri-pencil-fill"></i></a>
-                                                    <a  href="javascript:void(0);" class="btn btn-danger btn-sm waves-effect waves-light" title="Eliminar" >
-                                                        <i class="ri-indeterminate-circle-fill"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>#NZ1579</td>
-                                                <td>Crocs de Tiburon</td>
-                                                <td>S/. 25</td>
-                                                <td>30</td>
-                                                <td>01/09/2023</td>
-                                                <td>Creado</td>
-                                                <td> -- </td>
-                                                <td>
-                                                    <a href="/usuario/tracking" class="btn btn-primary btn-sm waves-effect waves-light" title="Ver"><i class="ri-eye-fill"></i></a>
-                                                    <a href="/usuario/editOrden" class="btn btn-success btn-sm waves-effect waves-light" title="Editar"><i class="ri-pencil-fill"></i></a>
-                                                    <a  href="javascript:void(0);" class="btn btn-danger btn-sm waves-effect waves-light" title="Eliminar" >
-                                                        <i class="ri-indeterminate-circle-fill"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>#NZ1346</td>
-                                                <td>Bomber Jacket</td>
-                                                <td>S/. 45</td>
-                                                <td>30</td>
-                                                <td>01/09/2023</td>
-                                                <td>Creado</td>
-                                                <td>Anna Ramirez</td>
-                                                <td>
-                                                    <a href="/usuario/tracking" class="btn btn-primary btn-sm waves-effect waves-light" title="Ver"><i class="ri-eye-fill"></i></a>
-                                                    <a href="/usuario/editOrden" class="btn btn-success btn-sm waves-effect waves-light" title="Editar"><i class="ri-pencil-fill"></i></a>
-                                                    <a  href="javascript:void(0);" class="btn btn-danger btn-sm waves-effect waves-light" title="Eliminar" >
-                                                        <i class="ri-indeterminate-circle-fill"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>#NZ1579</td>
-                                                <td>Crocs de Tiburon</td>
-                                                <td>S/. 25</td>
-                                                <td>30</td>
-                                                <td>01/09/2023</td>
-                                                <td>Procesado</td>
-                                                <td> -- </td>
-                                                <td>
-                                                    <a href="/usuario/tracking" class="btn btn-primary btn-sm waves-effect waves-light" title="Ver"><i class="ri-eye-fill"></i></a>
-                                                    <a href="/usuario/editOrden" class="btn btn-success btn-sm waves-effect waves-light" title="Editar"><i class="ri-pencil-fill"></i></a>
-                                                    <a  href="javascript:void(0);" class="btn btn-danger btn-sm waves-effect waves-light" title="Eliminar" >
-                                                        <i class="ri-indeterminate-circle-fill"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div> <!-- end col -->
-                        </div> <!-- end row -->
-                    </div> <!-- container-fluid -->
-                </div>
-
-                <!-- Modal para Confirmar Eliminación -->
-                <div class="modal fade" id="deleteProductModal" tabindex="-1" aria-labelledby="deleteProductLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="deleteProductLabel">Confirmar Eliminación</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <p>¿Estás seguro de que deseas eliminar <strong>NK148</strong> de la lista?</p>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                <button type="button" class="btn btn-danger">Eliminar</button>
-                            </div>
                         </div>
                     </div>
                 </div>
+                <!-- end page title -->
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
 
-                <!-- End Page-content -->
-                <footer class="footer">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <script>document.write(new Date().getFullYear())</script> © Nazox.
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="text-sm-end d-none d-sm-block">
-                                    Crafted with <i class="mdi mdi-heart text-danger"></i> by Themesdesign
-                                </div>
+                                <h4 class="card-title">Lista de Pedidos</h4> <p class="card-title-desc"> En esta sección, podrás ver la lista de pedidos que has realizado como usuario.
+                                Aquí encontrarás información sobre el estado de cada uno de tus pedidos, así como el agente asignado que te asistirá.
+                                Además, tendrás la opción de eliminar un pedido si este aún no ha sido procesado. </p>
+
+                                <div th:if="${mensaje != null}" class="alert alert-success" th:text="${mensaje}"></div>
+                                <div th:if="${msg != null}" class="alert alert-success" th:text="${msg}"></div>
+                                <div th:if="${error != null}" class="alert alert-danger" th:text="${error}"></div>
+
+                                <table id="datatable-buttons" class="table table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                    <thead>
+                                    <tr>
+                                        <th>Código</th>
+                                        <th>Precio</th>
+                                        <th>Fecha</th>
+                                        <th>Estado</th>
+                                        <th>Agente</th>
+                                        <th>Acción</th>
+                                    </tr>
+                                    </thead>
+
+
+                                    <tbody>
+                                    <tr th:each="orden : ${misOrdenes}">
+                                        <td th:text="${orden.codigo}"></td>
+                                        <td>S/. 250</td>
+                                        <td th:text="${orden.fechaCreacion}"></td>
+                                        <td th:text="${orden.estadoordenIdestadoorden.nombre}"></td>
+                                        <td th:text="${orden.getAgentcompraIdusuario().getNombre()} + ' ' + ${orden.getAgentcompraIdusuario().apellido}" ></td>
+                                        <td>
+                                            <a th:href="@{/usuario/tracking/{id}(id=${orden.id})}" class="btn btn-primary btn-sm waves-effect waves-light" title="Ver"><i class="ri-eye-fill"></i></a>
+
+                                            <!-- Si la orden está en 'CREADO' o 'EN VALIDACION' -->
+                                            <a href="/usuario/editOrden" class="btn btn-success btn-sm waves-effect waves-light" title="Editar" th:if="${ orden.estadoordenIdestadoorden.nombre == 'EN VALIDACION' || orden.estadoordenIdestadoorden.nombre == 'CREADO' }">
+                                                <i class="ri-pencil-fill"></i>
+                                            </a>
+                                            <a href="/usuario/editOrden" class="btn btn-secondary btn-sm waves-effect waves-light disabled" title="No editable" th:unless="${ orden.estadoordenIdestadoorden.nombre == 'EN VALIDACION' || orden.estadoordenIdestadoorden.nombre == 'CREADO' }">
+                                                <i class="ri-pencil-fill"></i>
+                                            </a>
+
+                                            <!-- Si la orden está en 'CREADO' o 'EN VALIDACION', mostrar opción de eliminar -->
+                                            <a href="javascript:void(0);" class="btn btn-danger btn-sm waves-effect waves-light" data-bs-toggle="modal" th:data-bs-target="'#deleteProductModal' + ${orden.codigo}" title="Eliminar" th:if="${orden.estadoordenIdestadoorden.nombre == 'EN VALIDACION' || orden.estadoordenIdestadoorden.nombre == 'CREADO'}">
+                                                <i class="ri-indeterminate-circle-fill"></i>
+                                            </a>
+                                            <a href="javascript:void(0);"
+                                               class="btn btn-secondary btn-sm waves-effect waves-light disabled"
+                                               title="No eliminable"
+                                               th:unless="${orden.estadoordenIdestadoorden.nombre == 'EN VALIDACION' || orden.estadoordenIdestadoorden.nombre == 'CREADO'}">
+                                                <i class="ri-indeterminate-circle-fill"></i>
+                                            </a>
+
+                                            <!-- Si la orden está en 'RECIBIDO' -->
+                                            <a href="#" class="btn btn-warning btn-sm waves-effect waves-light" title="Calificar Agente" th:if="${orden.estadoordenIdestadoorden.nombre == 'RECIBIDO' && orden.getValoracionAgente()==null }" data-bs-toggle="modal" th:data-bs-target="'#rateAgentModal' + ${orden.codigo}">
+                                                <i class="ri-star-fill"></i>
+                                            </a>
+
+                                            <!-- Modal para Confirmar Eliminación -->
+                                            <div class="modal fade" th:id="'deleteProductModal' + ${orden.codigo}" tabindex="-1" aria-labelledby="deleteProductLabel" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="deleteProductLabel">Confirmar Eliminación</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <p>¿Estás seguro de que deseas eliminar la orden <strong th:text="${orden.codigo}"></strong> de la lista?</p>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+
+                                                            <!-- Formulario con mtodo GET para eliminar -->
+                                                            <form th:action="@{/usuario/deleteOrden}" method="get">
+                                                                <!-- Campo oculto con el código de la orden -->
+                                                                <input type="hidden" name="codigo" th:value="${orden.codigo}" />
+                                                                <button type="submit" class="btn btn-danger">Eliminar y Realizar Reembolso</button>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Modal para Calificar Agente -->
+                                            <!-- Modal para Calificar Agente -->
+                                            <div class="modal fade" th:id="'rateAgentModal' + ${orden.codigo}" tabindex="-1" aria-labelledby="rateAgentLabel" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="rateAgentLabel">Calificar Agente</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <form th:action="@{/usuario/calificarAgente}" method="post">
+                                                            <div class="modal-body">
+                                                                <p>Califica el rendimiento de tu agente de compra: <strong th:text="${orden.getAgentcompraIdusuario().getNombre()} + ' ' + ${orden.getAgentcompraIdusuario().apellido}"></strong></p>
+                                                                <div class="rating">
+                                                                    <input type="radio" name="valoracionAgente" th:id="'rating5-' + ${orden.codigo}" value="5"><label th:for="'rating5-' + ${orden.codigo}">5 ☆</label>
+                                                                    <input type="radio" name="valoracionAgente" th:id="'rating4-' + ${orden.codigo}" value="4"><label th:for="'rating4-' + ${orden.codigo}">4 ☆</label>
+                                                                    <input type="radio" name="valoracionAgente" th:id="'rating3-' + ${orden.codigo}" value="3"><label th:for="'rating3-' + ${orden.codigo}">3 ☆</label>
+                                                                    <input type="radio" name="valoracionAgente" th:id="'rating2-' + ${orden.codigo}" value="2"><label th:for="'rating2-' + ${orden.codigo}">2 ☆</label>
+                                                                    <input type="radio" name="valoracionAgente" th:id="'rating1-' + ${orden.codigo}" value="1"><label th:for="'rating1-' + ${orden.codigo}">1 ☆</label>
+                                                                </div>
+                                                                <input type="hidden" name="ordenCodigo" th:value="${orden.codigo}" />
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                                                <button type="submit" class="btn btn-success">Enviar Calificación</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </td>
+
+                                    </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
-                    </div>
-                </footer>
-            </div>
-            <!-- end main content-->
+                    </div> <!-- end col -->
+                </div> <!-- end row -->
+            </div> <!-- container-fluid -->
         </div>
 
-
-    <!-- JAVASCRIPT BASE-->
-    <span th:replace="~{Common/jsBase :: js_Base}"></span>
-    <!-- End JAVASCRIPT BASE-->
-
-    <!-- Required datatable js -->
-    <script th:src="@{../libs/datatables.net/js/jquery.dataTables.min.js}"></script>
-    <script th:src="@{../libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js}"></script>
-    <!-- Buttons examples -->
-    <script th:src="@{../libs/datatables.net-buttons/js/dataTables.buttons.min.js}"></script>
-    <script th:src="@{../libs/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js}"></script>
-    <script th:src="@{../libs/jszip/jszip.min.js}"></script>
-    <script th:src="@{../libs/pdfmake/build/pdfmake.min.js}"></script>
-    <script th:src="@{../libs/pdfmake/build/vfs_fonts.js}"></script>
-    <script th:src="@{../libs/datatables.net-buttons/js/buttons.html5.min.js}"></script>
-    <script th:src="@{../libs/datatables.net-buttons/js/buttons.print.min.js}"></script>
-    <script th:src="@{../libs/datatables.net-buttons/js/buttons.colVis.min.js}"></script>
-
-    <script th:src="@{../libs/datatables.net-keytable/js/dataTables.keyTable.min.js}"></script>
-    <script th:src="@{../libs/datatables.net-select/js/dataTables.select.min.js}"></script>
-
-    <!-- Responsive examples -->
-    <script th:src="@{../libs/datatables.net-responsive/js/dataTables.responsive.min.js}"></script>
-    <script th:src="@{../libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js}"></script>
-
-    <!-- Datatable init js -->
-    <script th:src="@{../js/pages/datatables.init.js}"></script>
+        <!-- End Page-content -->
+        <footer class="footer">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <script>document.write(new Date().getFullYear())</script> © Nazox.
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="text-sm-end d-none d-sm-block">
+                            Crafted with <i class="mdi mdi-heart text-danger"></i> by Themesdesign
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <!-- end main content-->
+</div>
 
 
-    </body>
+<!-- JAVASCRIPT BASE-->
+<span th:replace="~{Common/jsBase :: js_Base}"></span>
+<!-- End JAVASCRIPT BASE-->
+
+<!-- Required datatable js -->
+<script th:src="@{../libs/datatables.net/js/jquery.dataTables.min.js}"></script>
+<script th:src="@{../libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js}"></script>
+<!-- Buttons examples -->
+<script th:src="@{../libs/datatables.net-buttons/js/dataTables.buttons.min.js}"></script>
+<script th:src="@{../libs/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js}"></script>
+<script th:src="@{../libs/jszip/jszip.min.js}"></script>
+<script th:src="@{../libs/pdfmake/build/pdfmake.min.js}"></script>
+<script th:src="@{../libs/pdfmake/build/vfs_fonts.js}"></script>
+<script th:src="@{../libs/datatables.net-buttons/js/buttons.html5.min.js}"></script>
+<script th:src="@{../libs/datatables.net-buttons/js/buttons.print.min.js}"></script>
+<script th:src="@{../libs/datatables.net-buttons/js/buttons.colVis.min.js}"></script>
+
+<script th:src="@{../libs/datatables.net-keytable/js/dataTables.keyTable.min.js}"></script>
+<script th:src="@{../libs/datatables.net-select/js/dataTables.select.min.js}"></script>
+
+<!-- Responsive examples -->
+<script th:src="@{../libs/datatables.net-responsive/js/dataTables.responsive.min.js}"></script>
+<script th:src="@{../libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js}"></script>
+
+<!-- Datatable init js -->
+<script th:src="@{../js/pages/datatables.init.js}"></script>
+
+
+</body>
 </html>

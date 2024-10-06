@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface OrdenRepository extends JpaRepository<Orden, Integer> {
@@ -233,6 +234,13 @@ public interface OrdenRepository extends JpaRepository<Orden, Integer> {
             "WHERE pz.Zona_idZona = 1;", nativeQuery = true)
 
     List<Object[]> findOrdersByZone();
+
+
+    //Listar ordenes de un usuario
+    List<Orden> findAllByEsCarritoAndIsDeleted(int i, int k);
+
+    Optional<Orden> findByCodigo(String codigo);
+
 
 
 
