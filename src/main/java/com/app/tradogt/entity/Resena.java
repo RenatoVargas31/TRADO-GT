@@ -5,6 +5,8 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
+import java.time.LocalDate;
+
 @Data
 @Entity
 @Table(name = "Resena")
@@ -13,27 +15,41 @@ public class Resena {
     @Column(name = "idResena", nullable = false)
     private Integer id;
 
+    @Size(max = 150)
     @NotNull
-    @ManyToOne
-    @JoinColumn(name = "Producto_idProducto", nullable = false)
-    private Producto productoIdproducto;
-
-    @Size(max = 100)
-    @NotNull
-    @Column(name = "foto", nullable = false, length = 100)
+    @Column(name = "foto", nullable = false, length = 150)
     private String foto;
 
-    @Size(max = 250)
     @NotNull
-    @Column(name = "comentario", nullable = false, length = 250)
-    private String comentario;
+    @Lob
+    @Column(name = "cuerpo", nullable = false)
+    private String cuerpo;
 
     @NotNull
     @Column(name = "calidad", nullable = false)
-    private Byte calidad;
+    private Integer calidad;
 
     @NotNull
     @Column(name = "calificacion", nullable = false)
-    private Byte calificacion;
+    private Integer calificacion;
+
+    @Size(max = 150)
+    @NotNull
+    @Column(name = "titulo", nullable = false, length = 150)
+    private String titulo;
+
+    @NotNull
+    @Column(name = "fechaCreacion", nullable = false)
+    private LocalDate fechaCreacion;
+
+    @NotNull
+    @ManyToOne
+    @MapsId("carritoId")
+    @JoinColumns({
+            @JoinColumn(name = "Carrito_ProductoEnZona_producto_idProducto", referencedColumnName = "ProductoEnZona_producto_idProducto", nullable = false),
+            @JoinColumn(name = "Carrito_ProductoEnZona_zona_idZona", referencedColumnName = "ProductoEnZona_zona_idZona", nullable = false),
+            @JoinColumn(name = "Carrito_Usuario_idUsuario", referencedColumnName = "Usuario_idUsuario", nullable = false)
+    })
+    private Carrito carrito;
 
 }

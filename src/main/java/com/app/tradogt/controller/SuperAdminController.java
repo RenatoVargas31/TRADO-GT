@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.Optional;
@@ -219,21 +220,49 @@ public class SuperAdminController {
         usuarioRepository.save(usuario);
         return "redirect:/superadmin/agentCompraInactivos";
     }
-    /*
+
     @GetMapping("/agentCompraPostulanteApto")
-    public String viewAgentCompraPostulanteApto(Integer id) {
-        //Actualizar usuario a Agente de Compra
-        usuarioRepository.updateImportadorPostulanteApto(id);
+    public String viewAgentCompraPostulanteApto(Integer id, RedirectAttributes redirectAttributes) {
+        // Actualizar usuario a Agente de Compra
+        Usuario usuario = usuarioRepository.findById(id).get();
+
+        // Asignar un administrador zonal aleatorio de la misma zona del usuario
+        List<Usuario> admZonales = usuarioRepository.findAllByRolIdrolIdAndIsActivatedAndZonaIdzonaId(2, (byte) 1, usuario.getDistritoIddistrito().getZonaIdzona().getId());
+        boolean admZonalAsignado = false;
+        for (Usuario admZonal : admZonales) {
+            if (usuarioRepository.findAllByAdmzonalIdusuario_IdAndIsActivated(admZonal.getId(),(byte) 1).size() < 4) {
+                usuario.setAdmzonalIdusuario(admZonal);
+                usuario.setRolIdrol(rolRepository.findById(3).get());
+                usuario.setIsPostulated((byte) 0);
+                usuarioRepository.save(usuario);
+                admZonalAsignado = true;
+                break;
+            }
+        }
+
+        if (admZonalAsignado) {
+            redirectAttributes.addFlashAttribute("successMessage", "Se ascendió a Agente de Compra correctamente.");
+        } else {
+            redirectAttributes.addFlashAttribute("errorMessage", "La cantidad de Agentes de Compra está completa en la zona del postulante.");
+        }
+
         return "redirect:/superadmin/agentCompraPostula";
     }
+
     @GetMapping("/agentCompraPostulanteNoApto")
     public String viewAgentCompraPostulanteNoApto(Integer id) {
         //Borrar la postulación
-        usuarioRepository.updateImportadorPostulanteNoApto(id);
+        Usuario usuario = usuarioRepository.findById(id).get();
+        usuario.setIsPostulated((byte) 0);
+        usuario.setCodigoDespachador(null);
+        usuario.setRazonSocial(null);
+        usuario.setRuc(null);
+        usuario.setAdmzonalIdusuario(null);
+        usuarioRepository.save(usuario);
         return "redirect:/superadmin/agentCompraPostula";
     }
     //</editor-fold>
-
+/*
     //<editor-fold desc="CRUD Importador (RUD - falta)">
     @PostMapping("/importadorEditarForm")
     public String viewImportadorEditarForm(Model model, Integer id) {

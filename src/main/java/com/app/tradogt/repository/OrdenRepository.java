@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @Repository
 public interface OrdenRepository extends JpaRepository<Orden, Integer> {
-
+    /*
     //Órdenes totales (no eliminadas)
     @Query(value = """
         SELECT
@@ -242,6 +242,6 @@ public interface OrdenRepository extends JpaRepository<Orden, Integer> {
     Optional<Orden> findByCodigo(String codigo);
 
 
-
+*/
 
 }

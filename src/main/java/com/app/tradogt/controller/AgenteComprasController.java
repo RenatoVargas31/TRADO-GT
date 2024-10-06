@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
 @Controller
 @RequestMapping("/agente")
 public class AgenteComprasController {
-
+/*
     final UsuarioRepository usuarioRepository;
     final OrdenRepository ordenRepository;
     private final ProveedorRepository proveedorRepository;
@@ -201,7 +201,7 @@ public class AgenteComprasController {
         return "Agente/detallesCanceladoProducto-Agente";
     }
     */
-
+/*
     //Información de órdenes de usuarios asignados (este es el definitivo xD)
     @GetMapping("/detailsOrder")
     public String showDetails(Model model, @RequestParam ("idOrden") int idOrden,
@@ -389,5 +389,5 @@ public class AgenteComprasController {
     public String showFaq() {
         return "Agente/faq-Agente";
     }
-
+*/
 }

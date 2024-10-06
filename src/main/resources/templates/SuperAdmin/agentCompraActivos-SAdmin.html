@@ -87,11 +87,11 @@
                                                     <input type="hidden" name="id" th:value="${usuario.id}" />
                                                     <button type="submit" class="btn btn-info btn-sm waves-effect waves-light" title="Editar"><i class="ri-pencil-fill"></i></button>
                                                 </form>
-                                                <button type="button" class="btn btn-danger btn-sm waves-effect waves-light" title="Eliminar" data-bs-toggle="modal" th:data-bs-target="'#deleteConfirmModal-' + ${usuario.nombre} + '-' + ${usuario.id}">
+                                                <button type="button" class="btn btn-danger btn-sm waves-effect waves-light" title="Eliminar" data-bs-toggle="modal" th:data-bs-target="'#deleteConfirmModal-' + ${usuario.id}">
                                                     <i class="ri-indeterminate-circle-fill"></i>
                                                 </button>
                                                 <!-- Modal de Confirmación de Eliminación -->
-                                                <div class="modal fade" th:id="'deleteConfirmModal-' + ${usuario.nombre} + '-' + ${usuario.id}" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
+                                                <div class="modal fade" th:id="'deleteConfirmModal-' + ${usuario.id}" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
                                                     <div class="modal-dialog">
                                                         <div class="modal-content">
                                                             <div class="modal-header">

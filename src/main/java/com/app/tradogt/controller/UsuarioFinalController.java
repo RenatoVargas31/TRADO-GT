@@ -16,19 +16,19 @@ import java.util.Optional;
 @Controller
 @RequestMapping("/usuario")
 public class UsuarioFinalController {
-
+/*
     final ProductosRepository productosRepository;
     final OrdenRepository ordenRepository;
     final UsuarioRepository usuarioRepository;
-    final ProductoEnZonaEnOrdenRepository productoEnZonaEnOrdenRepository;
+    //final ProductoEnZonaEnOrdenRepository productoEnZonaEnOrdenRepository;
     final ProductoEnZonaRepository productoEnZonaRepository;
 
 
-    public UsuarioFinalController(ProductosRepository productosRepository, OrdenRepository ordenRepository, UsuarioRepository usuarioRepository, ProductoEnZonaEnOrdenRepository productoEnZonaEnOrdenRepository1, ProductoEnZonaEnOrdenRepository productoEnZonaEnOrdenRepository, ProductoEnZonaRepository productoEnZonaRepository) {
+    public UsuarioFinalController(ProductosRepository productosRepository, OrdenRepository ordenRepository, UsuarioRepository usuarioRepository, ProductoEnZonaRepository productoEnZonaRepository) {
         this.productosRepository = productosRepository;
         this.ordenRepository = ordenRepository;
         this.usuarioRepository = usuarioRepository;
-        this.productoEnZonaEnOrdenRepository = productoEnZonaEnOrdenRepository;
+        //this.productoEnZonaEnOrdenRepository = productoEnZonaEnOrdenRepository;
         this.productoEnZonaRepository = productoEnZonaRepository;
     }
 
@@ -55,8 +55,8 @@ public class UsuarioFinalController {
             Orden ord = orden.get();
             ord.setIsDeleted((byte) 1);
             ordenRepository.save(ord);
-            String correo = ord.getUsuarioIdusuario().getCorreo();
-            attr.addFlashAttribute("mensaje", "Orden eliminado: se a realizar el rembolso al " + correo);
+            //String correo = ord.getUsuarioIdusuario().getCorreo();
+            //attr.addFlashAttribute("mensaje", "Orden eliminado: se a realizar el rembolso al " + correo);
         }else {
             attr.addFlashAttribute("error", "Orden no encontrado");
         }
@@ -89,16 +89,16 @@ public class UsuarioFinalController {
     public String tracking(@PathVariable("id") int id, Model model) {
 
         //Lista de todos los productos de mi orden
-        List<ProductoEnZonaEnOrden> listaProductosEnOrden = productoEnZonaEnOrdenRepository.findByordenIdordenId((Integer) id);
+        //List<ProductoEnZonaEnOrden> listaProductosEnOrden = productoEnZonaEnOrdenRepository.findByordenIdordenId((Integer) id);
 
         //Buscar Usuario :'v
         Optional<Orden> orden = ordenRepository.findById(id);
         List<ProductoEnZona> productoEnZona = productoEnZonaRepository.findAll();
-        List<ProductoEnZonaEnOrden> productoEnZonaEnOrden = productoEnZonaEnOrdenRepository.findByordenIdordenId((Integer) id);
+        //List<ProductoEnZonaEnOrden> productoEnZonaEnOrden = productoEnZonaEnOrdenRepository.findByordenIdordenId((Integer) id);
         if (orden.isPresent()) {
             model.addAttribute("orden", orden.get());
-            model.addAttribute("listaProductosEnOrden", listaProductosEnOrden);
-            model.addAttribute("productoEnZonaEnOrden", productoEnZonaEnOrden);
+            //model.addAttribute("listaProductosEnOrden", listaProductosEnOrden);
+            //model.addAttribute("productoEnZonaEnOrden", productoEnZonaEnOrden);
         }
 
         return "Usuario/trackingOrd";
@@ -195,4 +195,6 @@ public class UsuarioFinalController {
 
         return "Usuario/nuevaReseña-usuario";
     }
+
+ */
 }

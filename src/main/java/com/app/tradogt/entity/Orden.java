@@ -15,49 +15,46 @@ import java.time.LocalDate;
 @Table(name = "Orden")
 public class Orden {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idOrden", nullable = false)
     private Integer id;
-
-    @NotNull
-    @ManyToOne
-    @JoinColumn(name = "usuario_idUsuario", nullable = false)
-    private Usuario usuarioIdusuario;
 
     @ManyToOne
     @JoinColumn(name = "agentCompra_idUsuario")
     private Usuario agentcompraIdusuario;
 
+    @NotNull
     @ManyToOne
-    @JoinColumn(name = "estadoOrden_idEstadoOrden")
+    @JoinColumn(name = "estadoOrden_idEstadoOrden", nullable = false)
     private EstadoOrden estadoordenIdestadoorden;
 
-    @Column(name = "fechaCreacion")
+    @NotNull
+    @Column(name = "fechaCreacion", nullable = false)
     private LocalDate fechaCreacion;
 
-    @Column(name = "fechaArribo")
+    @NotNull
+    @Column(name = "fechaArribo", nullable = false)
     private LocalDate fechaArribo;
 
     @Column(name = "valoracionAgente")
     private Byte valoracionAgente;
 
+    @NotNull
     @ColumnDefault("0")
-    @Column(name = "isDeleted")
+    @Column(name = "isDeleted", nullable = false)
     private Byte isDeleted;
 
-    @Column(name = "fueRapido")
+    @NotNull
+    @Column(name = "fueRapido", nullable = false)
     private Byte fueRapido;
 
-    @NotNull
-    @ColumnDefault("1")
-    @Column(name = "esCarrito", nullable = false)
-    private Byte esCarrito = 1;
-
     @Size(max = 45)
-    @Column(name = "codigo", length = 45)
+    @NotNull
+    @Column(name = "codigo", nullable = false, length = 45)
     private String codigo;
 
-    @Column(name = "costoTotal", precision = 10, scale = 2)
+    @NotNull
+    @Column(name = "costoTotal", nullable = false, precision = 10, scale = 2)
     private BigDecimal costoTotal;
-
 
 }
