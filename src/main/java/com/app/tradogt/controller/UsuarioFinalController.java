@@ -1,15 +1,12 @@
 package com.app.tradogt.controller;
 
 
-import com.app.tradogt.entity.Orden;
-import com.app.tradogt.entity.ProductoEnZonaEnOrden;
-import com.app.tradogt.entity.Usuario;
+import com.app.tradogt.entity.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 import com.app.tradogt.repository.*;
-import com.app.tradogt.entity.Producto;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
@@ -24,13 +21,15 @@ public class UsuarioFinalController {
     final OrdenRepository ordenRepository;
     final UsuarioRepository usuarioRepository;
     final ProductoEnZonaEnOrdenRepository productoEnZonaEnOrdenRepository;
+    final ProductoEnZonaRepository productoEnZonaRepository;
 
 
-    public UsuarioFinalController(ProductosRepository productosRepository, OrdenRepository ordenRepository, UsuarioRepository usuarioRepository, ProductoEnZonaEnOrdenRepository productoEnZonaEnOrdenRepository1, ProductoEnZonaEnOrdenRepository productoEnZonaEnOrdenRepository) {
+    public UsuarioFinalController(ProductosRepository productosRepository, OrdenRepository ordenRepository, UsuarioRepository usuarioRepository, ProductoEnZonaEnOrdenRepository productoEnZonaEnOrdenRepository1, ProductoEnZonaEnOrdenRepository productoEnZonaEnOrdenRepository, ProductoEnZonaRepository productoEnZonaRepository) {
         this.productosRepository = productosRepository;
         this.ordenRepository = ordenRepository;
         this.usuarioRepository = usuarioRepository;
         this.productoEnZonaEnOrdenRepository = productoEnZonaEnOrdenRepository;
+        this.productoEnZonaRepository = productoEnZonaRepository;
     }
 
     @GetMapping("/inicio")
@@ -94,9 +93,12 @@ public class UsuarioFinalController {
 
         //Buscar Usuario :'v
         Optional<Orden> orden = ordenRepository.findById(id);
+        List<ProductoEnZona> productoEnZona = productoEnZonaRepository.findAll();
+        List<ProductoEnZonaEnOrden> productoEnZonaEnOrden = productoEnZonaEnOrdenRepository.findByordenIdordenId((Integer) id);
         if (orden.isPresent()) {
             model.addAttribute("orden", orden.get());
             model.addAttribute("listaProductosEnOrden", listaProductosEnOrden);
+            model.addAttribute("productoEnZonaEnOrden", productoEnZonaEnOrden);
         }
 
         return "Usuario/trackingOrd";

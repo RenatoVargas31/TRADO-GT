@@ -79,60 +79,67 @@
                                             <div class="row mb-4">
                                                 <div class="col-md-6 col-sm-12">
                                                     <h5>Datos personales</h5>
-                                                    <p><strong>Nombre de comprador: </strong><span th:text="${orden.usuarioIdusuario.nombre} + ' ' + ${orden.usuarioIdusuario.apellido}"></span></p>
-                                                    <p><strong>Número DNI: </strong> <span th:text="${orden.usuarioIdusuario.dni}"></span></p>
-                                                    <p><strong>Domicilio:</strong> Av. Siempre Viva 742</p>
+                                                    <p><strong>Nombre de comprador: </strong><span class="text-primary" th:text="${orden.usuarioIdusuario.nombre} + ' ' + ${orden.usuarioIdusuario.apellido}"></span></p>
+                                                    <p><strong>Número DNI: </strong> <span class="text-primary" th:text="${orden.usuarioIdusuario.dni}"></span></p>
+                                                    <p><strong>Domicilio: </strong> <span class="text-primary" th:text="${orden.usuarioIdusuario.direccion}"></span></p>
                                                 </div>
                                                 <div class="col-md-6 col-sm-12">
                                                     <h5>Fecha y Número de Orden</h5>
-                                                    <p><strong>Fecha:</strong> 2024-09-17</p>
-                                                    <p><strong>No. de orden:</strong> ORD123456</p>
-                                                    <p><strong>Ciudad, Estado:</strong> Springfield, IL</p>
+                                                    <p><strong>Fecha: </strong> <span class="text-primary" th:text="${orden.fechaCreacion}"></span></p>
+                                                    <p><strong>No. de orden: </strong> <span class="text-primary" th:text="${orden.codigo}"></span></p>
+                                                    <p><strong>Ciudad, Estado: </strong> <span class="text-primary" th:text="${orden.usuarioIdusuario.distritoIddistrito.nombre} + ', ' + ${orden.usuarioIdusuario.zonaIdzona.nombre}"></span></p>
                                                 </div>
                                             </div>
 
                                             <!-- Datos del Vendedor y del Comprador -->
                                             <div class="row mb-4">
-                                                <div class="col-md-6 col-sm-12">
-                                                    <h5>Vendedor</h5>
-                                                    <p><strong>Compañía:</strong> Vendedor S.A</p>
-                                                    <p><strong>Contacto:</strong> Ana Gómez</p>
-                                                    <p><strong>Domicilio:</strong> Calle Falsa 123</p>
-                                                    <p><strong>Teléfono:</strong> 555-1234</p>
-                                                </div>
-                                                <div class="col-md-6 col-sm-12">
-                                                    <h5>Comprador</h5>
-                                                    <p><strong>Compañía:</strong> Comprador Ltda.</p>
-                                                    <p><strong>Contacto:</strong> Laura Martínez</p>
-                                                    <p><strong>Domicilio:</strong> Av. Siempre Viva 742</p>
-                                                    <p><strong>Teléfono:</strong> 555-6789</p>
+                                                <div class="col-12">
+                                                    <h5>Proveedores</h5>
+                                                    <ul class="list-group list-group-flush">
+                                                        <!-- Fila de encabezado para la lista de productos -->
+                                                        <li class="list-group-item d-flex justify-content-between align-items-center bg-light font-weight-bold">
+                                                            <div class="col-3 col-sm-3">Compañía</div>
+                                                            <div class="col-3 col-sm-3">Nombre</div>
+                                                            <div class="col-3 col-sm-3">Teléfono</div>
+                                                            <div class="col-3 col-sm-3">Código</div>
+                                                        </li>
+                                                        <!-- Fila de productos con botón -->
+                                                        <li class="list-group-item d-flex justify-content-between align-items-center" th:each="proveedor : ${productoEnZonaEnOrden}">
+                                                            <div class="col-3 col-sm-3" th:text="${proveedor.productoEnZona.productoIdproducto.proveedorIdproveedor.tienda}"></div>
+                                                            <div class="col-3 col-sm-3" th:text="${proveedor.productoEnZona.productoIdproducto.proveedorIdproveedor.nombre}"></div>
+                                                            <div class="col-3 col-sm-3" th:text="${proveedor.productoEnZona.productoIdproducto.proveedorIdproveedor.telefono}"></div>
+                                                            <div class="col-3 col-sm-3" th:text="${proveedor.productoEnZona.productoIdproducto.codigo}"></div>
+                                                        </li>
+                                                    </ul>
                                                 </div>
                                             </div>
 
                                             <!-- Productos y Observaciones/Resumen -->
                                             <div class="row mb-4">
-                                                <div class="col-md-12 col-sm-12">
+                                                <div class="col-12">
                                                     <h5>Productos</h5>
-                                                    <ul class="list-group list-group-flush" >
+                                                    <ul class="list-group list-group-flush">
                                                         <!-- Fila de encabezado para la lista de productos -->
                                                         <li class="list-group-item d-flex justify-content-between align-items-center bg-light font-weight-bold">
-                                                            <div class="col-md-2" >Cantidad</div>
-                                                            <div class="col-md-6" >Nombre del producto</div>
-                                                            <div class="col-md-2" >Costo unitario</div>
-                                                            <div class="col-md-2"></div> <!-- Espacio reservado para el botón de acción -->
+                                                            <div class="col-2 col-sm-2">Código</div>
+                                                            <div class="col-2 col-sm-2">Cantidad</div>
+                                                            <div class="col-4 col-sm-3">Nombre del producto</div>
+                                                            <div class="col-2 col-sm-2">Costo unitario</div>
+                                                            <div class="col-sm-2 col-2" th:if="${ orden.estadoordenIdestadoorden.nombre == 'RECIBIDO' }" >Acción</div> <!-- Espacio reservado para el botón de acción -->
                                                         </li>
                                                         <!-- Fila de productos con botón -->
                                                         <li class="list-group-item d-flex justify-content-between align-items-center" th:each="producto : ${listaProductosEnOrden}">
-                                                            <div class="col-md-2" th:text="${producto.productoEnZona.cantidad}"></div>
-                                                            <div class="col-md-6" th:text="${producto.productoEnZona.productoIdproducto.nombre}"></div>
-                                                            <div class="col-md-2" th:text="'S/ ' + ${producto.productoEnZona.productoIdproducto.precio}"></div>
-                                                            <div class="col-md-2">
-                                                                <a th:href="@{/usuario/nuevaReseña}" type="button" class="btn btn-sm btn-outline-primary">Reseña</a>
+                                                            <div class="col-2 col-sm-2" th:text="${producto.productoEnZona.productoIdproducto.codigo}"></div>
+                                                            <div class="col-23 col-sm-2" th:text="${producto.productoEnZona.cantidad}"></div>
+                                                            <div class="col-4 col-sm-3" th:text="${producto.productoEnZona.productoIdproducto.nombre}"></div>
+                                                            <div class="col-2 col-sm-2" th:text="'S/ ' + ${producto.productoEnZona.productoIdproducto.precio}"></div>
+                                                            <div class="col-sm-2 col-2" th:if="${ orden.estadoordenIdestadoorden.nombre == 'RECIBIDO' }">
+                                                                <a th:href="@{/usuario/nuevaReseña}" type="button" class="btn btn-sm btn-outline-primary btn-block">Reseña</a>
                                                             </div>
                                                         </li>
-
                                                     </ul>
                                                 </div>
+
                                             </div>
                                             <div class="row mb-4">
                                                 <div class="col-md-12 col-sm-12">
@@ -144,9 +151,9 @@
                                                             <div class="col-md-3">Total</div>
                                                         </li>
                                                         <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                            <div class="col-md-3">$960</div>
-                                                            <div class="col-md-3">$100</div>
-                                                            <div class="col-md-3">$1060</div>
+                                                           <!-- <div class="col-md-3" th:text="${orden.c}"></div>
+                                                            <div class="col-md-3" th:text="${orden}"></div>
+                                                            <div class="col-md-3" th:text="${orden.costoTotal}"></div> -->
                                                         </li>
                                                     </ul>
                                                 </div>
