@@ -91,7 +91,7 @@
                                             </span>
                                         </td>
                                         <td>
-                                            <a th:href="${usuario.isActivated == 0} ? '/agente/infoUsuarioBaneado?idUsuario=' + ${usuario.id}  : '/agente/infoUsuario?idUsuario=' + ${usuario.id}"
+                                            <a th:href="'/agente/infoUsuario?idUsuario=' + ${usuario.id}"
                                                class="btn btn-primary btn-sm waves-effect waves-light" title="Ver">
                                                 <i class="ri-eye-fill"></i>
                                             </a>

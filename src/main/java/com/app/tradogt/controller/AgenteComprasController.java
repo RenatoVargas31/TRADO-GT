@@ -296,10 +296,12 @@ public class AgenteComprasController {
 
 
     //Tableros de USUARIOS
-    /*
+
     @GetMapping("/allUsers")
     public String showAllUsers(Model model) {
-        List<Usuario> usuarioList = usuarioRepository.allUsersFinales();
+        //Por el momento yo mismo le asigno el id que usará para buscar los usuarios asignadas
+        //pues este id será proporcionado recién automáticamente cuando se realice el LOGIN
+        List<Usuario> usuarioList = usuarioRepository.findByAgentcompraIdusuario_Id(8);
         model.addAttribute("usuarioList", usuarioList);
 
         return "Agente/allUsersTable-Agente";
@@ -309,12 +311,12 @@ public class AgenteComprasController {
 
     @GetMapping("/habilitadosUsers")
     public String showHabilitadosUsers(Model model) {
-        model.addAttribute("usuarioList", usuarioRepository.findByBanned(1));
+        model.addAttribute("usuarioList", usuarioRepository.findByIsActivatedAndAgentcompraIdusuario_Id((byte) 1,8));
         return "Agente/habilitadosUsersTable-Agente";
     }
     @GetMapping("/baneadosUsers")
     public String showBaneadosUsers(Model model) {
-        model.addAttribute("usuarioList", usuarioRepository.findByBanned(0));
+        model.addAttribute("usuarioList", usuarioRepository.findByIsActivatedAndAgentcompraIdusuario_Id((byte) 0,8));
         return "Agente/baneadosUsersTable-Agente";
     }
 
@@ -322,14 +324,33 @@ public class AgenteComprasController {
     @GetMapping("/infoUsuario")
     public String showInfoUser(Model model, @RequestParam("idUsuario") Integer idUsuario){
         model.addAttribute("usuario", usuarioRepository.findById(idUsuario).get());
-        model.addAttribute("ordenes", ordenRepository.finByUsuario(idUsuario));
+
+        List<Object[]> resultados = ordenRepository.getOrderDetailsAsDtoNativeParUsuario(8,idUsuario);
+
+        // Mapear los resultados al DTO directamente en el controlador
+        List<OrdenCompraAgtDto> listaOrdenes = resultados.stream()
+                .map(result -> new OrdenCompraAgtDto(
+                        (String) result[0],  // usuarioPropietario
+                        (Integer) result[1],  // idUsuario
+                        (String) result[2],  // fechaCreacion
+                        (String) result[3],  // metodoPago
+                        (String) result[4],  // agenteCompra
+                        (Long) result[5],  //idAgenteCompra
+                        (String) result[6], //idEstadoPedido
+                        (Integer) result[7] //idOrden
+                ))
+                .collect(Collectors.toList());
+
+        model.addAttribute("listaOrdenes", listaOrdenes);
         return "Agente/detallesUsuarios-Agente";
     }
-    */
+
+    /*
     @GetMapping("/infoUsuarioBaneado")
     public String showInfoUserBan(){
         return "Agente/detallesUsuariosBaneados-Agente";
     }
+    */
 
     //CHAT CON USUARIOS
     @GetMapping("/chat")

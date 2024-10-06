@@ -16,14 +16,14 @@ import java.util.List;
 
 @Repository
 public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
+
+    //Buscar usuarios activos
+    List<Usuario> findByIsActivatedAndAgentcompraIdusuario_Id(Byte isActivated, Integer idAgente);
+
+    //Buscar usuarios asignados a determinado agente
+    List<Usuario> findByAgentcompraIdusuario_Id(Integer idAgente);
+
     /*
-    @Query("SELECT u FROM Usuario u WHERE u.isActivated = ?1")
-    List<Usuario> findByBanned(int activated);
-
-    @Query("SELECT u FROM Usuario u WHERE u.rolIdrol.id = 3")
-    List<Usuario> allUsersFinales();
-
-
     @Query(value = "SELECT u.id, u.nombre, u.apellido, p.nombre , c.nombre , eoi.nombre, pzo.cantidad ,a.nombre, a.apellido " +
             "FROM Usuario u " +
             "LEFT JOIN u.agentcompraIdusuario a " +

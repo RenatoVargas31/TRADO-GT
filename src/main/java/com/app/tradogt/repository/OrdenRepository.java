@@ -44,7 +44,7 @@ public interface OrdenRepository extends JpaRepository<Orden, Integer> {
         
                                  
     """, nativeQuery = true)
-    List<Object[]> getOrderDetailsAsDtoNative(Integer idOrden);
+    List<Object[]> getOrderDetailsAsDtoNative(Integer idAgente);
 
     //Órdenes sin asignar
     @Query(value = """
@@ -76,7 +76,7 @@ public interface OrdenRepository extends JpaRepository<Orden, Integer> {
                                        ORDER BY
                                            o.FechaCreacion DESC;
 """, nativeQuery = true)
-    List<Object[]> getOrderDetailsAsDtoNativeSinAsignar(Integer idOrden);
+    List<Object[]> getOrderDetailsAsDtoNativeSinAsignar(Integer idAgente);
 
 
     //Órdenes pendientes
@@ -109,7 +109,7 @@ public interface OrdenRepository extends JpaRepository<Orden, Integer> {
                                        ORDER BY
                                            o.FechaCreacion DESC;
 """, nativeQuery = true)
-    List<Object[]> getOrderDetailsAsDtoNativePendiente(Integer idOrden);
+    List<Object[]> getOrderDetailsAsDtoNativePendiente(Integer idAgente);
 
 
     //Órdenes en proceso
@@ -142,7 +142,7 @@ public interface OrdenRepository extends JpaRepository<Orden, Integer> {
                                        ORDER BY
                                            o.FechaCreacion DESC;
 """, nativeQuery = true)
-    List<Object[]> getOrderDetailsAsDtoNativeEnProceso(Integer idOrden);
+    List<Object[]> getOrderDetailsAsDtoNativeEnProceso(Integer idAgente);
 
 
     //Órdenes en resueltas
@@ -175,7 +175,42 @@ public interface OrdenRepository extends JpaRepository<Orden, Integer> {
                                        ORDER BY
                                            o.FechaCreacion DESC;
 """, nativeQuery = true)
-    List<Object[]> getOrderDetailsAsDtoNativeResuelto(Integer idOrden);
+    List<Object[]> getOrderDetailsAsDtoNativeResuelto(Integer idAgente);
+
+    //Órdenes por usuario (órdenes de un solo usuario)
+    @Query(value = """
+        SELECT
+                                           CONCAT(u.Nombre, ' ', u.Apellido) AS usuarioPropietario,
+                                           u.idUsuario AS idUsuarioPropietario,
+                                           DATE_FORMAT(o.FechaCreacion, '%d-%m-%Y') AS fechaCreacion,
+                                           p.Metodo AS metodoPago,
+                                           CASE
+                                               WHEN o.AgentCompra_idUsuario IS NULL THEN 'No asignado'
+                                               ELSE a.Nombre
+                                           END AS agenteCompra,
+                                           COALESCE(a.idUsuario, 0) AS idAgenteCompra,  -- Aquí usamos COALESCE para devolver 0 si es NULL
+                                           eo.Nombre AS estadoPedido,
+                                           o.idOrden AS idOrden
+                                       FROM
+                                           Orden o
+                                       JOIN
+                                           Usuario u ON o.Usuario_idUsuario = u.idUsuario
+                                       LEFT JOIN
+                                        Pago p ON p.Orden_idOrden = o.idOrden
+                                       LEFT JOIN
+                                           Usuario a ON a.idUsuario = o.AgentCompra_idUsuario
+                                       LEFT JOIN
+                                           EstadoOrden eo ON eo.idEstadoOrden = o.EstadoOrden_idEstadoOrden
+                                       WHERE
+                                           o.isDeleted = 0  -- Solo mostrar órdenes que no han sido eliminadas
+                                           and a.idUsuario = ?1
+                                           and u.idUsuario = ?2
+                                       ORDER BY
+                                           o.FechaCreacion DESC;
+        
+                                 
+    """, nativeQuery = true)
+    List<Object[]> getOrderDetailsAsDtoNativeParUsuario(Integer idAgente, Integer idUsuario);
 
 
     //Lista de orden por fecha de creación y fecha de abordo
@@ -199,7 +234,6 @@ public interface OrdenRepository extends JpaRepository<Orden, Integer> {
 
     List<Object[]> findOrdersByZone();
 
-    @Query("SELECT f FROM Orden f WHERE (f.usuarioIdusuario.id = :idUsuario)")
-    List<Orden> finByUsuario(@Param("idUsuario") Integer idUsuario);
+
 
 }
