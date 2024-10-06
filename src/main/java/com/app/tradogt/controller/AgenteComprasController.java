@@ -9,11 +9,8 @@ import com.app.tradogt.repository.OrdenRepository;
 import com.app.tradogt.repository.ProductosRepository;
 import com.app.tradogt.repository.ProveedorRepository;
 import com.app.tradogt.repository.UsuarioRepository;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -309,6 +306,9 @@ public class AgenteComprasController {
 
         return "Agente/allUsersTable-Agente";
     }
+
+
+
     @GetMapping("/habilitadosUsers")
     public String showHabilitadosUsers(Model model) {
         model.addAttribute("usuarioList", usuarioRepository.findByIsActivatedAndAgentcompraIdusuario_Id((byte) 1,8));
@@ -345,38 +345,12 @@ public class AgenteComprasController {
         return "Agente/detallesUsuarios-Agente";
     }
 
-    //Baneo de importadores
-    // Método para manejar la solicitud POST del formulario de baneo
-    @PostMapping("/banearImportador")
-    public String banImportador(
-            @RequestParam("idImportador") int idImportador,
-            @RequestParam("banReason")
-            @Size(max = 150, message = "La razón del baneo no puede exceder los 150 caracteres")
-            @NotBlank(message = "La razón del baneo es obligatoria") String banReason,
-            RedirectAttributes redirectAttributes) {
-
-        // Buscamos al importador por su ID
-        Optional<Usuario> optionalUsuario = usuarioRepository.findById(idImportador);
-
-        if (optionalUsuario.isPresent()) {
-            Usuario usuario = optionalUsuario.get();
-            // Cambiar el estado del usuario a baneado (isActivated = 0)
-            usuario.setIsActivated((byte) 0);
-            // Establecer el motivo del baneo
-            usuario.setMotivoBaneo(banReason);
-            // Guardar los cambios en la base de datos
-            usuarioRepository.save(usuario);
-
-            // Agregar mensaje de éxito al flash attributes
-            redirectAttributes.addFlashAttribute("mensaje", "El usuario ha sido baneado con éxito.");
-        } else {
-            // Si no se encuentra el usuario
-            redirectAttributes.addFlashAttribute("error", "El usuario no fue encontrado.");
-        }
-
-        // Redirigir a la página de usuarios baneados
-        return "redirect:/agente/baneadosUsers";
+    /*
+    @GetMapping("/infoUsuarioBaneado")
+    public String showInfoUserBan(){
+        return "Agente/detallesUsuariosBaneados-Agente";
     }
+    */
 
     //CHAT CON USUARIOS
     @GetMapping("/chat")
