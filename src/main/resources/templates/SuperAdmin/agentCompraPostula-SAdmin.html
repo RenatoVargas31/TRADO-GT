@@ -65,27 +65,29 @@
                                         <tr>
                                             <th>Nombres</th>
                                             <th>Apellidos</th>
-                                            <th>Código de despachador</th>
-                                            <th>Jurisdicción</th>
-                                            <th>Distrito</th>
+                                            <th>RUC</th>
+                                            <th>Código de Despachador</th>
+                                            <th>Razón Social</th>
                                             <th>Zona</th>
+                                            <th>Postulado por:</th>
                                             <th>Acciones</th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         <tr th:each="solicitud : ${solicitudes}">
-                                            <td th:text="${solicitud.nombreUsuario}">Nombres</td>
-                                            <td th:text="${solicitud.apellidoUsuario}">Apellidos</td>
-                                            <td th:text="${solicitud.codigoDespachador}">Código de despachador</td>
-                                            <td th:text="${solicitud.codigoJurisdiccion}">Jurisdicción</td>
-                                            <td th:text="${solicitud.distritosIddistrito.nameDistrito}">Distrito</td>
-                                            <td th:text="${solicitud.zonasIdzona.nameZona}">Zona</td>
+                                            <td th:text="${solicitud.nombre}">Nombres</td>
+                                            <td th:text="${solicitud.apellido}">Apellidos</td>
+                                            <td th:text="${solicitud.ruc}">RUC</td>
+                                            <td th:text="${solicitud.codigoDespachador}">Código de Despachador</td>
+                                            <td th:text="${solicitud.razonSocial}">Razón Social</td>
+                                            <td th:text="${solicitud.distritoIddistrito.zonaIdzona.nombre}">Zona</td>
+                                            <td th:text="${solicitud.admzonalIdusuario != null ? solicitud.admzonalIdusuario.nombre + ' ' + solicitud.admzonalIdusuario.apellido : 'Mismo Usuario'}">Postulado por:</td>
                                             <td>
-                                                <button type="button" class="btn btn-success btn-sm waves-effect waves-light" title="Eliminar" data-bs-toggle="modal" th:data-bs-target="'#acceptConfirmModal-' + ${solicitud.nombreUsuario} + '-' + ${solicitud.id}">
+                                                <button type="button" class="btn btn-success btn-sm waves-effect waves-light" title="Eliminar" data-bs-toggle="modal" th:data-bs-target="'#acceptConfirmModal-' + ${solicitud.nombre} + '-' + ${solicitud.id}">
                                                     <i class="ri-check-line"></i>
                                                 </button>
                                                 <!-- Modal de Confirmación de Eliminación -->
-                                                <div class="modal fade" th:id="'acceptConfirmModal-' + ${solicitud.nombreUsuario} + '-' + ${solicitud.id}" tabindex="-1" aria-labelledby="acceptConfirmModalLabel" aria-hidden="true">
+                                                <div class="modal fade" th:id="'acceptConfirmModal-' + ${solicitud.nombre} + '-' + ${solicitud.id}" tabindex="-1" aria-labelledby="acceptConfirmModalLabel" aria-hidden="true">
                                                     <div class="modal-dialog">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
@@ -93,7 +95,7 @@
                                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                             </div>
                                                             <div class="modal-body text-wrap text-break">
-                                                                <p>¿Está seguro de aprobar la postulación de <strong th:text="${solicitud.nombreUsuario} + ' ' + ${solicitud.apellidoUsuario}"></strong> como Agente de Compra?</p>
+                                                                <p>¿Está seguro de aprobar la postulación de <strong th:text="${solicitud.nombre} + ' ' + ${solicitud.apellido}"></strong> como Agente de Compra?</p>
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
@@ -102,11 +104,11 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <button type="button" class="btn btn-danger btn-sm waves-effect waves-light" title="Eliminar" data-bs-toggle="modal" th:data-bs-target="'#deleteConfirmModal-' + ${solicitud.nombreUsuario} + '-' + ${solicitud.id}">
+                                                <button type="button" class="btn btn-danger btn-sm waves-effect waves-light" title="Eliminar" data-bs-toggle="modal" th:data-bs-target="'#deleteConfirmModal-' + ${solicitud.nombre} + '-' + ${solicitud.id}">
                                                     <i class="ri-close-line"></i>
                                                 </button>
                                                 <!-- Modal de Confirmación de Eliminación -->
-                                                <div class="modal fade" th:id="'deleteConfirmModal-' + ${solicitud.nombreUsuario} + '-' + ${solicitud.id}" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
+                                                <div class="modal fade" th:id="'deleteConfirmModal-' + ${solicitud.nombre} + '-' + ${solicitud.id}" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
                                                     <div class="modal-dialog">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
@@ -114,7 +116,7 @@
                                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                             </div>
                                                             <div class="modal-body text-wrap text-break">
-                                                                <p>¿Está seguro de rechazar la postulación de <strong th:text="${solicitud.nombreUsuario} + ' ' + ${solicitud.apellidoUsuario}"></strong> como Agente de Compra?</p>
+                                                                <p>¿Está seguro de rechazar la postulación de <strong th:text="${solicitud.nombre} + ' ' + ${solicitud.apellido}"></strong> como Agente de Compra?</p>
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>

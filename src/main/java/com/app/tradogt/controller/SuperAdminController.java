@@ -113,7 +113,7 @@ public class SuperAdminController {
     @GetMapping("/admZonalActivos")
     //Listar usuarios que tengan id rol 2 (Administrador Zonal) y isActivo 1
     public String viewAdmZonalActivos(Model model) {
-        List<Usuario> usuarios = usuarioRepository.findAllByRolIdrolNombreAndIsActivated("Administrador Zonal", (byte) 1);
+        List<Usuario> usuarios = usuarioRepository.findAllByRolIdrolIdAndIsActivated(2, (byte) 1);
         model.addAttribute("usuarios", usuarios);
         return "SuperAdmin/admZonalActivos-SAdmin";
     }
@@ -121,7 +121,7 @@ public class SuperAdminController {
     @GetMapping("/admZonalInactivos")
     public String viewAdmZonalInactivos(Model model) {
         //Listar usuarios que tengan id rol 2 (Administrador Zonal) y isActivo 0
-        List<Usuario> usuarios = usuarioRepository.findAllByRolIdrolNombreAndIsActivated("Administrador Zonal", (byte) 0);
+        List<Usuario> usuarios = usuarioRepository.findAllByRolIdrolIdAndIsActivated(2, (byte) 0);
         model.addAttribute("usuarios", usuarios);
         return "SuperAdmin/admZonalInactivos-SAdmin";
     }
@@ -176,10 +176,10 @@ public class SuperAdminController {
             return "redirect:/superadmin/agentCompraInactivos";
         }
     }
-
+*/
     @GetMapping("/agentCompraPostula")
     public String viewAgentCompraPostula(Model model) {
-        List<Usuario> solicitudes = usuarioRepository.findAllByRolesIdrolesIdAndPostulaAgenteAndIsActive(4, (byte) 1, (byte) 1);
+        List<Usuario> solicitudes = usuarioRepository.findAllByRolIdrolIdAndIsPostulated(4, (byte) 1);
         //Enviar a la vista
         model.addAttribute("solicitudes", solicitudes);
         return "SuperAdmin/agentCompraPostula-SAdmin";
@@ -188,7 +188,7 @@ public class SuperAdminController {
     @GetMapping("/agentCompraActivos")
     public String viewAgentCompraActivos(Model model) {
         //Listar usuarios con rol 3, isActivo 1, isAceptado 1
-        List<Usuario> usuarios = usuarioRepository.findAllByRolesIdrolesIdAndIsActiveAndIsAccepted(3, (byte) 1, (byte) 1);
+        List<Usuario> usuarios = usuarioRepository.findAllByRolIdrolIdAndIsActivated(3, (byte) 1);
         //Enviar a la vista
         model.addAttribute("usuarios", usuarios);
         return "SuperAdmin/agentCompraActivos-SAdmin";
@@ -197,23 +197,29 @@ public class SuperAdminController {
     @GetMapping("/agentCompraInactivos")
     public String viewAgentCompraInactivos(Model model) {
         //Listar usuarios con rol 3, isActivo 0, isAceptado 1
-        List<Usuario> usuarios = usuarioRepository.findAllByRolesIdrolesIdAndIsActiveAndIsAccepted(3, (byte) 0, (byte) 1);
+        List<Usuario> usuarios = usuarioRepository.findAllByRolIdrolIdAndIsActivated(3, (byte) 0);
         //Enviar a la vista
         model.addAttribute("usuarios", usuarios);
         return "SuperAdmin/agentCompraInactivos-SAdmin";
     }
+
     @GetMapping("/agentCompraBorrar")
     public String viewAgentCompraBorrar(Integer id) {
-        //Borrado lógico del proveedor
-        usuarioRepository.deleteUsuario(id);
+        //Borrado lógico del proveedor sin query method
+        Usuario usuario = usuarioRepository.findById(id).get();
+        usuario.setIsActivated((byte) 0);
+        usuarioRepository.save(usuario);
         return "redirect:/superadmin/agentCompraActivos";
     }
     @GetMapping("/agentCompraReactivar")
     public String viewAgentCompraReactivar(Integer id) {
-        //Reactivar usuario
-        usuarioRepository.reactivateUsuario(id);
+        //Reactivar usuario sin query method
+        Usuario usuario = usuarioRepository.findById(id).get();
+        usuario.setIsActivated((byte) 1);
+        usuarioRepository.save(usuario);
         return "redirect:/superadmin/agentCompraInactivos";
     }
+    /*
     @GetMapping("/agentCompraPostulanteApto")
     public String viewAgentCompraPostulanteApto(Integer id) {
         //Actualizar usuario a Agente de Compra

@@ -102,4 +102,8 @@ public class Usuario {
     @Column(name = "codigoDespachador", length = 45)
     private String codigoDespachador;
 
+    @Size(max = 150)
+    @Column(name = "motivoBaneo", length = 150)
+    private String motivoBaneo;
+
 }

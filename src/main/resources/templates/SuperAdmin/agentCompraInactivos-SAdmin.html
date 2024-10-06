@@ -65,31 +65,33 @@
                                         <tr>
                                             <th>Nombres</th>
                                             <th>Apellidos</th>
-                                            <th>Código de despachador</th>
-                                            <th>Jurisdicción</th>
-                                            <th>Distrito</th>
+                                            <th>RUC</th>
+                                            <th>Código de Despachador</th>
+                                            <th>Razón Social</th>
                                             <th>Zona</th>
+                                            <th>Distrito</th>
                                             <th>Acciones</th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         <tr th:each="usuario : ${usuarios}">
-                                            <td th:text="${usuario.nombreUsuario}">Nombres</td>
-                                            <td th:text="${usuario.apellidoUsuario}">Apellidos</td>
-                                            <td th:text="${usuario.codigoDespachador}">Código de despachador</td>
-                                            <td th:text="${usuario.codigoJurisdiccion}">Jurisdicción</td>
-                                            <td th:text="${usuario.distritosIddistrito.nameDistrito}">Distrito</td>
-                                            <td th:text="${usuario.zonasIdzona.nameZona}">Zona</td>
+                                            <td th:text="${usuario.nombre}">Nombres</td>
+                                            <td th:text="${usuario.apellido}">Apellidos</td>
+                                            <td th:text="${usuario.ruc}">RUC</td>
+                                            <td th:text="${usuario.codigoDespachador}">Código de Despachador</td>
+                                            <td th:text="${usuario.razonSocial}">Razón Social</td>
+                                            <td th:text="${usuario.distritoIddistrito.zonaIdzona.nombre}">Zona</td>
+                                            <td th:text="${usuario.distritoIddistrito.nombre}">Distrito</td>
                                             <td>
                                                 <form th:action="@{/superadmin/agentCompraEditarForm}" method="post" style="display:inline;">
                                                     <input type="hidden" name="id" th:value="${usuario.id}" />
                                                     <button type="submit" class="btn btn-info btn-sm waves-effect waves-light" title="Editar"><i class="ri-pencil-fill"></i></button>
                                                 </form>
-                                                <button type="button" class="btn btn-success btn-sm waves-effect waves-light" title="Eliminar" data-bs-toggle="modal" th:data-bs-target="'#deleteConfirmModal-' + ${usuario.nombreUsuario} + '-' + ${usuario.id}">
+                                                <button type="button" class="btn btn-success btn-sm waves-effect waves-light" title="Eliminar" data-bs-toggle="modal" th:data-bs-target="'#deleteConfirmModal-' + ${usuario.nombre} + '-' + ${usuario.id}">
                                                     <i class="ri-restart-line"></i>
                                                 </button>
                                                 <!-- Modal de Confirmación de Eliminación -->
-                                                <div class="modal fade" th:id="'deleteConfirmModal-' + ${usuario.nombreUsuario} + '-' + ${usuario.id}" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
+                                                <div class="modal fade" th:id="'deleteConfirmModal-' + ${usuario.nombre} + '-' + ${usuario.id}" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
                                                     <div class="modal-dialog">
                                                         <div class="modal-content">
                                                             <div class="modal-header">

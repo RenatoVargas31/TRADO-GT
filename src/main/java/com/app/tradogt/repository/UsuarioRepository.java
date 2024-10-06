@@ -93,7 +93,9 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
     */
     //Buscar por ID
     //Buscar por Rol y activo
-    List<Usuario> findAllByRolIdrolNombreAndIsActivated(String nombre, Byte isActivated);
+    List<Usuario> findAllByRolIdrolIdAndIsActivated(Integer idRol, Byte isActivated);
+
+    List<Usuario> findAllByRolIdrolIdAndIsPostulated(Integer idRol, Byte isPostulated);
     /*
 
     //Buscar por id
