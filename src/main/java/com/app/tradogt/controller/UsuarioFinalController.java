@@ -117,22 +117,7 @@ public class UsuarioFinalController {
         return "Usuario/trackingOrdEdit";
     }
 
-    @GetMapping("/categoriaMujer")
-    public String showMujerCategoria() {
-        return "Usuario/CategoriaMujer-usuario";
-    }
-    @GetMapping("/categoriaHombre")
-    public String showHombreCategoria() {
-        return "Usuario/CategoriaHombre-usuario";
-    }
-    @GetMapping("/categoriaTecnologia")
-    public String showTecnologiaCategoria() {
-        return "Usuario/CategoriaTecnologia-usuario";
-    }
-    @GetMapping("/categoriaMuebles")
-    public String showMuebleCategoria() {
-        return "Usuario/CategoriaMuebles-usuario";
-    }
+
 
     @GetMapping("/productoDetalles")
     public String showproductoDetalles() {
