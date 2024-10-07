@@ -499,6 +499,11 @@ public class UsuarioFinalController {
         return "Usuario/CategoriaTecnologia-usuario";
     }
 
+    @GetMapping("/checkout-info")
+    public String showcheckout(Model model) {
+        return "Usuario/billing-info-usuario";
+    }
+
 
 
 }
