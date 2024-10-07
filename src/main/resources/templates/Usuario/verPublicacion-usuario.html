@@ -93,11 +93,16 @@
                         <div class="card mt-4">
                             <div class="card-body">
                                 <h6>Añadir un Comentario</h6>
-                                <form id="comment-form">
+                                <!-- Formulario para enviar un comentario -->
+                                <form th:action="@{/usuario/agregarComentario}" method="post">
                                     <div class="mb-3">
                                         <label for="comment-text" class="form-label">Comentario:</label>
-                                        <textarea class="form-control" id="comment-text" rows="3" placeholder="Escribe tu comentario aquí..."></textarea>
+                                        <!-- Campo de texto para ingresar el comentario -->
+                                        <textarea class="form-control" id="comment-text" name="cuerpo" rows="3" placeholder="Escribe tu comentario aquí..." required></textarea>
                                     </div>
+                                    <!-- Campo oculto para enviar el ID de la publicación -->
+                                    <input type="hidden" name="publicacionId" th:value="${publicacion.id}" />
+                                    <!-- Botón para enviar el comentario -->
                                     <button type="submit" class="btn btn-primary">Enviar</button>
                                 </form>
                             </div>

@@ -158,17 +158,38 @@ public class UsuarioFinalController {
     public String showDetalleConsultas(@PathVariable("id") Integer id, Model model) {
         Publicacion publicacion = publicacionRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Publicación no encontrada"));
-
         List<Comentario> comentarios = comentarioRepository.findByPublicacionId(id);
-
-
         model.addAttribute("publicacion", publicacion);
         model.addAttribute("comentarios", comentarios);
-
-
-
         return "Usuario/verPublicacion-usuario";
     }
+
+    @PostMapping("/agregarComentario")
+    public String agregarComentario(@RequestParam("cuerpo") String cuerpo,
+                                    @RequestParam("publicacionId") Integer publicacionId,
+                                    Model model) {
+        // Buscar la publicación por su ID
+        Publicacion publicacion = publicacionRepository.findById(publicacionId)
+                .orElseThrow(() -> new IllegalArgumentException("Publicación no encontrada"));
+
+        // Crear un nuevo comentario
+        Comentario comentario = new Comentario();
+        comentario.setCuerpo(cuerpo);
+        comentario.setFechaCreacion(LocalDate.now());  // Fecha actual
+        comentario.setPublicacionIdpublicacion(publicacion);
+
+        // Simular el ID del usuario. Actualmente estamos trabajando con el ID 17
+        Usuario usuario = usuarioRepository.findById(17)
+                .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
+        comentario.setUsuarioIdusuario(usuario);
+
+        // Guardar el comentario en la base de datos
+        comentarioRepository.save(comentario);
+
+        // Redirigir nuevamente a la publicación para ver el comentario agregado
+        return "redirect:/usuario/verPublicacion/" + publicacionId;
+    }
+
 
 
     @GetMapping("/detalleProblema")
