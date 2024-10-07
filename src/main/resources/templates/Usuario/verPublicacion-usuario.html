@@ -56,27 +56,34 @@
                         <div class="card">
                             <div class="card-body">
                                 <div class="row">
+                                    <!-- Sección del usuario -->
                                     <div class="col-md-2 text-center">
                                         <div class="mb-2">
-                                            <span class="provider-name fw-bold">Nombre del Usuario</span>
+                                            <!-- Mostrar el nombre del usuario que publicó la publicación -->
+                                            <span class="provider-name fw-bold" th:text="${publicacion.usuarioIdusuario.nombre} + ', ' + ${publicacion.usuarioIdusuario.apellido}" >Nombre del Usuario</span>
                                         </div>
+
+                                        <!-- Mostrar una imagen del usuario o un ícono genérico -->
                                         <div class="provider-info d-flex align-items-center justify-content-center">
-                                            <img th:src="@{../images/product/iconoProvedor.png}" alt="Proveedor Icono" class="rounded-circle me-2" style="width: 100px; height: 100px;">
+                                            <img th:src="@{/images/product/iconoProvedor.png}" alt="Proveedor Icono" class="rounded-circle me-2" style="width: 100px; height: 100px;">
                                         </div>
+
+                                        <!-- Mostrar la fecha de creación de la publicación -->
                                         <div class="mb-2">
-                                            <p class="mt-2 card-title-desc" style="font-size: 12px;" ><span>11 de Octubre de 2024</span></p>
+                                            <p class="mt-2 card-title-desc" style="font-size: 12px;">
+                                                <span th:text="${publicacion.fechaCreacion}">11 de Octubre de 2024</span>
+                                            </p>
                                         </div>
                                     </div>
+
+                                    <!-- Sección de la publicación -->
                                     <div class="col-md-10 justify-content-center">
-                                        <h5 class="text-center">Mi Experiencia con TRADO</h5>
-                                        <p class="text-justify">
-                                            Hace unos meses, decidí importar productos para mi negocio a través de TRADO. Desde el inicio, la interfaz amigable me facilitó encontrar proveedores confiables gracias a las reseñas y calificaciones. La comunicación con los proveedores fue clara y eficiente, lo que me dio confianza en el proceso.
+                                        <!-- Mostrar el título de la publicación -->
+                                        <h5 class="text-center" th:text="${publicacion.titulo}">Mi Experiencia con TRADO</h5>
 
-                                            El pago fue seguro y sin complicaciones, con diversas opciones disponibles. El seguimiento del envío fue excepcional, permitiéndome rastrear mi pedido en tiempo real. Cuando los productos llegaron, estaban en perfectas condiciones y la calidad superó mis expectativas.
-
-                                            El soporte al cliente fue otro punto destacado. Tuve una duda sobre los aranceles aduaneros y el equipo de soporte respondió rápidamente, explicándome todo con claridad.
-
-                                            En resumen, mi experiencia con TRADO fue muy positiva. La plataforma facilita la importación con transparencia y excelente soporte al cliente. Recomiendo TRADO a cualquier negocio que busque importar productos de manera eficiente y segura.
+                                        <!-- Mostrar el contenido de la publicación -->
+                                        <p class="text-justify" th:text="${publicacion.cuerpo}" >
+                                            <!-- Aquí va el contenido dinámico de la publicación -->
                                         </p>
                                     </div>
                                 </div>
@@ -95,14 +102,17 @@
                                 </form>
                             </div>
                         </div>
+
+
+
                         <div class="card mt-4">
                             <div class="card-body">
                                 <h6>Ver comentarios</h6>
-                                <div class="border p-4 rounded">
+                                <div class="border p-4 rounded" th:each="comentario : ${comentarios}" >
                                     <div class="d-flex border-bottom pb-3">
                                         <div class="flex-1">
-                                            <p class="text-muted mb-2">To an English person, it will seem like simplified English, as a skeptical Cambridge</p>
-                                            <h5 class="font-size-15 mb-3">James</h5>
+                                            <p class="text-muted mb-2" th:text="${comentario.cuerpo}">To an English person, it will seem like simplified English, as a skeptical Cambridge</p>
+                                            <h5 class="font-size-15 mb-3" th:text="${comentario.usuarioIdusuario.nombre} + ', ' + ${comentario.usuarioIdusuario.apellido} ">James</h5>
 
                                             <ul class="list-inline product-review-link mb-0">
                                                 <li class="list-inline-item">
@@ -121,7 +131,7 @@
                                                 </form>
                                             </div>
                                         </div>
-
+                                    </div>
                                         <script>
                                             function showReplyForm(event, formId) {
                                                 event.preventDefault();
@@ -133,86 +143,12 @@
                                             }
                                         </script>
 
-                                        <p class="float-sm-end font-size-12">11 Feb, 2020</p>
+                                        <p class="float-sm-end font-size-12" th:text="${comentario.fechaCreacion}">11 Feb, 2020</p>
                                     </div>
-
-                                    <div class="d-flex border-bottom pb-3">
-                                        <div class="flex-1">
-                                            <p class="text-muted mb-2">To an English person, it will seem like simplified English, as a skeptical Cambridge</p>
-                                            <h5 class="font-size-15 mb-3">James</h5>
-
-                                            <ul class="list-inline product-review-link mb-0">
-                                                <li class="list-inline-item">
-                                                    <a href="#" onclick="showReplyForm(event, 'reply-form-2')"><i class="mdi mdi-message-text align-middle me-1"></i> Comment</a>
-                                                </li>
-                                            </ul>
-
-                                            <div id="reply-form-2" class="reply-form" style="display: none; margin-top: 10px;">
-                                                <form>
-                                                    <div class="mb-3">
-                                                        <label for="reply-text" class="form-label">Tu respuesta:</label>
-                                                        <textarea class="form-control" id="reply-text2" rows="3"></textarea>
-                                                    </div>
-                                                    <button type="submit" class="btn btn-primary">Publicar</button>
-                                                    <button type="button" class="btn btn-danger" onclick="hideReplyForm('reply-form-2')">Cancelar</button>
-                                                </form>
-                                            </div>
-                                        </div>
-
-                                        <script>
-                                            function showReplyForm(event, formId) {
-                                                event.preventDefault();
-                                                document.getElementById(formId).style.display = 'block';
-                                            }
-
-                                            function hideReplyForm(formId) {
-                                                document.getElementById(formId).style.display = 'none';
-                                            }
-                                        </script>
-
-                                        <p class="float-sm-end font-size-12">11 Feb, 2020</p>
-                                    </div>
-
-                                    <div class="d-flex border-bottom pb-3">
-                                        <div class="flex-1">
-                                            <p class="text-muted mb-2">To an English person, it will seem like simplified English, as a skeptical Cambridge</p>
-                                            <h5 class="font-size-15 mb-3">James</h5>
-
-                                            <ul class="list-inline product-review-link mb-0">
-                                                <li class="list-inline-item">
-                                                    <a href="#" onclick="showReplyForm(event, 'reply-form-3')"><i class="mdi mdi-message-text align-middle me-1"></i> Comment</a>
-                                                </li>
-                                            </ul>
-
-                                            <div id="reply-form-3" class="reply-form" style="display: none; margin-top: 10px;">
-                                                <form>
-                                                    <div class="mb-3">
-                                                        <label for="reply-text" class="form-label">Tu respuesta:</label>
-                                                        <textarea class="form-control" id="reply-text3" rows="3"></textarea>
-                                                    </div>
-                                                    <button type="submit" class="btn btn-primary">Publicar</button>
-                                                    <button type="button" class="btn btn-danger" onclick="hideReplyForm('reply-form-3')">Cancelar</button>
-                                                </form>
-                                            </div>
-                                        </div>
-
-                                        <script>
-                                            function showReplyForm(event, formId) {
-                                                event.preventDefault();
-                                                document.getElementById(formId).style.display = 'block';
-                                            }
-
-                                            function hideReplyForm(formId) {
-                                                document.getElementById(formId).style.display = 'none';
-                                            }
-                                        </script>
-
-                                        <p class="float-sm-end font-size-12">11 Feb, 2020</p>
-                                    </div>
-
                                 </div>
                             </div>
-                        </div>
+
+                    </div>
 
                     </div>
             </div> <!-- container-fluid -->

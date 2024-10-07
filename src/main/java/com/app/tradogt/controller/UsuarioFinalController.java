@@ -16,27 +16,31 @@ import java.util.Optional;
 @Controller
 @RequestMapping("/usuario")
 public class UsuarioFinalController {
-/*
+
     final ProductosRepository productosRepository;
     final OrdenRepository ordenRepository;
     final UsuarioRepository usuarioRepository;
     //final ProductoEnZonaEnOrdenRepository productoEnZonaEnOrdenRepository;
     final ProductoEnZonaRepository productoEnZonaRepository;
+    final PublicacionRepository publicacionRepository;
+    final ComentarioRepository comentarioRepository;
 
 
-    public UsuarioFinalController(ProductosRepository productosRepository, OrdenRepository ordenRepository, UsuarioRepository usuarioRepository, ProductoEnZonaRepository productoEnZonaRepository) {
+    public UsuarioFinalController(ProductosRepository productosRepository, OrdenRepository ordenRepository, UsuarioRepository usuarioRepository, ProductoEnZonaRepository productoEnZonaRepository, PublicacionRepository publicacionRepository, ComentarioRepository comentarioRepository) {
         this.productosRepository = productosRepository;
         this.ordenRepository = ordenRepository;
         this.usuarioRepository = usuarioRepository;
         //this.productoEnZonaEnOrdenRepository = productoEnZonaEnOrdenRepository;
         this.productoEnZonaRepository = productoEnZonaRepository;
+        this.publicacionRepository = publicacionRepository;
+        this.comentarioRepository = comentarioRepository;
     }
 
     @GetMapping("/inicio")
     public String inicio() {
         return "Usuario/inicio-usuario";
     }
-
+/*
     @GetMapping("/misPedidos")
     public String misPedidos(Model model) {
         // Imprimir los elementos de la lista
@@ -77,6 +81,8 @@ public class UsuarioFinalController {
         return "redirect:/usuario/misPedidos";
     }
 
+
+ */
     @GetMapping("/perfil")
     public String verPerfil(){return "Usuario/profile_user";}
 
@@ -149,17 +155,33 @@ public class UsuarioFinalController {
     }
 
     @GetMapping("/comunidad")
-    public String showComunidad() {
+    public String showComunidad(Model model) {
+        List<Object[]> publicaciones = publicacionRepository.findPublicacionesUsuariosNoBaneados();
+        model.addAttribute("publicaciones", publicaciones);
         return "Usuario/comunidad-usuario";
     }
     @GetMapping("/foroProblema")
     public String showForoProblema() {
         return "Usuario/problema-soluciones";
     }
-    @GetMapping("/verPublicacion")
-    public String showDetalleConsultas() {
+
+    @GetMapping("/verPublicacion/{id}")
+    public String showDetalleConsultas(@PathVariable("id") Integer id, Model model) {
+        Publicacion publicacion = publicacionRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Publicación no encontrada"));
+
+        List<Comentario> comentarios = comentarioRepository.findByPublicacionId(id);
+
+
+        model.addAttribute("publicacion", publicacion);
+        model.addAttribute("comentarios", comentarios);
+
+
+
         return "Usuario/verPublicacion-usuario";
     }
+
+
     @GetMapping("/detalleProblema")
     public String showDetalleProblema() {
         return "Usuario/viewProblema";
@@ -185,16 +207,16 @@ public class UsuarioFinalController {
     public String showSoporte(){
         return "Usuario/soporte-usuario";
     }
+
     @GetMapping("/nuevaPublicación")
     public String nuevaPublicacion(){
-
         return "Usuario/nuevaPublicacion-usuario";
     }
+
     @GetMapping("/nuevaReseña")
     public String nuevaResenha(){
-
         return "Usuario/nuevaReseña-usuario";
     }
 
- */
+
 }
