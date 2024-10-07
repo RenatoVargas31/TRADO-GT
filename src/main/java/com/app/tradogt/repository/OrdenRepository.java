@@ -259,13 +259,9 @@ public interface OrdenRepository extends JpaRepository<Orden, Integer> {
 
     List<Object[]> findOrdersByZone();
 
-
-    /*
-    //Listar ordenes de un usuario
-    List<Orden> findAllByEsCarritoAndIsDeleted(int i, int k);
+    List<Orden> findAllByIsDeleted( int k);
 
     Optional<Orden> findByCodigo(String codigo);
-    */
 
 
 

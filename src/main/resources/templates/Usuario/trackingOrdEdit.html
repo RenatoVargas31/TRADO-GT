@@ -66,7 +66,7 @@
         </div>
         <!-- end page title -->
         <div class="row">
-          <div class="col-lg-12 col-md-10 col-sm-12">
+          <div class="col-lg-12 col-md-12 col-sm-12">
             <div class="col-12">
               <div class="card">
                 <div class="card-body">
@@ -77,33 +77,38 @@
                   <div class="row mb-4">
                     <div class="col-md-6 col-sm-12">
                       <h5>Datos personales</h5>
-                      <p><strong>Nombre de comprador:</strong> Juan Pérez</p>
-                      <p><strong>Número DNI:</strong> 12345678</p>
-                      <p><strong>Domicilio:</strong> Av. Siempre Viva 742</p>
+                      <p><strong>Nombre de comprador: </strong><span class="text-primary" th:text="${item.usuarioIdusuario.nombre} + ' ' + ${item.usuarioIdusuario.apellido}"></span></p>
+                      <p><strong>Número DNI: </strong> <span class="text-primary" th:text="${item.usuarioIdusuario.dni}"></span></p>
+                      <p><strong>Domicilio: </strong> <span class="text-primary" th:text="${item.usuarioIdusuario.direccion}"></span></p>
                     </div>
                     <div class="col-md-6 col-sm-12">
                       <h5>Fecha y Número de Orden</h5>
-                      <p><strong>Fecha:</strong> 2024-09-17</p>
-                      <p><strong>No. de orden:</strong> ORD123456</p>
-                      <p><strong>Ciudad, Estado:</strong> Springfield, IL</p>
+                      <p><strong>Fecha: </strong> <span class="text-primary" th:text="${orden.fechaCreacion}"></span></p>
+                      <p><strong>No. de orden: </strong> <span class="text-primary" th:text="${orden.codigo}"></span></p>
+                      <p><strong>Ciudad, Estado: </strong> <span class="text-primary" th:text="${item.usuarioIdusuario.distritoIddistrito.nombre} + ', ' + ${item.usuarioIdusuario.distritoIddistrito.zonaIdzona.nombre}"></span></p>
                     </div>
                   </div>
 
                   <!-- Datos del Vendedor y del Comprador -->
                   <div class="row mb-4">
-                    <div class="col-md-6 col-sm-12">
-                      <h5>Vendedor</h5>
-                      <p><strong>Compañía:</strong> Vendedor S.A</p>
-                      <p><strong>Contacto:</strong> Ana Gómez</p>
-                      <p><strong>Domicilio:</strong> Calle Falsa 123</p>
-                      <p><strong>Teléfono:</strong> 555-1234</p>
-                    </div>
-                    <div class="col-md-6 col-sm-12">
-                      <h5>Comprador</h5>
-                      <p><strong>Compañía:</strong> Comprador Ltda.</p>
-                      <p><strong>Contacto:</strong> Laura Martínez</p>
-                      <p><strong>Domicilio:</strong> Av. Siempre Viva 742</p>
-                      <p><strong>Teléfono:</strong> 555-6789</p>
+                    <div class="col-12">
+                      <h5>Proveedores</h5>
+                      <ul class="list-group list-group-flush">
+                        <!-- Fila de encabezado para la lista de productos -->
+                        <li class="list-group-item d-flex justify-content-between align-items-center bg-light font-weight-bold">
+                          <div class="col-3 col-sm-3">Compañía</div>
+                          <div class="col-3 col-sm-3">Nombre</div>
+                          <div class="col-3 col-sm-3">Teléfono</div>
+                          <div class="col-3 col-sm-3">Código</div>
+                        </li>
+                        <!-- Fila de productos con botón -->
+                        <li class="list-group-item d-flex justify-content-between align-items-center" th:each="proveedor : ${miCarrito}">
+                          <div class="col-3 col-sm-3" th:text="${proveedor.productoEnZona.productoIdproducto.proveedorIdproveedor.tienda}"></div>
+                          <div class="col-3 col-sm-3" th:text="${proveedor.productoEnZona.productoIdproducto.proveedorIdproveedor.nombre}"></div>
+                          <div class="col-3 col-sm-3" th:text="${proveedor.productoEnZona.productoIdproducto.proveedorIdproveedor.telefono}"></div>
+                          <div class="col-3 col-sm-3" th:text="${proveedor.productoEnZona.productoIdproducto.codigo}"></div>
+                        </li>
+                      </ul>
                     </div>
                   </div>
 
@@ -114,49 +119,72 @@
                       <ul class="list-group list-group-flush">
                         <!-- Fila de encabezado para la lista de productos -->
                         <li class="list-group-item d-flex justify-content-between align-items-center bg-light font-weight-bold">
-                          <div class="col-md-2">Cantidad</div>
-                          <div class="col-md-6">Nombre del Producto</div>
-                          <div class="col-md-2">Costo</div>
-                          <div class="col-md-2"></div> <!-- Espacio reservado para el botón de acción -->
+                          <div class="col-2 col-sm-2">Código</div>
+                          <div class="col-2 col-sm-2">Cantidad</div>
+                          <div class="col-4 col-sm-3">Nombre del producto</div>
+                          <div class="col-2 col-sm-2">Costo unitario</div>
+                          <div class="col-md-2">Acción</div><!-- Espacio reservado para el botón de acción -->
                         </li>
                         <!-- Fila de productos con botón -->
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                          <div class="col-md-2">20</div>
-                          <div class="col-md-6">Poleras Celine</div>
-                          <div class="col-md-2">$480</div>
+                        <li class="list-group-item d-flex justify-content-between align-items-center" th:each="producto : ${miCarrito}">
+                          <div class="col-2 col-sm-2" th:text="${producto.productoEnZona.productoIdproducto.codigo}"></div>
+                          <div class="col-23 col-sm-2" th:text="${producto.cantidad}"></div>
+                          <div class="col-4 col-sm-3" th:text="${producto.productoEnZona.productoIdproducto.nombre}"></div>
+                          <div class="col-2 col-sm-2" th:text="'S/ ' + ${producto.productoEnZona.productoIdproducto.precio}"></div>
                           <div class="col-md-2">
-                            <button type="button" class="btn btn-success btn-sm waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#editProductModal" title="Editar"><i class="ri-pencil-fill"></i></button>
-                            <button type="button" class="btn btn-danger btn-sm waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#deleteProductModal" title="Eliminar"><i class="ri-delete-bin-fill"></i></button>
-                          </div>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                          <div class="col-md-2">20</div>
-                          <div class="col-md-6">Poleras Celine</div>
-                          <div class="col-md-2">$480</div>
-                          <div class="col-md-2">
-                            <button type="button" class="btn btn-success btn-sm waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#editProductModal" title="Editar"><i class="ri-pencil-fill"></i></button>
-                            <button type="button" class="btn btn-danger btn-sm waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#deleteProductModal" title="Eliminar"><i class="ri-delete-bin-fill"></i></button>
-                          </div>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                          <div class="col-md-2">20</div>
-                          <div class="col-md-6">Poleras Celine</div>
-                          <div class="col-md-2">$480</div>
-                          <div class="col-md-2">
-                            <button type="button" class="btn btn-success btn-sm waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#editProductModal" title="Editar"><i class="ri-pencil-fill"></i></button>
-                            <button type="button" class="btn btn-danger btn-sm waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#deleteProductModal" title="Eliminar"><i class="ri-delete-bin-fill"></i></button>
-                          </div>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                          <div class="col-md-2">20</div>
-                          <div class="col-md-6">Poleras Celine</div>
-                          <div class="col-md-2">$480</div>
-                          <div class="col-md-2">
-                            <button type="button" class="btn btn-success btn-sm waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#editProductModal" title="Editar"><i class="ri-pencil-fill"></i></button>
-                            <button type="button" class="btn btn-danger btn-sm waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#deleteProductModal" title="Eliminar"><i class="ri-delete-bin-fill"></i></button>
-                          </div>
-                        </li>
+                            <button type="button" class="btn btn-success btn-sm waves-effect waves-light" data-bs-toggle="modal" th:data-bs-target="'#editProductModal' + ${producto.productoEnZona.productoIdproducto.codigo}" title="Editar"><i class="ri-pencil-fill"></i></button>
+                            <button type="button" class="btn btn-danger btn-sm waves-effect waves-light" data-bs-toggle="modal" th:data-bs-target="'#deleteProductModal' + ${producto.productoEnZona.productoIdproducto.codigo}" title="Eliminar"><i class="ri-delete-bin-fill"></i></button>
+                            <!-- Modal para Editar Producto -->
+                            <div class="modal fade" th:id="'editProductModal' + ${producto.productoEnZona.productoIdproducto.codigo}" tabindex="-1" aria-labelledby="editProductLabel + ${producto.productoEnZona.productoIdproducto.codigo}" aria-hidden="true">
+                              <div class="modal-dialog">
+                                <div class="modal-content">
+                                  <div class="modal-header">
+                                    <h5 class="modal-title" id="editProductLabel">Editar Cantidad de Producto</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                  </div>
+                                  <div class="modal-body">
+                                    <form th:action="@{/usuario/editCantidad}" method="post">
+                                      <div class="mb-3">
+                                        <label for="productQuantity" class="form-label">Cantidad</label>
+                                        <input type="number" class="form-control" id="productQuantity" th:value="${producto.cantidad}" min="1">
+                                      </div>
+                                      <div class="mb-3">
+                                        <label for="productName" class="form-label">Nombre del Producto</label>
+                                        <input type="text" class="form-control" id="productName" th:value="${producto.productoEnZona.productoIdproducto.nombre}" disabled>
+                                      </div>
+                                    </form>
+                                  </div>
+                                  <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                    <button type="button" class="btn btn-primary">Guardar Cambios</button>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
 
+                            <!-- Modal para Confirmar Eliminación -->
+                            <div class="modal fade" th:id="'deleteProductModal' + ${producto.productoEnZona.productoIdproducto.codigo}" tabindex="-1" aria-labelledby="deleteProductLabel' +  ${producto.productoEnZona.productoIdproducto.codigo}" aria-hidden="true">
+                              <div class="modal-dialog">
+                                <div class="modal-content">
+                                  <div class="modal-header">
+                                    <h5 class="modal-title" th:id="'deleteProductLabel' + ${producto.productoEnZona.productoIdproducto.codigo}">Confirmar Eliminación</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                  </div>
+                                  <div class="modal-body">
+                                    <p>¿Estás seguro de que deseas eliminar <strong th:text="${producto.productoEnZona.productoIdproducto.codigo}"></strong> de la lista?</p>
+                                  </div>
+                                  <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                    <form th:action="@{/usuario/deleteProduct}" method="post">
+                                      <input type="hidden" th:name="codigo" th:value="${producto.productoEnZona.productoIdproducto.codigo}"/>
+                                      <button type="submit" class="btn btn-danger">Eliminar</button>
+                                    </form>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </li>
                       </ul>
                     </div>
                   </div>
@@ -170,9 +198,9 @@
                           <div class="col-md-3">Total</div>
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-center">
-                          <div class="col-md-3">$960</div>
-                          <div class="col-md-3">$100</div>
-                          <div class="col-md-3">$1060</div>
+                          <div class="col-md-3" th:text="'S/ ' + ${orden.subTotal}"></div>
+                          <div class="col-md-3" th:text="'S/ ' + ${item.productoEnZona.costoEnvio}"></div>
+                          <div class="col-md-3" th:text="'S/ ' + ${orden.costoTotal}"></div>
                         </li>
                       </ul>
                     </div>
@@ -204,6 +232,10 @@
                       </div>
                     </div>
                   </div>
+
+
+
+
                   <!-- Segundo Modal: Confirmación de Reembolso -->
                   <div class="modal fade" id="refundModal" tabindex="-1" role="dialog" aria-labelledby="refundModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
@@ -241,53 +273,6 @@
                     </div>
                   </div>
 
-
-                  <!-- Modal para Editar Producto -->
-                  <div class="modal fade" id="editProductModal" tabindex="-1" aria-labelledby="editProductLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                      <div class="modal-content">
-                        <div class="modal-header">
-                          <h5 class="modal-title" id="editProductLabel">Editar Cantidad de Producto</h5>
-                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                          <form>
-                            <div class="mb-3">
-                              <label for="productQuantity" class="form-label">Cantidad</label>
-                              <input type="number" class="form-control" id="productQuantity" value="20" min="1">
-                            </div>
-                            <div class="mb-3">
-                              <label for="productName" class="form-label">Nombre del Producto</label>
-                              <input type="text" class="form-control" id="productName" value="Poleras Celine" disabled>
-                            </div>
-                          </form>
-                        </div>
-                        <div class="modal-footer">
-                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                          <button type="button" class="btn btn-primary">Guardar Cambios</button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- Modal para Confirmar Eliminación -->
-                  <div class="modal fade" id="deleteProductModal" tabindex="-1" aria-labelledby="deleteProductLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                      <div class="modal-content">
-                        <div class="modal-header">
-                          <h5 class="modal-title" id="deleteProductLabel">Confirmar Eliminación</h5>
-                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                          <p>¿Estás seguro de que deseas eliminar <strong>Poleras Celine</strong> de la lista?</p>
-                        </div>
-                        <div class="modal-footer">
-                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                          <button type="button" class="btn btn-danger">Eliminar</button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
                 </div>
               </div>
             </div>

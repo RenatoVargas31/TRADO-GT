@@ -53,8 +53,10 @@ public class Orden {
     @Column(name = "codigo", nullable = false, length = 45)
     private String codigo;
 
+    @Column(name = "subTotal")
+    private BigDecimal subTotal;
+
     @NotNull
     @Column(name = "costoTotal", nullable = false, precision = 10, scale = 2)
     private BigDecimal costoTotal;
-
 }

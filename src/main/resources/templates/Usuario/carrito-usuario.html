@@ -20,10 +20,10 @@
 <div id="layout-wrapper">
 
     <!-- ========== NavBar Start ========== -->
-    <header th:replace="Usuario/fragments/navbar :: nav_bar"></header>
+    <header th:replace="~{Usuario/fragments/navbar :: nav_bar}"></header>
     <!-- Navbar End -->
     <!-- ========== Left Sidebar Start ========== -->
-    <div th:replace="Usuario/fragments/sidebar :: side_bar"></div>
+    <div th:replace="~{Usuario/fragments/sidebar :: side_bar}"></div>
     <!-- Left Sidebar End -->
     <!-- ============================================================== -->
     <!-- Start right Content here -->
@@ -40,7 +40,7 @@
 
                             <div class="page-title-right">
                                 <ol class="breadcrumb m-0">
-                                    <li class="breadcrumb-item active">Home</li>
+                                    <li class="breadcrumb-item active">Inicio</li>
                                     <li class="breadcrumb-item"><a href="javascript: void(0);">Carrito de compras</a></li>
                                 </ol>
                             </div>
@@ -59,155 +59,93 @@
                                     <table class="table table-centered mb-0 table-nowrap">
                                         <thead class="bg-light">
                                         <tr>
+                                            <th >Código</th>
                                             <th style="width: 120px">Producto</th>
-                                            <th>Especificación</th>
-                                            <th>Precio</th>
+                                            <th>Nombre</th>
+                                            <th>Categoría, Subcategoría</th>
+                                            <th>Precio Unit.</th>
                                             <th>Cantidad</th>
                                             <th>Total</th>
                                             <th class="text-center">Acción</th>
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr>
+                                        <tr th:each="producto : ${carrito}">
+                                            <td th:text="${producto.productoEnZona.productoIdproducto.codigo}"></td>
                                             <td>
                                                 <img th:src="@{../images/product/img-1.png}" alt="product-img"
                                                      title="product-img" class="avatar-md" />
                                             </td>
                                             <td>
-                                                <h5 class="font-size-14 text-truncate"><a href="ecommerce-product-detail.html" class="text-reset">Full sleeve T-shirt</a></h5>
-                                                <p class="mb-0">Color : <span class="fw-medium">Blue</span></p>
+                                                <h5 class="font-size-14 text-truncate"><a href="#" class="text-reset" th:text="${producto.productoEnZona.productoIdproducto.nombre}"></a></h5>
+                                                <p class="mb-0">Proveedor : <span class="fw-medium" th:text="${producto.productoEnZona.productoIdproducto.proveedorIdproveedor.tienda}"></span></p>
                                             </td>
-                                            <td>
-                                                $ 240
-                                            </td>
+                                            <td th:text="${producto.productoEnZona.productoIdproducto.subcategoriaIdsubcategoria.categoriaIdcategoria.nombre} + ', ' + ${producto.productoEnZona.productoIdproducto.subcategoriaIdsubcategoria.nombre}"></td>
+
+                                            <td th:text="'S/. '+ ${producto.productoEnZona.productoIdproducto.precio}"></td>
+
                                             <td>
                                                 <div style="width: 120px;" class="product-cart-touchspin">
-                                                    <input data-bs-toggle="touchspin" type="text" value="25">
+                                                    <input data-bs-toggle="touchspin" type="text" th:value="${producto.cantidad}">
                                                 </div>
                                             </td>
-                                            <td>
-                                                $ 480
-                                            </td>
+                                            <td th:text="'S/. ' + (${producto.productoEnZona.productoIdproducto.precio} * ${producto.cantidad})"></td>
                                             <td style="width: 90px;" class="text-center">
-                                                <button type="button" class="btn btn-outline-danger waves-effect waves-light btn-sm" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><i class="mdi mdi-trash-can font-size-18"></i></button>
+                                                <button type="button" class="btn btn-danger waves-effect waves-light btn-sm" data-bs-toggle="modal" th:data-bs-target="'#deleteProductModal' + ${producto.productoEnZona.productoIdproducto.id}">
+                                                    <i class="ri-indeterminate-circle-fill "></i>
+                                                </button>
                                             </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <img th:src="@{../images/product/img-2.png}" alt="product-img"
-                                                     title="product-img" class="avatar-md" />
-                                            </td>
-                                            <td>
-                                                <h5 class="font-size-14 text-truncate"><a href="ecommerce-product-detail.html" class="text-reset">Half sleeve T-shirt</a></h5>
-                                                <p class="mb-0">Color : <span class="fw-medium">Red</span></p>
-                                            </td>
-                                            <td>
-                                                $ 225
-                                            </td>
-                                            <td>
-                                                <div style="width: 120px;" class="product-cart-touchspin">
-                                                    <input data-bs-toggle="touchspin" type="text" value="25">
+                                            <!-- Modal -->
+                                            <div class="modal fade" th:id="'deleteProductModal' + ${producto.productoEnZona.productoIdproducto.id}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="deleteProductLabel">Eliminar Producto</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <p>¿Está seguro de que desea eliminar <strong th:text="${producto.productoEnZona.productoIdproducto.codigo}"></strong> de su carrito de compras?</p>
+                                                        </div>
+                                                        <form th:action="@{/usuario/eliminarProducto}" method="post">
+                                                            <input type="hidden" name="productoId" th:value="${producto.productoEnZona.productoIdproducto.id}" />
+                                                            <input type="hidden" name="usuarioId" th:value="${usuario.id}" />
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">No</button>
+                                                                <button type="submit" class="btn btn-success">Sí</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
                                                 </div>
-                                            </td>
-                                            <td>
-                                                $ 225
-                                            </td>
-                                            <td class="text-center">
-                                                <button type="button" class="btn btn-outline-danger waves-effect waves-light btn-sm" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><i class="mdi mdi-trash-can font-size-18"></i></button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <img th:src="@{../images/product/img-3.png}" alt="product-img"
-                                                     title="product-img" class="avatar-md" />
-                                            </td>
-                                            <td>
-                                                <h5 class="font-size-14 text-truncate"><a href="ecommerce-product-detail.html" class="text-reset">Hoodie (Green)</a></h5>
-                                                <p class="mb-0">Color : <span class="fw-medium">Green</span></p>
-                                            </td>
-                                            <td>
-                                                $ 275
-                                            </td>
-                                            <td>
-                                                <div style="width: 120px;" class="product-cart-touchspin">
-                                                    <input data-bs-toggle="touchspin" type="text" value="25">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                $ 550
-                                            </td>
-                                            <td class="text-center">
-                                                <button type="button" class="btn btn-outline-danger waves-effect waves-light btn-sm" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><i class="mdi mdi-trash-can font-size-18"></i></button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <img th:src="@{../images/product/img-4.png}" alt="product-img"
-                                                     title="product-img" class="avatar-md" />
-                                            </td>
-                                            <td>
-                                                <h5 class="font-size-14 text-truncate"><a href="ecommerce-product-detail.html" class="text-reset">Hoodie (Gray)</a></h5>
-                                                <p class="mb-0">Color : <span class="fw-medium">Gray</span></p>
-                                            </td>
-                                            <td>
-                                                $ 275
-                                            </td>
-                                            <td>
-                                                <div style="width: 120px;" class="product-cart-touchspin">
-                                                    <input data-bs-toggle="touchspin" type="text" value="25">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                $ 275
-                                            </td>
-                                            <td class="text-center">
-                                                <button type="button" class="btn btn-outline-danger waves-effect waves-light btn-sm" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><i class="mdi mdi-trash-can font-size-18"></i></button>
-                                            </td>
+                                            </div>
                                         </tr>
                                         <tr class="bg-light text-end">
 
-                                            <th scope="row" colspan="5">
+                                            <th scope="row" colspan="7">
                                                 Sub Total :
                                             </th>
 
-                                            <td>
-                                                $ 1530
-                                            </td>
+                                            <td th:text="'S/. ' + ${costoTotal}"></td>
                                         </tr>
                                         <tr class="bg-light text-end">
 
-                                            <th scope="row" colspan="5">
-                                                Discount :
+                                            <th scope="row" colspan="7">
+                                                Costo de envío :
                                             </th>
 
-                                            <td>
-                                                - $ 30
-                                            </td>
+                                            <td th:text="'S/. ' +${costoEnvio}"></td>
                                         </tr>
                                         <tr class="bg-light text-end">
 
-                                            <th scope="row" colspan="5">
-                                                Shipping Charge :
-                                            </th>
-
-                                            <td>
-                                                $ 25
-                                            </td>
-                                        </tr>
-                                        <tr class="bg-light text-end">
-
-                                            <th scope="row" colspan="5">
+                                            <th scope="row" colspan="7">
                                                 Total :
                                             </th>
 
-                                            <td>
-                                                $ 1525
-                                            </td>
+                                            <td th:text="'S/. ' + (${costoTotal} + ${costoEnvio})"></td>
                                         </tr>
                                         </tbody>
                                     </table>
                                     <div class="mt-3 text-end">
-                                        <a href="/usuario/checkout" type="button" class="btn btn-primary" >Comprar</a>
+                                        <a th:href="@{/usuario/checkout-info}" type="button" class="btn btn-primary" >Comprar</a>
                                     </div>
                                 </div>
                             </div>
@@ -220,27 +158,6 @@
             </div> <!-- container-fluid -->
         </div>
 
-        <div class="col-sm-6 col-md-4 col-xl-3">
-            <!-- Modal -->
-            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="staticBackdropLabel">Eliminar Producto</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <p>¿Está seguro de que desea eliminar este producto de su carrito de compras? Esta acción no es reversible.</p>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">No</button>
-                            <button type="button" class="btn btn-success" id="confirmDelete">Sí</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
 
 
         <!-- End Page-content -->

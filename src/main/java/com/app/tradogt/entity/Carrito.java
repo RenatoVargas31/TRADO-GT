@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+
 @Data
 @Entity
 @Table(name = "Carrito")
@@ -29,6 +31,29 @@ public class Carrito {
     @NotNull
     @Column(name = "cantidad", nullable = false)
     private Integer cantidad;
+
+    @Column(name = "costo")
+    private BigDecimal costo;
+
+    @Column(name = "totalCosto")
+    private BigDecimal costoTotal;
+
+    // Getters y setters
+    public BigDecimal getCosto() {
+        return costo;
+    }
+
+    public void setCosto(BigDecimal costo) {
+        this.costo = costo;
+    }
+
+    public BigDecimal getCostoTotal() {
+        return costoTotal;
+    }
+
+    public void setCostoTotal(BigDecimal costoTotal) {
+        this.costoTotal = costoTotal;
+    }
 
     
     @ManyToOne
