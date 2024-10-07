@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
 @Controller
 @RequestMapping("/agente")
 public class AgenteComprasController {
-/*
+
     final UsuarioRepository usuarioRepository;
     final OrdenRepository ordenRepository;
     private final ProveedorRepository proveedorRepository;
@@ -58,7 +58,7 @@ public class AgenteComprasController {
         // Obtener los resultados de la consulta nativa
         //Por el momento yo mismo le asigno el id que usará para buscar las órdenes asignadas
         //pues este id será proporcionado recién automáticamente cuando se realice el LOGIN
-        List<Object[]> resultados = ordenRepository.getOrderDetailsAsDtoNative(8);
+        List<Object[]> resultados = ordenRepository.getOrderDetailsAsDtoNative(4);
 
         // Mapear los resultados al DTO directamente en el controlador
         List<OrdenCompraAgtDto> listaOrdenes = resultados.stream()
@@ -81,7 +81,7 @@ public class AgenteComprasController {
         // Obtener los resultados de la consulta nativa
         //Por el momento yo mismo le asigno el id que usará para buscar las órdenes asignadas
         //pues este id será proporcionado recién automáticamente cuando se realice el LOGIN
-        List<Object[]> resultados = ordenRepository.getOrderDetailsAsDtoNativeSinAsignar(8);
+        List<Object[]> resultados = ordenRepository.getOrderDetailsAsDtoNativeSinAsignar(4);
 
         // Mapear los resultados al DTO directamente en el controlador
         List<OrdenCompraAgtDto> listaOrdenes = resultados.stream()
@@ -105,7 +105,7 @@ public class AgenteComprasController {
         // Obtener los resultados de la consulta nativa
         //Por el momento yo mismo le asigno el id que usará para buscar las órdenes asignadas
         //pues este id será proporcionado recién automáticamente cuando se realice el LOGIN
-        List<Object[]> resultados = ordenRepository.getOrderDetailsAsDtoNativePendiente(8);
+        List<Object[]> resultados = ordenRepository.getOrderDetailsAsDtoNativePendiente(4);
 
         // Mapear los resultados al DTO directamente en el controlador
         List<OrdenCompraAgtDto> listaOrdenes = resultados.stream()
@@ -128,7 +128,7 @@ public class AgenteComprasController {
         // Obtener los resultados de la consulta nativa
         //Por el momento yo mismo le asigno el id que usará para buscar las órdenes asignadas
         //pues este id será proporcionado recién automáticamente cuando se realice el LOGIN
-        List<Object[]> resultados = ordenRepository.getOrderDetailsAsDtoNativeEnProceso(8);
+        List<Object[]> resultados = ordenRepository.getOrderDetailsAsDtoNativeEnProceso(4);
 
         // Mapear los resultados al DTO directamente en el controlador
         List<OrdenCompraAgtDto> listaOrdenes = resultados.stream()
@@ -151,7 +151,7 @@ public class AgenteComprasController {
         // Obtener los resultados de la consulta nativa
         //Por el momento yo mismo le asigno el id que usará para buscar las órdenes asignadas
         //pues este id será proporcionado recién automáticamente cuando se realice el LOGIN
-        List<Object[]> resultados = ordenRepository.getOrderDetailsAsDtoNativeResuelto(8);
+        List<Object[]> resultados = ordenRepository.getOrderDetailsAsDtoNativeResuelto(4);
 
         // Mapear los resultados al DTO directamente en el controlador
         List<OrdenCompraAgtDto> listaOrdenes = resultados.stream()
@@ -179,7 +179,7 @@ public class AgenteComprasController {
     //OJO: Se crean múltiples vistas de estos detalles con el objetivo de mostrar el html
     //mas una vez se defina en el backend la lógica solo será necesario una vista que
     //varíe según corresponda el estado
-    /*
+
     @GetMapping("/detailsOrderEnProgreso")
     public String showInfoOrder() {
         return "Agente/detallesEnProgresoProducto-Agente";
@@ -200,8 +200,8 @@ public class AgenteComprasController {
     public String showInfoOrderCancelada() {
         return "Agente/detallesCanceladoProducto-Agente";
     }
-    */
-/*
+
+
     //Información de órdenes de usuarios asignados (este es el definitivo xD)
     @GetMapping("/detailsOrder")
     public String showDetails(Model model, @RequestParam ("idOrden") int idOrden,
@@ -233,15 +233,10 @@ public class AgenteComprasController {
              }
              ProveedorInfoAgtDto proveedor = listaProveedores.get(0);
              model.addAttribute("proveedor",proveedor);
+
+
              //Info de los productos presentes en la orden
              List<Object[]> resultados2 = productosRepository.findProductDetailsByOrderId(idOrden);
-
-             // Imprimir los tipos de datos en consola/log
-             for (Object[] fila : resultados2) {
-                 for (int i = 0; i < fila.length; i++) {
-                     System.out.println("Columna " + i + ": " + fila[i] + " (Tipo: " + fila[i].getClass().getName() + ")");
-                 }
-             }
 
              List<ProductDetailsAgtDto> listaProductos = new ArrayList<>();
 
@@ -269,6 +264,7 @@ public class AgenteComprasController {
              model.addAttribute("subtotal", subtotal);  // Pasar el subtotal a la vista
              model.addAttribute("totalEnvio", totalEnvio);  // Pasar el costo de envío a la vista
              model.addAttribute("total", total);  // Pasar el total a la vista
+
              return "Agente/detailsOrder-Agente";
          } else{
              return "redirect:/agente/allOrders";
@@ -304,19 +300,19 @@ public class AgenteComprasController {
     public String showAllUsers(Model model) {
         //Por el momento yo mismo le asigno el id que usará para buscar los usuarios asignadas
         //pues este id será proporcionado recién automáticamente cuando se realice el LOGIN
-        List<Usuario> usuarioList = usuarioRepository.findByAgentcompraIdusuario_Id(8);
+        List<Usuario> usuarioList = usuarioRepository.findByAgentcompraIdusuario_Id(4);
         model.addAttribute("usuarioList", usuarioList);
 
         return "Agente/allUsersTable-Agente";
     }
     @GetMapping("/habilitadosUsers")
     public String showHabilitadosUsers(Model model) {
-        model.addAttribute("usuarioList", usuarioRepository.findByIsActivatedAndAgentcompraIdusuario_Id((byte) 1,8));
+        model.addAttribute("usuarioList", usuarioRepository.findByIsActivatedAndAgentcompraIdusuario_Id((byte) 1,4));
         return "Agente/habilitadosUsersTable-Agente";
     }
     @GetMapping("/baneadosUsers")
     public String showBaneadosUsers(Model model) {
-        model.addAttribute("usuarioList", usuarioRepository.findByIsActivatedAndAgentcompraIdusuario_Id((byte) 0,8));
+        model.addAttribute("usuarioList", usuarioRepository.findByIsActivatedAndAgentcompraIdusuario_Id((byte) 0,4));
         return "Agente/baneadosUsersTable-Agente";
     }
 
@@ -325,7 +321,7 @@ public class AgenteComprasController {
     public String showInfoUser(Model model, @RequestParam("idUsuario") Integer idUsuario){
         model.addAttribute("usuario", usuarioRepository.findById(idUsuario).get());
 
-        List<Object[]> resultados = ordenRepository.getOrderDetailsAsDtoNativeParUsuario(8,idUsuario);
+        List<Object[]> resultados = ordenRepository.getOrderDetailsAsDtoNativeParUsuario(4,idUsuario);
 
         // Mapear los resultados al DTO directamente en el controlador
         List<OrdenCompraAgtDto> listaOrdenes = resultados.stream()
@@ -389,5 +385,5 @@ public class AgenteComprasController {
     public String showFaq() {
         return "Agente/faq-Agente";
     }
-*/
+
 }

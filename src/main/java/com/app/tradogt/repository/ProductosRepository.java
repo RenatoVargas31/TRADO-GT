@@ -30,17 +30,23 @@ public interface ProductosRepository extends JpaRepository<Producto, Integer> {
 
     @Query(value = """
 
-            SELECT p.idProducto AS idProducto,\s
-                p.Nombre AS Producto,\s
-                p.Precio AS Precio,\s
-                pzo.Cantidad AS Cantidad,\s
-                pz.CostoEnvio AS CostoEnvio\s
-                FROM Producto p\s
-                JOIN ProductoEnZona pz ON p.idProducto = pz.Producto_idProducto\s
-                JOIN ProductoEnZonaEnOrden pzo ON pz.Producto_idProducto = pzo.ProductoEnZona_Producto_idProducto\s
-                AND pz.Zona_idZona = pzo.ProductoEnZona_Zona_idZona\s
-                JOIN Orden o ON pzo.Orden_idOrden = o.idOrden\s
-                WHERE o.idOrden = ?1;
+            SELECT\s
+                p.idProducto AS idProducto,
+                p.nombre AS Producto,
+                p.precio AS Precio,
+                c.cantidad AS Cantidad,
+                pz.costoEnvio AS CostoEnvio
+            FROM\s
+                Producto p
+            JOIN\s
+                ProductoEnZona pz ON p.idProducto = pz.producto_idProducto  -- Relación con ProductoEnZona
+            JOIN\s
+                Carrito c ON pz.producto_idProducto = c.ProductoEnZona_producto_idProducto\s
+                          AND pz.zona_idZona = c.ProductoEnZona_zona_idZona  -- Relación con Carrito
+            JOIN\s
+                Orden o ON c.Orden_idOrden = o.idOrden  -- Relación con la Orden
+            WHERE\s
+                o.idOrden = ?1;  -- Filtro dinámico por el ID de la orden
     """, nativeQuery = true)
     List<Object[]> findProductDetailsByOrderId(Integer idOrden);
 

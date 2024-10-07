@@ -23,6 +23,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
     //Buscar usuarios asignados a determinado agente
     List<Usuario> findByAgentcompraIdusuario_Id(Integer idAgente);
 
+
     /*
     @Query(value = "SELECT u.id, u.nombre, u.apellido, p.nombre , c.nombre , eoi.nombre, pzo.cantidad ,a.nombre, a.apellido " +
             "FROM Usuario u " +
@@ -36,6 +37,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
             "INNER JOIN sc.categoriaIdcategoria c " +
             "WHERE u.rolIdrol.id = 4")
     List<Object[]> getUsuarioOrderProductDetails();
+    */
 
 
 
@@ -90,7 +92,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
             a.idUsuario = :usuarioId
     """, nativeQuery = true)
     List<Object[]> getAgenteDetailsById(@Param("usuarioId") Integer usuarioId);
-    */
+
     //Buscar por ID
     //Buscar por Rol y activo
     List<Usuario> findAllByRolIdrolIdAndIsActivated(Integer idRol, Byte isActivated);
@@ -100,12 +102,13 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
     List<Usuario> findAllByRolIdrolIdAndIsActivatedAndZonaIdzonaId(Integer idRol, Byte isActivated, Integer idZona);
 
     List<Usuario> findAllByAdmzonalIdusuario_IdAndIsActivated(Integer idAdmZonal, Byte isActivated);
-    /*
+
 
     //Buscar por id
     @Query("SELECT u FROM Usuario u WHERE u.id = :id")
     Usuario findByIdUsuario(Integer id);
     //Borrado lógico por ID (isActive = 0)
+    /*
     @Modifying
     @Transactional
     @Query("UPDATE Usuario u SET u.isActive = 0 WHERE u.id = :id")
@@ -165,5 +168,5 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
     @Query("UPDATE Usuario u SET u.correoUsuario = :correoUsuario, u.direccionUsuario = :direccionUsuario, u.distritosIddistrito.id = :idDistrito WHERE u.id = :id")
     void updateImportador(String correoUsuario, String direccionUsuario, Integer idDistrito, Integer id);
     //</editor-fold>
-     */
+    */
 }

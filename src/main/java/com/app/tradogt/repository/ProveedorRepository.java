@@ -39,17 +39,24 @@ public interface ProveedorRepository extends JpaRepository<Proveedor, Integer> {
     //</editor-fold>
 
     @Query(value = """
-        SELECT prov.idProveedor AS idProveedor,\s
-                    prov.Nombre AS Proveedor,\s
-                    prov.Telefono AS Telefono,\s
-                    prov.Tienda AS Tienda\s
-                    FROM Proveedor prov\s
-                    JOIN Producto p ON prov.idProveedor = p.Proveedor_idProveedor\s
-                    JOIN ProductoEnZona pz ON p.idProducto = pz.Producto_idProducto\s
-                    JOIN ProductoEnZonaEnOrden pzo ON pz.Producto_idProducto = pzo.ProductoEnZona_Producto_idProducto\s
-                    AND pz.Zona_idZona = pzo.ProductoEnZona_Zona_idZona\s
-                    JOIN Orden o ON pzo.Orden_idOrden = o.idOrden\s
-                    WHERE o.idOrden = ?1;
+        SELECT\s
+            prov.idProveedor AS idProveedor,
+            prov.nombre AS Proveedor,
+            prov.telefono AS Telefono,
+            prov.tienda AS Tienda
+        FROM\s
+            Proveedor prov
+        JOIN\s
+            Producto p ON prov.idProveedor = p.Proveedor_idProveedor  -- Relación correcta con la tabla Producto
+        JOIN\s
+            ProductoEnZona pz ON p.idProducto = pz.producto_idProducto  -- Relación con ProductoEnZona
+        JOIN\s
+            Carrito c ON pz.producto_idProducto = c.ProductoEnZona_producto_idProducto\s
+                       AND pz.zona_idZona = c.ProductoEnZona_zona_idZona  -- Relación con Carrito
+        JOIN\s
+            Orden o ON c.Orden_idOrden = o.idOrden  -- Relación con la Orden
+        WHERE\s
+            o.idOrden = ?1;  -- Filtro por el ID de la orden
     """, nativeQuery = true)
     List<Object[]> findProveedorByOrderId(Integer idOrden);
 
