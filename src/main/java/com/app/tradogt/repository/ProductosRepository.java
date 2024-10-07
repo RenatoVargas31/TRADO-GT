@@ -1,9 +1,10 @@
 package com.app.tradogt.repository;
 
+import com.app.tradogt.entity.Categoria;
 import com.app.tradogt.entity.Producto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -49,5 +50,99 @@ public interface ProductosRepository extends JpaRepository<Producto, Integer> {
                 o.idOrden = ?1;  -- Filtro dinámico por el ID de la orden
     """, nativeQuery = true)
     List<Object[]> findProductDetailsByOrderId(Integer idOrden);
+
+
+    @Query("SELECT p FROM Producto p " +
+            "JOIN p.subcategoriaIdsubcategoria s " + // Suponiendo que hay una relación mapeada
+            "JOIN s.categoriaIdcategoria c " +    // Suponiendo que hay una relación mapeada
+            "WHERE c.id = 1")
+    List<Producto> findProductRopaMujer();
+
+    @Query("SELECT p FROM Producto p " +
+            "JOIN p.subcategoriaIdsubcategoria s " + // Suponiendo que hay una relación mapeada
+            "JOIN s.categoriaIdcategoria c " +    // Suponiendo que hay una relación mapeada
+            "WHERE c.id = 2") List<Producto> findProductRopaHombre();
+
+    @Query("SELECT DISTINCT p.material FROM Producto p " +
+            "JOIN p.subcategoriaIdsubcategoria s " +
+            "JOIN s.categoriaIdcategoria c " +
+            "WHERE c.id = :tipo")
+    List<String> findDistinctMaterials(@Param("tipo") int tipo);
+
+
+
+    @Query("SELECT p FROM Producto p " +
+            "JOIN p.subcategoriaIdsubcategoria s " + // Suponiendo que hay una relación mapeada
+            "JOIN s.categoriaIdcategoria c " +    // Suponiendo que hay una relación mapeada
+            "WHERE c.id = 3")
+    List<Producto> findProductElectronico();
+
+
+
+    @Query("SELECT p FROM Producto p " +
+            "JOIN p.subcategoriaIdsubcategoria s " + // Suponiendo que hay una relación mapeada
+            "JOIN s.categoriaIdcategoria c " +    // Suponiendo que hay una relación mapeada
+            "WHERE c.id = 4")
+    List<Producto> findProductMuebles();
+
+    @Query("SELECT p FROM Producto p " +
+            "WHERE p IN (SELECT p2 FROM Producto p2 " +
+            "JOIN p2.subcategoriaIdsubcategoria s " +
+            "JOIN s.categoriaIdcategoria c " +
+            "WHERE c.id = 4) " +  // Solo productos que pertenecen a la categoría 4
+            "AND (:categoria IS NULL OR p.subcategoriaIdsubcategoria.id IN :categoria) " +
+            "AND (:material IS NULL OR LOWER(p.material) IN :material)"+
+            "AND (:precioMin IS NULL OR p.precio >= :precioMin) " +
+            "AND (:precioMax IS NULL OR p.precio <= :precioMax)")
+    List<Producto> findProductMueblesFilter(
+            @Param("categoria") List<Integer> categoria, // Cambia a List<Integer>
+            @Param("material") List<String> material,
+            @Param("precioMin") Double precioMin,
+            @Param("precioMax") Double precioMax);
+
+    @Query("SELECT p FROM Producto p " +
+            "WHERE p IN (SELECT p2 FROM Producto p2 " +
+            "JOIN p2.subcategoriaIdsubcategoria s " +
+            "JOIN s.categoriaIdcategoria c " +
+            "WHERE c.id = 1) " +  // Solo productos que pertenecen a la categoría Mujer
+            "AND (:categoria IS NULL OR p.subcategoriaIdsubcategoria.id IN :categoria) " +
+            "AND (:material IS NULL OR LOWER(p.material) IN :material)"+
+            "AND (:precioMin IS NULL OR p.precio >= :precioMin) " +
+            "AND (:precioMax IS NULL OR p.precio <= :precioMax)")
+    List<Producto> findProductMujerFilter(
+            @Param("categoria") List<Integer> categoria, // Cambia a List<Integer>
+            @Param("material") List<String> material,
+            @Param("precioMin") Double precioMin,
+            @Param("precioMax") Double precioMax);
+
+    @Query("SELECT p FROM Producto p " +
+            "WHERE p IN (SELECT p2 FROM Producto p2 " +
+            "JOIN p2.subcategoriaIdsubcategoria s " +
+            "JOIN s.categoriaIdcategoria c " +
+            "WHERE c.id = 2) " +  // Solo productos que pertenecen a la categoría 4
+            "AND (:categoria IS NULL OR p.subcategoriaIdsubcategoria.id IN :categoria) " +
+            "AND (:material IS NULL OR LOWER(p.material) IN :material)"+
+            "AND (:precioMin IS NULL OR p.precio >= :precioMin) " +
+            "AND (:precioMax IS NULL OR p.precio <= :precioMax)")
+    List<Producto> findProductHombresFilter(
+            @Param("categoria") List<Integer> categoria, // Cambia a List<Integer>
+            @Param("material") List<String> material,
+            @Param("precioMin") Double precioMin,
+            @Param("precioMax") Double precioMax);
+
+    @Query("SELECT p FROM Producto p " +
+            "WHERE p IN (SELECT p2 FROM Producto p2 " +
+            "JOIN p2.subcategoriaIdsubcategoria s " +
+            "JOIN s.categoriaIdcategoria c " +
+            "WHERE c.id = 3) " +  // Solo productos que pertenecen a la categoría 4
+            "AND (:categoria IS NULL OR p.subcategoriaIdsubcategoria.id IN :categoria) " +
+            "AND (:material IS NULL OR LOWER(p.material) IN :material)"+
+            "AND (:precioMin IS NULL OR p.precio >= :precioMin) " +
+            "AND (:precioMax IS NULL OR p.precio <= :precioMax)")
+    List<Producto> findProductElectroFilter(
+            @Param("categoria") List<Integer> categoria, // Cambia a List<Integer>
+            @Param("material") List<String> material,
+            @Param("precioMin") Double precioMin,
+            @Param("precioMax") Double precioMax);
 
 }

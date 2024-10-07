@@ -63,165 +63,117 @@
               <div class="card-header bg-transparent border-bottom">
                 <div class="row align-items-center">
                   <div class="col-md-6">
-                    <h5 class="mb-0">Filtros</h5>
+                    <h5 class="mb-0 fw-bolder ">Filtros</h5>
                   </div>
                 </div>
               </div>
 
+              <!--Inicio de filtro-->
               <div class="custom-accordion">
-                <div class="card-body border-top">
-                  <div>
-                    <h5 class="font-size-14 mb-0"><a href="#collapseExample1" class="text-reset d-block" data-bs-toggle="collapse" >Categorías <i class="mdi mdi-minus float-end accor-plus-icon"></i></a></h5>
-
-                    <div class="collapse show" id="collapseExample1">
-
-                      <div class="mt-4">
-                        <div class="form-check mt-2">
-                          <input type="radio" id="categoria1" name="categoria" class="form-check-input">
-                          <label class="form-check-label" for="categoria1">Audífonos</label>
-                        </div>
-                        <div class="form-check mt-2">
-                          <input type="radio" id="categoria2" name="categoria" class="form-check-input">
-                          <label class="form-check-label" for="categoria2">Celulares</label>
-                        </div>
-                        <div class="form-check mt-2">
-                          <input type="radio" id="categoria3" name="categoria" class="form-check-input">
-                          <label class="form-check-label" for="categoria3">Tablet</label>
-                        </div>
-                        <div class="form-check mt-2">
-                          <input type="radio" id="categoria4" name="categoria" class="form-check-input">
-                          <label class="form-check-label" for="categoria4">Laptops</label>
-                        </div>
-                        <div class="form-check mt-2">
-                          <input type="radio" id="categoria5" name="categoria" class="form-check-input">
-                          <label class="form-check-label" for="categoria5">Computadoras</label>
+                <form action="/usuario/categoriaTecnologiaFilter" method="GET" id="filterForm">
+                  <div class="card-body border-top">
+                    <div>
+                      <h5 class="font-size-14 mb-0">
+                        <a href="#collapseExample1" class="text-reset d-block" data-bs-toggle="collapse">Categorías <i class="mdi mdi-minus float-end accor-plus-icon"></i></a>
+                      </h5>
+                      <div class="collapse" id="collapseExample1">
+                        <div class="mt-4">
+                          <div th:each="categoria : ${categoriasList}" class="form-check mt-2">
+                            <input type="checkbox"
+                                   th:id="'categoria' + ${categoria.id}"
+                                   th:name="'categoria'"
+                                   th:value="${categoria.id}"
+                                   class="form-check-input">
+                            <label class="form-check-label"
+                                   th:for="'categoria' + ${categoria.id}"
+                                   th:text="${categoria.nombre}">Categoria</label>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
 
-                <div class="card-body border-top">
-                  <div>
-                    <h5 class="font-size-14 mb-0"><a href="#collapseExample5" class="text-reset d-block" data-bs-toggle="collapse">Marca <i class="mdi mdi-minus float-end accor-plus-icon"></i></a></h5>
 
-                    <div class="collapse show" id="collapseExample5">
-
-                      <div class="mt-4">
-                        <div class="form-check mt-2">
-                          <input type="radio" id="productsizeRadio1" name="productsizeRadio" class="form-check-input">
-                          <label class="form-check-label" for="productsizeRadio1">Samsung</label>
-                        </div>
-                        <div class="form-check mt-2">
-                          <input type="radio" id="productsizeRadio2" name="productsizeRadio" class="form-check-input">
-                          <label class="form-check-label" for="productsizeRadio2">Apple</label>
-                        </div>
-                        <div class="form-check mt-2">
-                          <input type="radio" id="productsizeRadio3" name="productsizeRadio" class="form-check-input">
-                          <label class="form-check-label" for="productsizeRadio3">Xiaomi</label>
-                        </div>
-                        <div class="form-check mt-2">
-                          <input type="radio" id="productsizeRadio4" name="productsizeRadio" class="form-check-input">
-                          <label class="form-check-label" for="productsizeRadio4">Huawei</label>
-                        </div>
-                      </div>
-
-                    </div>
-                  </div>
-                </div>
-                <div class="card-body border-top">
-                  <div>
-                    <h5 class="font-size-14 mb-0"><a href="#collapseExample3" class="text-reset d-block" data-bs-toggle="collapse">Precio <i class="mdi mdi-minus float-end accor-plus-icon"></i></a></h5>
-
-                    <div class="collapse show" id="collapseExample3">
-
-                      <div class="mt-4">
-                        <div class="form-check mt-2">
-                          <input type="radio" id="precio1" name="precio" class="form-check-input">
-                          <label class="form-check-label" for="precio1">Hasta S/50</label>
-                        </div>
-                        <div class="form-check mt-2">
-                          <input type="radio" id="precio2" name="precio" class="form-check-input">
-                          <label class="form-check-label" for="precio2">S/50 - S/100 </label>
-                        </div>
-                        <div class="form-check mt-2">
-                          <input type="radio" id="precio3" name="precio" class="form-check-input">
-                          <label class="form-check-label" for="precio3">S/100 - S/250</label>
-                        </div>
-                        <div class="form-check mt-2">
-                          <input type="radio" id="precio4" name="precio" class="form-check-input">
-                          <label class="form-check-label" for="precio4">S/250 - S/500</label>
-                        </div>
-                        <div class="form-check mt-2">
-                          <input type="radio" id="precio5" name="precio" class="form-check-input">
-                          <label class="form-check-label" for="precio5">S/500 - S/1000</label>
-                        </div>
-                      </div>
-
-                    </div>
-                  </div>
-                </div>
-                <!--<div class="card-body border-top">
-                  <div>
-                    <h5 class="font-size-14 mb-0"><a href="#collapseExample2" class="text-reset d-block" data-bs-toggle="collapse" >Descuento <i class="mdi mdi-minus float-end accor-plus-icon"></i></a></h5>
-
-                    <div class="collapse show" id="collapseExample2">
-
-                      <div class="mt-4">
-                        <div class="form-check mt-2">
-                          <input type="radio" id="productdiscountRadio6" name="productdiscountRadio1" class="form-check-input">
-                          <label class="form-check-label" for="productdiscountRadio6">50% o más</label>
-                        </div>
-                        <div class="form-check mt-2">
-                          <input type="radio" id="productdiscountRadio5" name="productdiscountRadio1" class="form-check-input">
-                          <label class="form-check-label" for="productdiscountRadio5">40% o más</label>
-                        </div>
-                        <div class="form-check mt-2">
-                          <input type="radio" id="productdiscountRadio4" name="productdiscountRadio1" class="form-check-input">
-                          <label class="form-check-label" for="productdiscountRadio4">30% o más</label>
-                        </div>
-                        <div class="form-check mt-2">
-                          <input type="radio" id="productdiscountRadio3" name="productdiscountRadio1" class="form-check-input">
-                          <label class="form-check-label" for="productdiscountRadio3">20% o más</label>
-                        </div>
-                        <div class="form-check mt-2">
-                          <input type="radio" id="productdiscountRadio2" name="productdiscountRadio1" class="form-check-input">
-                          <label class="form-check-label" for="productdiscountRadio2">10% o más</label>
+                  <div class="card-body border-top">
+                    <div>
+                      <h5 class="font-size-14 mb-0">
+                        <a href="#collapseExample5" class="text-reset d-block" data-bs-toggle="collapse" aria-expanded="false" aria-controls="collapseExample5">
+                          Material <i class="mdi mdi-plus float-end accor-plus-icon"></i>
+                        </a>
+                      </h5>
+                      <div class="collapse" id="collapseExample5">
+                        <div class="mt-4">
+                          <div th:each="material, iterStat : ${materialesList}" class="form-check mt-2">
+                            <input type="checkbox"
+                                   th:id="'material_' + ${iterStat}"
+                                   name="material"
+                                   class="form-check-input"
+                                   th:value="${material.toLowerCase()}" />
+                            <label class="form-check-label" th:for="'material_' + ${iterStat}" th:text="${material}"></label>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div> -->
 
-                <div class="card-body border-top">
-                  <div>
-                    <h5 class="font-size-14 mb-0"><a href="#collapseExample4" class="collapsed text-reset d-block" data-bs-toggle="collapse">Valoración del cliente <i class="mdi mdi-minus float-end accor-plus-icon"></i></a></h5>
 
-                    <div class="collapse show" id="collapseExample4">
-
-                      <div class="mt-4">
-                        <div class="form-check mt-2">
-                          <input type="radio" id="productratingRadio1" name="productratingRadio1" class="form-check-input">
-                          <label class="form-check-label" for="productratingRadio1">4 <i class="mdi mdi-star text-warning"></i>  y superior</label>
-                        </div>
-                        <div class="form-check mt-2">
-                          <input type="radio" id="productratingRadio2" name="productratingRadio1" class="form-check-input">
-                          <label class="form-check-label" for="productratingRadio2">3 <i class="mdi mdi-star text-warning"></i>  y superior</label>
-                        </div>
-                        <div class="form-check mt-2">
-                          <input type="radio" id="productratingRadio3" name="productratingRadio1" class="form-check-input">
-                          <label class="form-check-label" for="productratingRadio3">2 <i class="mdi mdi-star text-warning"></i>  y superior</label>
-                        </div>
-                        <div class="form-check mt-2">
-                          <input type="radio" id="productratingRadio4" name="productratingRadio1" class="form-check-input">
-                          <label class="form-check-label" for="productratingRadio4">1 <i class="mdi mdi-star text-warning"></i></label>
+                  <div class="card-body border-top">
+                    <div>
+                      <h5 class="font-size-14 mb-0">
+                        <a href="#collapseExample3" class="text-reset d-block" data-bs-toggle="collapse">Precio <i class="mdi mdi-minus float-end accor-plus-icon"></i></a>
+                      </h5>
+                      <div class="collapse" id="collapseExample3">
+                        <div class="mt-4">
+                          <div class="form-group">
+                            <label for="precioMin" class="form-label">Precio Mínimo</label>
+                            <input type="number" id="precioMin" name="precioMin" class="form-control" placeholder="Ingrese precio mínimo" min="0">
+                          </div>
+                          <hr class="opacity-0">
+                          <div class="form-group">
+                            <label for="precioMax" class="form-label">Precio Máximo</label>
+                            <input type="number" id="precioMax" name="precioMax" class="form-control" placeholder="Ingrese precio máximo" min="0">
+                          </div>
                         </div>
                       </div>
-
                     </div>
                   </div>
-                </div>
+                  <!--
+                                    <div class="card-body border-top">
+                                      <div>
+                                        <h5 class="font-size-14 mb-0">
+                                          <a href="#collapseExample4" class="collapsed text-reset d-block" data-bs-toggle="collapse">Valoración del cliente <i class="mdi mdi-minus float-end accor-plus-icon"></i></a>
+                                        </h5>
+                                        <div class="collapse " id="collapseExample4">
+                                          <div class="mt-4">
+                                            <div class="form-check mt-2">
+                                              <input type="checkbox" id="productratingRadio1" name="valoracion" class="form-check-input" value="4mas">
+                                              <label class="form-check-label" for="productratingRadio1">4 <i class="mdi mdi-star text-warning"></i> y superior</label>
+                                            </div>
+                                            <div class="form-check mt-2">
+                                              <input type="checkbox" id="productratingRadio2" name="valoracion" class="form-check-input" value="3mas">
+                                              <label class="form-check-label" for="productratingRadio2">3 <i class="mdi mdi-star text-warning"></i> y superior</label>
+                                            </div>
+                                            <div class="form-check mt-2">
+                                              <input type="checkbox" id="productratingRadio3" name="valoracion" class="form-check-input" value="2mas">
+                                              <label class="form-check-label" for="productratingRadio3">2 <i class="mdi mdi-star text-warning"></i> y superior</label>
+                                            </div>
+                                            <div class="form-check mt-2">
+                                              <input type="checkbox" id="productratingRadio4" name="valoracion" class="form-check-input" value="1mas">
+                                              <label class="form-check-label" for="productratingRadio4">1 <i class="mdi mdi-star text-warning"></i></label>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    -->
+
+                  <div class="text-center">
+                    <button type="submit" class="btn btn-primary mt-3">Filtrar</button>
+                  </div>
+                  <hr class="opacity-0">
+                </form>
               </div>
+              <!--Fin del filtro-->
             </div>
           </div>
 
@@ -230,13 +182,15 @@
             <div class="card">
               <div class="card-body">
                 <div>
-                  <div class="row mb-5">
-
-                    <div class="col-md-12 d-flex justify-content-end">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <h3 class="fw-bold">Tecnología</h3>
+                    </div>
+                    <div class="col-md-6 d-flex justify-content-end"> <!-- Cambié a col-md-6 para que sea más equilibrado -->
                       <div class="search-box me-2">
                         <!--Debe buscar por Nombre del producto, por código y nombre del proveedor -->
                         <div class="position-relative">
-                          <input type="text" class="form-control rounded" placeholder="Search...">
+                          <input type="text" class="form-control rounded" placeholder="Buscar..."> <!-- Cambié "Search..." a "Buscar..." -->
                           <i class="mdi mdi-magnify search-icon"></i>
                         </div>
                       </div>
@@ -244,21 +198,28 @@
                         <button type="button" class="btn btn-primary waves-effect waves-light">Limpiar</button>
                       </div>
                     </div>
-
                   </div>
+                  <hr class="opacity-0">
+
+                  <!--Inicio del loop-->
                   <div class="row g-0">
-                    <div class="col-xl-4 col-sm-6">
+                    <div th:each="product, iterStat : ${productList}" class="col-xl-4 col-sm-6">
                       <div class="card product-box">
                         <a href="/usuario/productoDetalles" class="text-decoration-none">
                           <div class="product-img">
                             <div class="product-ribbon badge bg-warning">
-                              NK128
+                              <!-- Mostrar el código de producto -->
+                              <span th:text="${product.codigo}"></span>
                             </div>
-                            <img th:src="@{../images/product/img-1.png}" alt="img-1" class="img-fluid mx-auto d-block">
                           </div>
+                          <img th:src="@{../images/product/img-6.png}" alt="img-6" class="img-fluid mx-auto d-block">
                           <div class="text-center">
-                            <p class="font-size-12 mb-1 text-primary">Categoría, Subcategoría</p>
-                            <h5 class="font-size-15"><a  class="text-reset">Full sleeve T-shirt</a></h5>
+                            <p class="font-size-12 mb-1 text-primary">
+                              <span th:text="${product.subcategoriaIdsubcategoria.nombre}">Categoría, Subcategoría</span>
+                            </p>
+                            <h5 class="font-size-15">
+                              <a th:text="${product.nombre}" class="text-reset">Product Name</a>
+                            </h5>
                             <div class="d-inline-flex">
                               <div class="text-muted me-2" style="font-size: 12px;">
                                 <span class="mdi mdi-star text-warning"></span>
@@ -267,186 +228,27 @@
                                 <span class="mdi mdi-star text-warning"></span>
                                 <span class="mdi mdi-star"></span>
                               </div>
-                              <div class="text-muted" style="font-size: 12px;">4.1 ( 132 )</div>
+                              <!--  <div class="text-muted" style="font-size: 12px;">
+
+                                  <span th:text="${product.rating}">4.1</span> ( <span th:text="${product.reviews}">132</span> )
+                              </div>-->
                             </div>
-                            <h5 class="mt-2" style="font-size: 14px;">S/100 <span style="font-size: 12px; color: #888;">por cada 10 unidades</span></h5>
-                            <p class="mt-2" style="font-size: 14px;">Costo por unidad: S/10</p>
+                            <h5 class="mt-2" style="font-size: 14px;">
+                              S/ <span th:text="${product.precio}">100</span>
+                              <span style="font-size: 12px; color: #888;">por cada 10 unidades</span>
+                            </h5>
+                            <p class="mt-2" style="font-size: 14px;">Costo por unidad: S/<span th:text="${product.precio}">10</span></p>
                           </div>
                           <div class="provider-info d-flex align-items-center justify-content-center">
                             <img th:src="@{../images/product/iconoProvedor.png}" alt="Proveedor Icono" class="rounded-circle me-2" style="width: 30px; height: 30px;">
-                            <span class="provider-name">Nombre del provedor</span>
-                          </div>
-                        </a>
-                      </div>
-                    </div>
 
-                    <div class="col-xl-4 col-sm-6">
-                      <div class="card product-box">
-                        <a href="/usuario/productoDetalles" class="text-decoration-none">
-                          <div class="product-img">
-                            <div class="product-ribbon badge bg-warning">
-                              NK128
-                            </div>
-                            <img th:src="@{../images/product/img-2.png}" alt="img-2" class="img-fluid mx-auto d-block">
-                          </div>
-
-                          <div class="text-center">
-                            <p class="font-size-12 mb-1 text-primary">Categoría, Subcategoría</p>
-                            <h5 class="font-size-15"><a  class="text-reset">Half sleeve T-shirt </a></h5>
-                            <div class="d-inline-flex">
-                              <div class="text-muted me-2" style="font-size: 12px;">
-                                <span class="mdi mdi-star text-warning"></span>
-                                <span class="mdi mdi-star text-warning"></span>
-                                <span class="mdi mdi-star text-warning"></span>
-                                <span class="mdi mdi-star text-warning"></span>
-                                <span class="mdi mdi-star"></span>
-                              </div>
-                              <div class="text-muted" style="font-size: 12px;">4.1 ( 132 )</div>
-                            </div>
-                            <h5 class="mt-2" style="font-size: 14px;">S/100 <span style="font-size: 12px; color: #888;">por cada 10 unidades</span></h5>
-                            <p class="mt-2" style="font-size: 14px;">Costo por unidad: S/10</p>
-                          </div>
-                          <div class="provider-info d-flex align-items-center justify-content-center">
-                            <img th:src="@{../images/product/iconoProvedor.png}" alt="Proveedor Icono" class="rounded-circle me-2" style="width: 30px; height: 30px;">
-                            <span class="provider-name">Nombre del provedor</span>
-                          </div>
-                        </a>
-                      </div>
-                    </div>
-                    <div class="col-xl-4 col-sm-6">
-                      <div class="card product-box">
-                        <a href="/usuario/productoDetalles" class="text-decoration-none">
-                          <div class="product-img">
-                            <div class="product-ribbon badge bg-warning">
-                              NK128
-                            </div>
-                            <img th:src="@{../images/product/img-3.png}" alt="img-3" class="img-fluid mx-auto d-block">
-                          </div>
-                          <div class="text-center">
-                            <p class="font-size-12 mb-1 text-primary">Categoría, Subcategoría</p>
-                            <h5 class="font-size-15"><a  class="text-reset">Hoodie (Green)</a></h5>
-                            <div class="d-inline-flex">
-                              <div class="text-muted me-2" style="font-size: 12px;">
-                                <span class="mdi mdi-star text-warning"></span>
-                                <span class="mdi mdi-star text-warning"></span>
-                                <span class="mdi mdi-star text-warning"></span>
-                                <span class="mdi mdi-star text-warning"></span>
-                                <span class="mdi mdi-star"></span>
-                              </div>
-                              <div class="text-muted" style="font-size: 12px;">4.1 ( 132 )</div>
-                            </div>
-                            <h5 class="mt-2" style="font-size: 14px;">S/100 <span style="font-size: 12px; color: #888;">por cada 10 unidades</span></h5>
-                            <p class="mt-2" style="font-size: 14px;">Costo por unidad: S/10</p>
-                          </div>
-                          <div class="provider-info d-flex align-items-center justify-content-center">
-                            <img th:src="@{../images/product/iconoProvedor.png}" alt="Proveedor Icono" class="rounded-circle me-2" style="width: 30px; height: 30px;">
-                            <span class="provider-name">Nombre del provedor</span>
-                          </div>
-                        </a>
-                      </div>
-                    </div>
-                    <div class="col-xl-4 col-sm-6">
-                      <div class="card product-box">
-                        <a href="/usuario/productoDetalles" class="text-decoration-none">
-                          <div class="product-img">
-                            <div class="product-ribbon badge bg-warning">
-                              NK128
-                            </div>
-                            <img th:src="@{../images/product/img-4.png}" alt="img-4" class="img-fluid mx-auto d-block">
-                          </div>
-
-                          <div class="text-center">
-                            <p class="font-size-12 mb-1 text-primary">Categoría, Subcategoría</p>
-                            <h5 class="font-size-15"><a  class="text-reset">Hoodie (Green)</a></h5>
-                            <div class="d-inline-flex">
-                              <div class="text-muted me-2" style="font-size: 12px;">
-                                <span class="mdi mdi-star text-warning"></span>
-                                <span class="mdi mdi-star text-warning"></span>
-                                <span class="mdi mdi-star text-warning"></span>
-                                <span class="mdi mdi-star text-warning"></span>
-                                <span class="mdi mdi-star"></span>
-                              </div>
-                              <div class="text-muted" style="font-size: 12px;">4.1 ( 132 )</div>
-                            </div>
-                            <h5 class="mt-2" style="font-size: 14px;">S/100 <span style="font-size: 12px; color: #888;">por cada 10 unidades</span></h5>
-                            <p class="mt-2" style="font-size: 14px;">Costo por unidad: S/10</p>
-                          </div>
-                          <div class="provider-info d-flex align-items-center justify-content-center">
-                            <img th:src="@{../images/product/iconoProvedor.png}" alt="Proveedor Icono" class="rounded-circle me-2" style="width: 30px; height: 30px;">
-                            <span class="provider-name">Nombre del provedor</span>
-                          </div>
-                        </a>
-                      </div>
-                    </div>
-
-                    <div class="col-xl-4 col-sm-6">
-                      <div class="card product-box">
-                        <a href="/usuario/productoDetalles" class="text-decoration-none">
-                          <div class="product-img">
-                            <div class="product-ribbon badge bg-warning">
-                              NK128
-                            </div>
-                            <img th:src="@{../images/product/img-5.png}" alt="img-5" class="img-fluid mx-auto d-block">
-                          </div>
-
-                          <div class="text-center">
-                            <p class="font-size-12 mb-1 text-primary">Categoría, Subcategoría</p>
-                            <h5 class="font-size-15"><a  class="text-reset">Full sleeve T-shirt</a></h5>
-                            <div class="d-inline-flex">
-                              <div class="text-muted me-2" style="font-size: 12px;">
-                                <span class="mdi mdi-star text-warning"></span>
-                                <span class="mdi mdi-star text-warning"></span>
-                                <span class="mdi mdi-star text-warning"></span>
-                                <span class="mdi mdi-star text-warning"></span>
-                                <span class="mdi mdi-star"></span>
-                              </div>
-                              <div class="text-muted" style="font-size: 12px;">4.1 ( 132 )</div>
-                            </div>
-                            <h5 class="mt-2" style="font-size: 14px;">S/100 <span style="font-size: 12px; color: #888;">por cada 10 unidades</span></h5>
-                            <p class="mt-2" style="font-size: 14px;">Costo por unidad: S/10</p>
-                          </div>
-                          <div class="provider-info d-flex align-items-center justify-content-center">
-                            <img th:src="@{../images/product/iconoProvedor.png}" alt="Proveedor Icono" class="rounded-circle me-2" style="width: 30px; height: 30px;">
-                            <span class="provider-name">Nombre del provedor</span>
-                          </div>
-                        </a>
-                      </div>
-                    </div>
-                    <div class="col-xl-4 col-sm-6">
-                      <div class="product-box">
-                        <a href="/usuario/productoDetalles" class="text-decoration-none">
-                          <div class="product-img">
-                            <div class="product-ribbon badge bg-warning">
-                              NK128
-                            </div>
-                            <img th:src="@{../images/product/img-6.png}" alt="img-6" class="img-fluid mx-auto d-block">
-
-                          </div>
-
-                          <div class="text-center">
-                            <p class="font-size-12 mb-1 text-primary">Categoría, Subcategoría</p>
-                            <h5 class="font-size-15"><a  class="text-reset">Half sleeve T-shirt </a></h5>
-                            <div class="d-inline-flex">
-                              <div class="text-muted me-2" style="font-size: 12px;">
-                                <span class="mdi mdi-star text-warning"></span>
-                                <span class="mdi mdi-star text-warning"></span>
-                                <span class="mdi mdi-star text-warning"></span>
-                                <span class="mdi mdi-star text-warning"></span>
-                                <span class="mdi mdi-star"></span>
-                              </div>
-                              <div class="text-muted" style="font-size: 12px;">4.1 ( 132 )</div>
-                            </div>
-                            <h5 class="mt-2" style="font-size: 14px;">S/100 <span style="font-size: 12px; color: #888;">por cada 10 unidades</span></h5>
-                            <p class="mt-2" style="font-size: 14px;">Costo por unidad: S/10</p>
-                          </div>
-                          <div class="provider-info d-flex align-items-center justify-content-center">
-                            <img th:src="@{../images/product/iconoProvedor.png}" alt="Proveedor Icono" class="rounded-circle me-2" style="width: 30px; height: 30px;">
-                            <span class="provider-name">Nombre del provedor</span>
+                            <span th:text="${product.proveedorIdproveedor.tienda}" class="provider-name">Nombre del proveedor</span>
                           </div>
                         </a>
                       </div>
                     </div>
                   </div>
+                  <!--FIN del loop-->
 
 
                   <div class="row mt-4">
@@ -511,6 +313,46 @@
 </div>
 <!-- END layout-wrapper -->
 
+<script>
+  document.getElementById('filterForm').onsubmit = function(event) {
+    event.preventDefault(); // Evitar el envío inmediato del formulario
+
+    const form = this;
+    const formData = new FormData(form);
+    const params = new URLSearchParams();
+
+    // Agregar solo las categorías seleccionadas
+    const categorias = formData.getAll('categoria');
+    categorias.forEach(categoria => {
+      params.append('categoria', categoria);
+    });
+
+    // Agregar solo los materiales seleccionados
+    const materiales = formData.getAll('material');
+    materiales.forEach(material => {
+      params.append('material', material);
+    });
+
+    // Agregar precio mínimo si no está vacío
+    const precioMin = formData.get('precioMin').trim();
+    if (precioMin) {
+      params.append('precioMin', precioMin);
+    }
+
+    // Agregar precio máximo si no está vacío
+    const precioMax = formData.get('precioMax').trim();
+    if (precioMax) {
+      params.append('precioMax', precioMax);
+    }
+
+    // Redirigir a la URL construida
+    const queryString = params.toString();
+    const actionUrl = form.action + (queryString ? '?' + queryString : '');
+
+    // Realiza el redireccionamiento
+    window.location.href = actionUrl;
+  };
+</script>
 
 <!-- JAVASCRIPT BASE-->
 <span th:replace="~{Common/jsBase :: js_Base}"></span>

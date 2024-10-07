@@ -24,9 +24,10 @@ public class UsuarioFinalController {
     final ProductoEnZonaRepository productoEnZonaRepository;
     final PublicacionRepository publicacionRepository;
     final ComentarioRepository comentarioRepository;
+    final SubCategoriaRepository subCategoriaRepository;
 
 
-    public UsuarioFinalController(ProductosRepository productosRepository, OrdenRepository ordenRepository, UsuarioRepository usuarioRepository, ProductoEnZonaRepository productoEnZonaRepository, PublicacionRepository publicacionRepository, ComentarioRepository comentarioRepository) {
+    public UsuarioFinalController(ProductosRepository productosRepository, OrdenRepository ordenRepository, UsuarioRepository usuarioRepository, ProductoEnZonaRepository productoEnZonaRepository, PublicacionRepository publicacionRepository, ComentarioRepository comentarioRepository, SubCategoriaRepository subCategoriaRepository) {
         this.productosRepository = productosRepository;
         this.ordenRepository = ordenRepository;
         this.usuarioRepository = usuarioRepository;
@@ -34,6 +35,7 @@ public class UsuarioFinalController {
         this.productoEnZonaRepository = productoEnZonaRepository;
         this.publicacionRepository = publicacionRepository;
         this.comentarioRepository = comentarioRepository;
+        this.subCategoriaRepository = subCategoriaRepository;
     }
 
     @GetMapping("/inicio")
@@ -217,6 +219,86 @@ public class UsuarioFinalController {
     public String nuevaResenha(){
         return "Usuario/nuevaReseña-usuario";
     }
+
+    @GetMapping("/categoriaMujer")
+    public String showMujerCategoria(Model model) {
+        model.addAttribute("productList", productosRepository.findProductRopaMujer());
+        model.addAttribute("materialesList", productosRepository.findDistinctMaterials(1));
+        model.addAttribute("categoriasList",subCategoriaRepository.findSubcategorias(1));
+        return "Usuario/CategoriaMujer-usuario";
+    }
+    @GetMapping("/categoriaHombre")
+    public String showHombreCategoria(Model model) {
+        model.addAttribute("productList", productosRepository.findProductRopaHombre());
+        model.addAttribute("materialesList", productosRepository.findDistinctMaterials(2));
+        model.addAttribute("categoriasList",subCategoriaRepository.findSubcategorias(2));
+        return "Usuario/CategoriaHombre-usuario";
+    }
+    @GetMapping("/categoriaTecnologia")
+    public String showTecnologiaCategoria(Model model) {
+        model.addAttribute("productList", productosRepository.findProductElectronico());
+        model.addAttribute("materialesList", productosRepository.findDistinctMaterials(3));
+        model.addAttribute("categoriasList",subCategoriaRepository.findSubcategorias(3));
+        return "Usuario/CategoriaTecnologia-usuario";
+    }
+    @GetMapping("/categoriaMuebles")
+    public String showMuebleCategoria(Model model) {
+        model.addAttribute("productList", productosRepository.findProductMuebles());
+        model.addAttribute("materialesList", productosRepository.findDistinctMaterials(4));
+        model.addAttribute("categoriasList",subCategoriaRepository.findSubcategorias(4));
+        return "Usuario/CategoriaMuebles-usuario";
+    }
+    @GetMapping("/categoriaMueblesFilter")
+    public String showMuebleCategoriaFilter(Model model,
+                                            @RequestParam(value = "categoria", required = false) List<Integer> categoria,
+                                            @RequestParam(value = "material", required = false) List<String> material,
+                                            @RequestParam(value = "precioMin", required = false) Double precioMin,
+                                            @RequestParam(value = "precioMax", required = false) Double precioMax) {
+        model.addAttribute("productList", productosRepository.findProductMueblesFilter(categoria, material, precioMin, precioMax));
+        model.addAttribute("materialesList", productosRepository.findDistinctMaterials(4));
+        model.addAttribute("categoriasList",subCategoriaRepository.findSubcategorias(4));
+
+        return "Usuario/CategoriaMuebles-usuario";
+    }
+
+    @GetMapping("/categoriaHombreFilter")
+    public String showHombreCategoriaFilter(Model model,
+                                            @RequestParam(value = "categoria", required = false) List<Integer> categoria,
+                                            @RequestParam(value = "material", required = false) List<String> material,
+                                            @RequestParam(value = "precioMin", required = false) Double precioMin,
+                                            @RequestParam(value = "precioMax", required = false) Double precioMax) {
+        model.addAttribute("productList", productosRepository.findProductHombresFilter(categoria, material, precioMin, precioMax));
+        model.addAttribute("materialesList", productosRepository.findDistinctMaterials(2));
+        model.addAttribute("categoriasList",subCategoriaRepository.findSubcategorias(2));
+
+        return "Usuario/CategoriaHombre-usuario";
+    }
+
+    @GetMapping("/categoriaMujerFilter")
+    public String showMujerCategoriaFilter(Model model,
+                                           @RequestParam(value = "categoria", required = false) List<Integer> categoria,
+                                           @RequestParam(value = "material", required = false) List<String> material,
+                                           @RequestParam(value = "precioMin", required = false) Double precioMin,
+                                           @RequestParam(value = "precioMax", required = false) Double precioMax) {
+        model.addAttribute("productList", productosRepository.findProductMujerFilter(categoria, material, precioMin, precioMax));
+        model.addAttribute("materialesList", productosRepository.findDistinctMaterials(1));
+        model.addAttribute("categoriasList",subCategoriaRepository.findSubcategorias(1));
+
+        return "Usuario/CategoriaMujer-usuario";
+    }
+    @GetMapping("/categoriaTecnologiaFilter")
+    public String showTecnologiaCategoriaFilter(Model model,
+                                                @RequestParam(value = "categoria", required = false) List<Integer> categoria,
+                                                @RequestParam(value = "material", required = false) List<String> material,
+                                                @RequestParam(value = "precioMin", required = false) Double precioMin,
+                                                @RequestParam(value = "precioMax", required = false) Double precioMax) {
+        model.addAttribute("productList", productosRepository.findProductMujerFilter(categoria, material, precioMin, precioMax));
+        model.addAttribute("materialesList", productosRepository.findDistinctMaterials(3));
+        model.addAttribute("categoriasList",subCategoriaRepository.findSubcategorias(3));
+
+        return "Usuario/CategoriaTecnologia-usuario";
+    }
+
 
 
 }
