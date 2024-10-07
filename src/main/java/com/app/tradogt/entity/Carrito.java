@@ -16,7 +16,7 @@ public class Carrito {
     private CarritoId id;
 
     @MapsId("productoEnZonaId")
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne
     @JoinColumns({
             @JoinColumn(name = "ProductoEnZona_producto_idProducto", referencedColumnName = "producto_idProducto", nullable = false),
             @JoinColumn(name = "ProductoEnZona_zona_idZona", referencedColumnName = "zona_idZona", nullable = false)
@@ -35,7 +35,7 @@ public class Carrito {
     @Column(name = "costo")
     private BigDecimal costo;
 
-    @Column(name = "totalCosto")
+    @Column(name = "costoTotal")
     private BigDecimal costoTotal;
 
     // Getters y setters

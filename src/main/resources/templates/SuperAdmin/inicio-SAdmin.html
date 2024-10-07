@@ -75,15 +75,15 @@
                                         </thead>
                                         <tbody>
                                         <tr th:each="administrador : ${administradores}">
-                                            <td th:text="${administrador.nombreUsuario}">Nombres</td>
-                                            <td th:text="${administrador.apellidoUsuario}">Apellidos</td>
-                                            <td th:text="${administrador.dniUsuario}">DNI</td>
-                                            <td th:text="${administrador.telefonoUsuario}">Teléfono</td>
-                                            <td th:text="${administrador.correoUsuario}">Correo Electrónico</td>
-                                            <td th:text="${administrador.zonasIdzona.nameZona}">Zona</td>
+                                            <td th:text="${administrador.nombre}">Nombres</td>
+                                            <td th:text="${administrador.apellido}">Apellidos</td>
+                                            <td th:text="${administrador.dni}">DNI</td>
+                                            <td th:text="${administrador.telefono}">Teléfono</td>
+                                            <td th:text="${administrador.correo}">Correo Electrónico</td>
+                                            <td th:text="${administrador.zonaIdzona.nombre}">Zona</td>
                                             <td>
-                                                <div th:classappend="${administrador.isActive == 1} ? 'badge bg-success-subtle text-success font-size-14' : 'badge bg-danger-subtle text-danger font-size-14'">
-                                                    <span th:text="${administrador.isActive == 1} ? 'Activo' : 'Inactivo'">Estado</span>
+                                                <div th:classappend="${administrador.isActivated == 1} ? 'badge bg-success-subtle text-success font-size-14' : 'badge bg-danger-subtle text-danger font-size-14'">
+                                                    <span th:text="${administrador.isActivated == 1} ? 'Activo' : 'Inactivo'">Estado</span>
                                                 </div>
                                             </td>
                                         </tr>
@@ -105,6 +105,7 @@
                                         <tr>
                                             <th>Nombres</th>
                                             <th>Apellidos</th>
+                                            <th>RUC</th>
                                             <th>Código de despachador</th>
                                             <th>Razón Social</th>
                                             <th>Distrito</th>
@@ -114,15 +115,16 @@
                                         </thead>
                                         <tbody>
                                         <tr th:each="agente : ${agentes}">
-                                            <td th:text="${agente.nombreUsuario}">Nombres</td>
-                                            <td th:text="${agente.apellidoUsuario}">Apellidos</td>
+                                            <td th:text="${agente.nombre}">Nombres</td>
+                                            <td th:text="${agente.apellido}">Apellidos</td>
+                                            <td th:text="${agente.ruc}">RUC</td>
                                             <td th:text="${agente.codigoDespachador}">Código de despachador</td>
                                             <td th:text="${agente.razonSocial}">Razón Social</td>
-                                            <td th:text="${agente.distritosIddistrito.nameDistrito}">Distrito</td>
-                                            <td th:text="${agente.zonasIdzona.nameZona}">Zona</td>
+                                            <td th:text="${agente.distritoIddistrito.nombre}">Distrito</td>
+                                            <td th:text="${agente.distritoIddistrito.zonaIdzona.nombre}">Zona</td>
                                             <td>
-                                                <div th:classappend="${agente.isActive == 1} ? 'badge bg-success-subtle text-success font-size-14' : 'badge bg-danger-subtle text-danger font-size-14'">
-                                                    <span th:text="${agente.isActive == 1} ? 'Activo' : 'Inactivo'">Estado</span>
+                                                <div th:classappend="${agente.isActivated == 1} ? 'badge bg-success-subtle text-success font-size-14' : 'badge bg-danger-subtle text-danger font-size-14'">
+                                                    <span th:text="${agente.isActivated == 1} ? 'Activo' : 'Inactivo'">Estado</span>
                                                 </div>
                                             </td>
                                         </tr>
@@ -154,15 +156,15 @@
                                         </thead>
                                         <tbody>
                                         <tr th:each="importador : ${importadores}">
-                                            <td th:text="${importador.nombreUsuario}">Nombres</td>
-                                            <td th:text="${importador.apellidoUsuario}">Apellidos</td>
-                                            <td th:text="${importador.dniUsuario}">DNI</td>
-                                            <td th:text="${importador.correoUsuario}">Correo Electrónico</td>
-                                            <td th:text="${importador.direccionUsuario}">Dirección</td>
-                                            <td th:text="${importador.distritosIddistrito.nameDistrito}">Distrito</td>
+                                            <td th:text="${importador.nombre}">Nombres</td>
+                                            <td th:text="${importador.apellido}">Apellidos</td>
+                                            <td th:text="${importador.dni}">DNI</td>
+                                            <td th:text="${importador.correo}">Correo Electrónico</td>
+                                            <td th:text="${importador.direccion}">Dirección</td>
+                                            <td th:text="${importador.distritoIddistrito.nombre}">Distrito</td>
                                             <td>
-                                                <div th:classappend="${importador.isActive == 1} ? 'badge bg-success-subtle text-success font-size-14' : 'badge bg-danger-subtle text-danger font-size-14'">
-                                                    <span th:text="${importador.isActive == 1} ? 'Activo' : 'Inactivo'">Estado</span>
+                                                <div th:classappend="${importador.isActivated == 1} ? 'badge bg-success-subtle text-success font-size-14' : 'badge bg-danger-subtle text-danger font-size-14'">
+                                                    <span th:text="${importador.isActivated == 1} ? 'Activo' : 'Inactivo'">Estado</span>
                                                 </div>
                                             </td>
                                         </tr>

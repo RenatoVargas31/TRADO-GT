@@ -74,22 +74,22 @@
                                         </thead>
                                         <tbody>
                                         <tr th:each="usuario : ${usuarios}">
-                                            <td th:text="${usuario.nombreUsuario}">Nombres</td>
-                                            <td th:text="${usuario.apellidoUsuario}">Apellidos</td>
-                                            <td th:text="${usuario.dniUsuario}">DNI</td>
-                                            <td th:text="${usuario.correoUsuario}">Correo Electrónico</td>
-                                            <td th:text="${usuario.direccionUsuario}">Dirección</td>
-                                            <td th:text="${usuario.distritosIddistrito.nameDistrito}">Distrito</td>
+                                            <td th:text="${usuario.nombre}">Nombres</td>
+                                            <td th:text="${usuario.apellido}">Apellidos</td>
+                                            <td th:text="${usuario.dni}">DNI</td>
+                                            <td th:text="${usuario.correo}">Correo Electrónico</td>
+                                            <td th:text="${usuario.direccion}">Dirección</td>
+                                            <td th:text="${usuario.distritoIddistrito.nombre}">Distrito</td>
                                             <td>
                                                 <form th:action="@{/superadmin/importadorEditarForm}" method="post" style="display:inline;">
                                                     <input type="hidden" name="id" th:value="${usuario.id}" />
                                                     <button type="submit" class="btn btn-info btn-sm waves-effect waves-light" title="Editar"><i class="ri-pencil-fill"></i></button>
                                                 </form>
-                                                <button type="button" class="btn btn-success btn-sm waves-effect waves-light" title="Eliminar" data-bs-toggle="modal" th:data-bs-target="'#deleteConfirmModal-' + ${usuario.nombreUsuario} + '-' + ${usuario.id}">
+                                                <button type="button" class="btn btn-success btn-sm waves-effect waves-light" title="Eliminar" data-bs-toggle="modal" th:data-bs-target="'#deleteConfirmModal-' + ${usuario.id}">
                                                     <i class="ri-restart-line"></i>
                                                 </button>
                                                 <!-- Modal de Confirmación de Eliminación -->
-                                                <div class="modal fade" th:id="'deleteConfirmModal-' + ${usuario.nombreUsuario} + '-' + ${usuario.id}" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
+                                                <div class="modal fade" th:id="'deleteConfirmModal-' + ${usuario.id}" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
                                                     <div class="modal-dialog">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
