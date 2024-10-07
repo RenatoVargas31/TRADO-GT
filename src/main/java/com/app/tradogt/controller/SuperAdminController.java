@@ -35,23 +35,23 @@ public class SuperAdminController {
     }
     //</editor-fold>
 
-    /*
+
     //<editor-fold desc="CRUD Menu (R - falta)">
     @GetMapping("/inicio")
     public String viewInicio(Model model) {
         //Listar usuarios que tenga id rol 2 (Administrador Zonal) y isAccepted 1
-        List<Usuario> admZonales = usuarioRepository.findAllByRolesIdrolesIdAndIsAccepted(2, (byte) 1);
+        List<Usuario> admZonales = usuarioRepository.findAllByRolIdrolIdAndIsAccepted(2, (byte) 1);
         //Listar usuarios que tenga id rol 3 (Agente de Compra) y isAccepted 1
-        List<Usuario> agentes = usuarioRepository.findAllByRolesIdrolesIdAndIsAccepted(3, (byte) 1);
+        List<Usuario> agentes = usuarioRepository.findAllByRolIdrolIdAndIsAccepted(3, (byte) 1);
         //Listar usuarios que tenga id rol 4 (Importador) y isAccepted 1
-        List<Usuario> importadores = usuarioRepository.findAllByRolesIdrolesIdAndIsAccepted(4, (byte) 1);
+        List<Usuario> importadores = usuarioRepository.findAllByRolIdrolIdAndIsAccepted(4, (byte) 1);
         //Enviar a la vista las listas
         model.addAttribute("administradores", admZonales);
         model.addAttribute("agentes", agentes);
         model.addAttribute("importadores", importadores);
         return "SuperAdmin/inicio-SAdmin";
     }
-    */
+
     @GetMapping("/dashboard")
     public String viewDashboard() {
         return "SuperAdmin/dashboard-SAdmin";
@@ -151,33 +151,40 @@ public class SuperAdminController {
     //</editor-fold>
     //</editor-fold>
 
-    /*
-    //<editor-fold desc="CRUD Agente de Compra (RUD - falta)">
+
+    //<editor-fold desc="CRUD Agente de Compra (RUD - terminado)">
     @PostMapping("/agentCompraEditarForm")
     public String viewAgentCompraEditarForm(Model model, Integer id) {
         //Buscar proveedor por id
-        Usuario usuario = usuarioRepository.findByIdUsuario(id);
+        Usuario usuario = usuarioRepository.findById(id).get();
         //Enviar a la vista
         model.addAttribute("usuario", usuario);
-        //Enviar lista de zonas
-        model.addAttribute("zonas", zonaRepository.findAll());
         //Enviar lista de distritos
-        model.addAttribute("distritos", distritoRepository.findAll());
+        model.addAttribute("distritos", distritoRepository.findByZonaIdzonaId(usuario.getDistritoIddistrito().getZonaIdzona().getId()));
         //Enviar rol de id 3 (Agente de Compra)
         model.addAttribute("rol", rolRepository.findById(3).orElseThrow());
         return "SuperAdmin/agentCompraEditar-SAdmin";
     }
+
     @PostMapping("/agentCompraEditar")
     public String viewAgentCompraEditar(Usuario usuario) {
-        //Actualizar usuario existente
-        usuarioRepository.updateAgenteCompra(usuario.getDireccionUsuario(), usuario.getTelefonoUsuario(), usuario.getCorreoUsuario(), usuario.getDistritosIddistrito().getId(), usuario.getZonasIdzona().getId(), usuario.getCodigoJurisdiccion(), usuario.getCodigoDespachador(), usuario.getRazonSocial(), usuario.getId());
-        if (usuario.getIsActive() == 1) {
+        //Actualizar usuario existente sin query method
+        Usuario usuarioActual = usuarioRepository.findById(usuario.getId()).get();
+        usuarioActual.setCorreo(usuario.getCorreo());
+        usuarioActual.setTelefono(usuario.getTelefono());
+        usuarioActual.setDireccion(usuario.getDireccion());
+        usuarioActual.setDistritoIddistrito(usuario.getDistritoIddistrito());
+        usuarioActual.setRazonSocial(usuario.getRazonSocial());
+        usuarioActual.setCodigoDespachador(usuario.getCodigoDespachador());
+        usuarioRepository.save(usuarioActual);
+
+        if (usuario.getIsActivated() == 1) {
             return "redirect:/superadmin/agentCompraActivos";
         } else {
             return "redirect:/superadmin/agentCompraInactivos";
         }
     }
-*/
+
     @GetMapping("/agentCompraPostula")
     public String viewAgentCompraPostula(Model model) {
         List<Usuario> solicitudes = usuarioRepository.findAllByRolIdrolIdAndIsPostulated(4, (byte) 1);
@@ -262,12 +269,12 @@ public class SuperAdminController {
         return "redirect:/superadmin/agentCompraPostula";
     }
     //</editor-fold>
-/*
-    //<editor-fold desc="CRUD Importador (RUD - falta)">
+
+    //<editor-fold desc="CRUD Importador (RUD - terminado)">
     @PostMapping("/importadorEditarForm")
     public String viewImportadorEditarForm(Model model, Integer id) {
         //Buscar proveedor por id
-        Usuario usuario = usuarioRepository.findByIdUsuario(id);
+        Usuario usuario = usuarioRepository.findById(id).get();
         //Enviar a la vista
         model.addAttribute("usuario", usuario);
         //Enviar lista de distritos
@@ -279,9 +286,13 @@ public class SuperAdminController {
 
     @PostMapping("/importadorEditar")
     public String viewImportadorEditar(Usuario usuario) {
-        //Actualizar usuario existente
-        usuarioRepository.updateImportador(usuario.getCorreoUsuario(), usuario.getDireccionUsuario(), usuario.getDistritosIddistrito().getId(), usuario.getId());
-        if (usuario.getIsActive() == 1) {
+        //Actualizar usuario existente sin query method
+        Usuario usuarioActual = usuarioRepository.findById(usuario.getId()).get();
+        usuarioActual.setCorreo(usuario.getCorreo());
+        usuarioActual.setDireccion(usuario.getDireccion());
+        usuarioActual.setDistritoIddistrito(usuario.getDistritoIddistrito());
+        usuarioRepository.save(usuarioActual);
+        if (usuario.getIsActivated() == 1) {
             return "redirect:/superadmin/importadorActivos";
         } else {
             return "redirect:/superadmin/importadorInactivos";
@@ -291,7 +302,7 @@ public class SuperAdminController {
     @GetMapping("/importadorSolicitud")
     public String viewImportadorSolicitud(Model model) {
         //Listar usuarios con rol 4, isActivo 0, isAceptado 0
-        List<Usuario> solicitudes = usuarioRepository.findAllByRolesIdrolesIdAndIsActiveAndIsAccepted(4, (byte) 0, (byte) 0);
+        List<Usuario> solicitudes = usuarioRepository.findAllByIsAccepted((byte) 0);
         //Enviar a la vista
         model.addAttribute("solicitudes", solicitudes);
         return "SuperAdmin/importadorSolicitud-SAdmin";
@@ -300,45 +311,55 @@ public class SuperAdminController {
     @GetMapping("/importadorActivos")
     public String viewImportadorActivos(Model model) {
         //Listar usuarios con rol 4, isActivo 1, isAceptado 1
-        List<Usuario> usuarios = usuarioRepository.findAllByRolesIdrolesIdAndIsActiveAndIsAccepted(4, (byte) 1, (byte) 1);
+        List<Usuario> usuarios = usuarioRepository.findAllByRolIdrolIdAndIsActivated(4, (byte) 1);
         //Enviar a la vista
         model.addAttribute("usuarios", usuarios);
         return "SuperAdmin/importadorActivos-SAdmin";
     }
+
     @GetMapping("/importadorInactivos")
     public String viewImportadorInactivos(Model model) {
         //Listar usuarios con rol 4, isActivo 0, isAceptado 1
-        List<Usuario> usuarios = usuarioRepository.findAllByRolesIdrolesIdAndIsActiveAndIsAccepted(4, (byte) 0, (byte) 1);
+        List<Usuario> usuarios = usuarioRepository.findAllByRolIdrolIdAndIsActivated(4, (byte) 0);
         //Enviar a la vista
         model.addAttribute("usuarios", usuarios);
         return "SuperAdmin/importadorInactivos-SAdmin";
     }
+
     @GetMapping("/importadorBorrar")
     public String viewImportadorBorrar(Integer id) {
-        //Borrado lógico del proveedor
-        usuarioRepository.deleteUsuario(id);
+        //Borrado lógico del proveedor sin query method
+        Usuario usuario = usuarioRepository.findById(id).get();
+        usuario.setIsActivated((byte) 0);
+        usuarioRepository.save(usuario);
         return "redirect:/superadmin/importadorActivos";
     }
     @GetMapping("/importadorReactivar")
     public String viewImportadorReactivar(Integer id) {
-        //Reactivar usuario
-        usuarioRepository.reactivateUsuario(id);
+        //Reactivar usuario sin query method
+        Usuario usuario = usuarioRepository.findById(id).get();
+        usuario.setIsActivated((byte) 1);
+        usuarioRepository.save(usuario);
         return "redirect:/superadmin/importadorInactivos";
     }
+
     @GetMapping("/importadorAceptado")
     public String viewImportadorAceptado(Integer id) {
-        //Actualizar usuario a Importador
-        usuarioRepository.updateImportadorAceptado(id);
+        //Actualizar usuario a Importador sin query method
+        Usuario usuario = usuarioRepository.findById(id).get();
+        usuario.setIsAccepted((byte) 1);
+        usuario.setIsActivated((byte) 1);
+        usuarioRepository.save(usuario);
         return "redirect:/superadmin/importadorSolicitud";
     }
     @GetMapping("/importadorRechazado")
     public String viewImportadorRechazado(Integer id) {
-        //Borrar la solicitud
-        usuarioRepository.deleteImportadorRechazado(id);
+        //Borrar la solicitud sin query method (Borrado total de la BD)
+        usuarioRepository.deleteById(id);
         return "redirect:/superadmin/importadorSolicitud";
     }
     //</editor-fold>
-    */
+
     //<editor-fold desc="CRUD Productos (Completo - falta)">
     @GetMapping("/productoNuevo")
     public String viewProductoNuevo() {

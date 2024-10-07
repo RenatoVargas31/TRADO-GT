@@ -60,7 +60,7 @@
                                                 <div class="col-md-6">
                                                     <div class="mb-3">
                                                         <label for="nombreUsuario" class="form-label">Nombre</label>
-                                                        <input type="text" class="form-control" th:field="*{nombreUsuario}" id="nombreUsuario" name="nombre"
+                                                        <input type="text" class="form-control" th:field="*{nombre}" id="nombreUsuario" name="nombre"
                                                                placeholder="First name" disabled style="background-color: #e9ecef;" required>
                                                         <div class="valid-feedback">
                                                             Looks good!
@@ -70,7 +70,7 @@
                                                 <div class="col-md-6">
                                                     <div class="mb-3">
                                                         <label for="apellidoUsuario" class="form-label">Apellido</label>
-                                                        <input type="text" class="form-control" th:field="*{apellidoUsuario}" id="apellidoUsuario" name="apellido"
+                                                        <input type="text" class="form-control" th:field="*{apellido}" id="apellidoUsuario" name="apellido"
                                                                placeholder="Last name" disabled style="background-color: #e9ecef;" required>
                                                         <div class="valid-feedback">
                                                             Looks good!
@@ -82,7 +82,7 @@
                                                 <div class="col-md-3">
                                                     <div class="mb-3">
                                                         <label for="dniUsuario" class="form-label">DNI</label>
-                                                        <input type="text" class="form-control" th:field="*{dniUsuario}" id="dniUsuario" name="dni"
+                                                        <input type="text" class="form-control" th:field="*{dni}" id="dniUsuario" name="dni"
                                                                placeholder="DNI" disabled style="background-color: #e9ecef;" required>
                                                         <div class="valid-feedback">
                                                             Looks good!
@@ -92,7 +92,7 @@
                                                 <div class="col-md-3">
                                                     <div class="mb-3">
                                                         <label for="rucUsuario" class="form-label">RUC</label>
-                                                        <input type="text" class="form-control" th:field="*{rucUsuario}" id="rucUsuario" name="ruc"
+                                                        <input type="text" class="form-control" th:field="*{ruc}" id="rucUsuario" name="ruc"
                                                                placeholder="RUC" disabled style="background-color: #e9ecef;" required>
                                                         <div class="valid-feedback">
                                                             Looks good!
@@ -102,7 +102,7 @@
                                                 <div class="col-md-6">
                                                     <div class="mb-3">
                                                         <label for="direccionUsuario" class="form-label">Dirección</label>
-                                                        <input type="text" class="form-control" th:field="*{direccionUsuario}" id="direccionUsuario" name="direccion"
+                                                        <input type="text" class="form-control" th:field="*{direccion}" id="direccionUsuario" name="direccion"
                                                                placeholder="Dirección" required>
                                                         <div class="valid-feedback">
                                                             Looks good!
@@ -114,7 +114,7 @@
                                                 <div class="col-md-6">
                                                     <div class="mb-3">
                                                         <label for="telefonoUsuario" class="form-label">Teléfono</label>
-                                                        <input type="tel" class="form-control" th:field="*{telefonoUsuario}" id="telefonoUsuario" name="telefono"
+                                                        <input type="tel" class="form-control" th:field="*{telefono}" id="telefonoUsuario" name="telefono"
                                                                placeholder="Teléfono" required>
                                                         <div class="valid-feedback">
                                                             Looks good!
@@ -124,7 +124,7 @@
                                                 <div class="col-md-6">
                                                     <div class="mb-3">
                                                         <label for="correoUsuario" class="form-label">Correo electrónico</label>
-                                                        <input type="email" class="form-control" th:field="*{correoUsuario}" id="correoUsuario" name="correo"
+                                                        <input type="email" class="form-control" th:field="*{correo}" id="correoUsuario" name="correo"
                                                                placeholder="Correo electrónico" required>
                                                         <div class="invalid-feedback">
                                                             Please provide a valid zip.
@@ -133,42 +133,33 @@
                                                 </div>
                                             </div>
                                             <div class="row">
+
                                                 <div class="col-md-6">
                                                     <div class="mb-3">
                                                         <label for="distritoUsuario" class="form-label">Distrito</label>
-                                                        <select class="form-select" th:field="*{distritosIddistrito}" id="distritoUsuario" name="distrito" required>
+                                                        <select class="form-select" th:field="*{distritoIddistrito}" id="distritoUsuario" name="distritoIddistrito" required>
                                                             <option selected disabled value="">Seleccione un distrito</option>
-                                                            <option th:each="distrito : ${distritos}" th:value="${distrito.id}" th:text="${distrito.nameDistrito}" th:selected="${distrito.id} == ${usuario.distritosIddistrito.id}"></option>
+                                                            <option th:each="distrito : ${distritos}" th:value="${distrito.id}" th:text="${distrito.nombre}" th:selected="${distrito.id} == ${usuario.distritoIddistrito.id}"></option>
                                                         </select>
                                                         <div class="invalid-feedback">
                                                             Please select a valid state.
                                                         </div>
                                                     </div>
                                                 </div>
+
                                                 <div class="col-md-6">
                                                     <div class="mb-3">
                                                         <label for="zonaUsuario" class="form-label">Zona</label>
-                                                        <select class="form-select" th:field="*{zonasIdzona}" id="zonaUsuario" name="zona" required>
-                                                            <option value="" disabled>Seleccione una zona</option>
-                                                            <option th:each="zona : ${zonas}" th:value="${zona.id}" th:text="${zona.nameZona}" th:selected="${zona.id} == ${usuario.zonasIdzona}"></option>
-                                                        </select>
+                                                        <input type="text" class="form-control" th:field="*{distritoIddistrito.zonaIdzona.nombre}" id="zonaUsuario"
+                                                               disabled style="background-color: #e9ecef;" required>
                                                         <div class="invalid-feedback">
                                                             Please select a valid state.
                                                         </div>
                                                     </div>
                                                 </div>
+
                                             </div>
                                             <div class="row">
-                                                <div class="col-md-4">
-                                                    <div class="mb-3">
-                                                        <label for="codigoJurisdiccionUsuario" class="form-label">Código de jurisdicción</label>
-                                                        <input type="text" class="form-control" th:field="*{codigoJurisdiccion}" id="codigoJurisdiccionUsuario" name="codigoJurisdiccion"
-                                                               placeholder="Código de jurisdicción" required>
-                                                        <div class="invalid-feedback">
-                                                            Please provide a valid zip.
-                                                        </div>
-                                                    </div>
-                                                </div>
                                                 <div class="col-md-4">
                                                     <div class="mb-3">
                                                         <label for="codigoDespachadorUsuario" class="form-label">Código de despachador de aduana</label>
@@ -190,12 +181,12 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <input type="hidden" name="rolesIdroles" th:value="${rol.id}" />
-                                            <input type="hidden" name="isActive" th:value="${usuario.isActive}" />
+                                            <input type="hidden" name="rolIdrol" th:value="${rol.id}" />
+                                            <input type="hidden" name="isActivated" th:value="${usuario.isActivated}" />
                                             <input type="hidden" name="isAccepted" th:value="${usuario.isAccepted}" />
                                             <div>
                                                 <button class="btn btn-primary" type="submit">Guardar</button>
-                                                <a th:href="${usuario.isActive == 1 ? '/superadmin/agentCompraActivos' : '/superadmin/agentCompraInactivos'}" class="btn btn-danger">Cancelar</a>
+                                                <a th:href="${usuario.isActivated == 1 ? '/superadmin/agentCompraActivos' : '/superadmin/agentCompraInactivos'}" class="btn btn-danger">Cancelar</a>
                                             </div>
                                         </form>
                                     </div>
