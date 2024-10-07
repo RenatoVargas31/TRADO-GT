@@ -54,44 +54,25 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
-                            <form action="">
+                            <form th:action="@{/usuario/nuevaPublicacion}" th:object="${publicacion}" method="post">
                                 <div class="card-body">
                                     <div class="mb-3 col-md-8">
                                         <label class="form-label fw-bolder fs-5">Ingrese un título</label>
-                                        <input type="text" class="form-control" placeholder="Ingrese el título aquí" required>
+                                        <input type="text" class="form-control" th:field="*{titulo}" placeholder="Ingrese el título aquí" required>
                                         <small class="form-text text-muted">Ingrese un máximo de 30 caracteres. <strong>Este campo es obligatorio.</strong></small>
                                     </div>
                                     <div class="mb-3 col-md-8">
                                         <label class="form-label fw-bolder fs-5">Ingrese el cuerpo de la publicación</label>
-                                        <textarea class="form-control" rows="5" placeholder="Ingrese el cuerpo de la publicación aquí" required></textarea>
+                                        <textarea class="form-control" rows="5" th:field="*{cuerpo}" placeholder="Ingrese el cuerpo de la publicación aquí" required></textarea>
                                         <small class="form-text text-muted">Ingrese un máximo de 1000 caracteres.</small>
                                     </div>
                                     <div class="mb-3 col-md-8">
                                         <small class="form-text text-muted">Complete este formulario para compartir su experiencia con la comunidad.</small>
                                     </div>
-
                                     <div class="row">
                                         <div class="d-flex">
                                             <a th:href="@{/usuario/comunidad}" class="btn btn-danger btn-sm waves-effect waves-light me-2" title="Cancelar">Cancelar</a>
-                                            <a href="#" class="btn btn-primary btn-sm me-2 waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#saveConfirmModal" title="Guardar">Publicar</a>
-                                        </div>
-                                    </div>
-                                    <!-- Modal para Confirmar Guardado -->
-                                    <div class="modal fade" id="saveConfirmModal" tabindex="-1" aria-labelledby="saveConfirmLabel" aria-hidden="true">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="saveConfirmLabel">Confirmar Publicación</h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <p>¿Estás seguro de que deseas publicar esta publicación?</p>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-                                                    <a th:href="@{/usuario/comunidad}" class="btn btn-success">Publicar</a>
-                                                </div>
-                                            </div>
+                                            <button type="submit" class="btn btn-primary btn-sm me-2 waves-effect waves-light" title="Guardar">Publicar</button>
                                         </div>
                                     </div>
                                 </div>

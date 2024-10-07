@@ -4,11 +4,13 @@ package com.app.tradogt.controller;
 import com.app.tradogt.entity.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 import com.app.tradogt.repository.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -196,8 +198,27 @@ public class UsuarioFinalController {
     }
 
     @GetMapping("/nuevaPublicación")
-    public String nuevaPublicacion(){
+    public String nuevaPublicacion(Model model){
+        model.addAttribute("publicacion", new Publicacion());
         return "Usuario/nuevaPublicacion-usuario";
+    }
+
+    @PostMapping("/nuevaPublicacion")
+    public String crearPublicacion(@ModelAttribute("publicacion") Publicacion publicacion, BindingResult result, Model model) {
+        // Suponiendo que estamos usando el idUsuario=17 temporalmente
+        Usuario usuario = usuarioRepository.findById(17).orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
+
+        // Asignar el usuario a la publicación
+        publicacion.setUsuarioIdusuario(usuario);
+
+        // Asignar la fecha de creación automáticamente
+        publicacion.setFechaCreacion(LocalDate.now());
+
+        // Guardar la publicación en la base de datos
+        publicacionRepository.save(publicacion);
+
+        // Redirigir a la lista de publicaciones después de crear la nueva publicación
+        return "redirect:/usuario/comunidad";
     }
 
     @GetMapping("/nuevaReseña")
