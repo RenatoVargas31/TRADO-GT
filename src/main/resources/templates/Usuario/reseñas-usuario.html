@@ -96,7 +96,7 @@
                                             <!-- Bucle para mostrar cada reseña -->
                                             <div th:each="resena : ${resenas}" class="col-xl-3 col-sm-6">
                                                 <div class="card product-box">
-                                                    <a th:href="@{/usuario/verReseña(resenaId=${resena.id})}" class="text-decoration-none">
+                                                    <a th:href="@{/usuario/verReseña/{id}(id=${resena.id})}" class="text-decoration-none">
                                                         <div class="product-img">
                                                             <img th:src="@{'/' + ${resena.foto}}" alt="img-product" class="img-fluid mx-auto d-block">
                                                         </div>

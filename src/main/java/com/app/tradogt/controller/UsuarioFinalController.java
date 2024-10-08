@@ -388,9 +388,18 @@ public class UsuarioFinalController {
     public String showDetalleProblema() {
         return "Usuario/viewProblema";
     }
-    @GetMapping("/verReseña")
-    public String showDetalleForo() {
-        return "Usuario/verReseña-usuario";
+
+    @GetMapping("/verReseña/{id}")
+    public String showDetalleResena(@PathVariable("id") Integer resenaId, Model model) {
+        // Obtener la reseña del repositorio por su ID
+        Resena resena = resenaRepository.findById(resenaId).orElse(null);
+        // Si no encuentra la reseña, redirige o maneja el error
+        if (resena == null) {
+            return "redirect:/error";
+        }
+        // Agregar la reseña al modelo para que esté disponible en la vista
+        model.addAttribute("resena", resena);
+        return "Usuario/verReseña-usuario"; // Nombre de la vista Thymeleaf
     }
 
     @GetMapping("/solicitud")
@@ -435,7 +444,7 @@ public class UsuarioFinalController {
     }
 
     @GetMapping("/nuevaReseña")
-    public String nuevaResenha(){
+    public String nuevaResenha(Model model){
         return "Usuario/nuevaReseña-usuario";
     }
 
