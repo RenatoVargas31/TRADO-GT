@@ -84,7 +84,7 @@
 
               <div class="page-title-right">
                 <ol class="breadcrumb m-0">
-                  <li class="breadcrumb-item active">Inicio</li>
+
                   <li class="breadcrumb-item active">Productos</li>
                   <li class="breadcrumb-item"><a href="javascript: void(0);">Detalles</a></li>
                 </ol>
@@ -102,16 +102,29 @@
               <div class="card-body">
                 <div class="row">
 
-                  <div class="col-xl-6">
+                  <div class="col-xl-5">
                     <div class="product-detail">
                       <div class="row">
                         <!-- Sección principal de imágenes y botones de acción -->
-                        <div class="col-md-8 col-12">
+                        <div class="col-md-12 col-12">
                           <div class="tab-content d-flex justify-content-center align-items-center" id="v-pills-tabContent">
                             <!-- Producto 1 -->
                             <div class="tab-pane fade show active" id="product-1" role="tabpanel">
-                              <div class="product-img text-center" style="width: 100%; height: 400px; display: flex; justify-content: center; align-items: center;">
-                                <img th:src="@{../images/product/img-1.png}" alt="img-1" class="img-fluid zoom-image" data-action="zoom" data-original="assets/images/product/img-1.png" style="max-width: 100%; height: auto;">
+                              <div th:if="${product.id >= 1 and product.id <= 10}" class="product-img text-center" style="width: 100%; height: 400px; display: flex; justify-content: center; align-items: center;">
+                                <img th:src="@{'../../images/product/product' + ${product.id} + '.jpg'}" alt="img-${product.id}" class="img-fluid zoom-image" data-action="zoom" style="width: 300px; height: 300px; object-fit: contain;">
+                              </div>
+
+                              <div class="row text-center mt-3">
+                                <div class="col-6">
+                                  <a href="/usuario/carrito" class="btn btn-primary btn-block waves-effect waves-light">
+                                    Añadir al carrito
+                                  </a>
+                                </div>
+                                <div class="col-6">
+                                  <a href="/usuario/checkout" class="btn btn-light btn-block waves-effect">
+                                    Comprar ahora
+                                  </a>
+                                </div>
                               </div>
                             </div>
                             <!-- Producto 2 -->
@@ -134,36 +147,9 @@
                             </div>
                           </div>
                         </div>
-                        <!-- Sidebar de imágenes (se ajusta el ancho en diferentes dispositivos) -->
-                        <div class="col-md-4 col-12">
-                          <div class="nav flex-md-column flex-row nav-pills justify-content-center" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                            <a class="nav-link active" id="product-1-tab" data-bs-toggle="pill" href="#product-1" role="tab">
-                              <img th:src="@{../images/product/img-1.png}" alt="img-1" class="img-fluid mx-auto d-block tab-img rounded">
-                            </a>
-                            <a class="nav-link" id="product-2-tab" data-bs-toggle="pill" href="#product-2" role="tab">
-                              <img th:src="@{../images/product/img-5.png}" alt="img-5" class="img-fluid mx-auto d-block tab-img rounded">
-                            </a>
-                            <a class="nav-link" id="product-3-tab" data-bs-toggle="pill" href="#product-3" role="tab">
-                              <img th:src="@{../images/product/img-3.png}" alt="img-3" class="img-fluid mx-auto d-block tab-img rounded">
-                            </a>
-                            <a class="nav-link" id="product-4-tab" data-bs-toggle="pill" href="#product-4" role="tab">
-                              <img th:src="@{../images/product/img-4.png}" alt="img-4" class="img-fluid mx-auto d-block tab-img rounded">
-                            </a>
-                          </div>
-                        </div>
+
                         <!-- Botones de acción -->
-                        <div class="row text-center mt-3">
-                          <div class="col-6">
-                            <a href="/usuario/carrito" class="btn btn-primary btn-block waves-effect waves-light">
-                              Añadir al carrito
-                            </a>
-                          </div>
-                          <div class="col-6">
-                            <a href="/usuario/checkout" class="btn btn-light btn-block waves-effect">
-                              Comprar ahora
-                            </a>
-                          </div>
-                        </div>
+
                       </div>
                     </div>
 
@@ -172,8 +158,14 @@
                   </div>
                   <div class="col-xl-6">
                     <div class="mt-4 mt-xl-3">
-                      <a class="text-primary">Categoría, Subcategoría</a>
-                      <h5 class="mt-1 mb-3"  style="font-size: 24px;">Full sleeve Blue color t-shirt</h5>
+                      <div>
+                        <a class="text-primary" th:text="${product.subcategoriaIdsubcategoria.categoriaIdcategoria.nombre}"></a>
+                      </div>
+                      <div>
+                        <a class="text-primary" th:text="${product.subcategoriaIdsubcategoria.nombre}"></a>
+                      </div>
+
+                      <h5 class="mt-1 mb-3"  style="font-size: 24px;" th:text="${product.nombre}"></h5>
 
                       <div class="d-inline-flex">
                         <div class="text-muted me-2" style="font-size: 18px;">
@@ -185,11 +177,16 @@
                       </div>
                         <div class="text-muted" style="font-size: 18px;">4.1 ( 132 )</div>
                       </div>
-                      <span class="product-ribbon badge bg-warning">NK128</span><br>
+                      <span class="product-ribbon badge bg-warning " th:text="${product.codigo}"></span><br>
                       <h5 class="mt-2" style="font-size: 24px;">
-                        S/240 <span style="font-size: 12px; color: #888;">por cada 10 unidades</span>
+                        <span th:text=" 'S/.'+${product.precio}"></span>
+                        <span style="font-size: 12px; color: #888;">por cada 10 unidades</span>
                       </h5>
-                      <p class="mt-2" style="font-size: 14px;">Costo por unidad: S/10</p>
+
+                      <p class="mt-2" style="font-size: 14px;">
+                        Costo por unidad: S/<span th:text="${(product.precio)*1.5}"></span>
+                      </p>
+
 
                       <p class="mt-3">Medidas de modelo La modelo mide 168 cm y usa talla S/26. Su pecho mide 81 cm, su cintura, 63 cm y su cadera, 89 cm.</p>
                       <hr class="my-4">
@@ -198,39 +195,52 @@
                           <h5 class="font-size-14">Especificaciones :</h5>
                           <ul class="list-unstyled product-desc-list">
                             <li><i class="mdi mdi-circle-medium me-1 align-middle"></i> Manga larga</li>
-                            <li><i class="mdi mdi-circle-medium me-1 align-middle"></i> Algodón</li>
-                            <li><i class="mdi mdi-circle-medium me-1 align-middle"></i> Disponibilidad en las tallas S, M y L</li>
+                            <li><i class="mdi mdi-circle-medium me-1 align-middle"></i> Hecho de <span th:text="${product.material}"></span></li>
+                            <li><i class="mdi mdi-circle-medium me-1 align-middle"></i> Disponibilidad en la talla <span th:text="${product.talla}"></span></li>
                             <li><i class="mdi mdi-circle-medium me-1 align-middle"></i> Unidades en Stock: 500</li>
                           </ul>
+
+
+
                         </div>
                         <div class="col-12 col-md-6">
                           <div class="product-color mt-3">
-                            <h5 class="font-size-14">Tamaño :</h5>
+                            <h5 class="font-size-14">Talla :</h5>
                             <div class="btn-group d-flex justify-content-center flex-wrap" role="group">
-                              <!-- Botón Tamaño S -->
-                              <input type="radio" class="btn-check" name="size" id="sizeS" autocomplete="off" checked>
-                              <label class="btn btn-outline-primary m-1" for="sizeS" style="width: 50px; height: 40px;">
+                              <!-- Botón Tamaño S solo si el producto es de tamaño S -->
+                              <input type="radio" class="btn-check" name="size" id="sizeS" autocomplete="off"
+                                     th:checked="${product.talla == 'S'}">
+                              <label class="btn btn-outline-primary m-1" for="sizeS" style="width: 50px; height: 40px;"
+                                     th:if="${product.talla == 'S'}">
                                 S
                               </label>
 
-                              <!-- Botón Tamaño M -->
-                              <input type="radio" class="btn-check" name="size" id="sizeM" autocomplete="off">
-                              <label class="btn btn-outline-primary m-1" for="sizeM" style="width: 50px; height: 40px;">
+                              <!-- Botón Tamaño M solo si el producto es de tamaño M -->
+                              <input type="radio" class="btn-check" name="size" id="sizeM" autocomplete="off"
+                                     th:checked="${product.talla == 'M'}">
+                              <label class="btn btn-outline-primary m-1" for="sizeM" style="width: 50px; height: 40px;"
+                                     th:if="${product.talla == 'M'}">
                                 M
                               </label>
 
-                              <!-- Botón Tamaño L -->
-                              <input type="radio" class="btn-check" name="size" id="sizeL" autocomplete="off">
-                              <label class="btn btn-outline-primary m-1" for="sizeL" style="width: 50px; height: 40px;">
+                              <!-- Botón Tamaño L solo si el producto es de tamaño L -->
+                              <input type="radio" class="btn-check" name="size" id="sizeL" autocomplete="off"
+                                     th:checked="${product.talla == 'L'}">
+                              <label class="btn btn-outline-primary m-1" for="sizeL" style="width: 50px; height: 40px;"
+                                     th:if="${product.talla == 'L'}">
                                 L
                               </label>
                             </div>
+
+
+
                           </div>
                         </div>
                         <hr class="my-4">
                         <div class="provider-info d-flex align-items-center">
-                          <img th:src="@{../images/product/iconoProvedor.png}"  alt="Proveedor Icono" class="me-2" style="width: 40px; height: 40px;">
-                          <span class="provider-name">Nombre del Proveedor</span>
+                          <img th:src="@{../../images/product/iconoProvedor.png}"  alt="Proveedor Icono" class="me-2" style="width: 40px; height: 40px;">
+                          <span class="provider-name" th:text="${product.proveedorIdproveedor.tienda}">Nombre del Proveedor</span>
+
                         </div>
                       </div>
                     </div>
@@ -251,24 +261,8 @@
                     </ul>
                     <div class="tab-content border border-top-0 p-4">
                       <div class="tab-pane fade show active" id="desc" role="tabpanel">
-                        <div> <p>Este producto es una camiseta de manga larga de color azul, diseñada para ofrecer confort y estilo en cualquier ocasión.
-                          Fabricada con algodón de alta calidad, es suave al tacto y transpirable, ideal para el uso diario.
-                          Con un diseño minimalista, cuenta con un gráfico discreto en el pecho que le da un toque moderno y elegante.</p>
-                          <p>La camiseta está disponible en todas las tallas, asegurando un ajuste adecuado para diferentes tipos de cuerpo.
-                            Está confeccionada con costuras reforzadas para mayor durabilidad y resistencia, incluso con el uso frecuente.
-                            Es perfecta para combinar con jeans, pantalones casuales o incluso bajo un blazer, lo que la convierte en una opción versátil para cualquier guardarropa.</p>
-                          <p>Además, esta camiseta es fácil de cuidar, ya que es apta para lavar a máquina y mantiene su forma y color lavado tras lavado.
-                            Ideal tanto para hombres como para mujeres, es una prenda unisex que proporciona estilo y comodidad durante todo el año.</p>
-                          <p>Características destacadas:</p>
-                          <ul> <li>Material: 100% algodón de alta calidad</li>
-                            <li>Color: Azul</li>
-                            <li>Diseño minimalista con gráfico discreto en el pecho</li>
-                            <li>Disponible en todas las tallas</li>
-                            <li>Adecuada para uso diario y fácil de combinar</li>
-                            <li>Costuras reforzadas para mayor durabilidad</li>
-                            <li>Apta para lavar a máquina</li>
-                          </ul>
-                        </div>
+                        <div th:text="${product.descripcion}"></div>
+
                       </div>
                       <div class="tab-pane fade " id="specifi" role="tabpanel">
                         <div class="table-responsive">

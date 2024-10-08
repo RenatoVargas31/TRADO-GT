@@ -43,9 +43,9 @@
 
               <div class="page-title-right">
                 <ol class="breadcrumb m-0">
-                  <li class="breadcrumb-item active">Home</li>
-                  <li class="breadcrumb-item active">Productos</li>
-                  <li class="breadcrumb-item"><a href="javascript: void(0);">Hombre</a></li>
+
+                  <li class="breadcrumb-item active ">Productos</li>
+                  <li class="breadcrumb-item "><a href="javascript: void(0);">Hombre</a></li>
                 </ol>
               </div>
 
@@ -93,24 +93,68 @@
                     <div>
                       <h5 class="font-size-14 mb-0">
                         <a href="#collapseExample5" class="text-reset d-block" data-bs-toggle="collapse" aria-expanded="false" aria-controls="collapseExample5">
-                          Material <i class="mdi mdi-plus float-end accor-plus-icon"></i>
+                          Talla <i class="mdi mdi-plus float-end accor-plus-icon"></i>
                         </a>
                       </h5>
                       <div class="collapse" id="collapseExample5">
                         <div class="mt-4">
-                          <div th:each="material, iterStat : ${materialesList}" class="form-check mt-2">
+                          <div th:each="talla, iterStat : ${tallasList}" class="form-check mt-2">
                             <input type="checkbox"
-                                   th:id="'material_' + ${iterStat}"
-                                   name="material"
+                                   th:id="'talla' + ${iterStat}"
+                                   name="talla"
                                    class="form-check-input"
-                                   th:value="${material.toLowerCase()}" />
-                            <label class="form-check-label" th:for="'material_' + ${iterStat}" th:text="${material}"></label>
+                                   th:value="${talla.toLowerCase()}" />
+                            <label class="form-check-label" th:for="'talla' + ${iterStat}" th:text="${talla}"></label>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
 
+
+                  <div class="card-body border-top">
+                    <div>
+                      <h5 class="font-size-14 mb-0">
+                        <a href="#collapseExample7" class="text-reset d-block" data-bs-toggle="collapse" aria-expanded="false" aria-controls="collapseExample5">
+                          Marca <i class="mdi mdi-plus float-end accor-plus-icon"></i>
+                        </a>
+                      </h5>
+                      <div class="collapse" id="collapseExample7">
+                        <div class="mt-4">
+                          <div th:each="marca, iterStat : ${marcaList}" class="form-check mt-2">
+                            <input type="checkbox"
+                                   th:id="'marca' + ${iterStat}"
+                                   name="marca"
+                                   class="form-check-input"
+                                   th:value="${marca.toLowerCase()}" />
+                            <label class="form-check-label" th:for="'marca' + ${iterStat}" th:text="${marca}"></label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="card-body border-top">
+                    <div>
+                      <h5 class="font-size-14 mb-0">
+                        <a href="#collapseExample6" class="text-reset d-block" data-bs-toggle="collapse" aria-expanded="false" aria-controls="collapseExample5">
+                          Color <i class="mdi mdi-plus float-end accor-plus-icon"></i>
+                        </a>
+                      </h5>
+                      <div class="collapse" id="collapseExample6">
+                        <div class="mt-4">
+                          <div th:each="color, iterStat : ${coloresList}" class="form-check mt-2">
+                            <input type="checkbox"
+                                   th:id="'color' + ${iterStat}"
+                                   name="color"
+                                   class="form-check-input"
+                                   th:value="${color.toLowerCase()}" />
+                            <label class="form-check-label" th:for="'color' + ${iterStat}" th:text="${color}"></label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
 
                   <div class="card-body border-top">
                     <div>
@@ -201,15 +245,17 @@
                   <div class="row g-0">
                     <div th:each="product, iterStat : ${productList}" class="col-xl-4 col-sm-6">
                       <div class="card product-box">
-                        <a href="/usuario/productoDetalles" class="text-decoration-none">
-                          <div class="product-img">
+                        <a th:href="@{/usuario/productoDetalles/{id}(id=${product.id})}" class="text-decoration-none">
+                        <div class="product-img">
                             <div class="product-ribbon badge bg-warning">
                               <!-- Mostrar el código de producto -->
                               <span th:text="${product.codigo}"></span>
                             </div>
                           </div>
-                          <img th:src="@{../images/product/img-6.png}" alt="img-6" class="img-fluid mx-auto d-block">
-                          <div class="text-center">
+                          <div th:if="${product.id >= 1 and product.id <= 10}">
+                            <img th:src="@{|../images/product/product${product.id}.jpg|}" alt="img-${id}"
+                                 class="img-fluid mx-auto d-block" style="width: 250px; height: 250px; object-fit: cover;">
+                          </div> <div class="text-center mt-3">
                             <p class="font-size-12 mb-1 text-primary">
                               <span th:text="${product.subcategoriaIdsubcategoria.nombre}">Categoría, Subcategoría</span>
                             </p>
@@ -302,9 +348,17 @@
         });
 
         // Agregar solo los materiales seleccionados
-        const materiales = formData.getAll('material');
-        materiales.forEach(material => {
-          params.append('material', material);
+        const tallas = formData.getAll('talla');
+        tallas.forEach(talla => {
+          params.append('talla', talla);
+        });
+        const marcas = formData.getAll('marca');
+        marcas.forEach(marca => {
+          params.append('marca', marca);
+        });
+        const colores = formData.getAll('color');
+        colores.forEach(color => {
+          params.append('color', color);
         });
 
         // Agregar precio mínimo si no está vacío

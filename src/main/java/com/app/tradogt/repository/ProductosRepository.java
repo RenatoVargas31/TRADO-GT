@@ -68,6 +68,21 @@ public interface ProductosRepository extends JpaRepository<Producto, Integer> {
             "JOIN s.categoriaIdcategoria c " +
             "WHERE c.id = :tipo")
     List<String> findDistinctMaterials(@Param("tipo") int tipo);
+    @Query("SELECT DISTINCT p.marca FROM Producto p " +
+            "JOIN p.subcategoriaIdsubcategoria s " +
+            "JOIN s.categoriaIdcategoria c " +
+            "WHERE c.id = :tipo")
+    List<String> findDistinctMarca(@Param("tipo") int tipo);
+    @Query("SELECT DISTINCT p.talla FROM Producto p " +
+            "JOIN p.subcategoriaIdsubcategoria s " +
+            "JOIN s.categoriaIdcategoria c " +
+            "WHERE c.id = :tipo")
+    List<String> findDistinctTallas(@Param("tipo") int tipo);
+    @Query("SELECT DISTINCT p.color FROM Producto p " +
+            "JOIN p.subcategoriaIdsubcategoria s " +
+            "JOIN s.categoriaIdcategoria c " +
+            "WHERE c.id = :tipo")
+    List<String> findDistinctColores(@Param("tipo") int tipo);
 
 
 
@@ -92,11 +107,13 @@ public interface ProductosRepository extends JpaRepository<Producto, Integer> {
             "WHERE c.id = 4) " +  // Solo productos que pertenecen a la categoría 4
             "AND (:categoria IS NULL OR p.subcategoriaIdsubcategoria.id IN :categoria) " +
             "AND (:material IS NULL OR LOWER(p.material) IN :material)"+
+            "AND (:marca IS NULL OR LOWER(p.marca) IN :marca)"+
             "AND (:precioMin IS NULL OR p.precio >= :precioMin) " +
             "AND (:precioMax IS NULL OR p.precio <= :precioMax)")
     List<Producto> findProductMueblesFilter(
             @Param("categoria") List<Integer> categoria, // Cambia a List<Integer>
             @Param("material") List<String> material,
+            @Param("marca") List<String> marca,
             @Param("precioMin") Double precioMin,
             @Param("precioMax") Double precioMax);
 
@@ -106,12 +123,16 @@ public interface ProductosRepository extends JpaRepository<Producto, Integer> {
             "JOIN s.categoriaIdcategoria c " +
             "WHERE c.id = 1) " +  // Solo productos que pertenecen a la categoría Mujer
             "AND (:categoria IS NULL OR p.subcategoriaIdsubcategoria.id IN :categoria) " +
-            "AND (:material IS NULL OR LOWER(p.material) IN :material)"+
+            "AND (:talla IS NULL OR LOWER(p.talla) IN :talla)"+
+            "AND (:marca IS NULL OR LOWER(p.marca) IN :marca)"+
+            "AND (:color IS NULL OR LOWER(p.color) IN :color)"+
             "AND (:precioMin IS NULL OR p.precio >= :precioMin) " +
             "AND (:precioMax IS NULL OR p.precio <= :precioMax)")
     List<Producto> findProductMujerFilter(
             @Param("categoria") List<Integer> categoria, // Cambia a List<Integer>
-            @Param("material") List<String> material,
+            @Param("talla") List<String> talla,
+            @Param("marca") List<String> marca,
+            @Param("color") List<String> color,
             @Param("precioMin") Double precioMin,
             @Param("precioMax") Double precioMax);
 
@@ -121,12 +142,17 @@ public interface ProductosRepository extends JpaRepository<Producto, Integer> {
             "JOIN s.categoriaIdcategoria c " +
             "WHERE c.id = 2) " +  // Solo productos que pertenecen a la categoría 4
             "AND (:categoria IS NULL OR p.subcategoriaIdsubcategoria.id IN :categoria) " +
-            "AND (:material IS NULL OR LOWER(p.material) IN :material)"+
+            "AND (:talla IS NULL OR LOWER(p.talla) IN :talla)"+
+            "AND (:marca IS NULL OR LOWER(p.marca) IN :marca)"+
+            "AND (:color IS NULL OR LOWER(p.color) IN :color)"+
+
             "AND (:precioMin IS NULL OR p.precio >= :precioMin) " +
             "AND (:precioMax IS NULL OR p.precio <= :precioMax)")
     List<Producto> findProductHombresFilter(
             @Param("categoria") List<Integer> categoria, // Cambia a List<Integer>
-            @Param("material") List<String> material,
+            @Param("talla") List<String> talla,
+            @Param("marca") List<String> marca,
+            @Param("color") List<String> color,
             @Param("precioMin") Double precioMin,
             @Param("precioMax") Double precioMax);
 
@@ -137,11 +163,13 @@ public interface ProductosRepository extends JpaRepository<Producto, Integer> {
             "WHERE c.id = 3) " +  // Solo productos que pertenecen a la categoría 4
             "AND (:categoria IS NULL OR p.subcategoriaIdsubcategoria.id IN :categoria) " +
             "AND (:material IS NULL OR LOWER(p.material) IN :material)"+
+            "AND (:marca IS NULL OR LOWER(p.marca) IN :marca)"+
             "AND (:precioMin IS NULL OR p.precio >= :precioMin) " +
             "AND (:precioMax IS NULL OR p.precio <= :precioMax)")
     List<Producto> findProductElectroFilter(
             @Param("categoria") List<Integer> categoria, // Cambia a List<Integer>
             @Param("material") List<String> material,
+            @Param("marca") List<String> marca,
             @Param("precioMin") Double precioMin,
             @Param("precioMax") Double precioMax);
 
