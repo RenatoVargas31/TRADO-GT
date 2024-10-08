@@ -8,6 +8,13 @@
     <!-- CSS BASE -->
     <meta th:replace="~{Common/cssBase :: css_Base}">
     <!-- End CSS BASE -->
+    <!-- DataTables -->
+    <link th:href="@{../libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css}" rel="stylesheet" type="text/css" />
+    <link th:href="@{../libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css}" rel="stylesheet" type="text/css" />
+    <link th:href="@{../libs/datatables.net-select-bs4/css/select.bootstrap4.min.css}" rel="stylesheet" type="text/css" />
+
+    <!-- Responsive datatable examples -->
+    <link th:href="@{../libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css}" rel="stylesheet" type="text/css" />
 
 </head>
 
@@ -56,53 +63,147 @@
                         <div class="card mb-4">
                             <div class="card-header bg-light d-flex justify-content-between align-items-center">
                                 <h5>Información del Comprador y Orden</h5>
+                                <button type="button" class="btn btn-primary btn-sm" th:if="${orden.estadoordenIdestadoorden.nombre == 'EN VALIDACION'}"
+                                        data-bs-toggle="modal" data-bs-target="#modalEditarDomicilio">
+                                    Editar
+                                </button>
                             </div>
+
                             <div class="card-body row">
                                 <!-- Columna izquierda: Datos personales -->
                                 <div class="col">
                                     <p><strong>Nombre de comprador:</strong> <span th:text="${usuario.nombre} + ' ' + ${usuario.apellido}"></span></p>
                                     <p><strong>Número DNI:</strong> <span th:text="${usuario.dni}"></span></p>
                                     <p><strong>Domicilio:</strong> <span th:text="${usuario.direccion}"></span></p>
+                                    <!--
                                     <p><strong>Compañía:</strong> <span th:text="${usuario.razonSocial}"></span></p>
                                     <p><strong>RUC:</strong> <span th:text="${usuario.ruc}"></span></p>
+                                    -->
                                     <p><strong>Teléfono:</strong> <span th:text="${usuario.telefono}"></span></p>
                                 </div>
 
                                 <!-- Columna derecha: Información de la orden -->
                                 <div class="col">
+                                    <p><strong>RUC:</strong> <span th:text="${usuario.ruc}"></span></p>
                                     <p><strong>Fecha de la orden:</strong> <span th:text="${orden.fechaCreacion}"></span></p>
-                                    <p><strong>Número de orden:</strong> <span th:text="${orden.id}"></span></p>
+                                    <p><strong>Número de orden:</strong> <span th:text="${orden.codigo}"></span></p>
                                     <p><strong>Distrito:</strong> <span th:text="${usuario.distritoIddistrito.nombre}"></span></p>
+                                    <!--
                                     <p><strong>Compañía Vendedora:</strong> <span th:text="${proveedor.nombreTienda}"></span></p>
                                     <p><strong>Contacto Vendedor:</strong> <span th:text="${proveedor.nombreProvedor}"></span></p>
                                     <p><strong>Teléfono Vendedor:</strong> <span th:text="${proveedor.telefonoProovedor}"></span></p>
+                                    -->
                                 </div>
-
                             </div>
                         </div>
-
-                        <!-- Card 2: Detalles del Producto y Observaciones -->
-                        <div class="card mb-4">
-                            <div class="card-header bg-light d-flex justify-content-between align-items-center">
-                                <h5>Detalles del Producto y Observaciones</h5>
-                            </div>
-                            <div class="card-body row">
-                                <!-- Columna izquierda: Productos -->
-                                <div class="col">
-                                    <p><strong>Productos:</strong></p>
-                                    <div th:each="producto : ${listaProductos}">
-                                        <p th:text="${producto.cantidadProducto} + ' ' + ${producto.nombreProducto} + ': $' + ${producto.precioProducto}"></p>
+                        <!-- Modal para editar el domicilio -->
+                        <div class="modal fade" id="modalEditarDomicilio" tabindex="-1" aria-labelledby="modalEditarDomicilioLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="modalEditarDomicilioLabel">Editar Domicilio</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form id="form-editar-domicilio">
+                                            <!-- Mensaje de coordinación con el importador -->
+                                            <div class="alert alert-warning" role="alert">
+                                                La modificación del domicilio debe ser realizada previa coordinación con el importador mediante el chat.
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="domicilio-input" class="form-label">Nuevo Domicilio</label>
+                                                <input type="text" class="form-control" id="domicilio-input" th:value="${usuario.direccion}">
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                        <button type="button" class="btn btn-primary" onclick="guardarDomicilio()">Guardar cambios</button>
                                     </div>
                                 </div>
-                                <!-- Columna derecha: Observaciones -->
-                                <div class="col">
-                                    <p><strong>Subtotal:</strong> <span th:text="'$'+${subtotal}"></span></p>
-                                    <p><strong>Envío:</strong> <span th:text="'$'+${totalEnvio}"></span></p>
-                                    <p><strong>Total:</strong> <span th:text="'$'+${total}"></span></p>
-                                </div>
-
                             </div>
                         </div>
+
+                        <!-- Card 2: Información de los proveedores de la orden -->
+                        <div class="card mb-4">
+                            <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                                <h5>Información de Proovedores</h5>
+                            </div>
+
+                            <div class="card-body ">
+                                <table id="datatable-proveedores" class="table table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                    <thead>
+                                    <tr>
+                                        <th>Compañia</th>
+                                        <th>Nombre</th>
+                                        <th>Teléfono</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="proveedor : ${listaProv}">
+                                        <td th:text="${proveedor.nombreTienda}"></td>
+                                        <td th:text="${proveedor.nombreProvedor}"></td>
+                                        <td th:text="${proveedor.telefonoProovedor}"></td>
+                                    </tr>
+
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <!-- Card 3: Información de los productos en la orden -->
+                        <div class="card mb-4">
+                            <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                                <h5>Productos</h5>
+                            </div>
+
+                            <div class="card-body ">
+                                <table id="datatable-productosOrdenInfo" class="table table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                    <thead>
+                                    <tr>
+                                        <th>Cantidad</th>
+                                        <th>Producto</th>
+                                        <th>Costo unitario</th>
+                                        <th>Editar</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="producto : ${listaProductos}">
+                                        <td th:text="${producto.cantidadProducto}"></td>
+                                        <td th:text="${producto.nombreProducto}"></td>
+                                        <td th:text="'S/' + ${producto.precioProducto}"></td>
+                                        <td class="btn btn-success btn-sm waves-effect waves-light"><i class="ri-pencil-fill"></i></td>
+                                    </tr>
+
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <!-- Card 4: Detalles del Producto y Observaciones -->
+                        <div class="card mb-4">
+                            <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                                <h5>Observaciones</h5>
+                            </div>
+                            <div class="card-body row">
+                                <div class="col">
+                                    <p><strong>Subtotal:</strong> <span th:text="'$'+${subtotal}"></span></p>
+                                </div>
+                                <div class="col">
+                                    <p><strong>Envío:</strong> <span th:text="'$'+${totalEnvio}"></span></p>
+                                </div>
+                                <div class="col">
+                                    <p><strong>Total:</strong> <span th:text="'$'+${total}"></span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+                    <!-- Información adicional -->
+                    <div class="col-md-4">
                         <!-- Estado del Pedido -->
                         <div class="card mb-4">
                             <div class="card-header bg-light d-flex justify-content-between align-items-center">
@@ -112,6 +213,12 @@
                                         data-bs-toggle="modal" data-bs-target="#deleteModal">
                                     Eliminar
                                 </button>
+                                <!-- Botón Tomar orden solo si el estado es "Sin Asignar" -->
+                                <!--
+                                <button type="button" class="btn btn-primary btn-sm" th:if="${orden.estadoordenIdestadoorden.nombre == 'CREADO'}">
+                                    Tomar orden
+                                </button>
+                                -->
 
                                 <!-- Modal de confirmación -->
                                 <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
@@ -137,7 +244,7 @@
                                 </div>
 
                             </div>
-                            <div class="card-body">
+                            <div class="card-body" style="height: 190px">
                                 <p><strong>Estado actual:</strong> <span th:switch="${orden.estadoordenIdestadoorden.nombre}">
                                   <span th:case="'CREADO'" class="badge bg-secondary fs-6">Sin asignar</span>
                                   <span th:case="'EN VALIDACION'" class="badge bg-warning fs-6">Pendiente</span>
@@ -160,15 +267,6 @@
                                 <p><strong>Fecha estimada de entrega:</strong> <span th:text="${orden.fechaArribo}"></span></p>
                             </div>
                         </div>
-
-
-                    </div>
-
-
-
-
-                    <!-- Información adicional -->
-                    <div class="col-md-4">
 
                         <div class="card mb-4">
                             <div class="card-header bg-light">
@@ -307,7 +405,7 @@
 
 
 
-                        <div class="card mb-4">
+                        <div class="card mb-4" th:if="${orden.estadoordenIdestadoorden.nombre != 'CREADO'}">
                             <div class="card-header bg-light">
                                 <h5>Chat con el Importador</h5>
                             </div>
@@ -316,8 +414,8 @@
                                     <!-- Mensaje del agente -->
                                     <div class="d-flex mb-3">
                                         <div class="avatar me-3">
-                                            <span class="avatar-title bg-primary-subtle text-primary rounded-circle">
-                                                <i class="ri-user-fill"></i>
+                                            <span class="avatar-title bg-primary-subtle text-primary rounded-circle" style="width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; border-radius: 50%;">
+                                                                <i class="ri-user-fill"></i>
                                             </span>
                                         </div>
                                         <div>
@@ -332,16 +430,16 @@
                                             <p class="bg-primary text-white p-2 rounded">Gracias por la información. ¿Cuándo se espera la entrega?</p>
                                         </div>
                                         <div class="avatar ms-3">
-                                            <span class="avatar-title bg-primary text-white rounded-circle">
-                                                <i class="ri-user-fill"></i>
+                                            <span class="avatar-title bg-primary text-white rounded-circle" style="width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; border-radius: 50%;">
+                                                                <i class="ri-user-fill"></i>
                                             </span>
                                         </div>
                                     </div>
                                     <!-- Mensaje del agente -->
                                     <div class="d-flex mb-3">
                                         <div class="avatar me-3">
-                                            <span class="avatar-title bg-primary-subtle text-primary rounded-circle">
-                                                <i class="ri-user-fill"></i>
+                                            <span class="avatar-title bg-primary-subtle text-primary rounded-circle" style="width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; border-radius: 50%;">
+                                                                <i class="ri-user-fill"></i>
                                             </span>
                                         </div>
                                         <div>
@@ -360,6 +458,22 @@
                                 </form>
                             </div>
                         </div>
+                        <div class="card mb-4" th:if="${orden.estadoordenIdestadoorden.nombre == 'CREADO'}">
+                            <div class="card-header bg-light">
+                                <h5>Chat con el Importador</h5>
+                            </div>
+                            <div class="card-body text-center" style="max-height: 250px">
+                                <div class="alert alert-warning" role="alert">
+                                    <i class="ri-lock-line"></i> El chat está bloqueado porque aún no se ha asignado la orden a un agente.
+                                </div>
+                                <p>Estimado agente, puedes tomar esta orden manualmente o esperar a que se te asigne automáticamente.</p>
+                            </div>
+                            <div class="card-footer">
+                                <button class="btn btn-primary w-100" onclick="tomarOrden()">Tomar Orden</button>
+                            </div>
+                        </div>
+
+
 
 
 
@@ -393,6 +507,28 @@
 <!-- JAVASCRIPT BASE-->
 <span th:replace="~{Common/jsBase :: js_Base}"></span>
 <!-- End JAVASCRIPT BASE-->
+<!-- Required datatable js -->
+<script th:src="@{../libs/datatables.net/js/jquery.dataTables.min.js}"></script>
+<script th:src="@{../libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js}"></script>
+<!-- Buttons examples -->
+<script th:src="@{../libs/datatables.net-buttons/js/dataTables.buttons.min.js}"></script>
+<script th:src="@{../libs/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js}"></script>
+<script th:src="@{../libs/jszip/jszip.min.js}"></script>
+<script th:src="@{../libs/pdfmake/build/pdfmake.min.js}"></script>
+<script th:src="@{../libs/pdfmake/build/vfs_fonts.js}"></script>
+<script th:src="@{../libs/datatables.net-buttons/js/buttons.html5.min.js}"></script>
+<script th:src="@{../libs/datatables.net-buttons/js/buttons.print.min.js}"></script>
+<script th:src="@{../libs/datatables.net-buttons/js/buttons.colVis.min.js}"></script>
+
+<script th:src="@{../libs/datatables.net-keytable/js/dataTables.keyTable.min.js}"></script>
+<script th:src="@{../libs/datatables.net-select/js/dataTables.select.min.js}"></script>
+
+<!-- Responsive examples -->
+<script th:src="@{../libs/datatables.net-responsive/js/dataTables.responsive.min.js}"></script>
+<script th:src="@{../libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js}"></script>
+
+<!-- Datatable init js -->
+<script th:src="@{../js/pages/datatables.init.js}"></script>
 </body>
 
 </html>

@@ -34,7 +34,7 @@ public interface OrdenRepository extends JpaRepository<Orden, Integer> {
                 JOIN
                     Usuario u ON c.Usuario_idUsuario = u.idUsuario  -- Relación con el usuario propietario
                 LEFT JOIN
-                    Pago p ON p.orden_idOrden = o.idOrden  -- Relación con la tabla de pagos
+                    Pago p ON p.idPago = o.pago_idPago  -- Relación con la tabla de pagos
                 LEFT JOIN
                     Usuario a ON a.idUsuario = o.agentCompra_idUsuario  -- Relación con el agente de compra
                 LEFT JOIN
@@ -72,20 +72,19 @@ public interface OrdenRepository extends JpaRepository<Orden, Integer> {
     JOIN
         Usuario u ON c.Usuario_idUsuario = u.idUsuario  -- Relación con el usuario propietario
     LEFT JOIN
-        Pago p ON p.orden_idOrden = o.idOrden  -- Relación con la tabla de pagos
+        Pago p ON p.idPago = o.pago_idPago  -- Relación con la tabla de pagos
     LEFT JOIN
         Usuario a ON a.idUsuario = o.agentCompra_idUsuario  -- Relación con el agente de compra
     LEFT JOIN
         EstadoOrden eo ON eo.idEstadoOrden = o.estadoOrden_idEstadoOrden  -- Relación con el estado de la orden
     WHERE
         eo.Nombre = 'CREADO' AND o.isDeleted = 0  -- Solo mostrar órdenes no eliminadas
-        AND a.idUsuario = ?1  -- Filtro para el agente de compra específico
     GROUP BY
         o.idOrden  -- Agrupar por la orden para no repetir filas por producto
     ORDER BY
         o.fechaCreacion DESC;
 """, nativeQuery = true)
-    List<Object[]> getOrderDetailsAsDtoNativeSinAsignar(Integer idAgente);
+    List<Object[]> getOrderDetailsAsDtoNativeSinAsignar();
 
 
     //Órdenes pendientes
@@ -109,7 +108,7 @@ public interface OrdenRepository extends JpaRepository<Orden, Integer> {
     JOIN
         Usuario u ON c.Usuario_idUsuario = u.idUsuario  -- Relación con el usuario propietario
     LEFT JOIN
-        Pago p ON p.orden_idOrden = o.idOrden  -- Relación con la tabla de pagos
+        Pago p ON p.idPago = o.pago_idPago  -- Relación con la tabla de pagos
     LEFT JOIN
         Usuario a ON a.idUsuario = o.agentCompra_idUsuario  -- Relación con el agente de compra
     LEFT JOIN
@@ -146,7 +145,7 @@ public interface OrdenRepository extends JpaRepository<Orden, Integer> {
     JOIN
         Usuario u ON c.Usuario_idUsuario = u.idUsuario  -- Relación con el usuario propietario
     LEFT JOIN
-        Pago p ON p.orden_idOrden = o.idOrden  -- Relación con la tabla de pagos
+        Pago p ON p.idPago = o.pago_idPago  -- Relación con la tabla de pagos
     LEFT JOIN
         Usuario a ON a.idUsuario = o.agentCompra_idUsuario  -- Relación con el agente de compra
     LEFT JOIN
@@ -183,7 +182,7 @@ public interface OrdenRepository extends JpaRepository<Orden, Integer> {
     JOIN
         Usuario u ON c.Usuario_idUsuario = u.idUsuario  -- Relación con el usuario propietario
     LEFT JOIN
-        Pago p ON p.orden_idOrden = o.idOrden  -- Relación con la tabla de pagos
+        Pago p ON p.idPago = o.pago_idPago  -- Relación con la tabla de pagos
     LEFT JOIN
         Usuario a ON a.idUsuario = o.agentCompra_idUsuario  -- Relación con el agente de compra
     LEFT JOIN
@@ -219,7 +218,7 @@ public interface OrdenRepository extends JpaRepository<Orden, Integer> {
         JOIN
             Usuario u ON c.Usuario_idUsuario = u.idUsuario  -- Relación con el usuario propietario a través del carrito
         LEFT JOIN
-            Pago p ON p.orden_idOrden = o.idOrden  -- Relación con la tabla de pagos
+            Pago p ON p.idPago = o.pago_idPago  -- Relación con la tabla de pagos
         LEFT JOIN
             Usuario a ON a.idUsuario = o.agentCompra_idUsuario  -- Relación con el agente de compra
         LEFT JOIN

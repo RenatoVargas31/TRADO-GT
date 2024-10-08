@@ -81,7 +81,7 @@ public class AgenteComprasController {
         // Obtener los resultados de la consulta nativa
         //Por el momento yo mismo le asigno el id que usará para buscar las órdenes asignadas
         //pues este id será proporcionado recién automáticamente cuando se realice el LOGIN
-        List<Object[]> resultados = ordenRepository.getOrderDetailsAsDtoNativeSinAsignar(4);
+        List<Object[]> resultados = ordenRepository.getOrderDetailsAsDtoNativeSinAsignar();
 
         // Mapear los resultados al DTO directamente en el controlador
         List<OrdenCompraAgtDto> listaOrdenes = resultados.stream()
@@ -231,8 +231,8 @@ public class AgenteComprasController {
 
                  listaProveedores.add(dto);
              }
-             ProveedorInfoAgtDto proveedor = listaProveedores.get(0);
-             model.addAttribute("proveedor",proveedor);
+             List<ProveedorInfoAgtDto> listaProov = listaProveedores;
+             model.addAttribute("listaProv",listaProov);
 
 
              //Info de los productos presentes en la orden

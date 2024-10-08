@@ -125,7 +125,19 @@
                                             <td th:text="${orden.fechaCreacion}"></td>
                                             <td th:text="${orden.agenteCompra}"></td>
                                             <td th:text="${orden.metodoPago}"></td>
-                                            <td th:text="${orden.estadoPedido}"></td>
+                                            <!-- Aquí utilizamos th:switch para manejar diferentes estados -->
+                                            <td>
+                                              <span th:switch="${orden.estadoPedido}">
+                                                  <span th:case="'CREADO'" class="badge bg-secondary fs-6">Sin asignar</span>
+                                                  <span th:case="'EN VALIDACION'" class="badge bg-warning fs-6">Pendiente</span>
+                                                  <span th:case="'EN PROCESO'" class="badge bg-info fs-6">En proceso</span>
+                                                  <span th:case="'ARRIBO AL PAIS'" class="badge bg-info fs-6">En proceso</span>
+                                                  <span th:case="'EN ADUANAS'" class="badge bg-info fs-6">En proceso</span>
+                                                  <span th:case="'EN RUTA'" class="badge bg-info fs-6">En proceso</span>
+                                                  <span th:case="'RECIBIDO'" class="badge bg-success fs-6">Resuelto</span>
+                                                  <span th:case="*">Desconocido</span>  <!-- Este es un caso por defecto -->
+                                              </span>
+                                            </td>
                                             <td>
                                                 <a th:href="@{'/agente/detailsOrder?idOrden=' + ${orden.idOrden} + '&idUsuario=' + ${orden.idUsuarioAsignado} }" class="btn btn-primary btn-sm waves-effect waves-light" title="Ver" >
                                                     <i class="ri-eye-fill"></i>

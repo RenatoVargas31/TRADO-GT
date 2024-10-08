@@ -544,3 +544,33 @@ $(document).ready(function () {
     a.buttons().container().appendTo("#datatable-historialComportamiento_wrapper .col-md-6:eq(0)");
     $(".dataTables_length select").addClass("form-select form-select-sm");
 });
+//Tabla para los proovedores que se ven en las órdenes de agente
+$(document).ready(function () {
+    var a = $("#datatable-proveedores").DataTable({
+        lengthChange: !1,
+        pageLength: 3,
+        info: !1,
+        searching: false,
+        language: {paginate: {previous: "<i class='mdi mdi-chevron-left'>", next: "<i class='mdi mdi-chevron-right'>"}},
+        drawCallback: function () {
+            $(".dataTables_paginate > .pagination").addClass("pagination-rounded")
+        },
+    });
+    a.buttons().container().appendTo("#datatable-proveedores_wrapper .col-md-6:eq(0)");
+    $(".dataTables_length select").addClass("form-select form-select-sm");
+});
+//Tabla para los productos que se ven en las órdenes de agente
+$(document).ready(function () {
+    var a = $("#datatable-productosOrdenInfo").DataTable({
+        lengthChange: !1,
+        pageLength: 3,
+        info: !1,
+        searching: false,
+        language: {paginate: {previous: "<i class='mdi mdi-chevron-left'>", next: "<i class='mdi mdi-chevron-right'>"}},
+        drawCallback: function () {
+            $(".dataTables_paginate > .pagination").addClass("pagination-rounded")
+        },
+    });
+    a.buttons().container().appendTo("#datatable-productosOrdenInfo_wrapper .col-md-6:eq(0)");
+    $(".dataTables_length select").addClass("form-select form-select-sm");
+});
