@@ -73,99 +73,15 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr>
-                                            <td>Manzana Roja</td>
-                                            <td>Proveedor A</td>
-                                            <td>Frutas</td>
-                                            <td>100</td>
-                                            <td>$1.00</td>
-                                            <td>$0.10</td>
+                                        <tr th:each="producto : ${productos}">
+                                            <td th:text="${producto.nombre}">Nombre del Producto</td>
+                                            <td th:text="${producto.proveedorIdproveedor.nombre}">Nombre del Proveedor</td>
+                                            <td th:text="${producto.subcategoriaIdsubcategoria.categoriaIdcategoria.nombre}">Categoría</td>
+                                            <td th:text="${producto.}">Cantidad</td>
+                                            <td th:text="${producto.precioUnitario}">Precio Unitario</td>
+                                            <td th:text="${producto.costoEnvio}">Costo de Envío</td>
                                             <td>
-                                                <a href="#" class="btn btn-info btn-sm waves-effect waves-light" title="Editar"><i class="ri-pencil-fill"></i></a>
-                                                <a href="#" class="btn btn-danger btn-sm waves-effect waves-light" title="Eliminar" data-bs-toggle="modal" data-bs-target="#deleteConfirmModal"><i class="ri-delete-bin-fill"></i></a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Leche Entera</td>
-                                            <td>Proveedor B</td>
-                                            <td>Lácteos</td>
-                                            <td>200</td>
-                                            <td>$0.80</td>
-                                            <td>$0.05</td>
-                                            <td>
-                                                <a href="#" class="btn btn-info btn-sm waves-effect waves-light" title="Editar"><i class="ri-pencil-fill"></i></a>
-                                                <a href="#" class="btn btn-danger btn-sm waves-effect waves-light" title="Eliminar" data-bs-toggle="modal" data-bs-target="#deleteConfirmModal"><i class="ri-delete-bin-fill"></i></a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Pan Integral</td>
-                                            <td>Proveedor C</td>
-                                            <td>Panadería</td>
-                                            <td>150</td>
-                                            <td>$1.20</td>
-                                            <td>$0.15</td>
-                                            <td>
-                                                <a href="#" class="btn btn-info btn-sm waves-effect waves-light" title="Editar"><i class="ri-pencil-fill"></i></a>
-                                                <a href="#" class="btn btn-danger btn-sm waves-effect waves-light" title="Eliminar" data-bs-toggle="modal" data-bs-target="#deleteConfirmModal"><i class="ri-delete-bin-fill"></i></a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Jugo de Naranja</td>
-                                            <td>Proveedor D</td>
-                                            <td>Bebidas</td>
-                                            <td>300</td>
-                                            <td>$0.50</td>
-                                            <td>$0.07</td>
-                                            <td>
-                                                <a href="#" class="btn btn-info btn-sm waves-effect waves-light" title="Editar"><i class="ri-pencil-fill"></i></a>
-                                                <a href="#" class="btn btn-danger btn-sm waves-effect waves-light" title="Eliminar" data-bs-toggle="modal" data-bs-target="#deleteConfirmModal"><i class="ri-delete-bin-fill"></i></a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Queso Cheddar</td>
-                                            <td>Proveedor E</td>
-                                            <td>Lácteos</td>
-                                            <td>80</td>
-                                            <td>$2.00</td>
-                                            <td>$0.20</td>
-                                            <td>
-                                                <a href="#" class="btn btn-info btn-sm waves-effect waves-light" title="Editar"><i class="ri-pencil-fill"></i></a>
-                                                <a href="#" class="btn btn-danger btn-sm waves-effect waves-light" title="Eliminar" data-bs-toggle="modal" data-bs-target="#deleteConfirmModal"><i class="ri-delete-bin-fill"></i></a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Arroz Integral</td>
-                                            <td>Proveedor F</td>
-                                            <td>Cereales</td>
-                                            <td>500</td>
-                                            <td>$0.70</td>
-                                            <td>$0.08</td>
-                                            <td>
-                                                <a href="/superadmin/productoEditar" class="btn btn-info btn-sm waves-effect waves-light" title="Editar"><i class="ri-pencil-fill"></i></a>
-                                                <a href="#" class="btn btn-danger btn-sm waves-effect waves-light" title="Eliminar" data-bs-toggle="modal" data-bs-target="#deleteConfirmModal"><i class="ri-delete-bin-fill"></i></a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Yogur Natural</td>
-                                            <td>Proveedor G</td>
-                                            <td>Lácteos</td>
-                                            <td>120</td>
-                                            <td>$1.50</td>
-                                            <td>$0.12</td>
-                                            <td>
-                                                <a href="#" class="btn btn-info btn-sm waves-effect waves-light" title="Editar"><i class="ri-pencil-fill"></i></a>
-                                                <a href="#" class="btn btn-danger btn-sm waves-effect waves-light" title="Eliminar" data-bs-toggle="modal" data-bs-target="#deleteConfirmModal"><i class="ri-delete-bin-fill"></i></a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Tomate Fresco</td>
-                                            <td>Proveedor H</td>
-                                            <td>Verduras</td>
-                                            <td>250</td>
-                                            <td>$0.30</td>
-                                            <td>$0.03</td>
-                                            <td>
-                                                <a href="#" class="btn btn-info btn-sm waves-effect waves-light" title="Editar"><i class="ri-pencil-fill"></i></a>
+                                                <a th:href="@{'/superadmin/productoEditar/' + ${producto.id}}" class="btn btn-info btn-sm waves-effect waves-light" title="Editar"><i class="ri-pencil-fill"></i></a>
                                                 <a href="#" class="btn btn-danger btn-sm waves-effect waves-light" title="Eliminar" data-bs-toggle="modal" data-bs-target="#deleteConfirmModal"><i class="ri-delete-bin-fill"></i></a>
                                             </td>
                                         </tr>

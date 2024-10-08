@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.math.BigDecimal;
 
@@ -35,25 +36,13 @@ public class Carrito {
     @Column(name = "costo")
     private BigDecimal costo;
 
-    @Column(name = "costoTotal")
+    @ColumnDefault("0")
+    @Column(name = "isDelete")
+    private Byte isDelete;
+
+    @ColumnDefault("0.00")
+    @Column(name = "totalCosto", precision = 10, scale = 2)
     private BigDecimal costoTotal;
-
-    // Getters y setters
-    public BigDecimal getCosto() {
-        return costo;
-    }
-
-    public void setCosto(BigDecimal costo) {
-        this.costo = costo;
-    }
-
-    public BigDecimal getCostoTotal() {
-        return costoTotal;
-    }
-
-    public void setCostoTotal(BigDecimal costoTotal) {
-        this.costoTotal = costoTotal;
-    }
 
     
     @ManyToOne

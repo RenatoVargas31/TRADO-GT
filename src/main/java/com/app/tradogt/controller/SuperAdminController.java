@@ -1,5 +1,7 @@
 package com.app.tradogt.controller;
 
+import com.app.tradogt.entity.Producto;
+import com.app.tradogt.entity.ProductoEnZona;
 import com.app.tradogt.entity.Proveedor;
 import com.app.tradogt.entity.Usuario;
 import com.app.tradogt.helpers.PasswordGenerator;
@@ -25,13 +27,18 @@ public class SuperAdminController {
     final ZonaRepository zonaRepository;
     final RolRepository rolRepository;
     final DistritoRepository distritoRepository;
+    final ProductosRepository productosRepository;
+    final ProductoEnZonaRepository productoEnZonaRepository;
 
-    public SuperAdminController(ProveedorRepository proveedorRepository, UsuarioRepository usuarioRepository, ZonaRepository zonaRepository, RolRepository rolRepository, DistritoRepository distritoRepository) {
+
+    public SuperAdminController(ProveedorRepository proveedorRepository, UsuarioRepository usuarioRepository, ZonaRepository zonaRepository, RolRepository rolRepository, DistritoRepository distritoRepository, ProductosRepository productosRepository, ProductoEnZonaRepository productoEnZonaRepository) {
         this.proveedorRepository = proveedorRepository;
         this.usuarioRepository = usuarioRepository;
         this.zonaRepository = zonaRepository;
         this.rolRepository = rolRepository;
         this.distritoRepository = distritoRepository;
+        this.productosRepository = productosRepository;
+        this.productoEnZonaRepository = productoEnZonaRepository;
     }
     //</editor-fold>
 
@@ -370,7 +377,12 @@ public class SuperAdminController {
         return "SuperAdmin/productoEditar-SAdmin";
     }
     @GetMapping("/productoLista")
-    public String viewProductoLista() {
+    public String viewProductoLista(Model model) {
+        //Listar productos
+        List<Producto> productos = productosRepository.findAll();
+        List<ProductoEnZona> productosEnZona = productoEnZonaRepository.findAll();
+        //Enviar a la vista
+        model.addAttribute("productos", productos);
         return "SuperAdmin/productoLista-SAdmin";
     }
     //</editor-fold>
