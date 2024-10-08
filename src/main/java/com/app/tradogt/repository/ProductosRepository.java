@@ -68,6 +68,22 @@ public interface ProductosRepository extends JpaRepository<Producto, Integer> {
             "JOIN s.categoriaIdcategoria c " +
             "WHERE c.id = :tipo")
     List<String> findDistinctMaterials(@Param("tipo") int tipo);
+
+    @Query("SELECT DISTINCT p.ram FROM Producto p " +
+            "JOIN p.subcategoriaIdsubcategoria s " +
+            "JOIN s.categoriaIdcategoria c " +
+            "WHERE c.id = :tipo AND p.ram IS NOT NULL " +
+            "ORDER BY p.ram ASC")
+    List<String> findDistinctRam(@Param("tipo") int tipo);
+
+
+    @Query("SELECT DISTINCT p.almacenamiento FROM Producto p " +
+            "JOIN p.subcategoriaIdsubcategoria s " +
+            "JOIN s.categoriaIdcategoria c " +
+            "WHERE c.id = :tipo AND p.almacenamiento IS NOT NULL " +
+            "ORDER BY p.ram ASC")
+    List<String> findDistinctAlmacenamiento(@Param("tipo") int tipo);
+
     @Query("SELECT DISTINCT p.marca FROM Producto p " +
             "JOIN p.subcategoriaIdsubcategoria s " +
             "JOIN s.categoriaIdcategoria c " +
@@ -162,15 +178,31 @@ public interface ProductosRepository extends JpaRepository<Producto, Integer> {
             "JOIN s.categoriaIdcategoria c " +
             "WHERE c.id = 3) " +  // Solo productos que pertenecen a la categoría 4
             "AND (:categoria IS NULL OR p.subcategoriaIdsubcategoria.id IN :categoria) " +
-            "AND (:material IS NULL OR LOWER(p.material) IN :material)"+
+            "AND (:almacenamiento IS NULL OR LOWER(p.almacenamiento) IN :almacenamiento)"+
+            "AND (:ram IS NULL OR LOWER(p.ram) IN :ram)"+
             "AND (:marca IS NULL OR LOWER(p.marca) IN :marca)"+
             "AND (:precioMin IS NULL OR p.precio >= :precioMin) " +
             "AND (:precioMax IS NULL OR p.precio <= :precioMax)")
     List<Producto> findProductElectroFilter(
             @Param("categoria") List<Integer> categoria, // Cambia a List<Integer>
-            @Param("material") List<String> material,
+            @Param("almacenamiento") List<String> almacenamiento,
+            @Param("ram") List<String> ram,
             @Param("marca") List<String> marca,
             @Param("precioMin") Double precioMin,
             @Param("precioMax") Double precioMax);
+
+
+    @Query("SELECT p FROM Producto p WHERE " +
+            "(LOWER(p.nombre) LIKE LOWER(CONCAT('%', :query, '%')) " +
+            "OR LOWER(p.proveedorIdproveedor.nombre) LIKE LOWER(CONCAT('%', :query, '%')) " +
+            "OR LOWER(p.codigo) LIKE LOWER(CONCAT('%', :query, '%'))) " +
+            "AND p IN (SELECT p2 FROM Producto p2 " +
+            "JOIN p2.subcategoriaIdsubcategoria s " +
+            "JOIN s.categoriaIdcategoria c " +
+            "WHERE c.id = :tipo)")
+    List<Producto> findProductQuery(@Param("query") String query, @Param("tipo") int tipo);
+
+
+
 
 }

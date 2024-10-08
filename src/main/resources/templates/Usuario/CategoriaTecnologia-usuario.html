@@ -32,7 +32,7 @@
   <!-- Start right Content here -->
   <!-- ============================================================== -->
   <div class="main-content">
-    d<div class="page-content">
+    <div class="page-content">
       <div class="container-fluid">
 
         <!-- start page title -->
@@ -98,23 +98,45 @@
                     <div>
                       <h5 class="font-size-14 mb-0">
                         <a href="#collapseExample5" class="text-reset d-block" data-bs-toggle="collapse" aria-expanded="false" aria-controls="collapseExample5">
-                          Material <i class="mdi mdi-plus float-end accor-plus-icon"></i>
+                          RAM <i class="mdi mdi-plus float-end accor-plus-icon"></i>
                         </a>
                       </h5>
                       <div class="collapse" id="collapseExample5">
                         <div class="mt-4">
-                          <div th:each="material, iterStat : ${materialesList}" class="form-check mt-2">
+                          <div th:each="ram, iterStat : ${ramList}" class="form-check mt-2">
                             <input type="checkbox"
-                                   th:id="'material_' + ${iterStat}"
-                                   name="material"
+                                   th:id="'ram_' + ${iterStat}"
+                                   name="ram"
                                    class="form-check-input"
-                                   th:value="${material.toLowerCase()}" />
-                            <label class="form-check-label" th:for="'material_' + ${iterStat}" th:text="${material}"></label>
+                                   th:value="${ram.toLowerCase()}" />
+                            <label class="form-check-label" th:for="'ram_' + ${iterStat}" th:text="${ram}"></label>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
+                  <div class="card-body border-top">
+                    <div>
+                      <h5 class="font-size-14 mb-0">
+                        <a href="#collapseExample8" class="text-reset d-block" data-bs-toggle="collapse" aria-expanded="false" aria-controls="collapseExample8">
+                          Almacenamiento <i class="mdi mdi-plus float-end accor-plus-icon"></i>
+                        </a>
+                      </h5>
+                      <div class="collapse" id="collapseExample8">
+                        <div class="mt-4">
+                          <div th:each="almacenamiento, iterStat : ${almacenamientoList}" class="form-check mt-2">
+                            <input type="checkbox"
+                                   th:id="'almacenamiento' + ${iterStat}"
+                                   name="almacenamiento"
+                                   class="form-check-input"
+                                   th:value="${almacenamiento.toLowerCase()}" />
+                            <label class="form-check-label" th:for="'almacenamiento' + ${iterStat}" th:text="${almacenamiento}"></label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
                   <div class="card-body border-top">
                     <div>
                       <h5 class="font-size-14 mb-0">
@@ -233,9 +255,8 @@
                             </div>
                           </div>
                           <div th:if="${product.id >= 1 and product.id <= 10}">
-                            <img th:src="@{|../../static/images/product/product${product.id}.jpg|}" alt="img-${product.id}">
-
-                            class="img-fluid mx-auto d-block" style="width: 250px; height: 250px; object-fit: cover;">
+                            <img th:src="@{|../images/product/product${product.id}.jpg|}" alt="img-${id}"
+                                 class="img-fluid mx-auto d-block" style="width: 250px; height: 250px; object-fit: cover;">
                           </div>
 
                       <div class="text-center mt-3">
@@ -353,9 +374,9 @@
     });
 
     // Agregar solo los materiales seleccionados
-    const materiales = formData.getAll('material');
-    materiales.forEach(material => {
-      params.append('material', material);
+    const rams = formData.getAll('ram');
+    rams.forEach(ram => {
+      params.append('ram', ram);
     });
     const marcas = formData.getAll('marca');
     marcas.forEach(marca => {
