@@ -84,10 +84,10 @@
 
                                             <td th:text="'S/. '+ ${producto.productoEnZona.productoIdproducto.precio}"></td>
 
-                                            <td>
-                                                <div style="width: 120px;" class="product-cart-touchspin">
+                                            <td th:text="${producto.cantidad}">
+                                                <!--<div style="width: 120px;" class="product-cart-touchspin">
                                                     <input data-bs-toggle="touchspin" type="text" th:value="${producto.cantidad}">
-                                                </div>
+                                                </div> -->
                                             </td>
                                             <td th:text="'S/. ' + (${producto.productoEnZona.productoIdproducto.precio} * ${producto.cantidad})"></td>
                                             <td style="width: 90px;" class="text-center">

@@ -42,7 +42,7 @@ public class Carrito {
 
     @ColumnDefault("0.00")
     @Column(name = "totalCosto", precision = 10, scale = 2)
-    private BigDecimal costoTotal;
+    private BigDecimal totalCosto;
 
     
     @ManyToOne

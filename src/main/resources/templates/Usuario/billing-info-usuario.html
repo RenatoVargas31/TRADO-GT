@@ -52,214 +52,176 @@
                         <div class="card">
                             <div class="card-body">
                                 <div id="checkout-nav-pills-wizard" class="twitter-bs-wizard">
-                                    <ul class="twitter-bs-wizard-nav nav nav-pills nav-justified">
-                                        <li class="nav-item">
-                                            <a href="#billing-info" class="nav-link " data-toggle="tab">
-                                                <span class="step-number">01</span>
-                                                <span class="step-title">Información de facturación</span>
-                                            </a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a href="#shipping-info" class="nav-link" data-toggle="tab">
-                                                <span class="step-number">02</span>
-                                                <span class="step-title">Información de envío</span>
-                                            </a>
-                                        </li>
-
-                                        <li class="nav-item">
-                                            <a href="#payment-info" class="nav-link active" data-toggle="tab">
-                                                <span class="step-number">03</span>
-                                                <span class="step-title">Información de pago</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                    <div class="tab-content twitter-bs-wizard-tab-content">
-                                        <div class="tab-pane" id="billing-info">
-                                            <h5 class="card-title">Información de facturación</h5>
-                                            <p class="card-title-desc">Por favor, ingrese sus detalles de facturación. Esta información se utilizará para procesar su pedido y generar su factura</p>
-
-                                            <form>
-                                                <div>
-
-                                                    <div>
-
-                                                        <div class="row">
-                                                            <div class="col-lg-4">
-                                                                <div class="mb-4">
-                                                                    <label class="form-label" for="billing-name">Nombre completo</label>
-                                                                    <input type="text" class="form-control" id="billing-name" placeholder="Enter name">
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-lg-4">
-                                                                <div class="mb-4">
-                                                                    <label class="form-label" for="billing-email-address">Correo electrónico</label>
-                                                                    <input type="email" class="form-control" id="billing-email-address" placeholder="Enter email">
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-lg-4">
-                                                                <div class="mb-4">
-                                                                    <label class="form-label" for="billing-phone">Teléfono</label>
-                                                                    <input type="text" class="form-control" id="billing-phone" placeholder="Enter Phone no.">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="mb-4">
-                                                            <label class="form-label" for="billing-address">Dirección</label>
-                                                            <textarea class="form-control" id="billing-address" rows="3" placeholder="Enter full address"></textarea>
-                                                        </div>
-
-                                                        <div class="row">
-                                                            <div class="col-lg-4">
-                                                                <div class="mb-4 mb-lg-0">
-                                                                    <label class="form-label">Distrito</label>
-                                                                    <select class="form-select" title="distrito">
-                                                                        <option value="0">Selecionar Districto</option>
-                                                                        <option value="AF">Ancón</option>
-                                                                        <option value="AL">Santa Rosa</option>
-                                                                        <option value="DZ">Carabayllo</option>
-                                                                        <option value="AS">Puente Piedra</option>
-                                                                        <option value="AD">Comas</option>
-                                                                        <option value="AO">Los Olivos</option>
-                                                                        <option value="AI">San Martín de Porres</option>
-                                                                        <option value="AQ">Independencia</option>
-
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-
-                                                            <div class="col-lg-4">
-                                                                <div class="mb-4 mb-lg-0">
-                                                                    <label class="form-label" for="billing-city">Referencia</label>
-                                                                    <input type="text" class="form-control" id="billing-city" placeholder="Enter ref">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </div>
-                                        <div class="tab-pane" id="shipping-info">
-                                            <h5 class="card-title">Información de envío</h5>
-                                            <p class="card-title-desc">Revise y confirme la dirección de envío. </p>
+                                    <div class="tab-pane" id="billing-info">
+                                        <h5 class="card-title">Información de facturación</h5>
+                                        <p class="card-title-desc">Por favor, ingrese sus detalles de facturación. Esta información se utilizará para procesar su pedido y generar su factura</p>
+                                        <div>
 
                                             <div class="row">
-                                                <div class="col-lg-4 col-sm-6">
-                                                    <div class="card border rounded active shipping-address">
-                                                        <div class="card-body">
-                                                            <h5 class="font-size-14 mb-4">Dirreción 1</h5>
-
-                                                            <h5 class="font-size-14">Bradley McMillian</h5>
-                                                            <p class="mb-1">109 Clarksburg Park Road Show Low, AZ 85901</p>
-                                                            <p class="mb-0">Mo. 012-345-6789</p>
-                                                        </div>
+                                                <div class="col-lg-6">
+                                                    <div class="mb-4">
+                                                        <label class="form-label" for="billing-name">Nombre</label>
+                                                        <span type="text" class="form-control" id="billing-name" th:text="${usuario.nombre}"></span>
+                                                        <!--<input type="text" class="form-control" id="billing-name" placeholder="Enter name"> -->
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="mb-4">
+                                                        <label class="form-label" for="billing-fullname">Apellido</label>
+                                                        <span type="text" class="form-control" id="billing-fullname" th:text="${usuario.apellido}"></span>
+                                                        <!--<input type="text" class="form-control" id="billing-fullname" placeholder="Enter name">-->
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="tab-pane active" id="payment-info">
-                                            <h5 class="card-title">Información de pago</h5>
-                                            <p class="card-title-desc">Por favor, seleccione su método de pago preferido y complete los detalles a continuación. Asegúrese de que toda la información sea correcta antes de continuar.</p>
-
-                                            <div>
-                                                <h5 class="font-size-14">Método de pago:</h5>
-
-                                                <div class="row">
-
-                                                    <div class="col-lg-4 col-sm-6">
-                                                        <div>
-                                                            <label class="form-label card-radio-label mb-3">
-                                                                <input type="radio" name="pay-method" id="pay-methodoption1" class="card-radio-input">
-
-                                                                <span class="card-radio">
-                                                                    <i class="ri-bank-card-fill font-size-24 align-middle me-2"></i>
-                                                                    <span>Tarjeta de Crédito/Débito</span>
-                                                                </span>
-                                                            </label>
-                                                        </div>
+                                            <div class="row mt-2">
+                                                <div class="col-lg-4 mt-2">
+                                                    <div class="mb-4">
+                                                        <label class="form-label" for="billing-email-address">Correo electrónico</label>
+                                                        <span type="email" class="form-control" id="billing-email-address" th:text="${usuario.correo}"></span>
+                                                       <!-- <input type="email" class="form-control" id="billing-email-address" placeholder="Enter email">-->
                                                     </div>
-
-                                                    <div class="col-lg-4 col-sm-6">
-                                                        <div>
-                                                            <label class="form-label card-radio-label mb-3">
-                                                                <input type="radio" name="pay-method" id="pay-methodoption2" class="card-radio-input">
-
-                                                                <span class="card-radio">
-                                                                    <i class="ri-visa-fill font-size-24 align-middle me-2"></i>
-                                                                    <span>Visa</span>
-                                                                </span>
-                                                            </label>
-                                                        </div>
+                                                </div>
+                                                <div class="col-lg-4 mt-2">
+                                                    <div class="mb-4">
+                                                        <label class="form-label" for="billing-phone">Teléfono</label>
+                                                        <span type="text" class="form-control" id="billing-phone" th:text="${usuario.telefono}"></span>
+                                                       <!-- <input type="text" class="form-control" id="billing-phone" placeholder="Enter Phone no.">-->
                                                     </div>
+                                                </div>
+                                                <div class="col-lg-4 mt-2">
+                                                    <div class="mb-4">
+                                                        <label class="form-label" for="billing-dni">Documento de identidad</label>
+                                                        <span type="text" class="form-control" id="billing-dni" th:text="${usuario.dni}"></span>
+                                                       <!-- <input type="text" class="form-control" id="billing-dni" placeholder="Enter Phone no.">-->
+                                                    </div>
+                                                </div>
+                                            </div>
 
-                                                    <div class="col-lg-4 col-sm-6">
-                                                        <div>
-                                                            <label class="form-label card-radio-label mb-3">
-                                                                <input type="radio" name="pay-method" id="pay-methodoption3" class="card-radio-input" checked="">
-
-                                                                <span class="card-radio">
-                                                                    <i class="ri-mastercard-fill font-size-24 align-middle me-2"></i>
-                                                                    <span>MasterCard</span>
-                                                                </span>
-                                                            </label>
-                                                        </div>
+                                            <div class="row">
+                                                <div class="col-lg-6 mt-2">
+                                                    <div class="mb-4 mb-lg-0">
+                                                        <label class="form-label">Distrito</label>
+                                                        <span type="text" class="form-control" name="billingDistrict" th:text="${usuario.distritoIddistrito.nombre}"></span>
+                                                       <!-- <input type="text" class="form-control" name="billingDistrict" placeholder="Ingresar Distrito">-->
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6 mt-2">
+                                                    <div class="mb-4">
+                                                        <label class="form-label" for="billing-address">Dirección</label>
+                                                        <span type="text" class="form-control" id="billing-address" name="billingAddress" th:text="${usuario.direccion}"></span>
+                                                       <!-- <input type="text" class="form-control" id="billing-address" name="billingAddress" placeholder="Enter full address">-->
                                                     </div>
 
                                                 </div>
 
-                                                <h5 class="my-3 font-size-14">Para pagar con tarjeta</h5>
-                                                <div class="p-4 border">
-                                                    <form>
-                                                        <div class="mb-3">
-                                                            <label class="form-label" for="cardnameInput">Nombre de la tarjeta</label>
-                                                            <input type="text" class="form-control" id="cardnameInput" placeholder="Name on Card">
-                                                        </div>
-
-                                                        <div class="row">
-                                                            <div class="col-lg-4 col-sm-6">
-                                                                <div class="mb-3 mb-lg-0">
-                                                                    <label class="form-label" for="cardnumberInput">Número de tarjeta</label>
-                                                                    <input type="text" class="form-control" id="cardnumberInput" placeholder="0000 0000 0000 0000">
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-lg-4 col-sm-6">
-                                                                <div class="mb-3 mb-lg-0">
-                                                                    <label class="form-label" for="expirydateInput">Fecha de vencimiento</label>
-                                                                    <input type="text" class="form-control" id="expirydateInput" placeholder="MM/YY">
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-lg-4 col-sm-6">
-                                                                <div class="mb-3 mb-lg-0">
-                                                                    <label class="form-label" for="cvvcodeInput">Código CVV</label>
-                                                                    <input type="text" class="form-control" id="cvvcodeInput" placeholder="Enter CVV Code">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                                <div class="mt-4 text-end">
-                                                    <a href="#"  type="button" class="btn btn-success waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                                                        Finalizar
-                                                    </a>
-                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <ul class="pager wizard twitter-bs-wizard-pager-link">
-                                        <li class="previous"><a href="#">Regresar</a></li>
-                                        <li class="next disabled"><a href="#">Siguiente</a></li>
-                                    </ul>
+                                    <hr>
+                                    <div class="tab-pane active" id="payment-info">
+                                        <h5 class="card-title">Información de pago</h5>
+                                        <p class="card-title-desc">Por favor, seleccione su método de pago preferido y complete los detalles a continuación. Asegúrese de que toda la información sea correcta antes de continuar.</p>
+
+                                        <form method="post" th:action="@{'/usuario/savePayment'}">
+                                            <h5 class="font-size-14">Método de pago:</h5>
+                                            <div class="row">
+                                                <div class="col-lg-4 col-sm-6">
+                                                    <label class="form-label card-radio-label mb-3">
+                                                        <input type="radio" name="metodo" value="American Express" class="card-radio-input">
+                                                        <span class="card-radio">
+                                                            <i class="ri-bank-card-fill font-size-24 align-middle me-2"></i>
+                                                            <span>American Express</span>
+                                                        </span>
+                                                        </label>
+                                                    </div>
+                                                    <div class="col-lg-4 col-sm-6">
+                                                        <label class="form-label card-radio-label mb-3">
+                                                            <input type="radio" name="metodo" value="Visa" class="card-radio-input">
+                                                            <span class="card-radio">
+                                                                <i class="ri-visa-fill font-size-24 align-middle me-2"></i>
+                                                                <span>Visa</span>
+                                                            </span>
+                                                        </label>
+                                                    </div>
+                                                    <div class="col-lg-4 col-sm-6">
+                                                        <label class="form-label card-radio-label mb-3">
+                                                            <input type="radio" name="metodo" value="MasterCard" class="card-radio-input" checked>
+                                                            <span class="card-radio">
+                                                                <i class="ri-mastercard-fill font-size-24 align-middle me-2"></i>
+                                                            <span>MasterCard</span>
+                                                        </span>
+                                                    </label>
+                                                </div>
+                                            </div>
+
+                                            <h5 class="my-3 font-size-14">Para pagar con tarjeta</h5>
+                                            <div class="p-4 border">
+                                                <div class="mb-3">
+                                                    <label class="form-label" for="nombreTarjeta">Nombre de la tarjeta</label>
+                                                    <input type="text" class="form-control" id="nombreTarjeta" name="nombreTarjeta" placeholder="Nombre en la tarjeta">
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-4 col-sm-6">
+                                                        <div class="mb-3 mb-lg-0">
+                                                            <label class="form-label" for="numeroTarjeta">Número de tarjeta</label>
+                                                            <input type="text" class="form-control" id="numeroTarjeta" name="numeroTarjeta" placeholder="0000 0000 0000 0000">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4 col-sm-6">
+                                                        <div class="mb-3 mb-lg-0">
+                                                            <label class="form-label" for="fechaTarjeta">Fecha de vencimiento</label>
+                                                            <input type="text" class="form-control" id="fechaTarjeta" name="fechaTarjeta" placeholder="MM/YY">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4 col-sm-6">
+                                                        <div class="mb-3 mb-lg-0">
+                                                            <label class="form-label" for="codigoCVV">Código CVV</label>
+                                                            <input type="text" class="form-control" id="codigoCVV" name="codigoCVV" placeholder="Ingrese código CVV">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label" for="monto">Monto</label>
+                                                    <input type="text" class="form-control" id="monto" name="monto" placeholder="Monto a pagar">
+                                                </div>
+                                            </div>
+
+                                            <div class="mt-4 text-end">
+                                                <button type="submit" class="btn btn-success waves-effect waves-light">
+                                                    Finalizar
+                                                </button>
+                                                <!-- Modal -->
+                                                <div class="col-sm-6 col-md-4 col-xl-3">
+                                                    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                                        <div class="modal-dialog" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title" id="staticBackdropLabel">¡Comprá exitosa!</h5>
+                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <p>¡Gracias por tu compra! Su pedido ha sido recibido y está en espera para ser procesado. Si usted tiene alguna pregunta, no dudes en contactar a su Agente de compra asignado. ¡Que disfrutes de su compra!</p>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <a href="/usuario/misPedidos" type="button" class="btn btn-primary waves-effect waves-light">Ver boleta</a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-4">
+                    <div class="col-12 col-md-4">
                         <div class="card checkout-order-summary">
                             <div class="card-body">
                                 <div class="p-3 bg-light mb-4">
-                                    <h5 class="font-size-14 mb-0">Resumen <span class="float-end ms-2">#SK2356</span></h5>
+                                    <h5 class="font-size-14 mb-0">Resumen <span class="float-end ms-2"></span></h5>
                                 </div>
                                 <div class="table-responsive">
                                     <table class="table table-centered mb-0 table-nowrap">
@@ -271,34 +233,25 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr>
-                                            <th scope="row"><img th:src="@{../images/product/img-1.png}" alt="product-img" title="product-img" class="avatar-md"></th>
+                                        <tr th:each="producto : ${carrito}">
+                                            <th scope="row" th:text="${producto.productoEnZona.productoIdproducto.codigo}"></th>
                                             <td>
-                                                <h5 class="font-size-14 text-truncate"><a href="/usuario/productoDetalles" class="text-reset">Full sleeve T-shirt</a></h5>
-                                                <p class="text-muted mb-0">$ 240 x 2</p>
+                                                <h5 class="font-size-14 text-truncate"><a href="/usuario/productoDetalles" class="text-reset" th:text="${producto.productoEnZona.productoIdproducto.nombre}"></a></h5>
+                                                <p class="text-muted mb-0" th:text=" 'S/. ' + ${producto.productoEnZona.productoIdproducto.precio} + ' x ' + ${producto.cantidad}"></p>
                                             </td>
-                                            <td>$ 480</td>
+                                            <td th:text="${producto.costo}"></td>
                                         </tr>
-                                        <tr>
-                                            <th scope="row"><img th:src="@{../images/product/img-2.png}" alt="product-img" title="product-img" class="avatar-md"></th>
-                                            <td>
-                                                <h5 class="font-size-14 text-truncate"><a href="/usuario/productoDetalles" class="text-reset">Half sleeve T-shirt</a></h5>
-                                                <p class="text-muted mb-0">$ 225 x 1</p>
-                                            </td>
-                                            <td>$ 225</td>
-                                        </tr>
+
                                         <tr>
                                             <td colspan="2">
                                                 <h6 class="m-0 text-end">Sub Total:</h6>
                                             </td>
-                                            <td>
-                                                $ 705
-                                            </td>
+                                            <td th:text="'S/. ' + ${costoSubTotal}"></td>
                                         </tr>
                                         <tr>
                                             <td colspan="3">
                                                 <div class="bg-primary-subtle  p-3 rounded">
-                                                    <h5 class="font-size-14 text-primary mb-0"><i class="fas fa-shipping-fast me-2"></i> Envío <span class="float-end">Gratis</span></h5>
+                                                    <h5 class="font-size-14 text-primary mb-0"><i class="fas fa-shipping-fast me-2"></i> Envío <span class="float-end" th:text="'S/. ' + ${costoEnvio}"></span></h5>
                                                 </div>
                                             </td>
                                         </tr>
@@ -306,9 +259,7 @@
                                             <td colspan="2">
                                                 <h6 class="m-0 text-end">Total:</h6>
                                             </td>
-                                            <td>
-                                                $ 705
-                                            </td>
+                                            <td th:text="'S/. ' + (${costoEnvio} + ${costoSubTotal})"></td>
                                         </tr>
                                         </tbody>
                                     </table>
@@ -318,7 +269,7 @@
                         </div>
                     </div>
 
-                    <!-- Modal -->
+                    <!-- Modal
                     <div class="col-sm-6 col-md-4 col-xl-3">
                         <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                             <div class="modal-dialog" role="document">
@@ -331,12 +282,12 @@
                                         <p>¡Gracias por tu compra! Su pedido ha sido recibido y está en espera para ser procesado. Si usted tiene alguna pregunta, no dudes en contactar a su Agente de compra asignado. ¡Que disfrutes de su compra!</p>
                                     </div>
                                     <div class="modal-footer">
-                                        <a href="/usuario/tracking" type="button" class="btn btn-primary waves-effect waves-light">Ver boleta</a>
+                                        <a href="/usuario/misPedidos" type="button" class="btn btn-primary waves-effect waves-light">Ver boleta</a>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div>-->
                 </div>
 
             </div> <!-- container-fluid -->

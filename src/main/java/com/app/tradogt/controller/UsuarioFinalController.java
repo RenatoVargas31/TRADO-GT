@@ -29,9 +29,10 @@ public class UsuarioFinalController {
     final ComentarioRepository comentarioRepository;
     final SubCategoriaRepository subCategoriaRepository;
     final CarritoRepository carritoRepository;
+    final PagoRepository pagoRepository;
 
 
-    public UsuarioFinalController(ProductosRepository productosRepository, OrdenRepository ordenRepository, UsuarioRepository usuarioRepository, ProductoEnZonaRepository productoEnZonaRepository, PublicacionRepository publicacionRepository, ComentarioRepository comentarioRepository, SubCategoriaRepository subCategoriaRepository, CarritoRepository carritoRepository) {
+    public UsuarioFinalController(ProductosRepository productosRepository, OrdenRepository ordenRepository, UsuarioRepository usuarioRepository, ProductoEnZonaRepository productoEnZonaRepository, PublicacionRepository publicacionRepository, ComentarioRepository comentarioRepository, SubCategoriaRepository subCategoriaRepository, CarritoRepository carritoRepository, PagoRepository pagoRepository) {
         this.productosRepository = productosRepository;
         this.ordenRepository = ordenRepository;
         this.usuarioRepository = usuarioRepository;
@@ -41,12 +42,14 @@ public class UsuarioFinalController {
         this.comentarioRepository = comentarioRepository;
         this.subCategoriaRepository = subCategoriaRepository;
         this.carritoRepository = carritoRepository;
+        this.pagoRepository = pagoRepository;
     }
 
     @GetMapping("/inicio")
     public String inicio() {
         return "Usuario/inicio-usuario";
     }
+
     @GetMapping("/misPedidos")
     public String misPedidos(Model model) {
         // Imprimir los elementos de la lista
@@ -229,8 +232,8 @@ public class UsuarioFinalController {
     @GetMapping("/carrito")
     public String showCarrito( Model model) {
 
-        Integer iduser = 17;
-        Usuario usuario = usuarioRepository.findById(iduser).get();
+        Integer user = 17;
+        Usuario usuario = usuarioRepository.findById(user).get();
         model.addAttribute("usuario", usuario);
         // Lista de productos en el carrito
         List<Carrito> miCarrito = carritoRepository.findByOrdenIdordenAndUsuarioIdusuario(null,usuario );
@@ -252,7 +255,7 @@ public class UsuarioFinalController {
                 producto.setCosto(subTotal);
                 // Actualiza el costo total
                 totalCosto = totalCosto.add(subTotal);
-                producto.setCostoTotal(totalCosto);
+                producto.setTotalCosto(totalCosto);
                 // Guarda los cambios en la base de datos
                 carritoRepository.save(producto);
             }
@@ -263,7 +266,7 @@ public class UsuarioFinalController {
             model.addAttribute("costoEnvio", costoEnvio);
 
             // Costo total del último elemento
-            BigDecimal ultimoCostoTotal = miCarrito.get(miCarrito.size() - 1).getCostoTotal();
+            BigDecimal ultimoCostoTotal = miCarrito.get(miCarrito.size() - 1).getTotalCosto();
             System.out.println("Costo: " + ultimoCostoTotal);
             model.addAttribute("costoTotal", ultimoCostoTotal);
         }
@@ -501,8 +504,90 @@ public class UsuarioFinalController {
 
     @GetMapping("/checkout-info")
     public String showcheckout(Model model) {
+
+        Integer iduser = 17;
+        Usuario usuario = usuarioRepository.findById(iduser).get();
+
+        model.addAttribute("usuario", usuario);
+
+        //Ingresar los datos de nuestro carrito actual
+        List<Carrito> miCarrito = carritoRepository.findByOrdenIdordenAndUsuarioIdusuario(null,usuario );
+
+        if (!miCarrito.isEmpty()) {
+            model.addAttribute("carrito", miCarrito);
+            //Sub total
+            BigDecimal ultimoCostoTotal = miCarrito.get(miCarrito.size() - 1).getTotalCosto();
+            model.addAttribute("costoSubTotal", ultimoCostoTotal);
+
+            //Costo de envio
+            Carrito item = miCarrito.get(0); // Primer elemento
+            ProductoEnZona productoEnZona = item.getProductoEnZona();
+            BigDecimal costoEnvio = productoEnZona.getCostoEnvio();
+            model.addAttribute("costoEnvio", costoEnvio);
+        }
         return "Usuario/billing-info-usuario";
     }
+
+    //Guardar los datos de pago
+    @PostMapping("/savePayment")
+    private String showSavePayment(@RequestParam("metodo") String metodo,
+                                   @RequestParam("nombreTarjeta") String nombreTarjeta,
+                                   @RequestParam("numeroTarjeta") String numeroTarjeta,
+                                   @RequestParam("fechaTarjeta") String fechaTarjeta,
+                                   @RequestParam("codigoCVV") String codigoCVV,
+                                   @RequestParam("monto") BigDecimal monto,
+                                   Model model){
+        // Crear una instancia de Pago y asignar los valores del formulario
+        Pago pago = new Pago();
+        pago.setMetodo(metodo);
+        pago.setNombreTarjeta(nombreTarjeta);
+        pago.setNumeroTarjeta(numeroTarjeta);
+        pago.setFechaTarjeta(fechaTarjeta);
+        pago.setCodigoCVV(codigoCVV);
+        pago.setMonto(monto);
+        pago.setFechaTarjeta(fechaTarjeta);
+        pago.setFecha(LocalDate.now());
+        List<Pago> listaPago = pagoRepository.findAll();
+        pago.setId(listaPago.size() +1);
+        pagoRepository.save(pago);
+
+
+
+        return "Usuario/billing-info-usuario";
+    }
+
+    //Validar los datos ingresados
+
+    /*@GetMapping("/checkout-view")
+    public String showshippingInfo(Model model) {
+        Integer iduser = 17;
+        Usuario usuario = usuarioRepository.findById(iduser).get();
+
+        model.addAttribute("usuario", usuario);
+
+        //Ingresar los datos de nuestro carrito actual
+        List<Carrito> miCarrito = carritoRepository.findByOrdenIdordenAndUsuarioIdusuario(null,usuario );
+
+        if (!miCarrito.isEmpty()) {
+            model.addAttribute("carrito", miCarrito);
+            //Sub total
+            BigDecimal ultimoCostoTotal = miCarrito.get(miCarrito.size() - 1).getTotalCosto();
+            model.addAttribute("costoSubTotal", ultimoCostoTotal);
+
+            //Costo de envio
+            Carrito item = miCarrito.get(0); // Primer elemento
+            ProductoEnZona productoEnZona = item.getProductoEnZona();
+            BigDecimal costoEnvio = productoEnZona.getCostoEnvio();
+            model.addAttribute("costoEnvio", costoEnvio);
+        }
+
+        return "Usuario/shipping-info-usuario";
+    }
+    @GetMapping("/checkout-pay")
+    public String showPaymentInfo() {
+
+        return "Usuario/payment-info-usuario";
+    }*/
 
 
 
