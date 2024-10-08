@@ -60,15 +60,16 @@
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-body">
-                                    <table id="datatable-producto-lista" class="table table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                    <h4 class="mb-sm-0 font-size-18 fw-bold">Zona Norte</h4>
+                                    <table id="datatable-producto-lista-norte" class="table table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                         <thead>
                                         <tr>
                                             <th>Nombre</th>
                                             <th>Proveedor</th>
                                             <th>Categoría</th>
-                                            <th>Cantidad</th>
+                                            <th>Cantidad Disponible</th>
+                                            <th>Cantidad en Zona</th>
                                             <th>Precio Unitario</th>
-                                            <th>Costo de envío</th>
                                             <th>Acciones</th>
                                         </tr>
                                         </thead>
@@ -77,9 +78,105 @@
                                             <td th:text="${producto.nombre}">Nombre del Producto</td>
                                             <td th:text="${producto.proveedorIdproveedor.nombre}">Nombre del Proveedor</td>
                                             <td th:text="${producto.subcategoriaIdsubcategoria.categoriaIdcategoria.nombre}">Categoría</td>
-                                            <td th:text="${producto.}">Cantidad</td>
-                                            <td th:text="${producto.precioUnitario}">Precio Unitario</td>
-                                            <td th:text="${producto.costoEnvio}">Costo de Envío</td>
+                                            <td th:text="${producto.cantidad}">Cantidad</td>
+                                            <td th:text="${productoZonaCantidad[producto.id.longValue()]?.get(1)}">Zona Norte</td>
+                                            <td th:text="${producto.precio}">Precio Unitario</td>
+                                            <td>
+                                                <a th:href="@{'/superadmin/productoEditar/' + ${producto.id}}" class="btn btn-info btn-sm waves-effect waves-light" title="Editar"><i class="ri-pencil-fill"></i></a>
+                                                <a href="#" class="btn btn-danger btn-sm waves-effect waves-light" title="Eliminar" data-bs-toggle="modal" data-bs-target="#deleteConfirmModal"><i class="ri-delete-bin-fill"></i></a>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="mb-sm-0 font-size-18 fw-bold">Zona Sur</h4>
+                                    <table id="datatable-producto-lista-sur" class="table table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                        <thead>
+                                        <tr>
+                                            <th>Nombre</th>
+                                            <th>Proveedor</th>
+                                            <th>Categoría</th>
+                                            <th>Cantidad Disponible</th>
+                                            <th>Cantidad en Zona</th>
+                                            <th>Precio Unitario</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr th:each="producto : ${productos}">
+                                            <td th:text="${producto.nombre}">Nombre del Producto</td>
+                                            <td th:text="${producto.proveedorIdproveedor.nombre}">Nombre del Proveedor</td>
+                                            <td th:text="${producto.subcategoriaIdsubcategoria.categoriaIdcategoria.nombre}">Categoría</td>
+                                            <td th:text="${producto.cantidad}">Cantidad</td>
+                                            <td th:text="${productoZonaCantidad[producto.id.longValue()]?.get(2)}">Zona Sur</td>
+                                            <td th:text="${producto.precio}">Precio Unitario</td>
+                                            <td>
+                                                <a th:href="@{'/superadmin/productoEditar/' + ${producto.id}}" class="btn btn-info btn-sm waves-effect waves-light" title="Editar"><i class="ri-pencil-fill"></i></a>
+                                                <a href="#" class="btn btn-danger btn-sm waves-effect waves-light" title="Eliminar" data-bs-toggle="modal" data-bs-target="#deleteConfirmModal"><i class="ri-delete-bin-fill"></i></a>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="mb-sm-0 font-size-18 fw-bold">Zona Este</h4>
+                                    <table id="datatable-producto-lista-este" class="table table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                        <thead>
+                                        <tr>
+                                            <th>Nombre</th>
+                                            <th>Proveedor</th>
+                                            <th>Categoría</th>
+                                            <th>Cantidad Disponible</th>
+                                            <th>Cantidad en Zona</th>
+                                            <th>Precio Unitario</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr th:each="producto : ${productos}">
+                                            <td th:text="${producto.nombre}">Nombre del Producto</td>
+                                            <td th:text="${producto.proveedorIdproveedor.nombre}">Nombre del Proveedor</td>
+                                            <td th:text="${producto.subcategoriaIdsubcategoria.categoriaIdcategoria.nombre}">Categoría</td>
+                                            <td th:text="${producto.cantidad}">Cantidad</td>
+                                            <td th:text="${productoZonaCantidad[producto.id.longValue()]?.get(3)}">Zona Este</td>
+                                            <td th:text="${producto.precio}">Precio Unitario</td>
+                                            <td>
+                                                <a th:href="@{'/superadmin/productoEditar/' + ${producto.id}}" class="btn btn-info btn-sm waves-effect waves-light" title="Editar"><i class="ri-pencil-fill"></i></a>
+                                                <a href="#" class="btn btn-danger btn-sm waves-effect waves-light" title="Eliminar" data-bs-toggle="modal" data-bs-target="#deleteConfirmModal"><i class="ri-delete-bin-fill"></i></a>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="mb-sm-0 font-size-18 fw-bold">Zona Oeste</h4>
+                                    <table id="datatable-producto-lista-oeste" class="table table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                        <thead>
+                                        <tr>
+                                            <th>Nombre</th>
+                                            <th>Proveedor</th>
+                                            <th>Categoría</th>
+                                            <th>Cantidad Disponible</th>
+                                            <th>Cantidad en Zona</th>
+                                            <th>Precio Unitario</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr th:each="producto : ${productos}">
+                                            <td th:text="${producto.nombre}">Nombre del Producto</td>
+                                            <td th:text="${producto.proveedorIdproveedor.nombre}">Nombre del Proveedor</td>
+                                            <td th:text="${producto.subcategoriaIdsubcategoria.categoriaIdcategoria.nombre}">Categoría</td>
+                                            <td th:text="${producto.cantidad}">Cantidad</td>
+                                            <td th:text="${productoZonaCantidad[producto.id.longValue()]?.get(4)}">Zona Oeste</td>
+                                            <td th:text="${producto.precio}">Precio Unitario</td>
                                             <td>
                                                 <a th:href="@{'/superadmin/productoEditar/' + ${producto.id}}" class="btn btn-info btn-sm waves-effect waves-light" title="Editar"><i class="ri-pencil-fill"></i></a>
                                                 <a href="#" class="btn btn-danger btn-sm waves-effect waves-light" title="Eliminar" data-bs-toggle="modal" data-bs-target="#deleteConfirmModal"><i class="ri-delete-bin-fill"></i></a>

@@ -59,4 +59,10 @@ public class Orden {
     @NotNull
     @Column(name = "costoTotal", nullable = false, precision = 10, scale = 2)
     private BigDecimal costoTotal;
+
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "pago_idPago", nullable = false)
+    private Pago pagoIdpago;
+
 }

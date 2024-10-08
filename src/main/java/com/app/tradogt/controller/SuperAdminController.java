@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Controller
@@ -378,11 +380,22 @@ public class SuperAdminController {
     }
     @GetMapping("/productoLista")
     public String viewProductoLista(Model model) {
-        //Listar productos
+        // Listar productos
         List<Producto> productos = productosRepository.findAll();
+        // Listar productos en zona
         List<ProductoEnZona> productosEnZona = productoEnZonaRepository.findAll();
-        //Enviar a la vista
+
+        Map<Long, Map<Integer, Integer>> productoZonaCantidad = new HashMap<>();
+        for (ProductoEnZona pz : productosEnZona) {
+            productoZonaCantidad
+                    .computeIfAbsent(pz.getId().getProductoIdproducto().longValue(), k -> new HashMap<>())
+                    .put(pz.getId().getZonaIdzona(), pz.getCantidad());
+        }
+
+        System.out.println(productoZonaCantidad.get(1L).get(1));
+        // Enviar a la vista
         model.addAttribute("productos", productos);
+        model.addAttribute("productoZonaCantidad", productoZonaCantidad);
         return "SuperAdmin/productoLista-SAdmin";
     }
     //</editor-fold>

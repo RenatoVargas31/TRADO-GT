@@ -84,7 +84,7 @@
                                                 <td>
                                                     <form th:action="@{/superadmin/proveedorEditarForm}" method="post" style="display:inline;">
                                                         <input type="hidden" name="id" th:value="${proveedor.id}" />
-                                                        <button type="submit" class="btn btn-info btn-sm waves-effect waves-light" title="Editar"><i class="ri-pencil-fill"></i></button>
+                                                        <button type="submit" class="btn btn-success btn-sm waves-effect waves-light" title="Editar"><i class="ri-pencil-fill"></i></button>
                                                     </form>
                                                     <button type="button" class="btn btn-danger btn-sm waves-effect waves-light" title="Eliminar" data-bs-toggle="modal" th:data-bs-target="'#deleteConfirmModal-' + ${proveedor.nombre} + '-' + ${proveedor.id}">
                                                         <i class="ri-delete-bin-fill"></i>

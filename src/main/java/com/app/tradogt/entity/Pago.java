@@ -19,10 +19,6 @@ public class Pago {
     @Column(name = "idPago", nullable = false)
     private Integer id;
 
-    @ManyToOne
-    @JoinColumn(name = "orden_idOrden", nullable = false)
-    private Orden ordenIdorden;
-
     @Size(max = 45)
     @NotNull
     @Column(name = "metodo", nullable = false, length = 45)

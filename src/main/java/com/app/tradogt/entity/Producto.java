@@ -103,4 +103,8 @@ public class Producto {
     @Column(name = "codigo", nullable = false, length = 45)
     private String codigo;
 
+    @NotNull
+    @Column(name = "cantidad", nullable = false)
+    private Integer cantidad;
+
 }
