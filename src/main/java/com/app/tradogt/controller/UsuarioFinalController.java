@@ -30,9 +30,9 @@ public class UsuarioFinalController {
     final SubCategoriaRepository subCategoriaRepository;
     final CarritoRepository carritoRepository;
     final PagoRepository pagoRepository;
+    final ResenaRepository resenaRepository;
 
-
-    public UsuarioFinalController(ProductosRepository productosRepository, OrdenRepository ordenRepository, UsuarioRepository usuarioRepository, ProductoEnZonaRepository productoEnZonaRepository, PublicacionRepository publicacionRepository, ComentarioRepository comentarioRepository, SubCategoriaRepository subCategoriaRepository, CarritoRepository carritoRepository, PagoRepository pagoRepository) {
+    public UsuarioFinalController(ProductosRepository productosRepository, OrdenRepository ordenRepository, UsuarioRepository usuarioRepository, ProductoEnZonaRepository productoEnZonaRepository, PublicacionRepository publicacionRepository, ComentarioRepository comentarioRepository, SubCategoriaRepository subCategoriaRepository, CarritoRepository carritoRepository, PagoRepository pagoRepository, ResenaRepository resenaRepository) {
         this.productosRepository = productosRepository;
         this.ordenRepository = ordenRepository;
         this.usuarioRepository = usuarioRepository;
@@ -43,6 +43,7 @@ public class UsuarioFinalController {
         this.subCategoriaRepository = subCategoriaRepository;
         this.carritoRepository = carritoRepository;
         this.pagoRepository = pagoRepository;
+        this.resenaRepository = resenaRepository;
     }
 
     @GetMapping("/inicio")
@@ -326,8 +327,11 @@ public class UsuarioFinalController {
     public String showordenCompra() {
         return "Usuario/orden-compra-usuario";
     }
+
     @GetMapping("/reseñas")
-    public String showResenhas() {
+    public String showResenhas(Model model) {
+        List<Resena> resenas = resenaRepository.findResenasUsuariosValidos();
+        model.addAttribute("resenas", resenas);
         return "Usuario/reseñas-usuario";
     }
 

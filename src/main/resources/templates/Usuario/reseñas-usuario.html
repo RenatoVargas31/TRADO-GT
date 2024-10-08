@@ -68,16 +68,18 @@
                             <div class="card">
                                 <div class="card-body">
                                     <div>
-                                        <p class="card-title-desc">En esta sección podrás explorar las opiniones y reseñas de productos realizadas por usuarios de diversas zonas. Aquí encontrarás valoraciones detalladas que te ayudarán a tomar decisiones informadas sobre tus compras.
-                                            Además, tendrás la opción de dejar tus propios comentarios, crear nuevas reseñas y buscar productos específicos por nombre, código o nombre del proveedor.
-                                            Disfruta de una comunidad activa y encuentra toda la información que necesitas para tu próxima compra. ¡Comparte tus experiencias y ayuda a otros usuarios!</p>
+                                        <p class="card-title-desc">
+                                            En esta sección podrás explorar las opiniones y reseñas de productos realizadas por usuarios de diversas zonas.
+                                            Aquí encontrarás valoraciones detalladas que te ayudarán a tomar decisiones informadas sobre tus compras.
+                                            Disfruta de una comunidad activa y encuentra toda la información que necesitas para tu próxima compra.
+                                            ¡Comparte tus experiencias y ayuda a otros usuarios!
+                                        </p>
                                         <hr>
                                         <div class="row">
                                             <div class="col-md-12 d-flex justify-content-end">
                                                 <div class="search-box me-2">
-                                                    <!--Debe buscar por Nombre del producto, por código y nombre del proveedor -->
                                                     <div class="position-relative">
-                                                        <input type="text" class="form-control rounded" placeholder="Search...">
+                                                        <input type="text" class="form-control rounded" placeholder="Buscar...">
                                                         <i class="mdi mdi-magnify search-icon"></i>
                                                     </div>
                                                 </div>
@@ -90,205 +92,48 @@
                                             </div>
                                         </div>
 
-
                                         <div class="row g-0 mt-5">
-                                            <div class="col-xl-3 col-sm-6">
+                                            <!-- Bucle para mostrar cada reseña -->
+                                            <div th:each="resena : ${resenas}" class="col-xl-3 col-sm-6">
                                                 <div class="card product-box">
-                                                    <a href="/usuario/verReseña" class="text-decoration-none">
+                                                    <a th:href="@{/usuario/verReseña(resenaId=${resena.id})}" class="text-decoration-none">
                                                         <div class="product-img">
-                                                            <img th:src="@{../images/product/img-1.png}" alt="img-1" class="img-fluid mx-auto d-block">
+                                                            <img th:src="@{'/' + ${resena.foto}}" alt="img-product" class="img-fluid mx-auto d-block">
                                                         </div>
                                                         <div class="text-center p-3">
-                                                            <p class="font-size-12 mb-1">Categoría, Subcategoría</p>
-                                                            <h5 class="font-size-15"><a href="#" class="text-reset">Nombre del producto</a></h5>
+                                                            <p class="font-size-12 mb-1" th:text="${resena.carrito.productoEnZona.productoIdproducto.subcategoriaIdsubcategoria.categoriaIdcategoria.nombre} + ', ' + ${resena.carrito.productoEnZona.productoIdproducto.subcategoriaIdsubcategoria.nombre}">Categoría, Subcategoría</p>
+                                                            <h5 class="font-size-15">
+                                                                <a th:text="${resena.titulo}" class="text-reset"></a>
+                                                            </h5>
                                                             <div class="d-inline-flex align-items-center mb-2">
                                                                 <div class="text-muted me-2" style="font-size: 12px;">
-                                                                    <span class="mdi mdi-star text-warning"></span>
-                                                                    <span class="mdi mdi-star text-warning"></span>
-                                                                    <span class="mdi mdi-star text-warning"></span>
-                                                                    <span class="mdi mdi-star text-warning"></span>
-                                                                    <span class="mdi mdi-star"></span>
+                                                                    <span class="mdi mdi-star" th:classappend="${resena.calificacion >= 1 ? 'text-warning' : ''}"></span>
+                                                                    <span class="mdi mdi-star" th:classappend="${resena.calificacion >= 2 ? 'text-warning' : ''}"></span>
+                                                                    <span class="mdi mdi-star" th:classappend="${resena.calificacion >= 3 ? 'text-warning' : ''}"></span>
+                                                                    <span class="mdi mdi-star" th:classappend="${resena.calificacion >= 4 ? 'text-warning' : ''}"></span>
+                                                                    <span class="mdi mdi-star" th:classappend="${resena.calificacion >= 5 ? 'text-warning' : ''}"></span>
                                                                 </div>
-                                                                <div class="text-muted" style="font-size: 12px;">4.0</div>
+                                                                <div class="text-muted" style="font-size: 12px;" ></div>
                                                             </div>
-                                                            <span class="product-ribbon badge bg-warning">NK128</span><br>
+                                                            <span class="product-ribbon badge bg-warning" th:text="${resena.carrito.productoEnZona.productoIdproducto.codigo}">NK128</span><br>
                                                             <div class="provider-info d-flex align-items-center justify-content-center">
-                                                                <span class="provider-name" style="font-size: 12px;">Nombre del Provedor</span>
+                                                                <span class="provider-name" style="font-size: 12px;" th:text="${resena.carrito.productoEnZona.productoIdproducto.proveedorIdproveedor.nombre} + ', '  + ${resena.carrito.productoEnZona.productoIdproducto.proveedorIdproveedor.apellido}"></span>
                                                             </div>
                                                         </div>
                                                         <div class="provider-info d-flex flex-column align-items-center justify-content-center">
-                                                            <span class="provider-name" style="font-size: 12px;">Creado por <strong>Nombre del Usuario</strong></span>
-                                                            <span style="font-size: 12px;">11 de Octubre de 2024</span>
+                                                            <span class="provider-name" style="font-size: 12px;">Creado por <strong th:text="${resena.carrito.usuarioIdusuario.nombre} + ', ' + ${resena.carrito.usuarioIdusuario.apellido} "></strong></span>
+                                                            <span style="font-size: 12px;" th:text="${resena.fechaCreacion}" ></span>
                                                         </div>
                                                     </a>
                                                 </div>
                                             </div>
-
-
-                                            <div class="col-xl-3 col-sm-6">
-                                                <div class="card product-box">
-                                                    <a href="/usuario/verReseña" class="text-decoration-none">
-                                                        <div class="product-img">
-                                                            <img th:src="@{../images/product/img-2.png}" alt="img-2" class="img-fluid mx-auto d-block">
-                                                        </div>
-                                                        <div class="text-center p-3">
-                                                            <p class="font-size-12 mb-1">Categoría, Subcategoría</p>
-                                                            <h5 class="font-size-15"><a href="#" class="text-reset">Nombre del producto</a></h5>
-                                                            <div class="d-inline-flex align-items-center mb-2">
-                                                                <div class="text-muted me-2" style="font-size: 12px;">
-                                                                    <span class="mdi mdi-star text-warning"></span>
-                                                                    <span class="mdi mdi-star text-warning"></span>
-                                                                    <span class="mdi mdi-star text-warning"></span>
-                                                                    <span class="mdi mdi-star text-warning"></span>
-                                                                    <span class="mdi mdi-star"></span>
-                                                                </div>
-                                                                <div class="text-muted" style="font-size: 12px;">4.0</div>
-                                                            </div>
-                                                            <span class="product-ribbon badge bg-warning">NK128</span><br>
-                                                            <div class="provider-info d-flex align-items-center justify-content-center">
-                                                                <span class="provider-name" style="font-size: 12px;">Nombre del Provedor</span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="provider-info d-flex flex-column align-items-center justify-content-center">
-                                                            <span class="provider-name" style="font-size: 12px;">Creado por <strong>Nombre del Usuario</strong></span>
-                                                            <span style="font-size: 12px;">11 de Octubre de 2024</span>
-                                                        </div>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                            <div class="col-xl-3 col-sm-6">
-                                                <div class="card product-box">
-                                                    <a href="/usuario/verReseña" class="text-decoration-none">
-                                                        <div class="product-img">
-
-                                                            <img th:src="@{../images/product/img-3.png}" alt="img-3" class="img-fluid mx-auto d-block">
-                                                        </div>
-                                                        <div class="text-center p-3">
-                                                            <p class="font-size-12 mb-1">Categoría, Subcategoría</p>
-                                                            <h5 class="font-size-15"><a href="#" class="text-reset">Nombre del producto</a></h5>
-                                                            <div class="d-inline-flex align-items-center mb-2">
-                                                                <div class="text-muted me-2" style="font-size: 12px;">
-                                                                    <span class="mdi mdi-star text-warning"></span>
-                                                                    <span class="mdi mdi-star text-warning"></span>
-                                                                    <span class="mdi mdi-star text-warning"></span>
-                                                                    <span class="mdi mdi-star text-warning"></span>
-                                                                    <span class="mdi mdi-star"></span>
-                                                                </div>
-                                                                <div class="text-muted" style="font-size: 12px;">4.0</div>
-                                                            </div>
-                                                            <span class="product-ribbon badge bg-warning">NK128</span><br>
-                                                            <div class="provider-info d-flex align-items-center justify-content-center">
-                                                                <span class="provider-name" style="font-size: 12px;">Nombre del Provedor</span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="provider-info d-flex flex-column align-items-center justify-content-center">
-                                                            <span class="provider-name" style="font-size: 12px;">Creado por <strong>Nombre del Usuario</strong></span>
-                                                            <span style="font-size: 12px;">11 de Octubre de 2024</span>
-                                                        </div>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                            <div class="col-xl-3 col-sm-6">
-                                                <div class="card product-box">
-                                                    <a href="/usuario/verReseña" class="text-decoration-none">
-                                                        <div class="product-img">
-
-                                                            <img th:src="@{../images/product/img-4.png}" alt="img-4" class="img-fluid mx-auto d-block">
-                                                        </div>
-                                                        <div class="text-center p-3">
-                                                            <p class="font-size-12 mb-1">Categoría, Subcategoría</p>
-                                                            <h5 class="font-size-15"><a href="#" class="text-reset">Nombre del producto</a></h5>
-                                                            <div class="d-inline-flex align-items-center mb-2">
-                                                                <div class="text-muted me-2" style="font-size: 12px;">
-                                                                    <span class="mdi mdi-star text-warning"></span>
-                                                                    <span class="mdi mdi-star text-warning"></span>
-                                                                    <span class="mdi mdi-star text-warning"></span>
-                                                                    <span class="mdi mdi-star text-warning"></span>
-                                                                    <span class="mdi mdi-star"></span>
-                                                                </div>
-                                                                <div class="text-muted" style="font-size: 12px;">4.0</div>
-                                                            </div>
-                                                            <span class="product-ribbon badge bg-warning">NK128</span><br>
-                                                            <div class="provider-info d-flex align-items-center justify-content-center">
-                                                                <span class="provider-name" style="font-size: 12px;">Nombre del Provedor</span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="provider-info d-flex flex-column align-items-center justify-content-center">
-                                                            <span class="provider-name" style="font-size: 12px;">Creado por <strong>Nombre del Usuario</strong></span>
-                                                            <span style="font-size: 12px;">11 de Octubre de 2024</span>
-                                                        </div>
-                                                    </a>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-xl-3 col-sm-6">
-                                                <div class="card product-box">
-                                                    <a href="/usuario/verReseña" class="text-decoration-none">
-                                                        <div class="product-img">
-                                                            <img th:src="@{../images/product/img-5.png}" alt="img-5" class="img-fluid mx-auto d-block">
-                                                        </div>
-                                                        <div class="text-center p-3">
-                                                            <p class="font-size-12 mb-1">Categoría, Subcategoría</p>
-                                                            <h5 class="font-size-15"><a href="#" class="text-reset">Nombre del producto</a></h5>
-                                                            <div class="d-inline-flex align-items-center mb-2">
-                                                                <div class="text-muted me-2" style="font-size: 12px;">
-                                                                    <span class="mdi mdi-star text-warning"></span>
-                                                                    <span class="mdi mdi-star text-warning"></span>
-                                                                    <span class="mdi mdi-star text-warning"></span>
-                                                                    <span class="mdi mdi-star text-warning"></span>
-                                                                    <span class="mdi mdi-star"></span>
-                                                                </div>
-                                                                <div class="text-muted" style="font-size: 12px;">4.0</div>
-                                                            </div>
-                                                            <span class="product-ribbon badge bg-warning">NK128</span><br>
-                                                            <div class="provider-info d-flex align-items-center justify-content-center">
-                                                                <span class="provider-name" style="font-size: 12px;">Nombre del Provedor</span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="provider-info d-flex flex-column align-items-center justify-content-center">
-                                                            <span class="provider-name" style="font-size: 12px;">Creado por <strong>Nombre del Usuario</strong></span>
-                                                            <span style="font-size: 12px;">11 de Octubre de 2024</span>
-                                                        </div>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                            <div class="col-xl-3 col-sm-6">
-                                                <div class="card product-box">
-                                                    <a href="/usuario/verReseña" class="text-decoration-none">
-                                                        <div class="product-img">
-                                                            <img th:src="@{../images/product/img-5.png}" alt="img-5" class="img-fluid mx-auto d-block">
-                                                        </div>
-                                                        <div class="text-center p-3">
-                                                            <p class="font-size-12 mb-1">Categoría, Subcategoría</p>
-                                                            <h5 class="font-size-15"><a href="#" class="text-reset">Nombre del producto</a></h5>
-                                                            <div class="d-inline-flex align-items-center mb-2">
-                                                                <div class="text-muted me-2" style="font-size: 12px;">
-                                                                    <span class="mdi mdi-star text-warning"></span>
-                                                                    <span class="mdi mdi-star text-warning"></span>
-                                                                    <span class="mdi mdi-star text-warning"></span>
-                                                                    <span class="mdi mdi-star text-warning"></span>
-                                                                    <span class="mdi mdi-star"></span>
-                                                                </div>
-                                                                <div class="text-muted" style="font-size: 12px;">4.0</div>
-                                                            </div>
-                                                            <span class="product-ribbon badge bg-warning">NK128</span><br>
-                                                            <div class="provider-info d-flex align-items-center justify-content-center">
-                                                                <span class="provider-name" style="font-size: 12px;">Nombre del Provedor</span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="provider-info d-flex flex-column align-items-center justify-content-center">
-                                                            <span class="provider-name" style="font-size: 12px;">Creado por <strong>Nombre del Usuario</strong></span>
-                                                            <span style="font-size: 12px;">11 de Octubre de 2024</span>
-                                                        </div>
-                                                    </a>
-                                                </div>
-                                            </div>
+                                            <!-- Fin del bucle -->
                                         </div>
 
                                         <div class="row mt-4">
                                             <div class="col-sm-6">
                                                 <div>
-                                                    <p class="mb-sm-0 mt-2">Page <span class="fw-bold">2</span> Of <span class="fw-bold">113</span></p>
+                                                    <p class="mb-sm-0 mt-2">Página <span class="fw-bold">2</span> de <span class="fw-bold">113</span></p>
                                                 </div>
                                             </div>
                                             <div class="col-sm-6">
