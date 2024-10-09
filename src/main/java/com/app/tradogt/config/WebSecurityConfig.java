@@ -13,6 +13,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.savedrequest.DefaultSavedRequest;
 
 import javax.sql.DataSource;
+import java.util.EnumSet;
 
 @Configuration
 public class WebSecurityConfig {
@@ -54,6 +55,8 @@ public class WebSecurityConfig {
         http
                 // Definición de rutas y permisos
                 .authorizeHttpRequests((requests) -> requests
+                        //Permisos de recursos
+                        .requestMatchers("/css/**", "/js/**", "/images/**","/fonts/**","libs/**").permitAll()
                         // Rutas públicas
                         .requestMatchers("/loginForm", "/processLogin", "/sistema/CreateAcc", "/sistema/PassRestore").permitAll()
                         // Solo accesibles por el rol "SuperAdmin"
