@@ -232,9 +232,33 @@ public class UsuarioFinalController {
         Optional<Producto> productoOpt = productosRepository.findById(id);
 
         if (productoOpt.isPresent()) {
+            Producto producto = productoOpt.get();
             // Si el producto existe, agregarlo al modelo
-            model.addAttribute("product", productoOpt.get());
-            return "Usuario/producto-detalles"; // Devuelve la vista con el producto
+            model.addAttribute("product",producto);
+            model.addAttribute("currentId",id);
+
+            switch(producto.getSubcategoriaIdsubcategoria().getCategoriaIdcategoria().getId()) {
+                case 1:
+                    model.addAttribute("productList", productosRepository.findProductRopaMujer());
+                    break;
+                case 2:
+                    model.addAttribute("productList", productosRepository.findProductRopaHombre());
+                    break;
+                case 3:
+                    model.addAttribute("productList", productosRepository.findProductElectronico());
+                    break;
+                case 4:
+                    model.addAttribute("productList", productosRepository.findProductMuebles());
+                    break;
+                default:
+                    model.addAttribute("productList", productosRepository.findAll());
+                    break;
+            }
+
+
+            return "Usuario/producto-detalles";
+
+            // Devuelve la vista con el producto
         } else {
             // Si no se encuentra el producto, redirige o muestra una página de error
             return "redirect:/usuario/inicio"; // Podrías crear una página de error personalizada
