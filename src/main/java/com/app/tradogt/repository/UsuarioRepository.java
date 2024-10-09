@@ -13,6 +13,7 @@ import org.springframework.data.jpa.repository.*;
 
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
@@ -22,6 +23,9 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
 
     //Buscar usuarios asignados a determinado agente
     List<Usuario> findByAgentcompraIdusuario_Id(Integer idAgente);
+
+    Optional<Usuario> findById(Integer id);
+
 
 
     /*
