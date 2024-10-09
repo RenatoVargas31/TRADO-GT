@@ -19,7 +19,7 @@ import java.util.Optional;
 @Controller
 @RequestMapping("/usuario")
 public class UsuarioFinalController {
-/*
+
     final ProductosRepository productosRepository;
     final OrdenRepository ordenRepository;
     final UsuarioRepository usuarioRepository;
@@ -59,6 +59,7 @@ public class UsuarioFinalController {
         return "Usuario/listaOrdenes";
     }
 
+/*
     //Borrar una orden
     @GetMapping("/deleteOrden")
     public String deleteOrden(Model model, @RequestParam("codigo") String codigo, RedirectAttributes attr) {
@@ -87,6 +88,7 @@ public class UsuarioFinalController {
 
         return "redirect:/usuario/misPedidos";
     }
+*/
 
     //Guardar la calificación del Agente de Compra
     @PostMapping("/calificarAgente")
@@ -110,7 +112,7 @@ public class UsuarioFinalController {
     public String formularioPedido() {
         return "Usuario/formOrdenes";
     }
-
+    /*
     @GetMapping("/tracking/{id}")
     public String tracking(@PathVariable("id") int id, Model model) {
 
@@ -168,6 +170,9 @@ public class UsuarioFinalController {
         return "Usuario/trackingOrd";
     }
 
+
+     */
+    /*
     @GetMapping("/editOrden/{id}")
     public String editOrden(@PathVariable("id") int id, Model model) {
 
@@ -223,7 +228,7 @@ public class UsuarioFinalController {
         }
         return "Usuario/trackingOrdEdit";
     }
-
+*/
 
 
     @GetMapping("/productoDetalles/{id}")
@@ -265,7 +270,7 @@ public class UsuarioFinalController {
         }
     }
 
-
+/*
     @GetMapping("/carrito")
     public String showCarrito( Model model) {
 
@@ -311,7 +316,8 @@ public class UsuarioFinalController {
         System.out.println("Carrito: " + miCarrito);
         return "Usuario/carrito-usuario";
     }
-
+*/
+    /*
     //Eliminar un producto  de la lista
     @PostMapping("/eliminarProducto")
     public String eliminarProducto(@RequestParam("productoId") Integer productoId,
@@ -331,33 +337,34 @@ public class UsuarioFinalController {
         // Encuentra el producto en el carrito por el ID del producto y el ID del usuario
         //List<Carrito> productosEnCarrito = carritoRepository.findByusuarioIdusuario(usuarioId);
         // Elimina el producto del carrito
-        /*if (!productosEnCarrito.isEmpty()) {
+        if (!productosEnCarrito.isEmpty()) {
 
             //carritoRepository.deleteAll(productosEnCarrito);
             Carrito item = productosEnCarrito.get(0);
             item.setIsDelete(true);
             carritoRepository.save(item);
-        }*/
-    /*
+        }
+
         // Añade un mensaje de éxito
         redirectAttributes.addFlashAttribute("message", "Producto eliminado exitosamente");
 
         return "redirect:/usuario/carrito";
     }
-
+*/
 
 
     @GetMapping("/ordenCompra")
     public String showordenCompra() {
         return "Usuario/orden-compra-usuario";
     }
-
+/*
     @GetMapping("/reseñas")
     public String showResenhas(Model model) {
         List<Resena> resenas = resenaRepository.findResenasUsuariosValidos();
         model.addAttribute("resenas", resenas);
         return "Usuario/reseñas-usuario";
     }
+*/
 
     @GetMapping("/comunidad")
     public String showComunidad(Model model) {
@@ -616,7 +623,7 @@ public class UsuarioFinalController {
         model.addAttribute("marcaList", productosRepository.findDistinctMarca(4));
         return "Usuario/CategoriaMuebles-usuario";
     }
-
+/*
     @GetMapping("/checkout-info")
     public String showcheckout(Model model) {
 
@@ -642,7 +649,7 @@ public class UsuarioFinalController {
         }
         return "Usuario/billing-info-usuario";
     }
-
+*/
     //Guardar los datos de pago
     @PostMapping("/savePayment")
     private String showSavePayment(@RequestParam("metodo") String metodo,
