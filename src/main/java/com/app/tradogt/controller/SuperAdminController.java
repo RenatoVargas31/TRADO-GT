@@ -160,7 +160,6 @@ public class SuperAdminController {
     //</editor-fold>
     //</editor-fold>
 
-
     //<editor-fold desc="CRUD Agente de Compra (RUD - terminado)">
     @PostMapping("/agentCompraEditarForm")
     public String viewAgentCompraEditarForm(Model model, Integer id) {
@@ -370,8 +369,10 @@ public class SuperAdminController {
     //</editor-fold>
 
     //<editor-fold desc="CRUD Productos (Completo - falta)">
-    @GetMapping("/productoNuevo")
-    public String viewProductoNuevo() {
+    @GetMapping("/productoNuevoForm")
+    public String viewProductoNuevoForm(Model model) {
+        //Enviar un producto
+        model.addAttribute("producto", new Producto());
         return "SuperAdmin/productoNuevo-SAdmin";
     }
     @GetMapping("/productoEditar")
@@ -380,20 +381,21 @@ public class SuperAdminController {
     }
     @GetMapping("/productoLista")
     public String viewProductoLista(Model model) {
-        // Listar productos
-        List<Producto> productos = productosRepository.findAll();
-        // Listar productos en zona
-        List<ProductoEnZona> productosEnZona = productoEnZonaRepository.findAll();
+        List<Producto> productos = productosRepository.findAllByIsDeleted((byte) 0);
+        List<ProductoEnZona> productosEnZona = productoEnZonaRepository.findAllByIsDeleted((byte) 0);
 
-        Map<Long, Map<Integer, Integer>> productoZonaCantidad = new HashMap<>();
+        Map<Long, Map<Integer, Map<String, Object>>> productoZonaCantidad = new HashMap<>();
         for (ProductoEnZona pz : productosEnZona) {
             productoZonaCantidad
                     .computeIfAbsent(pz.getId().getProductoIdproducto().longValue(), k -> new HashMap<>())
-                    .put(pz.getId().getZonaIdzona(), pz.getCantidad());
+                    .computeIfAbsent(pz.getId().getZonaIdzona(), k -> new HashMap<>())
+                    .put("cantidad", pz.getCantidad());
+            productoZonaCantidad
+                    .get(pz.getId().getProductoIdproducto().longValue())
+                    .get(pz.getId().getZonaIdzona())
+                    .put("costoEnvio", pz.getCostoEnvio());
         }
 
-        System.out.println(productoZonaCantidad.get(1L).get(1));
-        // Enviar a la vista
         model.addAttribute("productos", productos);
         model.addAttribute("productoZonaCantidad", productoZonaCantidad);
         return "SuperAdmin/productoLista-SAdmin";

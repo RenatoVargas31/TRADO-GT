@@ -19,4 +19,17 @@ public class ProductoEnZonaId implements Serializable {
     @NotNull
     @Column(name = "Zona_idZona", nullable = false)
     private Integer zonaIdzona;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        ProductoEnZonaId entity = (ProductoEnZonaId) o;
+        return Objects.equals(this.productoIdproducto, entity.productoIdproducto) &&
+                Objects.equals(this.zonaIdzona, entity.zonaIdzona);
+    }
+    @Override
+    public int hashCode() {
+        return Objects.hash(productoIdproducto, zonaIdzona);
+    }
 }

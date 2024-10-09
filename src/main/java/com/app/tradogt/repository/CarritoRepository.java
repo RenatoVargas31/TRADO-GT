@@ -1,7 +1,6 @@
 package com.app.tradogt.repository;
 
 import com.app.tradogt.entity.Carrito;
-import com.app.tradogt.entity.CarritoId;
 import com.app.tradogt.entity.Orden;
 import com.app.tradogt.entity.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;

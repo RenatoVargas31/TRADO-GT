@@ -37,4 +37,9 @@ public class ProductoEnZona {
     @Column(name = "estadoRepo", nullable = false)
     private Byte estadoRepo = 0;
 
+    @NotNull
+    @ColumnDefault("0")
+    @Column(name = "isDeleted", nullable = false)
+    private Byte isDeleted = 0;
+
 }

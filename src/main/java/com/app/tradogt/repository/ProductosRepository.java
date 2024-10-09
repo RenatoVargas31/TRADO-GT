@@ -205,4 +205,5 @@ public interface ProductosRepository extends JpaRepository<Producto, Integer> {
 
 
 
+    List<Producto> findAllByIsDeleted(Byte isDeleted);
 }

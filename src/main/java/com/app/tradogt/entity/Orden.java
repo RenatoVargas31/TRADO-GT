@@ -44,17 +44,10 @@ public class Orden {
     @Column(name = "isDeleted", nullable = false)
     private Byte isDeleted;
 
-    @NotNull
-    @Column(name = "fueRapido", nullable = false)
-    private Byte fueRapido;
-
     @Size(max = 45)
     @NotNull
     @Column(name = "codigo", nullable = false, length = 45)
     private String codigo;
-
-    @Column(name = "subTotal")
-    private BigDecimal subTotal;
 
     @NotNull
     @Column(name = "costoTotal", nullable = false, precision = 10, scale = 2)
@@ -64,5 +57,10 @@ public class Orden {
     @ManyToOne
     @JoinColumn(name = "pago_idPago", nullable = false)
     private Pago pagoIdpago;
+
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "Carrito_idCarrito", nullable = false)
+    private Carrito carritoIdcarrito;
 
 }

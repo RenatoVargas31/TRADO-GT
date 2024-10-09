@@ -15,6 +15,16 @@ public class Resena {
     @Column(name = "idResena", nullable = false)
     private Integer id;
 
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "Producto_idProducto", nullable = false)
+    private Producto productoIdproducto;
+
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "Usuario_idUsuario", nullable = false)
+    private Usuario usuarioIdusuario;
+
     @Size(max = 150)
     @NotNull
     @Column(name = "foto", nullable = false, length = 150)
@@ -24,10 +34,6 @@ public class Resena {
     @Lob
     @Column(name = "cuerpo", nullable = false)
     private String cuerpo;
-
-    @NotNull
-    @Column(name = "calidad", nullable = false)
-    private Integer calidad;
 
     @NotNull
     @Column(name = "calificacion", nullable = false)
@@ -43,13 +49,7 @@ public class Resena {
     private LocalDate fechaCreacion;
 
     @NotNull
-    @ManyToOne
-    @MapsId("carritoId")
-    @JoinColumns({
-            @JoinColumn(name = "Carrito_ProductoEnZona_producto_idProducto", referencedColumnName = "ProductoEnZona_producto_idProducto", nullable = false),
-            @JoinColumn(name = "Carrito_ProductoEnZona_zona_idZona", referencedColumnName = "ProductoEnZona_zona_idZona", nullable = false),
-            @JoinColumn(name = "Carrito_Usuario_idUsuario", referencedColumnName = "Usuario_idUsuario", nullable = false)
-    })
-    private Carrito carrito;
+    @Column(name = "fueRapido", nullable = false)
+    private Byte fueRapido;
 
 }

@@ -17,5 +17,5 @@ public interface ProductoEnZonaRepository extends JpaRepository<ProductoEnZona, 
     @Query(value = "UPDATE productoEnZona SET estadoRepo = :nuevoEstado WHERE Producto_idProducto = :idProducto", nativeQuery = true)
     void actualizarEstadoOrden(@Param("nuevoEstado") Byte nuevoEstado, @Param("idProducto") Long idProducto);
     */
-
+    List<ProductoEnZona> findAllByIsDeleted(Byte isDeleted);
 }
