@@ -58,11 +58,12 @@
                                 <div class="user-profile-header d-flex flex-column align-items-center mb-4">
                                     <hr class="opacity-0">
                                     <div class="flex-shrink-0">
-                                        <img src="/images/users/avatar-2.jpg" alt="user image" class="d-block rounded-circle" style="width: 150px; height: 150px; object-fit: cover;">
+                                        <!-- Usar la ruta de la foto del usuario desde el modelo -->
+                                        <img th:src="@{'/images/users/' + ${usuario.foto}}" alt="user image" class="d-block rounded-circle" style="width: 150px; height: 150px; object-fit: cover;">
                                     </div>
-                                    <p class="text-muted mb-0 mt-2">Kevin Doe</p>
+                                    <p class="text-muted mb-0 mt-2" th:text="${usuario.nombre} + ' ' + ${usuario.apellido}">Nombre del Usuario</p>
                                     <p class="text-muted mb-0">Usuario</p>
-                                    <p class="text-muted mb-0">Zona este</p>
+                                    <p class="text-muted mb-0" th:text="${usuario.zonaIdzona != null ? usuario.zonaIdzona.nombre : 'Sin zona asignada'}">Zona este</p>
 
                                     <div class="mt-3 text-center">
                                         <label for="upload" class="btn" style="background-color: purple; color: #ffffff; border: 2px solid #800080;  border-radius: 8px; font-size: 14px; cursor: pointer; transition: background-color 0.3s, border-color 0.3s;" tabindex="0">
@@ -74,13 +75,6 @@
                                 </div>
                             </div>
                         </div>
-
-
-
-
-
-
-
                         <!-- Bloque de Detalles de Perfil -->
                         <div class="col-md-9">
                             <div class="card mb-4 pb-1">
@@ -92,33 +86,46 @@
                                         <input type="hidden" name="resetPhoto" id="resetPhoto" value="false">
 
                                         <div class="row">
+                                            <!-- Nombres -->
                                             <div class="mb-3 col-md-6">
                                                 <label for="firstName" class="form-label">Nombres</label>
-                                                <p class="form-control-plaintext" id="firstName">Kevin</p>
+                                                <p class="form-control-plaintext" id="firstName" th:text="${usuario.nombre}">Nombre del Usuario</p>
                                             </div>
+
+                                            <!-- Apellidos -->
                                             <div class="mb-3 col-md-6">
                                                 <label for="lastName" class="form-label">Apellidos</label>
-                                                <p class="form-control-plaintext" id="lastName">Doe</p>
+                                                <p class="form-control-plaintext" id="lastName" th:text="${usuario.apellido}">Apellido del Usuario</p>
                                             </div>
+
+                                            <!-- Correo Electrónico -->
                                             <div class="mb-3 col-md-6">
                                                 <label for="email" class="form-label">Correo Electrónico</label>
-                                                <p class="form-control-plaintext" id="email">kevin.doe@trado.com</p>
+                                                <p class="form-control-plaintext" id="email" th:text="${usuario.correo}">correo@ejemplo.com</p>
                                             </div>
+
+                                            <!-- Teléfono -->
                                             <div class="mb-3 col-md-6">
                                                 <label for="phoneNumber" class="form-label">Teléfono</label>
-                                                <input class="form-control" type="text" id="phoneNumber" name="phoneNumber" value="1234567890" required>
+                                                <input class="form-control" type="text" id="phoneNumber" name="phoneNumber" th:value="${usuario.telefono}" required>
                                             </div>
+
+                                            <!-- Dirección -->
                                             <div class="mb-3 col-md-6">
                                                 <label for="direccion" class="form-label">Dirección</label>
-                                                <input class="form-control" type="text" id="direccion" name="direccion" value="San Miguel" required>
+                                                <input class="form-control" type="text" id="direccion" name="direccion" th:value="${usuario.direccion}" required>
                                             </div>
+
+                                            <!-- Fecha de Nacimiento -->
                                             <div class="mb-3 col-md-6">
                                                 <label for="birthday" class="form-label">Fecha de Nacimiento</label>
-                                                <p class="form-control-plaintext" id="birthday">01/01/1990</p>
+                                                <p class="form-control-plaintext" id="birthday" th:text="${usuario.fechaNacimiento}">01/01/1990</p>
                                             </div>
                                         </div>
+
                                         <div class="mt-2">
-                                            <a href="/usuario/inicio" type="submit" class="btn btn-primary me-2" style="background-color: purple; color: #ffffff; border: 2px solid #800080;  border-radius: 8px; font-size: 14px; cursor: pointer; transition: background-color 0.3s, border-color 0.3s;" tabindex="0">Guardar cambios</a>                                        </div>
+                                            <a href="/usuario/inicio" type="submit" class="btn btn-primary me-2" style="background-color: purple; color: #ffffff; border: 2px solid #800080;  border-radius: 8px; font-size: 14px; cursor: pointer; transition: background-color 0.3s, border-color 0.3s;" tabindex="0">Guardar cambios</a>
+                                        </div>
                                     </form>
                                 </div>
                             </div>

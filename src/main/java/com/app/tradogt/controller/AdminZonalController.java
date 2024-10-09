@@ -2,6 +2,7 @@ package com.app.tradogt.controller;
 
 import com.app.tradogt.entity.Producto;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import com.app.tradogt.repository.*;
@@ -11,6 +12,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
 import java.util.List;
@@ -20,18 +22,24 @@ import java.util.Optional;
 @Controller
 @RequestMapping("/adminzonal")
 public class AdminZonalController {
-    /*
+
     //Reposirotios
     final OrdenRepository ordenRepository;
     final UsuarioRepository usuarioRepository;
     final ProductosRepository productosRepository;
     final ProductoEnZonaRepository productoEnZonaRepository;
+    private final DistritoRepository distritoRepository;
+    private final RolRepository rolRepository;
+    private final ZonaRepository zonaRepository;
 
-    public AdminZonalController(OrdenRepository ordenRepository, UsuarioRepository usuarioRepository, ProductosRepository productosRepository, ProductoEnZonaRepository productoEnZonaRepository) {
+    public AdminZonalController(OrdenRepository ordenRepository, UsuarioRepository usuarioRepository, ProductosRepository productosRepository, ProductoEnZonaRepository productoEnZonaRepository, DistritoRepository distritoRepository, RolRepository rolRepository, ZonaRepository zonaRepository) {
         this.ordenRepository = ordenRepository;
         this.usuarioRepository = usuarioRepository;
         this.productosRepository = productosRepository;
         this.productoEnZonaRepository = productoEnZonaRepository;
+        this.distritoRepository = distritoRepository;
+        this.rolRepository = rolRepository;
+        this.zonaRepository = zonaRepository;
     }
 
     @GetMapping("/vacio")
@@ -63,7 +71,7 @@ public class AdminZonalController {
     }
 
     //Editar el estado de reposición
-    /*@PostMapping("/editarEstadoRepo")
+    @PostMapping("/editarEstadoRepo")
     public String editarEstadoRepo(Producto producto) {
 
         //Actualizar el estado
@@ -85,21 +93,40 @@ public class AdminZonalController {
 
     @GetMapping("/gestionAgente")
     public String showGestionAgente(Model model) {
-        List<Object[]> usuarioDetails = usuarioRepository.getUsuarioOrderProductDetails();
-        model.addAttribute("usuarioDetails", usuarioDetails);
+        /*List<Object[]> usuarioDetails = usuarioRepository.getUsuarioOrderProductDetails();
+        model.addAttribute("usuarioDetails", usuarioDetails);*/
 
-        List<Object[]> agentes = usuarioRepository.getAgenteDetailsNative();
+        List<Usuario> agentes = usuarioRepository.findAllByAdmzonalIdusuario_IdAndIsActivated(2, Byte.parseByte("1"));
         model.addAttribute("agentes", agentes);
 
-        List<Usuario> usuarios = usuarioRepository.findAllById();
+        List<Usuario> usuarios = usuarioRepository.findAll();
         model.addAttribute("usuarios", usuarios);
-
 
 
         return "AdminZonal/gestionAgente-AdminZonal"; }
 
     @GetMapping("/nuevoAgente")
-    public String showNuevoAgente() { return "AdminZonal/nuevoAgente-AdminZonal"; }
+    public String showNuevoAgente(Model model, @ModelAttribute("agente") Usuario usuario) {
+        model.addAttribute("listaDistritos", distritoRepository.findByZonaIdzonaId(1));
+        Optional<Usuario> AgentePrueba = usuarioRepository.findById(1);
+        model.addAttribute("agenteA", AgentePrueba.get());
+        return "AdminZonal/nuevoAgente-AdminZonal";
+    }
+
+    @PostMapping("/saveAgente")
+    public String saveAgente(@ModelAttribute("agente") Usuario usuario, BindingResult bindingResult, RedirectAttributes attr) {
+        if(bindingResult.hasErrors()){
+            return "nuevoAgente-AdminZonal";
+        } else {
+            attr.addFlashAttribute("msg", "Agente " + (usuario.getId() == null ? "creado exitosamente" : "actualizado exitosamente"));
+            usuario.setIsActivated(Byte.parseByte("1"));
+            usuario.setIsPostulated(Byte.parseByte("1"));
+            usuario.setRolIdrol(rolRepository.findById(4).get());
+            usuario.setZonaIdzona(zonaRepository.findById(1).get());
+            usuarioRepository.save(usuario);
+            return "redirect:/adminzonal/gestionAgente";
+        }
+    }
 
 
     @GetMapping("/verAgente/{id}")
@@ -125,5 +152,5 @@ public class AdminZonalController {
     }
 
 
-*/
+
 }
