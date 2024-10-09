@@ -75,14 +75,13 @@
                                         <div class="row">
                                             <div class="col-md-12 d-flex justify-content-end">
                                                 <div class="search-box me-2">
-                                                    <!--Debe buscar por Nombre del producto, por código y nombre del proveedor -->
                                                     <div class="position-relative">
-                                                        <input type="text" class="form-control rounded" placeholder="Search...">
+                                                        <input type="text" class="form-control rounded" id="search-input" placeholder="Search...">
                                                         <i class="mdi mdi-magnify search-icon"></i>
                                                     </div>
                                                 </div>
                                                 <div class="form-inline me-2">
-                                                    <button type="button" class="btn btn-primary waves-effect waves-light">Limpiar</button>
+                                                    <button id="clear-btn" class="btn btn-primary waves-effect waves-light">Limpiar</button>
                                                 </div>
                                                 <div class="form-inline">
                                                     <a th:href="@{/usuario/nuevaReseña}" type="button" class="btn btn-primary waves-effect waves-light">Nueva Reseña</a>
@@ -877,6 +876,40 @@
                     </div>
                 </div>
             </footer>
+
+            <script>
+                document.addEventListener("DOMContentLoaded", function() {
+                    const searchInput = document.getElementById('search-input');
+                    const clearBtn = document.getElementById('clear-btn');
+                    const productCards = document.querySelectorAll('.product-box'); // Selecciona todas las tarjetas de producto
+
+                    // Filtra los productos al escribir en el campo de búsqueda
+                    searchInput.addEventListener('keyup', function() {
+                        const searchTerm = searchInput.value.toLowerCase(); // Convierte a minúsculas para facilitar la búsqueda
+                        productCards.forEach(card => {
+                            const productName = card.querySelector('h5').textContent.toLowerCase(); // Nombre del producto
+                            const providerName = card.querySelector('.provider-name').textContent.toLowerCase(); // Nombre del proveedor
+                            const productCode = card.querySelector('.product-ribbon').textContent.toLowerCase(); // Código del producto
+
+                            // Mostrar la tarjeta si coincide el nombre, el código o el nombre del proveedor
+                            if (productName.includes(searchTerm) || providerName.includes(searchTerm) || productCode.includes(searchTerm)) {
+                                card.style.display = ''; // Mostrar la tarjeta
+                            } else {
+                                card.style.display = 'none'; // Ocultar la tarjeta
+                            }
+                        });
+                    });
+
+                    // Limpiar el campo de búsqueda y restaurar la vista original
+                    clearBtn.addEventListener('click', function() {
+                        searchInput.value = ''; // Limpiar el input de búsqueda
+                        productCards.forEach(card => {
+                            card.style.display = ''; // Mostrar todas las tarjetas
+                        });
+                    });
+                });
+            </script>
+
             <!-- Bootstrap rating js -->
             <script src="/../resources/static/libs/bootstrap-rating/bootstrap-rating.min.js"></script>
 
