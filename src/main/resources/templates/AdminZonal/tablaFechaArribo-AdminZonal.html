@@ -71,8 +71,6 @@
                                     <thead>
                                     <tr>
                                         <th>ID</th>
-                                        <th>Nombre del producto</th>
-                                        <th>Categoría</th>
                                         <th>Fecha de compra</th>
                                         <th>Fecha de arribo</th>
                                         <th>Editar</th>
@@ -82,13 +80,16 @@
 
                                     <tbody>
                                     <tr th:each="order : ${ordenesConFechas}">
-                                        <td th:text="${order[0]}"></td>
-                                        <td th:text="${order[1]}"></td>
-                                        <td th:text="${order[2]}"></td>
-                                        <td th:text="${order[3]}"></td>
-                                        <td th:text="${order[4]}"></td>
+                                        <td th:text="${order.codigo}"></td>
+                                        <td th:text="${order.fechaCreacion}"></td>
+                                        <td th:text="${order.fechaArribo}" class="fecha-arribo"></td>
                                         <td>
-                                            <a class="btn btn-info btn-sm waves-effect waves-light" title="Edit" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                                            <a class="btn btn-info btn-sm waves-effect waves-light edit-btn"
+                                               title="Edit"
+                                               data-bs-toggle="modal"
+                                               data-bs-target="#staticBackdrop"
+                                               data-id="${order.codigo}"
+                                               data-fecha-arribo="${order.fechaArribo}">
                                                 <i class="ri-pencil-fill"></i>
                                             </a>
                                         </td>
@@ -104,6 +105,7 @@
                 </div> <!-- end row -->
                 <!--Start Modal-->
                 <!-- Modal para editar la fecha de arribo del producto -->
+                <!-- Modal para editar la fecha de arribo del producto -->
                 <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="editArrivalDateModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
@@ -111,27 +113,25 @@
                                 <h5 class="modal-title" id="editArrivalDateModalLabel">Editar Fecha de Arribo del Producto</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
-                            <div class="modal-body">
-                                <!-- Mostrar la fecha de envío actual -->
-                                <div class="mb-3">
-                                    <label for="currentShippingDate" class="form-label">Fecha de Envío Actual:</label>
-                                    <!-- Ejemplo de fecha actual de envío -->
-                                    <input type="text" id="currentShippingDate" class="form-control" value="2024-09-05" readonly>
+                            <form th:action="@{/adminzonal/editarFecha}" method="post">
+                                <div class="modal-body">
+                                    <div class="mb-3">
+                                        <label for="arrivalDate" class="form-label">Editar Fecha de Arribo:</label>
+                                        <input type="date" id="arrivalDate" name="fechaArribo" class="form-control" required>
+                                    </div>
+                                    <input type="hidden" id="orderId" name="orderId">
                                 </div>
-
-                                <!-- Input para editar la fecha de arribo -->
-                                <div class="mb-3">
-                                    <label for="arrivalDate" class="form-label">Editar Fecha de Arribo:</label>
-                                    <input type="date" id="arrivalDate" class="form-control">
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-light waves-effect" data-bs-dismiss="modal">Cerrar</button>
+                                    <button type="submit" class="btn btn-primary waves-effect waves-light">Guardar</button>
                                 </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-light waves-effect" data-bs-dismiss="modal">Cerrar</button>
-                                <button type="button" class="btn btn-primary waves-effect waves-light">Guardar</button>
-                            </div>
+                            </form>
                         </div>
                     </div>
                 </div>
+
+
+
                 <!--End Modal-->
 
             </div> <!-- container-fluid -->
@@ -161,6 +161,32 @@
 <!-- JAVASCRIPT BASE-->
 <span th:replace="~{Common/jsBase :: js_Base}"></span>
 <!-- End JAVASCRIPT BASE-->
+
+<script>
+    // Esperar a que el documento esté listo
+    document.addEventListener("DOMContentLoaded", function() {
+        // Seleccionar todos los botones de editar
+        var editButtons = document.querySelectorAll('.edit-btn');
+
+        // Agregar evento de clic a cada botón
+        editButtons.forEach(function(button) {
+            button.addEventListener('click', function() {
+                // Obtener la fecha de arribo de la fila seleccionada
+                var fechaArribo = button.getAttribute('data-fecha-arribo');
+                var codigo = button.getAttribute('data-id'); // Obtener el código (ID) de la orden
+
+                // Asignar la fecha al campo de texto del modal
+                document.getElementById('arrivalDate').value = fechaArribo;
+
+                // Asignar el código (ID) al campo oculto del formulario
+                document.getElementById('orderId').value = codigo;
+            });
+        });
+    });
+
+</script>
+
+
 
 <!-- Required datatable js -->
 <script th:src="@{../libs/datatables.net/js/jquery.dataTables.min.js}"></script>

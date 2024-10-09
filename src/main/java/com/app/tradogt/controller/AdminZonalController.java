@@ -1,5 +1,6 @@
 package com.app.tradogt.controller;
 
+import com.app.tradogt.entity.Orden;
 import com.app.tradogt.entity.Producto;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -56,7 +58,7 @@ public class AdminZonalController {
     public String showFechasArribo(Model model) {
 
         //Añadir codigo
-        List<Object[]> ordenesConFechas = ordenRepository.findOrdersByZone();
+        List<Orden> ordenesConFechas = ordenRepository.findAll();
         model.addAttribute("ordenesConFechas", ordenesConFechas);
         return "AdminZonal/tablaFechaArribo-AdminZonal";
     }
@@ -101,6 +103,9 @@ public class AdminZonalController {
 
         List<Usuario> usuarios = usuarioRepository.findAll();
         model.addAttribute("usuarios", usuarios);
+
+        List<Orden> ordenes = ordenRepository.findAllByAgentcompraIdusuario(usuarioRepository.findByIdUsuario(4));
+        model.addAttribute("ordenes", ordenes);
 
 
         return "AdminZonal/gestionAgente-AdminZonal"; }
@@ -149,6 +154,17 @@ public class AdminZonalController {
             model.addAttribute("AgenteRazonSocial", details[11]);
         }
         return "AdminZonal/verAgente-AdminZonal";
+    }
+
+    @PostMapping("/editarFecha")
+    public String actualizarFechaArribo(@RequestParam("orderId") String orderId,
+                                        @RequestParam("fechaArribo") LocalDate fechaArribo) {
+        // Lógica para actualizar la fecha de arribo en la base de datos
+        Orden orden = ordenRepository.findByCodigo(orderId).get();
+        orden.setFechaArribo(fechaArribo);
+        ordenRepository.save(orden);
+
+        return "redirect:/adminzonal/fechasArribo";  // Redirigir a la vista deseada
     }
 
 

@@ -2,6 +2,7 @@ package com.app.tradogt.repository;
 
 import com.app.tradogt.dto.OrdenCompraAgtDto;
 import com.app.tradogt.entity.Orden;
+import com.app.tradogt.entity.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -262,6 +263,8 @@ public interface OrdenRepository extends JpaRepository<Orden, Integer> {
     List<Orden> findAllByIsDeleted( int k);
 
     Optional<Orden> findByCodigo(String codigo);
+
+    List<Orden> findAllByAgentcompraIdusuario(Usuario usuario);
 
 
 
