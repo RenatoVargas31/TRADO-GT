@@ -1,29 +1,90 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Inicio | TRADO</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
     <meta content="Themesdesign" name="author" />
-    <link rel="shortcut icon" href="/images/trado.png">
+    <link rel="shortcut icon" href="/static/images/trado.png">
     <meta th:replace="~{Common/cssBase :: css_Base}">
+
     <style>
+        /* Full height of the image on the right */
         .right-side-image {
             height: 100vh;
             object-fit: cover;
             width: 100%;
         }
 
-        @media (max-width: 768px) {
-            .right-side-image {
-                display: none;
-            }
+        /* Form container styles */
+        .form-container {
+            background: #f9f9f9;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            padding: 40px 30px;
         }
+
+        /* Center form and make it responsive */
+        .authentication-page-content {
+            background-color: #f4f6f9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        /* Styling for input fields */
+        .form-control {
+            border-radius: 30px;
+            padding: 15px;
+            font-size: 14px;
+        }
+
+        /* Buttons */
+        .btn-primary {
+            background-color: #0056b3;
+            border: none;
+            border-radius: 30px;
+            padding: 12px;
+            font-size: 16px;
+        }
+
+        /* Styling for the title and text */
+        .auth-logo {
+            margin-bottom: 20px;
+        }
+
+        .auth-logo img {
+            max-height: 70px;
+        }
+
+        h4 {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .text-muted {
+            color: #7a7a7a !important;
+        }
+
+        /* Error message styling */
         .error-message {
             color: red;
             font-size: 14px;
             margin-top: 10px;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .right-side-image {
+                display: none;
+            }
+
+            .form-container {
+                padding: 20px;
+            }
         }
     </style>
 </head>
@@ -32,69 +93,67 @@
 <div>
     <div class="container-fluid p-0">
         <div class="row g-0">
-            <div class="col-lg-4">
-                <div class="authentication-page-content p-4 d-flex align-items-center min-vh-100">
-                    <div class="w-100">
-                        <div class="row justify-content-center">
-                            <div class="col-lg-9">
-                                <div>
-                                    <div class="text-center">
-                                        <div>
-                                            <img src="/images/trado-dark.png" alt="" height="60" class="auth-logo logo-dark mx-auto">
-                                        </div>
-                                        <h4 class="font-size-18 mt-4">¡Bienvenido a Trado!</h4>
-                                        <p class="text-muted">Inicie sesión para estar más cerca de nuestros productos y promociones</p>
-                                    </div>
+            <!-- Left side content (Form) -->
+            <div class="col-lg-4 d-flex align-items-center">
+                <div class="form-container w-100">
+                    <div class="text-center">
+                        <div class="auth-logo">
+                            <img src="/static/images/trado-dark.png" alt="Logo TRADO">
+                        </div>
+                        <h4 class="font-size-18 mt-2">¡Bienvenido a Trado!</h4>
+                        <p class="text-muted">Inicie sesión para estar más cerca de nuestros productos y promociones</p>
+                    </div>
 
-                                    <div class="p-2 mt-5">
-                                        <!-- Formulario de inicio de sesión -->
-                                        <form th:action="@{/processLogin}" method="post">
-                                            <!-- Mostrar mensaje de error si las credenciales son incorrectas -->
-                                            <div th:if="${loginError}" class="error-message">
-                                                <p th:text="${loginError}"></p>
-                                            </div>
-
-                                            <div class="mb-3 auth-form-group-custom mb-4">
-                                                <i class="ri-user-2-line auti-custom-input-icon"></i>
-                                                <label for="username" class="fw-semibold">Nombre de Usuario</label>
-                                                <input type="text" class="form-control" id="username" placeholder="Ingresar usuario" name="correo" required autofocus>
-                                            </div>
-
-                                            <div class="mb-3 auth-form-group-custom mb-4">
-                                                <i class="ri-lock-2-line auti-custom-input-icon"></i>
-                                                <label for="password">Contraseña</label>
-                                                <input type="password" class="form-control" id="password" placeholder="Ingresar contraseña" name="password">
-                                            </div>
-
-                                            <div class="mt-4 text-center">
-                                                <button class="w-100 btn btn-lg btn-primary" type="submit">Ingresar</button>
-                                            </div>
-
-                                            <div class="mt-4 text-center">
-                                                <a href="/sistema/PassRestore" class="text-muted"><i class="mdi mdi-lock me-1"></i>¿Olvidaste tu contraseña?</a>
-                                            </div>
-                                        </form>
-
-                                        <div class="mt-5 text-center">
-                                            <p>¿Aún no tienes una cuenta? <a href="/sistema/CreateAcc" class="fw-medium text-primary"> Registrarse </a></p>
-                                            <p>© <script>document.write(new Date().getFullYear())</script> TRADO. Creado con <i class="mdi mdi-heart text-danger"></i> por Telesoft GT</p>
-                                        </div>
-                                    </div>
-
-                                </div>
+                    <div class="p-2 mt-3">
+                        <!-- Login form -->
+                        <form th:action="@{/processLogin}" method="post">
+                            <!-- Error message -->
+                            <div th:if="${loginError}" class="error-message">
+                                <p th:text="${loginError}"></p>
                             </div>
+
+                            <!-- Username input -->
+                            <div class="mb-3 auth-form-group-custom mb-4">
+                                <i class="ri-user-2-line auti-custom-input-icon"></i>
+                                <label for="username" class="fw-semibold">Nombre de Usuario</label>
+                                <input type="text" class="form-control" id="username" placeholder="Ingresar usuario" name="correo" required autofocus>
+                            </div>
+
+                            <!-- Password input -->
+                            <div class="mb-3 auth-form-group-custom mb-4">
+                                <i class="ri-lock-2-line auti-custom-input-icon"></i>
+                                <label for="password">Contraseña</label>
+                                <input type="password" class="form-control" id="password" placeholder="Ingresar contraseña" name="password">
+                            </div>
+
+                            <!-- Submit button -->
+                            <div class="mt-4 text-center">
+                                <button class="w-100 btn btn-lg btn-primary" type="submit">Ingresar</button>
+                            </div>
+
+                            <!-- Forgot password link -->
+                            <div class="mt-4 text-center">
+                                <a href="/sistema/PassRestore" class="text-muted"><i class="mdi mdi-lock me-1"></i> ¿Olvidaste tu contraseña?</a>
+                            </div>
+                        </form>
+
+                        <!-- Register link -->
+                        <div class="mt-5 text-center">
+                            <p>¿Aún no tienes una cuenta? <a href="/sistema/CreateAcc" class="fw-medium text-primary">Registrarse</a></p>
+                            <p>© <script>document.write(new Date().getFullYear())</script> TRADO. Creado con <i class="mdi mdi-heart text-danger"></i> por Telesoft GT</p>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Imagen del lado derecho -->
+            <!-- Right side image -->
             <div class="col-lg-8 d-none d-lg-block">
-                <img src="/images/297451387_172154511984888_7597808842372857148_n.jpg" alt="" class="right-side-image">
+                <img src="/static/images/297451387_172154511984888_7597808842372857148_n.jpg" alt="Imagen de promoción" class="right-side-image">
             </div>
         </div>
     </div>
 </div>
+
 <!-- JAVASCRIPT BASE-->
 <span th:replace="~{Common/jsBase :: js_Base}"></span>
 <!-- End JAVASCRIPT BASE-->
