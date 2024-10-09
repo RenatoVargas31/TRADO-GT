@@ -19,7 +19,7 @@ import java.util.Optional;
 @Controller
 @RequestMapping("/usuario")
 public class UsuarioFinalController {
-
+/*
     final ProductosRepository productosRepository;
     final OrdenRepository ordenRepository;
     final UsuarioRepository usuarioRepository;
@@ -338,7 +338,7 @@ public class UsuarioFinalController {
             item.setIsDelete(true);
             carritoRepository.save(item);
         }*/
-
+    /*
         // Añade un mensaje de éxito
         redirectAttributes.addFlashAttribute("message", "Producto eliminado exitosamente");
 
@@ -703,7 +703,5 @@ public class UsuarioFinalController {
 
         return "Usuario/payment-info-usuario";
     }*/
-
-
 
 }

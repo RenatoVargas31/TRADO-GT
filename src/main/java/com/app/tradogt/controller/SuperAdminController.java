@@ -1,10 +1,8 @@
 package com.app.tradogt.controller;
 
-import com.app.tradogt.entity.Producto;
-import com.app.tradogt.entity.ProductoEnZona;
-import com.app.tradogt.entity.Proveedor;
-import com.app.tradogt.entity.Usuario;
+import com.app.tradogt.entity.*;
 import com.app.tradogt.helpers.PasswordGenerator;
+import com.app.tradogt.helpers.ProductCodeGenerator;
 import com.app.tradogt.repository.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,9 +29,10 @@ public class SuperAdminController {
     final DistritoRepository distritoRepository;
     final ProductosRepository productosRepository;
     final ProductoEnZonaRepository productoEnZonaRepository;
+    final SubCategoriaRepository subCategoriaRepository;
+    final CategoriaRepository categoriaRepository;
 
-
-    public SuperAdminController(ProveedorRepository proveedorRepository, UsuarioRepository usuarioRepository, ZonaRepository zonaRepository, RolRepository rolRepository, DistritoRepository distritoRepository, ProductosRepository productosRepository, ProductoEnZonaRepository productoEnZonaRepository) {
+    public SuperAdminController(ProveedorRepository proveedorRepository, UsuarioRepository usuarioRepository, ZonaRepository zonaRepository, RolRepository rolRepository, DistritoRepository distritoRepository, ProductosRepository productosRepository, ProductoEnZonaRepository productoEnZonaRepository, SubCategoriaRepository subCategoriaRepository, CategoriaRepository categoriaRepository) {
         this.proveedorRepository = proveedorRepository;
         this.usuarioRepository = usuarioRepository;
         this.zonaRepository = zonaRepository;
@@ -41,6 +40,8 @@ public class SuperAdminController {
         this.distritoRepository = distritoRepository;
         this.productosRepository = productosRepository;
         this.productoEnZonaRepository = productoEnZonaRepository;
+        this.subCategoriaRepository = subCategoriaRepository;
+        this.categoriaRepository = categoriaRepository;
     }
     //</editor-fold>
 
@@ -372,8 +373,45 @@ public class SuperAdminController {
     @GetMapping("/productoNuevoForm")
     public String viewProductoNuevoForm(Model model) {
         //Enviar un producto
-        model.addAttribute("producto", new Producto());
+        FormProducto formProducto = new FormProducto();
+        model.addAttribute("formProducto", formProducto);
+
         return "SuperAdmin/productoNuevo-SAdmin";
+    }
+    @PostMapping("/productoNuevo")
+    public String viewProductoNuevo(@ModelAttribute FormProducto formProducto) {
+        // Crear una instancia de Producto
+        Producto producto = formProducto.getProducto();
+        producto.setCodigo(ProductCodeGenerator.generateProductCode(producto));
+        // Guardar el producto
+        productosRepository.save(producto);
+        //Crear instancias de ProductoEnZona
+        //Norte
+        ProductoEnZona productoEnZonaNorte = formProducto.getProductoEnZonaNorte();
+        productoEnZonaNorte.setId(new ProductoEnZonaId(producto.getId(),1));
+        productoEnZonaNorte.setProductoIdproducto(producto);
+        productoEnZonaNorte.setZonaIdzona(zonaRepository.findById(1).get());
+        System.out.println(productoEnZonaNorte);
+        productoEnZonaRepository.save(productoEnZonaNorte);
+        //Sur
+        ProductoEnZona productoEnZonaSur = formProducto.getProductoEnZonaSur();
+        productoEnZonaSur.setId(new ProductoEnZonaId(producto.getId(),2));
+        productoEnZonaSur.setProductoIdproducto(producto);
+        productoEnZonaSur.setZonaIdzona(zonaRepository.findById(2).get());
+        productoEnZonaRepository.save(productoEnZonaSur);
+        //Este
+        ProductoEnZona productoEnZonaEste = formProducto.getProductoEnZonaEste();
+        productoEnZonaEste.setId(new ProductoEnZonaId(producto.getId(),3));
+        productoEnZonaEste.setProductoIdproducto(producto);
+        productoEnZonaEste.setZonaIdzona(zonaRepository.findById(3).get());
+        productoEnZonaRepository.save(productoEnZonaEste);
+        //Oeste
+        ProductoEnZona productoEnZonaOeste = formProducto.getProductoEnZonaOeste();
+        productoEnZonaOeste.setId(new ProductoEnZonaId(producto.getId(),4));
+        productoEnZonaOeste.setProductoIdproducto(producto);
+        productoEnZonaOeste.setZonaIdzona(zonaRepository.findById(4).get());
+        productoEnZonaRepository.save(productoEnZonaOeste);
+        return "redirect:/superadmin/productoNuevoForm";
     }
     @GetMapping("/productoEditar")
     public String viewProductoEditar() {

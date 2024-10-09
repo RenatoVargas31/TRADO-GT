@@ -41,5 +41,4 @@ public class ProductoEnZona {
     @ColumnDefault("0")
     @Column(name = "isDeleted", nullable = false)
     private Byte isDeleted = 0;
-
 }
