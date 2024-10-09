@@ -205,17 +205,18 @@
                     <div class="col-md-6">
                       <h3 class="fw-bold">Muebles</h3>
                     </div>
-                    <div class="col-md-6 d-flex justify-content-end"> <!-- Cambié a col-md-6 para que sea más equilibrado -->
-                      <div class="search-box me-2">
-                        <!--Debe buscar por Nombre del producto, por código y nombre del proveedor -->
-                        <div class="position-relative">
-                          <input type="text" class="form-control rounded" placeholder="Buscar..."> <!-- Cambié "Search..." a "Buscar..." -->
-                          <i class="mdi mdi-magnify search-icon"></i>
+                    <div class="col-md-6 d-flex justify-content-end">
+                      <form class="d-flex" action="/usuario/categoriaMueblesSearch" method="GET"> <!-- El action envía la búsqueda a la ruta /buscar -->
+                        <div class="search-box me-2">
+                          <div class="position-relative">
+                            <input type="text" name="query" class="form-control rounded" placeholder="Buscar..."> <!-- "query" como nombre del campo de búsqueda -->
+                            <i class="mdi mdi-magnify search-icon"></i>
+                          </div>
                         </div>
-                      </div>
-                      <div class="form-inline me-2">
-                        <button type="button" class="btn btn-primary waves-effect waves-light">Limpiar</button>
-                      </div>
+                        <div class="form-inline me-2">
+                          <button type="submit" class="btn btn-primary waves-effect waves-light">Buscar</button> <!-- Botón envía el formulario -->
+                        </div>
+                      </form>
                     </div>
                   </div>
                   <hr class="opacity-0">
@@ -260,7 +261,7 @@
                               S/ <span th:text="${product.precio}">100</span>
                               <span style="font-size: 12px; color: #888;">por cada 10 unidades</span>
                             </h5>
-                            <p class="mt-2" style="font-size: 14px;">Costo por unidad: S/<span th:text="${product.precio}">10</span></p>
+                            <p class="mt-2" style="font-size: 14px;">Costo por unidad: S/<span th:text="${product.precio*1.5}"></span></p>
                           </div>
                           <div class="provider-info d-flex align-items-center justify-content-center">
                             <img th:src="@{../images/product/iconoProvedor.png}" alt="Proveedor Icono" class="rounded-circle me-2" style="width: 30px; height: 30px;">
@@ -275,7 +276,7 @@
                   <div class="row mt-4">
                     <div class="col-sm-6">
                       <div>
-                        <p class="mb-sm-0 mt-2">Page <span class="fw-bold">1</span> Of <span class="fw-bold">100</span></p>
+                        <p class="mb-sm-0 mt-2">Page <span class="fw-bold">1</span> Of <span class="fw-bold">5</span></p>
                       </div>
                     </div>
                     <div class="col-sm-6">

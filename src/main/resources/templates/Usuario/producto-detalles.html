@@ -86,7 +86,15 @@
                 <ol class="breadcrumb m-0">
 
                   <li class="breadcrumb-item active">Productos</li>
-                  <li class="breadcrumb-item"><a href="javascript: void(0);">Detalles</a></li>
+
+                  <li class="breadcrumb-item active">
+                    <a class="text-primary" th:text="${product.subcategoriaIdsubcategoria.categoriaIdcategoria.nombre}"></a>
+                  </li>
+
+                  <li class="breadcrumb-item">
+                    Detalles
+                  </li>
+
                 </ol>
               </div>
 
@@ -159,23 +167,19 @@
                   <div class="col-xl-6">
                     <div class="mt-4 mt-xl-3">
                       <div>
-                        <a class="text-primary" th:text="${product.subcategoriaIdsubcategoria.categoriaIdcategoria.nombre}"></a>
-                      </div>
-                      <div>
                         <a class="text-primary" th:text="${product.subcategoriaIdsubcategoria.nombre}"></a>
                       </div>
-
-                      <h5 class="mt-1 mb-3"  style="font-size: 24px;" th:text="${product.nombre}"></h5>
+                      <h1 class="mt-1 mb-2 fw-bolder " style="font-family: Arial;" th:text="${product.nombre}"></h1>
 
                       <div class="d-inline-flex">
-                        <div class="text-muted me-2" style="font-size: 18px;">
+                        <div class="text-muted me-2" style="font-size: 14px;">
                         <span class="mdi mdi-star text-warning"></span>
                         <span class="mdi mdi-star text-warning"></span>
                         <span class="mdi mdi-star text-warning"></span>
                         <span class="mdi mdi-star text-warning"></span>
                         <span class="mdi mdi-star"></span>
                       </div>
-                        <div class="text-muted" style="font-size: 18px;">4.1 ( 132 )</div>
+                        <div class="text-muted" style="font-size: 14px;">4.1 ( 132 )</div>
                       </div>
                       <span class="product-ribbon badge bg-warning " th:text="${product.codigo}"></span><br>
                       <h5 class="mt-2" style="font-size: 24px;">
@@ -188,22 +192,29 @@
                       </p>
 
 
-                      <p class="mt-3">Medidas de modelo La modelo mide 168 cm y usa talla S/26. Su pecho mide 81 cm, su cintura, 63 cm y su cadera, 89 cm.</p>
+                      <p class="mt-3" th:text="${product.descripcion}"></p>
                       <hr class="my-4">
                       <div class="row mt-4">
-                        <div class="col-6">
-                          <h5 class="font-size-14">Especificaciones :</h5>
-                          <ul class="list-unstyled product-desc-list">
-                            <li><i class="mdi mdi-circle-medium me-1 align-middle"></i> Manga larga</li>
+                        <div class="col-md-12 col-lg-6">
+                          <strong class="fw-bolder fs-5 mb-2 ">Especificaciones:</strong>
+                          <ul class="list-unstyled product-desc-list mt-2">
+                            <li>
+                              <i class="mdi mdi-circle-medium me-1 align-middle"></i> Dimensiones:
+                              <ul>
+                                <li>Ancho: <span th:text="${product.ancho}"></span></li>
+                                <li>Alto: <span th:text="${product.alto}"></span></li>
+                                <li>Profundidad: <span th:text="${product.profundidad}"></span></li>
+                              </ul>
+                            </li>
                             <li><i class="mdi mdi-circle-medium me-1 align-middle"></i> Hecho de <span th:text="${product.material}"></span></li>
-                            <li><i class="mdi mdi-circle-medium me-1 align-middle"></i> Disponibilidad en la talla <span th:text="${product.talla}"></span></li>
-                            <li><i class="mdi mdi-circle-medium me-1 align-middle"></i> Unidades en Stock: 500</li>
+                            <li><i class="mdi mdi-circle-medium me-1 align-middle"></i> Marca: <span th:text="${product.marca}"></span></li>
+                            <li><i class="mdi mdi-circle-medium me-1 align-middle"></i> Unidades en stock: <span th:text="${product.cantidad}"></span></li>
                           </ul>
 
 
 
                         </div>
-                        <div class="col-12 col-md-6">
+                        <div class="col-12 col-md-6" th:if="${product.talla != null}">
                           <div class="product-color mt-3">
                             <h5 class="font-size-14">Talla :</h5>
                             <div class="btn-group d-flex justify-content-center flex-wrap" role="group">
@@ -237,11 +248,17 @@
                           </div>
                         </div>
                         <hr class="my-4">
-                        <div class="provider-info d-flex align-items-center">
-                          <img th:src="@{../../images/product/iconoProvedor.png}"  alt="Proveedor Icono" class="me-2" style="width: 40px; height: 40px;">
-                          <span class="provider-name" th:text="${product.proveedorIdproveedor.tienda}">Nombre del Proveedor</span>
-
+                        <div class="provider-info">
+                          <div class="provider-label mb-2">
+                            <strong class="fw-bold fs-5 ">Proveedor:</strong>
+                          </div>
+                          <div class="d-flex align-items-center">
+                            <img th:src="@{../../images/product/iconoProvedor.png}" alt="Proveedor Icono" class="me-2" style="width: 40px; height: 40px;">
+                            <span class="provider-name" th:text="${product.proveedorIdproveedor.tienda}">Nombre del Proveedor</span>
+                          </div>
                         </div>
+
+
                       </div>
                     </div>
                   </div>
@@ -270,27 +287,29 @@
                             <tbody>
                             <tr>
                               <th scope="row" style="width: 400px;">Categoría</th>
-                              <td>Moda Femenina</td>
+                              <td th:text="${product.subcategoriaIdsubcategoria.categoriaIdcategoria.nombre}"></td>
                             </tr>
+
                             <tr>
                               <th scope="row">Subcategoría</th>
-                              <td>Polera</td>
+                              <td th:text="${product.subcategoriaIdsubcategoria.nombre}"></td>
                             </tr>
                             <tr>
                               <th scope="row">Marca</th>
-                              <td>Jack & Jones</td>
+                              <td th:text="${product.marca}"></td>
                             </tr>
                             <tr>
                               <th scope="row">Color</th>
-                              <td>Blue</td>
+                              <td th:text="${product.color}"></td>
+
                             </tr>
                             <tr>
                               <th scope="row">Material</th>
-                              <td>Algodón</td>
+                              <td th:text="${product.material}"></td>
                             </tr>
                             <tr>
                               <th scope="row">Peso</th>
-                              <td>140 Gm</td>
+                              <td th:text="${product.peso} + ' kg'"></td>
                             </tr>
                             </tbody>
                           </table>
@@ -305,47 +324,24 @@
                 <div class="mt-4">
                   <h5 class="font-size-14">Otras recomendaciones:</h5>
                   <div class="row">
-                    <!-- Card 1 -->
-                    <div class="col-md-3">
-                      <div class="card d-flex align-items-center justify-content-center">
-                        <a href="/usuario/productoDetalles" class="text-decoration-none">
-                        <div class="card-img-top d-flex justify-content-center align-items-center" style="height: 200px;">
-                          <img th:src="@{../images/product/img-1.png}" alt="Product 1" style="max-height: 100%; max-width: 100%; object-fit: cover;">
-                        </div>
-                        <div class="card-body ">
-                          <a  class="text-primary d-flex  align-items-center justify-content-center">Categoría, Subcategoría</a>
-                          <h5 class="mt-1 mb-3"  style="font-size: 14px;">Full sleeve Blue color t-shirt</h5>
-                          <div class="d-inline-flex">
-                            <div class="text-muted me-2" style="font-size: 12px;">
-                              <span class="mdi mdi-star text-warning"></span>
-                              <span class="mdi mdi-star text-warning"></span>
-                              <span class="mdi mdi-star text-warning"></span>
-                              <span class="mdi mdi-star text-warning"></span>
-                              <span class="mdi mdi-star"></span>
-                            </div>
-                            <div class="text-muted" style="font-size: 12px;">4.1 ( 132 )</div>
-                          </div>
-                          <h5 class="mt-2" style="font-size: 14px;">S/100 <span style="font-size: 12px; color: #888;">por cada 10 unidades</span></h5>
-                          <p class="mt-2" style="font-size: 14px;">Costo por unidad: S/10</p>
-                          <div class="provider-info d-flex ">
-                            <img th:src="@{../images/product/iconoProvedor.png}" alt="Proveedor Icono" class="rounded-circle me-2" style="width: 30px; height: 30px;">
-                            <span class="provider-name">Nombre del provedor</span>
-                          </div>
-                        </div>
-                        </a>
-                      </div>
-                    </div>
+                    <!-- Iterar sobre productList y mostrar productos excluyendo el actual -->
+                    <div th:each="producto, iterStat : ${productList}"
+                         th:if="${iterStat.index < 4 and producto.id != currentId}"
+                         class="col-md-3">
+                      <div class="card product-box">
+                        <a th:href="@{/usuario/productoDetalles/{id}(id=${producto.id})}" class="text-decoration-none">
 
-                    <!-- Card 2 -->
-                    <div class="col-md-3">
-                      <div class="card d-flex align-items-center justify-content-center">
-                        <a href="/usuario/productoDetalles" class="text-decoration-none">
-                          <div class="card-img-top d-flex justify-content-center align-items-center" style="height: 200px;">
-                            <img th:src="@{../images/product/img-1.png}" alt="Product 1" style="max-height: 100%; max-width: 100%; object-fit: cover;">
+                          <div th:if="${producto.id >= 1 and producto.id <= 10}">
+                            <img th:src="@{|../../images/product/product${producto.id}.jpg|}" alt="img-${producto.id}"
+                                 class="img-fluid mx-auto d-block" style="width: 250px; height: 250px; object-fit: cover;">
                           </div>
-                          <div class="card-body ">
-                            <a  class="text-primary d-flex  align-items-center justify-content-center">Categoría, Subcategoría</a>
-                            <h5 class="mt-1 mb-3"  style="font-size: 14px;">Full sleeve Blue color t-shirt</h5>
+                          <div class="text-center mt-3">
+                            <p class="font-size-12 mb-1 text-primary">
+                              <span th:text="${producto.subcategoriaIdsubcategoria.nombre}">Categoría, Subcategoría</span>
+                            </p>
+                            <h5 class="font-size-15">
+                              <a th:text="${producto.nombre}" class="text-reset">Product Name</a>
+                            </h5>
                             <div class="d-inline-flex">
                               <div class="text-muted me-2" style="font-size: 12px;">
                                 <span class="mdi mdi-star text-warning"></span>
@@ -354,75 +350,20 @@
                                 <span class="mdi mdi-star text-warning"></span>
                                 <span class="mdi mdi-star"></span>
                               </div>
-                              <div class="text-muted" style="font-size: 12px;">4.1 ( 132 )</div>
-                            </div>
-                            <h5 class="mt-2" style="font-size: 14px;">S/100 <span style="font-size: 12px; color: #888;">por cada 10 unidades</span></h5>
-                            <p class="mt-2" style="font-size: 14px;">Costo por unidad: S/10</p>
-                            <div class="provider-info d-flex ">
-                              <img th:src="@{../images/product/iconoProvedor.png}" alt="Proveedor Icono" class="rounded-circle me-2" style="width: 30px; height: 30px;">
-                              <span class="provider-name">Nombre del provedor</span>
-                            </div>
-                          </div>
-                        </a>
-                      </div>
-                    </div>
+                              <!--  <div class="text-muted" style="font-size: 12px;">
 
-                    <!-- Card 3 -->
-                    <div class="col-md-3">
-                      <div class="card d-flex align-items-center justify-content-center">
-                        <a href="/usuario/productoDetalles" class="text-decoration-none">
-                          <div class="card-img-top d-flex justify-content-center align-items-center" style="height: 200px;">
-                            <img th:src="@{../images/product/img-1.png}" alt="Product 1" style="max-height: 100%; max-width: 100%; object-fit: cover;">
-                          </div>
-                          <div class="card-body ">
-                            <a  class="text-primary d-flex  align-items-center justify-content-center">Categoría, Subcategoría</a>
-                            <h5 class="mt-1 mb-3"  style="font-size: 14px;">Full sleeve Blue color t-shirt</h5>
-                            <div class="d-inline-flex">
-                              <div class="text-muted me-2" style="font-size: 12px;">
-                                <span class="mdi mdi-star text-warning"></span>
-                                <span class="mdi mdi-star text-warning"></span>
-                                <span class="mdi mdi-star text-warning"></span>
-                                <span class="mdi mdi-star text-warning"></span>
-                                <span class="mdi mdi-star"></span>
-                              </div>
-                              <div class="text-muted" style="font-size: 12px;">4.1 ( 132 )</div>
+                                  <span th:text="${product.rating}">4.1</span> ( <span th:text="${product.reviews}">132</span> )
+                              </div>-->
                             </div>
-                            <h5 class="mt-2" style="font-size: 14px;">S/100 <span style="font-size: 12px; color: #888;">por cada 10 unidades</span></h5>
-                            <p class="mt-2" style="font-size: 14px;">Costo por unidad: S/10</p>
-                            <div class="provider-info d-flex ">
-                              <img th:src="@{../images/product/iconoProvedor.png}" alt="Proveedor Icono" class="rounded-circle me-2" style="width: 30px; height: 30px;">
-                              <span class="provider-name">Nombre del provedor</span>
-                            </div>
-                          </div>
-                        </a>
-                      </div>
-                    </div>
-                    <!-- Card 4-->
-                    <div class="col-md-3">
-                      <div class="card d-flex align-items-center justify-content-center">
-                        <a href="/usuario/productoDetalles" class="text-decoration-none">
-                          <div class="card-img-top d-flex justify-content-center align-items-center" style="height: 200px;">
-                            <img th:src="@{../images/product/img-1.png}" alt="Product 1" style="max-height: 100%; max-width: 100%; object-fit: cover;">
-                          </div>
-                          <div class="card-body ">
-                            <a  class="text-primary d-flex  align-items-center justify-content-center">Categoría, Subcategoría</a>
-                            <h5 class="mt-1 mb-3"  style="font-size: 14px;">Full sleeve Blue color t-shirt</h5>
-                            <div class="d-inline-flex">
-                              <div class="text-muted me-2" style="font-size: 12px;">
-                                <span class="mdi mdi-star text-warning"></span>
-                                <span class="mdi mdi-star text-warning"></span>
-                                <span class="mdi mdi-star text-warning"></span>
-                                <span class="mdi mdi-star text-warning"></span>
-                                <span class="mdi mdi-star"></span>
-                              </div>
-                              <div class="text-muted" style="font-size: 12px;">4.1 ( 132 )</div>
-                            </div>
-                            <h5 class="mt-2" style="font-size: 14px;">S/100 <span style="font-size: 12px; color: #888;">por cada 10 unidades</span></h5>
-                            <p class="mt-2" style="font-size: 14px;">Costo por unidad: S/10</p>
-                            <div class="provider-info d-flex ">
-                              <img th:src="@{../images/product/iconoProvedor.png}" alt="Proveedor Icono" class="rounded-circle me-2" style="width: 30px; height: 30px;">
-                              <span class="provider-name">Nombre del provedor</span>
-                            </div>
+                            <h5 class="mt-2" style="font-size: 14px;">
+                              S/ <span th:text="${producto.precio}">100</span>
+                              <span style="font-size: 12px; color: #888;">por cada 10 unidades</span>
+                            </h5>
+                            <p class="mt-2" style="font-size: 14px;">Costo por unidad: S/<span th:text="${producto.precio*1.5}"></span></p>     </div>
+                          <div class="provider-info d-flex align-items-center justify-content-center">
+                            <img th:src="@{../../images/product/iconoProvedor.png}" alt="Proveedor Icono" class="rounded-circle me-2" style="width: 30px; height: 30px;">
+
+                            <span th:text="${producto.proveedorIdproveedor.tienda}" class="provider-name">Nombre del proveedor</span>
                           </div>
                         </a>
                       </div>
@@ -433,11 +374,11 @@
 
 
               </div>
-            </div>
+
             <!-- end card -->
           </div>
         </div>
-
+        </div>
       </div> <!-- container-fluid -->
     </div>
     <!-- End Page-content -->
