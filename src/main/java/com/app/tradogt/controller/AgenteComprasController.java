@@ -11,6 +11,9 @@ import com.app.tradogt.repository.ProveedorRepository;
 import com.app.tradogt.repository.UsuarioRepository;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -42,6 +45,24 @@ public class AgenteComprasController {
         this.productosRepository = productosRepository;
     }
 
+    // Método auxiliar para obtener el ID del usuario autenticado
+    private int getAuthenticatedUserId() {
+        // Obtener el usuario autenticado
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Object principal = authentication.getPrincipal();
+        String correoUsuario;
+
+        if (principal instanceof UserDetails) {
+            correoUsuario = ((UserDetails) principal).getUsername(); // Obtener el correo del usuario autenticado
+        } else {
+            correoUsuario = principal.toString();
+        }
+
+        // Buscar el usuario (agente) en la base de datos usando el correo
+        Usuario usuario = usuarioRepository.findByCorreo(correoUsuario);  // Método para buscar usuario por correo
+        return usuario.getId(); // Retornar el ID del agente autenticado
+    }
+
     @GetMapping("/inicio")
     public String showInicio() {
         return "Agente/inicio-Agente";
@@ -55,10 +76,10 @@ public class AgenteComprasController {
     //TABLEROS DE ÓRDENES
     @GetMapping("/allOrders")
     public String showAllOrders(Model model) {
+        int idAgente = getAuthenticatedUserId();  // Obtener el ID del usuario autenticado
+
         // Obtener los resultados de la consulta nativa
-        //Por el momento yo mismo le asigno el id que usará para buscar las órdenes asignadas
-        //pues este id será proporcionado recién automáticamente cuando se realice el LOGIN
-        List<Object[]> resultados = ordenRepository.getOrderDetailsAsDtoNative(4);
+        List<Object[]> resultados = ordenRepository.getOrderDetailsAsDtoNative(idAgente);
 
         // Mapear los resultados al DTO directamente en el controlador
         List<OrdenCompraAgtDto> listaOrdenes = resultados.stream()

@@ -111,6 +111,8 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
     //Buscar por id
     @Query("SELECT u FROM Usuario u WHERE u.id = :id")
     Usuario findByIdUsuario(Integer id);
+
+    Usuario findByCorreo(String correoUsuario);
     //Borrado lógico por ID (isActive = 0)
     /*
     @Modifying
