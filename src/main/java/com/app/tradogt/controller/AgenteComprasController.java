@@ -1,6 +1,7 @@
 package com.app.tradogt.controller;
 
 import com.app.tradogt.dto.OrdenCompraAgtDto;
+import com.app.tradogt.dto.PasswordChangeDto;
 import com.app.tradogt.dto.ProductDetailsAgtDto;
 import com.app.tradogt.dto.ProveedorInfoAgtDto;
 import com.app.tradogt.entity.Orden;
@@ -9,11 +10,14 @@ import com.app.tradogt.repository.OrdenRepository;
 import com.app.tradogt.repository.ProductosRepository;
 import com.app.tradogt.repository.ProveedorRepository;
 import com.app.tradogt.repository.UsuarioRepository;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -45,6 +49,9 @@ public class AgenteComprasController {
         this.productosRepository = productosRepository;
     }
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     // Método auxiliar para obtener el ID del usuario autenticado
     private int getAuthenticatedUserId() {
         // Obtener el usuario autenticado
@@ -69,9 +76,46 @@ public class AgenteComprasController {
     }
 
     @GetMapping("/contraseña")
-    public String changePass(){
+    public String changePass(Model model){
+        model.addAttribute("passwordChangeDto", new PasswordChangeDto());
         return "Agente/changePass-Agente";
     }
+
+    @PostMapping("/cambiarContrasena")
+    public String cambiarContrasena(@Valid PasswordChangeDto passwordChangeDto,
+                                    BindingResult result,
+                                    Authentication authentication,
+                                    Model model) {
+
+        // Validación de errores
+        if (result.hasErrors()) {
+            model.addAttribute("errors", result.getAllErrors());
+            return "Agente/changePass-Agente";  // Retorna a la vista con los errores
+        }
+
+        // Obtener el usuario autenticado desde el sistema de seguridad
+        Usuario usuario = usuarioRepository.findByCorreo(authentication.getName());
+
+        // Verificar si la contraseña actual ingresada coincide con la almacenada
+        if (!passwordEncoder.matches(passwordChangeDto.getCurrentPassword(), usuario.getContrasena())) {
+            model.addAttribute("error", "La contraseña actual es incorrecta.");
+            return "Agente/changePass-Agente";  // Retorna a la vista con el mensaje de error
+        }
+
+        // Verificar si las contraseñas nuevas coinciden
+        if (!passwordChangeDto.getNewPassword().equals(passwordChangeDto.getConfirmNewPassword())) {
+            model.addAttribute("error", "Las contraseñas nuevas no coinciden.");
+            return "Agente/changePass-Agente";  // Retorna a la vista con el mensaje de error
+        }
+
+        // Actualizar la contraseña del usuario
+        usuario.setContrasena(passwordEncoder.encode(passwordChangeDto.getNewPassword()));
+        usuarioRepository.save(usuario);  // Guardar los cambios en la base de datos
+
+        model.addAttribute("success", "Contraseña cambiada con éxito.");
+        return "redirect:/agente/perfil";  // Redirige a la página del perfil
+    }
+
 
     //TABLEROS DE ÓRDENES
     @GetMapping("/allOrders")

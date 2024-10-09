@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8" />
-  <title>Password</title>
+  <title>Reestablecer Contraseña</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <!-- CSS BASE -->
   <meta th:replace="~{Common/cssBase :: css_Base}">
@@ -11,8 +11,6 @@
 </head>
 
 <body data-sidebar="dark">
-
-<!-- <body data-layout="horizontal" data-topbar="dark"> -->
 
 <!-- Begin page -->
 <div id="layout-wrapper">
@@ -23,6 +21,7 @@
   <!-- ========== Left Sidebar Start ========== -->
   <div th:replace="Agente/fragments/sidebar :: side_bar"></div>
   <!-- Left Sidebar End -->
+
   <!-- ============================================================== -->
   <!-- Start right Content here -->
   <!-- ============================================================== -->
@@ -46,50 +45,73 @@
           </div>
         </div>
 
+        <!-- Formulario de cambio de contraseña -->
         <div class="row">
           <div class="col-xl-12">
             <div class="card">
               <hr class="my-0">
               <div class="card-body">
-                <form action="/path/to/ServletCord" method="post">
-                  <input type="hidden" name="action" value="changePassword">
+                <!-- Alertas de error o éxito -->
+                <div th:if="${error}" class="alert alert-danger" role="alert">
+                  <span th:text="${error}"></span>
+                </div>
+
+                <div th:if="${success}" class="alert alert-success" role="alert">
+                  <span th:text="${success}"></span>
+                </div>
+                <!-- Formulario para cambiar la contraseña -->
+                <form th:action="@{/agente/cambiarContrasena}" method="post" th:object="${passwordChangeDto}">
+
+                  <!-- Mostrar errores de validación si existen -->
+                  <div th:if="${#fields.hasErrors()}" class="alert alert-danger">
+                    <ul>
+                      <li th:each="err : ${#fields.errors('*')}" th:text="${err}"></li>
+                    </ul>
+                  </div>
+
+                  <!-- Mostrar mensaje de éxito si la contraseña se cambió correctamente -->
+                  <div th:if="${success}" class="alert alert-success">
+                    <p th:text="${success}"></p>
+                  </div>
+
                   <div class="row">
                     <div class="row">
+                      <!-- Campo para contraseña actual -->
                       <div class="mb-3 col-md-6">
                         <label for="currentPassword" class="form-label">Contraseña Actual</label>
                         <p class="text-muted mb-2 mt-2">Introduzca su contraseña actual</p>
-                        <input class="form-control" type="password" id="currentPassword" name="currentPassword" required>
+                        <input class="form-control" type="password" id="currentPassword" th:field="*{currentPassword}" required>
                       </div>
                     </div>
-                    <div class="mb-3 col-md-6">
 
+                    <!-- Campo para nueva contraseña -->
+                    <div class="mb-3 col-md-6">
                       <label for="newPassword" class="form-label">Nueva Contraseña</label>
                       <p class="text-muted mb-2 mt-2">Introduzca su nueva contraseña</p>
 
-                      <input class="form-control" type="password" id="newPassword" name="newPassword" required>
+                      <input class="form-control" type="password" id="newPassword" th:field="*{newPassword}" required>
                       <ul class="text-muted mb-2 mt-2 mx-3">
                         <li>La longitud mínima de la contraseña es de 8 caracteres y máxima de 16 caracteres</li>
-                        <li>Su contraseña debe contener como mínimo 1 número</li>
-                        <li>Su contraseña debe contener como mínimo 2 caracteres especiales</li>
-                        <li>Su contraseña debe contener como mínimo 1 letra mayúscula y minúscula</li>
+                        <li>Debe contener al menos 1 número</li>
+                        <li>Debe contener al menos 2 caracteres especiales</li>
+                        <li>Debe contener al menos 1 letra mayúscula y minúscula</li>
                       </ul>
                     </div>
+
+                    <!-- Campo para confirmar nueva contraseña -->
                     <div class="mb-3 col-md-6">
                       <label for="confirmNewPassword" class="form-label">Confirmar Nueva Contraseña</label>
                       <p class="text-muted mb-2 mt-2">Introduzca de nuevo su contraseña. Asegúrese de que sean idénticas</p>
-
-                      <input class="form-control" type="password" id="confirmNewPassword" name="confirmNewPassword" required>
+                      <input class="form-control" type="password" id="confirmNewPassword" th:field="*{confirmNewPassword}" required>
                       <hr class="opacity-0">
                       <div class="mt-2">
-                        <button type="submit" class="btn btn-primary me-2" style="background-color: #FFA500; color: #ffffff; border: 2px solid #FFA500;  border-radius: 8px; font-size: 14px; cursor: pointer; transition: background-color 0.3s, border-color 0.3s;" tabindex="0">Cambiar Contraseña</button>
+                        <button type="submit" class="btn btn-primary me-2" style="background-color: #FFA500; color: #ffffff; border: 2px solid #FFA500;  border-radius: 8px; font-size: 14px; cursor: pointer; transition: background-color 0.3s, border-color 0.3s;">Cambiar Contraseña</button>
                       </div>
-
                     </div>
                   </div>
-
                 </form>
-              </div>
 
+              </div>
             </div>
           </div>
         </div>
@@ -116,7 +138,6 @@
   <!-- end main content-->
 </div>
 <!-- END layout-wrapper -->
-
 
 <!-- JAVASCRIPT BASE-->
 <span th:replace="~{Common/jsBase :: js_Base}"></span>

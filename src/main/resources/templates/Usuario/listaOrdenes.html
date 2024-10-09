@@ -91,8 +91,8 @@
 
 
                                     <tbody>
-                                    <tr th:each="orden : ${misOrdenes}">
-                                        <td th:text="${orden.codigo}"></td>
+                                    <tr th:each="orden : ${listaPedidos}">
+                                        <td th:text="${orden.id}"></td>
                                         <td th:text="'S/.' + ${orden.costoTotal}"></td>
                                         <td th:text="${orden.fechaCreacion}"></td>
                                         <td th:text="${orden.estadoordenIdestadoorden.nombre}"></td>

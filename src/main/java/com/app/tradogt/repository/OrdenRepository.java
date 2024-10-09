@@ -267,5 +267,4 @@ public interface OrdenRepository extends JpaRepository<Orden, Integer> {
     List<Orden> findAllByAgentcompraIdusuario(Usuario usuario);
 
 
-
 }

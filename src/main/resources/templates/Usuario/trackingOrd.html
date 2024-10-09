@@ -79,15 +79,15 @@
                                     <div class="row mb-4">
                                         <div class="col-md-6 col-sm-12">
                                             <h5>Datos personales</h5>
-                                            <p><strong>Nombre de comprador: </strong><span class="text-primary" th:text="${item.usuarioIdusuario.nombre} + ' ' + ${item.usuarioIdusuario.apellido}"></span></p>
-                                            <p><strong>Número DNI: </strong> <span class="text-primary" th:text="${item.usuarioIdusuario.dni}"></span></p>
-                                            <p><strong>Domicilio: </strong> <span class="text-primary" th:text="${item.usuarioIdusuario.direccion}"></span></p>
+                                            <p><strong>Nombre de comprador: </strong><span class="text-primary" th:text="${usuario.nombre} + ' ' + ${usuario.apellido}"></span></p>
+                                            <p><strong>Número DNI: </strong> <span class="text-primary" th:text="${usuario.dni}"></span></p>
+                                            <p><strong>Domicilio: </strong> <span class="text-primary" th:text="${usuario.direccion}"></span></p>
                                         </div>
                                         <div class="col-md-6 col-sm-12">
                                             <h5>Fecha y Número de Orden</h5>
                                             <p><strong>Fecha: </strong> <span class="text-primary" th:text="${orden.fechaCreacion}"></span></p>
                                             <p><strong>No. de orden: </strong> <span class="text-primary" th:text="${orden.codigo}"></span></p>
-                                            <p><strong>Ciudad, Estado: </strong> <span class="text-primary" th:text="${item.usuarioIdusuario.distritoIddistrito.nombre} + ', ' + ${item.usuarioIdusuario.distritoIddistrito.zonaIdzona.nombre}"></span></p>
+                                            <p><strong>Ciudad, Estado: </strong> <span class="text-primary" th:text="${usuario.distritoIddistrito.nombre} + ', ' + ${usuario.distritoIddistrito.zonaIdzona.nombre}"></span></p>
                                         </div>
                                     </div>
 
@@ -104,7 +104,7 @@
                                                     <div class="col-3 col-sm-3">Código</div>
                                                 </li>
                                                 <!-- Fila de productos con botón -->
-                                                <li class="list-group-item d-flex justify-content-between align-items-center" th:each="proveedor : ${miCarrito}">
+                                                <li class="list-group-item d-flex justify-content-between align-items-center" th:each="proveedor : ${listaPedidos}">
                                                     <div class="col-3 col-sm-3" th:text="${proveedor.productoEnZona.productoIdproducto.proveedorIdproveedor.tienda}"></div>
                                                     <div class="col-3 col-sm-3" th:text="${proveedor.productoEnZona.productoIdproducto.proveedorIdproveedor.nombre}"></div>
                                                     <div class="col-3 col-sm-3" th:text="${proveedor.productoEnZona.productoIdproducto.proveedorIdproveedor.telefono}"></div>
@@ -128,7 +128,7 @@
                                                     <div class="col-sm-2 col-2" th:if="${ orden.estadoordenIdestadoorden.nombre == 'RECIBIDO' }" >Acción</div> <!-- Espacio reservado para el botón de acción -->
                                                 </li>
                                                 <!-- Fila de productos con botón -->
-                                                <li class="list-group-item d-flex justify-content-between align-items-center" th:each="producto : ${miCarrito}">
+                                                <li class="list-group-item d-flex justify-content-between align-items-center" th:each="producto : ${listaPedidos}">
                                                     <div class="col-2 col-sm-2" th:text="${producto.productoEnZona.productoIdproducto.codigo}"></div>
                                                     <div class="col-23 col-sm-2" th:text="${producto.cantidad}"></div>
                                                     <div class="col-4 col-sm-3" th:text="${producto.productoEnZona.productoIdproducto.nombre}"></div>
@@ -146,14 +146,10 @@
                                             <h5>Observaciones</h5>
                                             <ul class="list-group list-group-flush">
                                                 <li class="list-group-item d-flex justify-content-between align-items-center bg-light font-weight-bold">
-                                                    <div class="col-md-3">Subtotal</div>
-                                                    <div class="col-md-3">Costo de envío</div>
                                                     <div class="col-md-3">Total</div>
                                                 </li>
                                                 <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                    <div class="col-md-3" th:text="'S/ ' + ${orden.subTotal}"></div>
-                                                    <div class="col-md-3" th:text="'S/ ' + ${item.productoEnZona.costoEnvio}"></div>
-                                                    <div class="col-md-3" th:text="'S/ ' + ${orden.costoTotal}"></div>
+                                                    <div class="col-md-3" th:text="'S/ ' + ${monto}"></div>
                                                 </li>
                                             </ul>
                                         </div>
