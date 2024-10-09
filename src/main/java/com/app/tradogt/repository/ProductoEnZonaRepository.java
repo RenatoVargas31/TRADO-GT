@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ProductoEnZonaRepository extends JpaRepository<ProductoEnZona, ProductoEnZonaId> {
@@ -18,4 +19,5 @@ public interface ProductoEnZonaRepository extends JpaRepository<ProductoEnZona, 
     void actualizarEstadoOrden(@Param("nuevoEstado") Byte nuevoEstado, @Param("idProducto") Long idProducto);
     */
     List<ProductoEnZona> findAllByIsDeleted(Byte isDeleted);
+
 }

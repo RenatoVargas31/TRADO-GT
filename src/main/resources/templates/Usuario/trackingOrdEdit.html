@@ -77,15 +77,16 @@
                   <div class="row mb-4">
                     <div class="col-md-6 col-sm-12">
                       <h5>Datos personales</h5>
-                      <p><strong>Nombre de comprador: </strong><span class="text-primary" th:text="${item.usuarioIdusuario.nombre} + ' ' + ${item.usuarioIdusuario.apellido}"></span></p>
-                      <p><strong>Número DNI: </strong> <span class="text-primary" th:text="${item.usuarioIdusuario.dni}"></span></p>
-                      <p><strong>Domicilio: </strong> <span class="text-primary" th:text="${item.usuarioIdusuario.direccion}"></span></p>
+                        <p><strong>Nombre de comprador: </strong><span class="text-primary" th:text="${usuario.nombre} + ' ' + ${usuario.apellido}"></span></p>
+                        <p><strong>Número DNI: </strong> <span class="text-primary" th:text="${usuario.dni}"></span></p>
+                      <p><strong>Domicilio: </strong><span class="text-primary" th:text="${usuario.direccion}"></span></p>
                     </div>
+
                     <div class="col-md-6 col-sm-12">
                       <h5>Fecha y Número de Orden</h5>
                       <p><strong>Fecha: </strong> <span class="text-primary" th:text="${orden.fechaCreacion}"></span></p>
                       <p><strong>No. de orden: </strong> <span class="text-primary" th:text="${orden.codigo}"></span></p>
-                      <p><strong>Ciudad, Estado: </strong> <span class="text-primary" th:text="${item.usuarioIdusuario.distritoIddistrito.nombre} + ', ' + ${item.usuarioIdusuario.distritoIddistrito.zonaIdzona.nombre}"></span></p>
+                      <p><strong>Ciudad, Estado: </strong> <span class="text-primary" th:text="${usuario.distritoIddistrito.nombre} + ', ' + ${usuario.distritoIddistrito.zonaIdzona.nombre}"></span></p>
                     </div>
                   </div>
 
@@ -102,7 +103,7 @@
                           <div class="col-3 col-sm-3">Código</div>
                         </li>
                         <!-- Fila de productos con botón -->
-                        <li class="list-group-item d-flex justify-content-between align-items-center" th:each="proveedor : ${miCarrito}">
+                        <li class="list-group-item d-flex justify-content-between align-items-center" th:each="proveedor : ${listaPedidos}">
                           <div class="col-3 col-sm-3" th:text="${proveedor.productoEnZona.productoIdproducto.proveedorIdproveedor.tienda}"></div>
                           <div class="col-3 col-sm-3" th:text="${proveedor.productoEnZona.productoIdproducto.proveedorIdproveedor.nombre}"></div>
                           <div class="col-3 col-sm-3" th:text="${proveedor.productoEnZona.productoIdproducto.proveedorIdproveedor.telefono}"></div>
@@ -123,46 +124,16 @@
                           <div class="col-2 col-sm-2">Cantidad</div>
                           <div class="col-4 col-sm-3">Nombre del producto</div>
                           <div class="col-2 col-sm-2">Costo unitario</div>
-                          <div class="col-md-2">Acción</div><!-- Espacio reservado para el botón de acción -->
+                          <!--  <div class="col-md-2">Acción</div>Espacio reservado para el botón de acción -->
                         </li>
                         <!-- Fila de productos con botón -->
-                        <li class="list-group-item d-flex justify-content-between align-items-center" th:each="producto : ${miCarrito}">
+                        <li class="list-group-item d-flex justify-content-between align-items-center" th:each="producto : ${listaPedidos}">
                           <div class="col-2 col-sm-2" th:text="${producto.productoEnZona.productoIdproducto.codigo}"></div>
                           <div class="col-23 col-sm-2" th:text="${producto.cantidad}"></div>
                           <div class="col-4 col-sm-3" th:text="${producto.productoEnZona.productoIdproducto.nombre}"></div>
                           <div class="col-2 col-sm-2" th:text="'S/ ' + ${producto.productoEnZona.productoIdproducto.precio}"></div>
-                          <div class="col-md-2">
-                            <button type="button" class="btn btn-success btn-sm waves-effect waves-light" data-bs-toggle="modal" th:data-bs-target="'#editProductModal' + ${producto.productoEnZona.productoIdproducto.codigo}" title="Editar"><i class="ri-pencil-fill"></i></button>
-                            <button type="button" class="btn btn-danger btn-sm waves-effect waves-light" data-bs-toggle="modal" th:data-bs-target="'#deleteProductModal' + ${producto.productoEnZona.productoIdproducto.codigo}" title="Eliminar"><i class="ri-delete-bin-fill"></i></button>
-                            <!-- Modal para Editar Producto -->
-                            <div class="modal fade" th:id="'editProductModal' + ${producto.productoEnZona.productoIdproducto.codigo}" tabindex="-1" aria-labelledby="editProductLabel + ${producto.productoEnZona.productoIdproducto.codigo}" aria-hidden="true">
-                              <div class="modal-dialog">
-                                <div class="modal-content">
-                                  <div class="modal-header">
-                                    <h5 class="modal-title" id="editProductLabel">Editar Cantidad de Producto</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                  </div>
-                                  <div class="modal-body">
-                                    <form th:action="@{/usuario/editCantidad}" method="post">
-                                      <div class="mb-3">
-                                        <label for="productQuantity" class="form-label">Cantidad</label>
-                                        <input type="number" class="form-control" id="productQuantity" th:value="${producto.cantidad}" min="1">
-                                      </div>
-                                      <div class="mb-3">
-                                        <label for="productName" class="form-label">Nombre del Producto</label>
-                                        <input type="text" class="form-control" id="productName" th:value="${producto.productoEnZona.productoIdproducto.nombre}" disabled>
-                                      </div>
-                                    </form>
-                                  </div>
-                                  <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                    <button type="button" class="btn btn-primary">Guardar Cambios</button>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-
-                            <!-- Modal para Confirmar Eliminación -->
+                            <!--<button type="button" class="btn btn-danger btn-sm waves-effect waves-light" data-bs-toggle="modal" th:data-bs-target="'#deleteProductModal' + ${producto.productoEnZona.productoIdproducto.codigo}" title="Eliminar"><i class="ri-delete-bin-fill"></i></button>-->
+                            <!-- Modal para Confirmar Eliminación
                             <div class="modal fade" th:id="'deleteProductModal' + ${producto.productoEnZona.productoIdproducto.codigo}" tabindex="-1" aria-labelledby="deleteProductLabel' +  ${producto.productoEnZona.productoIdproducto.codigo}" aria-hidden="true">
                               <div class="modal-dialog">
                                 <div class="modal-content">
@@ -182,8 +153,7 @@
                                   </div>
                                 </div>
                               </div>
-                            </div>
-                          </div>
+                            </div>-->
                         </li>
                       </ul>
                     </div>
@@ -193,14 +163,10 @@
                       <h5>Observaciones</h5>
                       <ul class="list-group list-group-flush">
                         <li class="list-group-item d-flex justify-content-between align-items-center bg-light font-weight-bold">
-                          <div class="col-md-3">Subtotal</div>
-                          <div class="col-md-3">Costo de envío</div>
                           <div class="col-md-3">Total</div>
                         </li>
                         <li class="list-group-item d-flex justify-content-between align-items-center">
-                          <div class="col-md-3" th:text="'S/ ' + ${orden.subTotal}"></div>
-                          <div class="col-md-3" th:text="'S/ ' + ${item.productoEnZona.costoEnvio}"></div>
-                          <div class="col-md-3" th:text="'S/ ' + ${orden.costoTotal}"></div>
+                          <div class="col-md-3" th:text="'S/ ' + ${monto}"></div>
                         </li>
                       </ul>
                     </div>
@@ -208,12 +174,11 @@
 
                 </div>
 
-                <!-- Botones de acciones alineados al lado derecho inferior -->
+                <!-- Botones de acciones alineados al lado derecho inferior
                 <div class="card-footer d-flex justify-content-end">
                   <a type="button" class="btn btn-danger me-3" data-bs-toggle="modal" data-bs-target="#cancelEdit">Cancelar</a>
                   <a type="button" class="btn btn-success me-3" data-bs-toggle="modal" data-bs-target="#saveEdit">Guardar</a>
 
-                  <!-- Primer Modal: Confirmar Guardar Cambios -->
                   <div class="modal fade" id="saveEdit" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="saveEditLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
                       <div class="modal-content">
@@ -226,7 +191,6 @@
                         </div>
                         <div class="modal-footer">
                           <button class="btn btn-secondary" data-bs-dismiss="modal">No</button>
-                          <!-- Botón para abrir el segundo modal -->
                           <button class="btn btn-success" data-bs-target="#refundModal" data-bs-toggle="modal" data-bs-dismiss="modal">Sí</button>
                         </div>
                       </div>
@@ -236,7 +200,6 @@
 
 
 
-                  <!-- Segundo Modal: Confirmación de Reembolso -->
                   <div class="modal fade" id="refundModal" tabindex="-1" role="dialog" aria-labelledby="refundModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
                       <div class="modal-content">
@@ -252,7 +215,7 @@
                         </div>
                       </div>
                     </div>
-                  </div>
+                  </div> -->
 
                   <div class="modal fade" id="cancelEdit" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="cancelEditLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
@@ -273,7 +236,7 @@
                     </div>
                   </div>
 
-                </div>
+                </div>-->
               </div>
             </div>
           </div>

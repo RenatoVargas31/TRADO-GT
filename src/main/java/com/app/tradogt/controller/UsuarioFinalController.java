@@ -2,6 +2,12 @@ package com.app.tradogt.controller;
 
 
 import com.app.tradogt.entity.*;
+import jakarta.validation.constraints.NotNull;
+import org.hibernate.query.Order;
+import org.springframework.data.repository.query.Param;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -31,8 +37,9 @@ public class UsuarioFinalController {
     final CarritoRepository carritoRepository;
     final PagoRepository pagoRepository;
     final ResenaRepository resenaRepository;
+    final ProductoEnCarritoRepository productoEnCarritoRepository;
 
-    public UsuarioFinalController(ProductosRepository productosRepository, OrdenRepository ordenRepository, UsuarioRepository usuarioRepository, ProductoEnZonaRepository productoEnZonaRepository, PublicacionRepository publicacionRepository, ComentarioRepository comentarioRepository, SubCategoriaRepository subCategoriaRepository, CarritoRepository carritoRepository, PagoRepository pagoRepository, ResenaRepository resenaRepository) {
+    public UsuarioFinalController(ProductosRepository productosRepository, OrdenRepository ordenRepository, UsuarioRepository usuarioRepository, ProductoEnZonaRepository productoEnZonaRepository, PublicacionRepository publicacionRepository, ComentarioRepository comentarioRepository, SubCategoriaRepository subCategoriaRepository, CarritoRepository carritoRepository, PagoRepository pagoRepository, ResenaRepository resenaRepository, ProductoEnCarritoRepository productoEnCarritoRepository) {
         this.productosRepository = productosRepository;
         this.ordenRepository = ordenRepository;
         this.usuarioRepository = usuarioRepository;
@@ -44,22 +51,46 @@ public class UsuarioFinalController {
         this.carritoRepository = carritoRepository;
         this.pagoRepository = pagoRepository;
         this.resenaRepository = resenaRepository;
+        this.productoEnCarritoRepository = productoEnCarritoRepository;
+    }
+
+    //Metodo auxiliar para obtener el id del usuario
+    private int getAuthenticatedUserId() {
+        // Obtener el usuario autenticado
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Object principal = authentication.getPrincipal();
+        String correoUsuario;
+
+        if (principal instanceof UserDetails) {
+            correoUsuario = ((UserDetails) principal).getUsername(); // Obtener el correo del usuario autenticado
+        } else {
+            correoUsuario = principal.toString();
+        }
+
+        // Buscar el usuario (agente) en la base de datos usando el correo
+        Usuario usuario = usuarioRepository.findByCorreo(correoUsuario);  // Método para buscar usuario por correo
+        return usuario.getId(); // Retornar el ID del agente autenticado
     }
 
     @GetMapping("/inicio")
     public String inicio() {
+
+        //Listar los pedidos recientes
+
         return "Usuario/inicio-usuario";
     }
 
     @GetMapping("/misPedidos")
     public String misPedidos(Model model) {
-        // Imprimir los elementos de la lista
-        List<Orden> misOrdenes = ordenRepository.findAllByIsDeleted(0);
-        model.addAttribute("misOrdenes", misOrdenes);
+
+
+
+        List<Orden> listarOrdenes = ordenRepository.findAllByIsDeleted( 0);
+        model.addAttribute("listaPedidos", listarOrdenes);
         return "Usuario/listaOrdenes";
     }
 
-/*
+
     //Borrar una orden
     @GetMapping("/deleteOrden")
     public String deleteOrden(Model model, @RequestParam("codigo") String codigo, RedirectAttributes attr) {
@@ -75,20 +106,22 @@ public class UsuarioFinalController {
             ordenRepository.save(ord);
 
             //Mostrar el mensaje de reembolso
-            List<Carrito> miCarrito = carritoRepository.findByOrdenIdorden(ord);
-            // Obtener el primer elemento de la lista
-            if (!miCarrito.isEmpty()) {
-                Carrito item = miCarrito.get(0); // O usar .stream().findFirst().get()
-                String correoUsuario= item.getUsuarioIdusuario().getCorreo();
+            Optional<Orden> miOrden = ordenRepository.findByCodigo(codigo);
+            //Obtener el id del usuario
+            // int idUsuario = getAuthenticatedUserId();
+           // Usuario usuario = usuarioRepository.findById(idUsuario).get();
+            //List<Carrito> miCarrito = carritoRepository.findByUsuarioIdusuario(usuario);
+
+            if(miOrden.isPresent()) {
+                String correoUsuario=  miOrden.get().getCarritoIdcarrito().getUsuarioIdusuario().getCorreo();
                 attr.addFlashAttribute("mensaje", "Orden eliminado: se a realizar el rembolso al correo " + correoUsuario);
             }else{
-                attr.addFlashAttribute("error", "Orden no encontrado");
+            attr.addFlashAttribute("error", "Orden no encontrado");
             }
         }
-
         return "redirect:/usuario/misPedidos";
     }
-*/
+
 
     //Guardar la calificación del Agente de Compra
     @PostMapping("/calificarAgente")
@@ -112,123 +145,83 @@ public class UsuarioFinalController {
     public String formularioPedido() {
         return "Usuario/formOrdenes";
     }
-    /*
+
     @GetMapping("/tracking/{id}")
     public String tracking(@PathVariable("id") int id, Model model) {
 
         //Lista de todos los productos de mi orden
         Optional<Orden> orden = ordenRepository.findById(id);
-        if (orden.isPresent()){
+        if (orden.isPresent()) {
             Orden ord = orden.get();
+            model.addAttribute("orden", ord);
+            Carrito carrito = orden.get().getCarritoIdcarrito();
+
+            //Obtener el id de carrito
+            int items = ord.getCarritoIdcarrito().getId();
             //Listar mis productos
-            List<Carrito> miCarrito = carritoRepository.findByOrdenIdorden(ord);
-            if (!miCarrito.isEmpty()){
-                //Selecionamos al usuario de la orden
-                Carrito item = miCarrito.get(0);
-                //Ver el costo por producto
-                // Inicializa el total del costo
-                BigDecimal totalCosto = BigDecimal.ZERO;
-                BigDecimal totalSubTotal = BigDecimal.ZERO;
+            List<ProductoEnCarrito> mispedidos = productoEnCarritoRepository.findBycarritoIdcarrito(carrito);
+            model.addAttribute("listaPedidos", mispedidos);
 
-// Iterar sobre la lista para calcular el total del subtotal
-                for (Carrito producto : miCarrito) {
-                    // Precio unitario
-                    BigDecimal costoUnidad = producto.getProductoEnZona().getProductoIdproducto().getPrecio();
-                    // Unidad por producto
-                    int cantidad = producto.getCantidad();
-                    // Costo sub total para cada producto
-                    BigDecimal subTotal = costoUnidad.multiply(new BigDecimal(cantidad));
-                    // Añadir el sub total al total del costo
-                    totalCosto = totalCosto.add(subTotal);
-                    totalSubTotal = totalSubTotal.add(subTotal);
-                }
-
-// Setear el subtotal en la orden
-                ord.setSubTotal(totalSubTotal);
-                ordenRepository.save(ord);
-
-// Costo de envio
-                BigDecimal costoEnvio = item.getProductoEnZona().getCostoEnvio();
-// Añadir el costo de envío al total del costo
-                totalCosto = totalCosto.add(costoEnvio);
-
-// Imprimir el total del costo
-                System.out.println("Total del costo: " + totalCosto);
-                System.out.println("Subtotal de la orden: " + ord.getSubTotal());
-                ord.setCostoTotal(totalCosto);
-                ordenRepository.save(ord);
+            //usuario
+            int usuarioId = getAuthenticatedUserId();
+            Optional<Usuario> usuario = usuarioRepository.findById(usuarioId);
+            model.addAttribute("usuario", usuario.get());
 
 
-                model.addAttribute("item", item);
-                model.addAttribute("miCarrito", miCarrito);
-                model.addAttribute("orden", ord);
-            }
-        } else {
-            System.out.println("Orden no encontrada");
-        }
+            //Obtener el costo total
+           BigDecimal monto = ord.getPagoIdpago().getMonto();
+           model.addAttribute("monto", monto);
+
+        }else {
+            System.out.println("Orden no encontrada"); }
 
         return "Usuario/trackingOrd";
     }
 
-
-     */
-    /*
     @GetMapping("/editOrden/{id}")
     public String editOrden(@PathVariable("id") int id, Model model) {
 
         //Lista de todos los productos de mi orden
         Optional<Orden> orden = ordenRepository.findById(id);
-        if (orden.isPresent()){
+        if (orden.isPresent()) {
             Orden ord = orden.get();
+            model.addAttribute("orden", ord);
+            Carrito carrito = orden.get().getCarritoIdcarrito();
+
+            //Obtener el id de carrito
+            int items = ord.getCarritoIdcarrito().getId();
             //Listar mis productos
-            List<Carrito> miCarrito = carritoRepository.findByOrdenIdorden(ord);
-            if (!miCarrito.isEmpty()){
-                //Selecionamos al usuario de la orden
-                Carrito item = miCarrito.get(0);
-                //Ver el costo por producto
+            List<ProductoEnCarrito> mispedidos = productoEnCarritoRepository.findBycarritoIdcarrito(carrito);
+            model.addAttribute("listaPedidos", mispedidos);
 
-                // Inicializa el total del costo
-                BigDecimal totalCosto = BigDecimal.ZERO;
-                BigDecimal totalSubTotal = BigDecimal.ZERO;
-
-// Iterar sobre la lista para calcular el total del subtotal
-                for (Carrito producto : miCarrito) {
-                    // Precio unitario
-                    BigDecimal costoUnidad = producto.getProductoEnZona().getProductoIdproducto().getPrecio();
-                    // Unidad por producto
-                    int cantidad = producto.getCantidad();
-                    // Costo sub total para cada producto
-                    BigDecimal subTotal = costoUnidad.multiply(new BigDecimal(cantidad));
-                    // Añadir el sub total al total del costo
-                    totalCosto = totalCosto.add(subTotal);
-                    totalSubTotal = totalSubTotal.add(subTotal);
-                }
-
-// Setear el subtotal en la orden
-                ord.setSubTotal(totalSubTotal);
-
-// Costo de envio
-                BigDecimal costoEnvio = item.getProductoEnZona().getCostoEnvio();
-// Añadir el costo de envío al total del costo
-                totalCosto = totalCosto.add(costoEnvio);
-
-// Imprimir el total del costo
-                System.out.println("Total del costo: " + totalCosto);
-                System.out.println("Subtotal de la orden: " + ord.getSubTotal());
+            //usuario
+            int usuarioId = getAuthenticatedUserId();
+            Optional<Usuario> usuario = usuarioRepository.findById(usuarioId);
+            model.addAttribute("usuario", usuario.get());
 
 
+            //Obtener el costo total
+            BigDecimal monto = ord.getPagoIdpago().getMonto();
+            model.addAttribute("monto", monto);
 
-                ord.setCostoTotal(totalCosto);
-                model.addAttribute("item", item);
-                model.addAttribute("miCarrito", miCarrito);
-                model.addAttribute("orden", ord);
-            }
-        } else {
-            System.out.println("Orden no encontrada");
-        }
+        }else {
+            System.out.println("Orden no encontrada"); }
+
         return "Usuario/trackingOrdEdit";
     }
-*/
+
+    @PostMapping("/updateDireccion")
+    public String updateDireccion(@RequestParam("direccion") String direccion, Model model) {
+        // Aquí debes obtener el usuario actual, por ejemplo, desde la sesión o un parámetro
+
+        int id = getAuthenticatedUserId();
+
+        Optional<Usuario> myuser = usuarioRepository.findById(id);
+        myuser.get().setDireccion(direccion);
+        usuarioRepository.save(myuser.get());
+
+        return "Usuario/listaOrdenes";
+    }
 
 
     @GetMapping("/productoDetalles/{id}")
