@@ -27,7 +27,7 @@ public class WebSecurityConfig {
     // Bean para la codificación de contraseñas usando BCrypt
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+        return new BCryptPasswordEncoder(10);
     }
 
     // Configuración de UserDetailsManager para obtener usuarios de la base de datos
@@ -39,9 +39,9 @@ public class WebSecurityConfig {
         String sql1 = "SELECT correo, contrasena, isActivated FROM Usuario WHERE correo = ?";
 
         // Query para obtener los roles del usuario
-        String sql2 = "SELECT U.correo, R.nombre FROM Usuario U "
-                + "INNER JOIN Rol R ON (U.idRol = R.idRol) "
-                + "WHERE U.correo = ? and U.isActivated = 1";
+        String sql2 = "SELECT U.correo, R.nombre FROM Usuario U " +
+                "INNER JOIN Rol R ON U.rol_idRol = R.idRol " +
+                "WHERE U.correo = ? AND U.isActivated = 1";
 
         users.setUsersByUsernameQuery(sql1);
         users.setAuthoritiesByUsernameQuery(sql2);
@@ -87,10 +87,10 @@ public class WebSecurityConfig {
                                 }
                                 // Redirección según el rol
                                 switch (rol) {
-                                    case "SuperAdmin" -> response.sendRedirect("/superadmin/inicio");
-                                    case "Administrador Zonal" -> response.sendRedirect("/adminzonal/dashboard");
-                                    case "Agente de Compra" -> response.sendRedirect("/agente/inicio");
-                                    default -> response.sendRedirect("/usuario/inicio");
+                                    case "SuperAdmin" -> response.sendRedirect("superadmin/inicio");
+                                    case "Administrador Zonal" -> response.sendRedirect("adminzonal/dashboard");
+                                    case "Agente de Compra" -> response.sendRedirect("agente/inicio");
+                                    default -> response.sendRedirect("usuario/inicio");
                                 }
                             }
                         })
