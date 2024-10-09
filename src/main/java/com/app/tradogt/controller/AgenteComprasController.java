@@ -123,10 +123,10 @@ public class AgenteComprasController {
     }
     @GetMapping("/pendingOrders")
     public String showPendingOrders(Model model) {
+        int idAgente = getAuthenticatedUserId();  // Obtener el ID del usuario autenticado
         // Obtener los resultados de la consulta nativa
-        //Por el momento yo mismo le asigno el id que usará para buscar las órdenes asignadas
-        //pues este id será proporcionado recién automáticamente cuando se realice el LOGIN
-        List<Object[]> resultados = ordenRepository.getOrderDetailsAsDtoNativePendiente(4);
+
+        List<Object[]> resultados = ordenRepository.getOrderDetailsAsDtoNativePendiente(idAgente);
 
         // Mapear los resultados al DTO directamente en el controlador
         List<OrdenCompraAgtDto> listaOrdenes = resultados.stream()
@@ -146,10 +146,10 @@ public class AgenteComprasController {
     }
     @GetMapping("/enProcesoOrders")
     public String showEnProcesoOrders(Model model) {
+        int idAgente = getAuthenticatedUserId();  // Obtener el ID del usuario autenticado
         // Obtener los resultados de la consulta nativa
-        //Por el momento yo mismo le asigno el id que usará para buscar las órdenes asignadas
-        //pues este id será proporcionado recién automáticamente cuando se realice el LOGIN
-        List<Object[]> resultados = ordenRepository.getOrderDetailsAsDtoNativeEnProceso(4);
+
+        List<Object[]> resultados = ordenRepository.getOrderDetailsAsDtoNativeEnProceso(idAgente);
 
         // Mapear los resultados al DTO directamente en el controlador
         List<OrdenCompraAgtDto> listaOrdenes = resultados.stream()
@@ -169,10 +169,10 @@ public class AgenteComprasController {
     }
     @GetMapping("/solveOrders")
     public String showSolveOrders(Model model) {
+        int idAgente = getAuthenticatedUserId();  // Obtener el ID del usuario autenticado
         // Obtener los resultados de la consulta nativa
-        //Por el momento yo mismo le asigno el id que usará para buscar las órdenes asignadas
-        //pues este id será proporcionado recién automáticamente cuando se realice el LOGIN
-        List<Object[]> resultados = ordenRepository.getOrderDetailsAsDtoNativeResuelto(4);
+
+        List<Object[]> resultados = ordenRepository.getOrderDetailsAsDtoNativeResuelto(idAgente);
 
         // Mapear los resultados al DTO directamente en el controlador
         List<OrdenCompraAgtDto> listaOrdenes = resultados.stream()
@@ -191,10 +191,27 @@ public class AgenteComprasController {
         return "Agente/solveOrdersTable-Agente";
     }
     @GetMapping("/perfil")
-    public String showPerfil() {
+    public String showPerfil(Model model) {
+        // Obtener el usuario autenticado
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Object principal = authentication.getPrincipal();
+        String correoUsuario;
 
-        return "Agente/profile-Agente";
+        if (principal instanceof UserDetails) {
+            correoUsuario = ((UserDetails) principal).getUsername(); // Obtener el correo del usuario autenticado
+        } else {
+            correoUsuario = principal.toString();
+        }
+
+        // Buscar el usuario en la base de datos usando el correo
+        Usuario usuario = usuarioRepository.findByCorreo(correoUsuario);  // Suponiendo que tienes un método para buscar por correo
+
+        // Pasar la información del usuario al modelo para que esté disponible en la vista
+        model.addAttribute("usuario", usuario);
+
+        return "Agente/profile-Agente";  // Retorna la vista del perfil del agente
     }
+
 
     //Información de órdenes de usuarios asignados
     //OJO: Se crean múltiples vistas de estos detalles con el objetivo de mostrar el html
@@ -295,6 +312,7 @@ public class AgenteComprasController {
     // Método para eliminar la orden (cambio lógico de isDeleted)
     @PostMapping("/deleteOrder")
     public String deleteOrder(@RequestParam("idOrden") int idOrden, RedirectAttributes redirectAttributes) {
+
         // Buscamos la orden por ID
         Optional<Orden> optionalOrden = ordenRepository.findById(idOrden);
 

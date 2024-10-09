@@ -56,22 +56,22 @@
                 <h4 class="card-title">Registro de un nuevo Agente</h4>
                 <p class="card-title-desc"> Complete la información requerida para registrar un nuevo agente en el sistema. Todos los campos son obligatorios.</p>
 
-                <form class="needs-validation" novalidate>
+                <form th:object="${agente}" th:action="@{/adminzonal/saveAgente}" method="post" class="needs-validation" novalidate>
+                  <input th:field="*{id}" type="hidden">
                   <!-- Nombre y Apellidos -->
                   <div class="row">
                     <div class="col-md-6">
                       <div class="mb-3">
-                        <label for="validationCustom01" class="form-label">Nombre</label>
-                        <input type="text" class="form-control" id="validationCustom01"
-                               placeholder="First name"  >
-
+                        <label class="form-label">Nombre</label>
+                        <input type="text" th:field="*{nombre}" class="form-control"
+                               placeholder="First name" >
                       </div>
                     </div>
                     <div class="col-md-6">
                       <div class="mb-3">
                         <label for="validationCustom02" class="form-label">Apellidos</label>
                         <input type="text" class="form-control" id="validationCustom02"
-                               placeholder="Last name"  >
+                               placeholder="Last name"  th:field="*{apellido}">
                       </div>
                     </div>
                   </div>
@@ -81,7 +81,7 @@
                       <div class="mb-3">
                         <label for="validationCustom03" class="form-label">Documento de identificación</label>
                         <input type="text" class="form-control" id="validationCustom03"
-                               placeholder="ID"  >
+                               placeholder="ID"  th:field="*{dni}">
 
                       </div>
                     </div>
@@ -89,7 +89,7 @@
                       <div class="mb-3">
                         <label for="validationCustom04" class="form-label">Teléfono</label>
                         <input type="text" class="form-control" id="validationCustom04"
-                               placeholder="Phone number"  >
+                               placeholder="Phone number" th:field="*{telefono}">
 
                       </div>
                     </div>
@@ -97,7 +97,7 @@
                       <div class="mb-3">
                         <label for="validationCustom05" class="form-label">Correo electrónico</label>
                         <input type="text" class="form-control" id="validationCustom05"
-                               placeholder="Email"  >
+                               placeholder="Email"  th:field="*{correo}">
 
                       </div>
                     </div>
@@ -108,7 +108,7 @@
                       <div class="mb-3">
                         <label for="validationCustom06" class="form-label">Código de despachador</label>
                         <input type="text" class="form-control" id="validationCustom06"
-                               placeholder="E.g DPC-04012">
+                               placeholder="E.g DPC-04012" th:field="*{codigoDespachador}">
 
                       </div>
                     </div>
@@ -116,7 +116,7 @@
                       <div class="mb-3">
                         <label for="validationCustom07" class="form-label">RUC</label>
                         <input type="text" class="form-control" id="validationCustom07"
-                               placeholder="E.g 12345678901"  >
+                               placeholder="E.g 12345678901"  th:field="*{ruc}">
 
                       </div>
                     </div>
@@ -124,14 +124,14 @@
                       <div class="mb-3">
                         <label for="validationCustom08" class="form-label">Razón Social</label>
                         <input type="text" class="form-control" id="validationCustom08"
-                               placeholder="Social reason"  >
+                               placeholder="Social reason" th:field="*{razonSocial}">
 
                       </div>
                     </div>
                     <div class="col-md-3">
                       <div class="mb-3">
                         <label for="validationCustom09" class="form-label">Código de Juridicción</label>
-                        <input type="text" class="form-control" placeholder="E.g JUR-001" id="validationCustom09">
+                        <input type="text" class="form-control" placeholder="E.g JUR-001" id="validationCustom09" >
 
                       </div>
                     </div>
@@ -149,16 +149,9 @@
                     <div class="col-md-4">
                       <div class="mb-3">
                         <label for="validationCustom11" class="form-label">Districto</label>
-                        <select class="form-select" id="validationCustom11" >
-                          <option selected disabled value="">States </option>
-                          <option>Ancón</option>
-                          <option>Santa Rosa</option>
-                          <option>Carabayllo</option>
-                          <option>Puente Piedra</option>
-                          <option>Comas</option>
-                          <option>Los Olivos</option>
-                          <option>San Martín de Porres</option>
-                          <option>Independencia</option>
+                        <select class="form-select" id="validationCustom11" th:field="*{distritoIddistrito}">
+                          <option selected disabled value="">Distritos </option>
+                          <option th:each="d : ${listaDistritos}" th:value="${d.id}" th:text="${d.nombre}"></option>
                         </select>
 
 
@@ -168,13 +161,13 @@
                       <div class="mb-3">
                         <label for="validationCustom12" class="form-label">Dirección</label>
                         <input type="text" class="form-control" id="validationCustom12"
-                               placeholder="Address" >
+                               placeholder="Address" th:field="*{direccion}">
                       </div>
                     </div>
 
                   </div>
                   <div>
-                    <a class="btn btn-primary" type="submit" href="/adminzonal/gestionAgente">Guardar</a>
+                    <button class="btn btn-primary" type="submit">Guardar</button>
                   </div>
                 </form>
               </div>

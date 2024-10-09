@@ -10,9 +10,4 @@ import java.util.List;
 
 @Repository
 public interface ResenaRepository extends JpaRepository<Resena, Integer> {
-    /*
-    @Query("SELECT r FROM Resena r WHERE r.carrito.usuarioIdusuario.isAccepted = 1 AND r.carrito.usuarioIdusuario.isPostulated = 0 AND r.carrito.usuarioIdusuario.isActivated = 1 AND r.carrito.usuarioIdusuario.rolIdrol.id = 4")
-    List<Resena> findResenasUsuariosValidos();
-    */
-
 }

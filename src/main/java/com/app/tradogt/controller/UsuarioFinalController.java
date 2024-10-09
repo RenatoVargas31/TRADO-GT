@@ -139,7 +139,24 @@ public class UsuarioFinalController {
     }
 
     @GetMapping("/perfil")
-    public String verPerfil(){return "Usuario/profile_user";}
+    public String verPerfil(Model model){
+
+        Integer userId = 17;
+
+        // Buscar el usuario en la base de datos
+        Optional<Usuario> usuarioOptional = usuarioRepository.findById(userId);
+        if (usuarioOptional.isPresent()) {
+            Usuario usuario = usuarioOptional.get();
+            // Añadir el usuario al modelo para que esté disponible en la vista
+            model.addAttribute("usuario", usuario);
+        } else {
+            // Manejar el caso donde el usuario no existe
+            return "error/usuario_no_encontrado"; // O una página de error personalizada
+        }
+
+
+        return "Usuario/profile_user";
+    }
 
     @GetMapping("/editarOrdenes")
     public String formularioPedido() {
@@ -350,14 +367,12 @@ public class UsuarioFinalController {
     public String showordenCompra() {
         return "Usuario/orden-compra-usuario";
     }
-/*
+
     @GetMapping("/reseñas")
     public String showResenhas(Model model) {
-        List<Resena> resenas = resenaRepository.findResenasUsuariosValidos();
-        model.addAttribute("resenas", resenas);
         return "Usuario/reseñas-usuario";
     }
-*/
+
 
     @GetMapping("/comunidad")
     public String showComunidad(Model model) {

@@ -55,11 +55,11 @@
                             <div class="col-md-4" th:each="agente : ${agentes}">
                                 <div class="card">
                                     <div class="card-body">
-                                        <a th:href="@{/adminzonal/verAgente/{id}(id=${agente[0]})}">
+                                        <a th:href="@{/adminzonal/verAgente/{id}(id=${agente.id})}">
                                             <div class="d-flex">
                                                 <div class="flex-1 overflow-hidden">
-                                                    <p class="text-truncate font-size-14 mb-2" th:text="${agente[5]}">Distrito</p> <!-- DistritoNombre -->
-                                                    <h4 class="mb-0" th:text="${agente[1]} + ' ' + ${agente[2]}">Nombre del Agente</h4> <!-- AgenteNombre + AgenteApellido -->
+                                                    <p class="text-truncate font-size-14 mb-2" th:text="${agente.distritoIddistrito.nombre}">Distrito</p> <!-- DistritoNombre -->
+                                                    <h4 class="mb-0" th:text="${agente.nombre} + ' ' + ${agente.apellido}">Nombre del Agente</h4> <!-- AgenteNombre + AgenteApellido -->
                                                 </div>
                                                 <div class="text-primary ms-auto">
                                                     <i class="ri-user-line font-size-24"></i>
@@ -82,7 +82,7 @@
                                                         <h5 class="font-size-14 mb-0">N. Usuarios asignados</h5>
                                                     </td>
                                                     <td>
-                                                        <p class="text-muted mb-0" th:text="${agente[6]}">0</p> <!-- NumeroDeUsuarios -->
+                                                        <p class="text-muted mb-0" th:text="${agente.razonSocial}"></p> <!-- NumeroDeUsuarios -->
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -95,7 +95,7 @@
                                                         <h5 class="font-size-14 mb-0">Importaciones finalizados</h5>
                                                     </td>
                                                     <td>
-                                                        <p class="text-muted mb-0" th:text="${agente[8]}">0</p> <!-- Finalizados -->
+                                                        <p class="text-muted mb-0" th:text="${agente.nombre}"></p> <!-- Finalizados -->
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -108,7 +108,7 @@
                                                         <h5 class="font-size-14 mb-0">Calificación</h5>
                                                     </td>
                                                     <td>
-                                                        <p class="text-muted mb-0" th:text="${agente[7]}">0.0</p> <!-- ValoracionAgente -->
+                                                        <p class="text-muted mb-0" th:text="${agente.motivoBaneo}"></p> <!-- ValoracionAgente -->
                                                     </td>
                                                 </tr>
                                                 </tbody>
@@ -141,13 +141,9 @@
                                     </thead>
 
                                     <tbody>
-                                        <tr th:each="usuarioDetails : ${usuarioDetails}">
-                                            <td th:text="${usuarioDetails[1] + ', ' + usuarioDetails[2]}">Usuario</td>
-                                            <td th:text="${usuarioDetails[3]}">Producto</td>
-                                            <td th:text="${usuarioDetails[4]}">Categoria</td>
-                                            <td th:text="${usuarioDetails[6]}">Cantidad</td>
-                                            <td th:text="${usuarioDetails[5]}">Estado</td>
-                                            <td th:text="${usuarioDetails[7] + ', ' + usuarioDetails[8]}">Agente</td>
+                                        <tr th:each="u : ${usuarios}">
+                                            <td th:text="${u.nombre}">Usuario</td>
+
                                         </tr>
 
                                     </tbody>
