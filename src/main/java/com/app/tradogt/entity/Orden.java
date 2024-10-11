@@ -63,4 +63,8 @@ public class Orden {
     @JoinColumn(name = "Carrito_idCarrito", nullable = false)
     private Carrito carritoIdcarrito;
 
+    @OneToOne
+    @JoinColumn(name = "Usuario_idUsuario")
+    private Usuario usuarioIdusuario;
+
 }
