@@ -85,6 +85,7 @@ public class AgenteComprasController {
     public String cambiarContrasena(@Valid PasswordChangeDto passwordChangeDto,
                                     BindingResult result,
                                     Authentication authentication,
+                                    RedirectAttributes redirectAttributes,
                                     Model model) {
 
         // Validación de errores
@@ -112,7 +113,8 @@ public class AgenteComprasController {
         usuario.setContrasena(passwordEncoder.encode(passwordChangeDto.getNewPassword()));
         usuarioRepository.save(usuario);  // Guardar los cambios en la base de datos
 
-        model.addAttribute("success", "Contraseña cambiada con éxito.");
+        // Agregar mensaje de éxito a los flash attributes
+        redirectAttributes.addFlashAttribute("exito", "Contraseña cambiada con éxito.");
         return "redirect:/agente/perfil";  // Redirige a la página del perfil
     }
 

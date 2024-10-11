@@ -60,7 +60,7 @@ public class WebSecurityConfig {
                         //Permisos de recursos
                         .requestMatchers("/css/**", "/js/**", "/images/**","/fonts/**","libs/**").permitAll()
                         // Rutas públicas
-                        .requestMatchers("/loginForm", "/processLogin", "/sistema/CreateAcc", "/sistema/PassRestore").permitAll()
+                        .requestMatchers("/loginForm", "/processLogin", "/crearCuenta").permitAll()
                         // Solo accesibles por el rol "SuperAdmin"
                         .requestMatchers("/superadmin", "/superadmin/**").hasAnyAuthority("SuperAdmin")
                         // Solo accesibles por el rol "Administrador Zonal"
@@ -70,7 +70,7 @@ public class WebSecurityConfig {
                         // Solo accesibles por el rol "Usuario"
                         .requestMatchers("/usuario", "/usuario/**").hasAnyAuthority("Usuario Final")
                         //Solo accesible para usuarios no autenticados
-                        .requestMatchers("/loginForm").anonymous()
+                        .requestMatchers("/loginForm","/crearCuenta").anonymous()
                         // Todas las demás rutas requieren autenticación
                         .anyRequest().authenticated()
                 )

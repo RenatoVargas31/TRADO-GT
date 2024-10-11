@@ -4,7 +4,12 @@ import com.app.tradogt.entity.*;
 import com.app.tradogt.helpers.PasswordGenerator;
 import com.app.tradogt.helpers.ProductCodeGenerator;
 import com.app.tradogt.repository.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -46,7 +51,6 @@ public class SuperAdminController {
     }
     //</editor-fold>
 
-
     //<editor-fold desc="CRUD Menu (R - falta)">
     @GetMapping("/inicio")
     public String viewInicio(Model model) {
@@ -85,6 +89,7 @@ public class SuperAdminController {
     public String viewAdmZonalNuevoForm(@ModelAttribute Usuario usuario) {
         //Asignar una contraseña por random de 10 dígitos y que combine número y letras
         String password = PasswordGenerator.generateRandomPassword();
+        System.out.println(password);
         //Encriptar la contraseña con BCrypt de 10 rondas
         String passwordEncrypted = BCrypt.hashpw(password, BCrypt.gensalt(10));
         usuario.setContrasena(passwordEncrypted);
@@ -362,6 +367,12 @@ public class SuperAdminController {
         Usuario usuario = usuarioRepository.findById(id).get();
         usuario.setIsAccepted((byte) 1);
         usuario.setIsActivated((byte) 1);
+        //Asignar una contraseña por random de 10 dígitos y que combine número y letras
+        String password = PasswordGenerator.generateRandomPassword();
+        System.out.println(password);
+        //Encriptar la contraseña con BCrypt de 10 rondas
+        String passwordEncrypted = BCrypt.hashpw(password, BCrypt.gensalt(10));
+        usuario.setContrasena(passwordEncrypted);
         usuarioRepository.save(usuario);
         return "redirect:/superadmin/importadorSolicitud";
     }
@@ -436,12 +447,17 @@ public class SuperAdminController {
                     .get(pz.getId().getProductoIdproducto().longValue())
                     .get(pz.getId().getZonaIdzona())
                     .put("costoEnvio", pz.getCostoEnvio());
+            productoZonaCantidad
+                    .get(pz.getId().getProductoIdproducto().longValue())
+                    .get(pz.getId().getZonaIdzona())
+                    .put("estadoRepo", pz.getEstadoRepo());
         }
 
         model.addAttribute("productos", productos);
         model.addAttribute("productoZonaCantidad", productoZonaCantidad);
         return "SuperAdmin/productoLista-SAdmin";
     }
+
     //</editor-fold>
 
     //<editor-fold desc="CRUD Proveedores (Completo - terminado)">
