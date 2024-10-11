@@ -69,7 +69,7 @@
                   <div class="card-body border-top">
                     <div>
                       <h5 class="font-size-14 mb-0">
-                        <a href="#collapseExample1" class="text-reset d-block" data-bs-toggle="collapse">Categorías <i class="mdi mdi-minus float-end accor-plus-icon"></i></a>
+                        <a href="#collapseExample1" class="text-reset d-block" data-bs-toggle="collapse">Categorías <i class="mdi mdi-plus float-end accor-plus-icon"></i></a>
                       </h5>
                       <div class="collapse" id="collapseExample1">
                         <div class="mt-4">
@@ -78,7 +78,10 @@
                                    th:id="'categoria' + ${categoria.id}"
                                    th:name="'categoria'"
                                    th:value="${categoria.id}"
-                                   class="form-check-input">
+                                   class="form-check-input"
+                                   th:checked="${param.categoria != null && param.categoria.contains(categoria.id.toString())}" />
+
+
                             <label class="form-check-label"
                                    th:for="'categoria' + ${categoria.id}"
                                    th:text="${categoria.nombre}">Categoria</label>
@@ -103,7 +106,8 @@
                                    th:id="'material_' + ${iterStat}"
                                    name="material"
                                    class="form-check-input"
-                                   th:value="${material.toLowerCase()}" />
+                                   th:value="${material.toLowerCase()}"
+                                   th:checked="${param.material != null && param.material.contains(material.toLowerCase())}"/>
                             <label class="form-check-label" th:for="'material_' + ${iterStat}" th:text="${material}"></label>
                           </div>
                         </div>
@@ -125,7 +129,8 @@
                                    th:id="'marca' + ${iterStat}"
                                    name="marca"
                                    class="form-check-input"
-                                   th:value="${marca.toLowerCase()}" />
+                                   th:value="${marca.toLowerCase()}"
+                                   th:checked="${param.marca != null && param.marca.contains(marca.toLowerCase())}"/>
                             <label class="form-check-label" th:for="'marca' + ${iterStat}" th:text="${marca}"></label>
                           </div>
                         </div>
@@ -136,7 +141,7 @@
                   <div class="card-body border-top">
                     <div>
                       <h5 class="font-size-14 mb-0">
-                        <a href="#collapseExample3" class="text-reset d-block" data-bs-toggle="collapse">Precio <i class="mdi mdi-minus float-end accor-plus-icon"></i></a>
+                        <a href="#collapseExample3" class="text-reset d-block" data-bs-toggle="collapse">Precio <i class="mdi mdi-plus float-end accor-plus-icon"></i></a>
                       </h5>
                       <div class="collapse" id="collapseExample3">
                         <div class="mt-4">
@@ -184,6 +189,7 @@
                                     -->
 
                   <div class="text-center">
+                    <a href="/usuario/categoriaMueblesFilter" class="btn btn-secondary mt-3 me-2">Limpiar</a>
                     <button type="submit" class="btn btn-primary mt-3">Filtrar</button>
                   </div>
                   <hr class="opacity-0">
@@ -226,6 +232,9 @@
 
                   <!--Inicio del loop-->
                   <div class="row g-0">
+                    <div th:if="${productList == null or #lists.isEmpty(productList)}" class="alert alert-warning text-center">
+                      No hay productos disponibles
+                    </div>
                     <div th:each="product, iterStat : ${productList}" class="col-xl-4 col-sm-6">
                       <div class="card product-box">
                         <a th:href="@{/usuario/productoDetalles/{id}(id=${product.id})}" class="text-decoration-none">     <div class="product-img">
@@ -276,30 +285,21 @@
                   <div class="row mt-4">
                     <div class="col-sm-6">
                       <div>
-                        <p class="mb-sm-0 mt-2">Page <span class="fw-bold">1</span> Of <span class="fw-bold">5</span></p>
+                        <p class="mb-sm-0 mt-2">Page <span class="fw-bold">1</span> Of <span class="fw-bold">1</span></p>
                       </div>
                     </div>
                     <div class="col-sm-6">
                       <div class="float-sm-end">
                         <ul class="pagination pagination-rounded mb-sm-0">
+                          <!--
                           <li class="page-item disabled">
-                            <a  class="page-link"><i class="mdi mdi-chevron-left"></i></a>
+                              <a  class="page-link"><i class="mdi mdi-chevron-left"></i></a>
                           </li>
+                          -->
                           <li class="page-item active">
                             <a  class="page-link">1</a>
                           </li>
-                          <li class="page-item ">
-                            <a  class="page-link">2</a>
-                          </li>
-                          <li class="page-item">
-                            <a  class="page-link">3</a>
-                          </li>
-                          <li class="page-item">
-                            <a  class="page-link">4</a>
-                          </li>
-                          <li class="page-item">
-                            <a  class="page-link">5</a>
-                          </li>
+
                           <li class="page-item">
                             <a  class="page-link"><i class="mdi mdi-chevron-end"></i></a>
                           </li>

@@ -498,6 +498,7 @@ public class UsuarioFinalController {
     public String showMujerCategoria(Model model) {
         model.addAttribute("productList", productosRepository.findProductRopaMujer());
         model.addAttribute("tallasList", productosRepository.findDistinctTallas(1));
+        model.addAttribute("marcaList", productosRepository.findDistinctMarca(1));
 
         model.addAttribute("coloresList", productosRepository.findDistinctColores(1));
         model.addAttribute("categoriasList",subCategoriaRepository.findSubcategorias(1));
@@ -564,12 +565,12 @@ public class UsuarioFinalController {
     @GetMapping("/categoriaMujerFilter")
     public String showMujerCategoriaFilter(Model model,
                                            @RequestParam(value = "categoria", required = false) List<Integer> categoria,
-                                           @RequestParam(value = "material", required = false) List<String> material,
+                                           @RequestParam(value = "talla", required = false) List<String> talla,
                                            @RequestParam(value = "color", required = false) List<String> color,
                                            @RequestParam(value = "marca", required = false) List<String> marca,
                                            @RequestParam(value = "precioMin", required = false) Double precioMin,
                                            @RequestParam(value = "precioMax", required = false) Double precioMax) {
-        model.addAttribute("productList", productosRepository.findProductMujerFilter(categoria, material,color, marca,precioMin, precioMax));
+        model.addAttribute("productList", productosRepository.findProductMujerFilter(categoria, talla,marca, color,precioMin, precioMax));
         model.addAttribute("tallasList", productosRepository.findDistinctTallas(1));
         model.addAttribute("coloresList", productosRepository.findDistinctColores(1));
         model.addAttribute("marcaList", productosRepository.findDistinctMarca(1));
