@@ -79,12 +79,12 @@
 
                                     <tbody>
                                     <tr th:each="producto : ${productos}">
-                                        <td th:text="${producto[0]}"> </td>
-                                        <td th:text="${producto[1]}"></td>
-                                        <td th:text="${producto[3]}"></td>
+                                        <td th:text="${producto.productoIdproducto.nombre}"> </td>
+                                        <td th:text="${producto.productoIdproducto.subcategoriaIdsubcategoria.categoriaIdcategoria.nombre}"></td>
+                                        <td th:text="${producto.cantidad}"></td>
                                         <td>
                                             <span class="badge fs-6"
-                                                  th:switch="${producto[4]}">
+                                                  th:switch="${producto.estadoRepo}">
                                                 <span th:case="0" class="bg-success">Stock adecuado</span>
                                                 <span th:case="1" class="bg-danger">Stock insuficiente</span>
                                                 <span th:case="2" class="bg-warning">A espera de solicitud de reposición</span>
@@ -92,15 +92,15 @@
                                         </td>
                                         <td>
                                             <a class="btn btn-success btn-sm edit" title="Reponer" data-bs-toggle="modal" data-bs-target="#adequateStockModal"
-                                               th:if="${producto[4]} == 0">
+                                               th:if="${producto.estadoRepo} == 0">
                                                 <i class="fas fa-people-carry"></i>
                                             </a>
                                             <a class="btn btn-success btn-sm edit" title="Reponer" data-bs-toggle="modal" data-bs-target="#confirmReplenishmentModal"
-                                               th:if="${producto[4]} == 1">
+                                               th:if="${producto.estadoRepo} == 1">
                                                 <i class="fas fa-people-carry"></i>
                                             </a>
                                             <a class="btn btn-success btn-sm edit" title="Reponer" data-bs-toggle="modal" data-bs-target="#inProgressModal"
-                                               th:if="${producto[4]} == 2">
+                                               th:if="${producto.estadoRepo} == 2">
                                                 <i class="fas fa-people-carry"></i>
                                             </a>
                                             <!--Start modal-->

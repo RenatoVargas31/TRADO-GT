@@ -205,8 +205,5 @@ public interface ProductosRepository extends JpaRepository<Producto, Integer> {
             "WHERE c.id = :tipo)")
     List<Producto> findProductQuery(@Param("query") String query, @Param("tipo") int tipo);
 
-
-
-
     List<Producto> findAllByIsDeleted(Byte isDeleted);
 }

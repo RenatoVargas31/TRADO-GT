@@ -3,6 +3,7 @@ package com.app.tradogt.controller;
 import com.app.tradogt.dto.AgenteInfoZon;
 import com.app.tradogt.entity.Orden;
 import com.app.tradogt.entity.Producto;
+import com.app.tradogt.entity.ProductoEnZona;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -67,8 +68,7 @@ public class AdminZonalController {
     @GetMapping("/reposicionProductos")
     public String showReposicionProductos(Model model) {
 
-        //Añadir código
-        List<Object[]> productos = productosRepository.findOrdersByRepo();
+        List<ProductoEnZona> productos = productoEnZonaRepository.findAllByZonaIdzonaAndIsDeleted(zonaRepository.findById(1).get(), Byte.parseByte("0"));
         model.addAttribute("productos", productos);
         return "AdminZonal/tablaReposicionProductos-AdminZonal";
     }
@@ -142,23 +142,6 @@ public class AdminZonalController {
     public String showVerAgente(@PathVariable("id") Integer usuarioId, Model model) {
         Optional<Usuario> usuario = usuarioRepository.findById(usuarioId);
         model.addAttribute(usuario.get());
-        /*List<Object[]> agenteDetails = usuarioRepository.getAgenteDetailsById(usuarioId);
-
-        if (!agenteDetails.isEmpty()) {
-            Object[] details = agenteDetails.get(0);
-            model.addAttribute("AgenteID", details[0]);
-            model.addAttribute("AgenteNombre", details[1]);
-            model.addAttribute("AgenteApellido", details[2]);
-            model.addAttribute("AgenteDni", details[3]);
-            model.addAttribute("AgenteCorreo", details[4]);
-            model.addAttribute("AgenteTelefono", details[5]);
-            model.addAttribute("ZonaNombre", details[6]);
-            model.addAttribute("DistritoNombre", details[7]);
-            model.addAttribute("AgenteDireccion", details[8]);
-            model.addAttribute("CodigoDespachador", details[9]);
-            model.addAttribute("AgenteRUC", details[10]);
-            model.addAttribute("AgenteRazonSocial", details[11]);
-        }*/
         return "AdminZonal/verAgente-AdminZonal";
     }
 
