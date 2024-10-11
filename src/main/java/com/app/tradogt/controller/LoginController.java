@@ -46,4 +46,11 @@ public class LoginController {
         }
         return "loguin";
     }
+
+    @GetMapping("/crearCuenta")
+    private String crearCuenta() {
+
+
+        return "CreateAcc";
+    }
 }
