@@ -105,7 +105,7 @@ public class AgenteComprasController {
         // Verificar si las contraseñas nuevas coinciden
         if (!passwordChangeDto.getNewPassword().equals(passwordChangeDto.getConfirmNewPassword())) {
             model.addAttribute("error", "Las contraseñas nuevas no coinciden.");
-            return "Agente/changePass-Agente ";  // Retorna a la vista con el mensaje de error
+            return "Agente/changePass-Agente";  // Retorna a la vista con el mensaje de error
         }
 
         // Actualizar la contraseña del usuario
