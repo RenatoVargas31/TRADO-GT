@@ -43,7 +43,6 @@ public class Pago {
     @Column(name = "codigoCVV")
     private String codigoCVV;
 
-
     @NotNull
     @ManyToOne
     @JoinColumn(name = "Autenticacion_idAutenticacion", nullable = false)

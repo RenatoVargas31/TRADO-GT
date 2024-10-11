@@ -55,105 +55,218 @@
                     <div class="col-lg-12">
                         <div class="card">
                             <div class="card-body">
-                                <div class="table-responsive">
-                                    <table class="table table-centered mb-0 table-nowrap">
-                                        <thead class="bg-light">
-                                        <tr>
-                                            <th >Código</th>
-                                            <th style="width: 120px">Producto</th>
-                                            <th>Nombre</th>
-                                            <th>Categoría, Subcategoría</th>
-                                            <th>Precio Unit.</th>
-                                            <th>Cantidad</th>
-                                            <th>Total</th>
-                                            <th class="text-center">Acción</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <tr th:each="producto : ${carrito}">
-                                            <td th:text="${producto.productoEnZona.productoIdproducto.codigo}"></td>
-                                            <td>
-                                                <img th:src="@{../images/product/img-1.png}" alt="product-img"
-                                                     title="product-img" class="avatar-md" />
-                                            </td>
-                                            <td>
-                                                <h5 class="font-size-14 text-truncate"><a href="#" class="text-reset" th:text="${producto.productoEnZona.productoIdproducto.nombre}"></a></h5>
-                                                <p class="mb-0">Proveedor : <span class="fw-medium" th:text="${producto.productoEnZona.productoIdproducto.proveedorIdproveedor.tienda}"></span></p>
-                                            </td>
-                                            <td th:text="${producto.productoEnZona.productoIdproducto.subcategoriaIdsubcategoria.categoriaIdcategoria.nombre} + ', ' + ${producto.productoEnZona.productoIdproducto.subcategoriaIdsubcategoria.nombre}"></td>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="table-responsive">
+                                            <table class="table table-centered mb-0 table-nowrap">
+                                                <thead class="bg-light">
+                                                <tr>
+                                                    <th >Código</th>
+                                                    <th style="width: 120px">Producto</th>
+                                                    <th>Nombre</th>
+                                                    <th>Categoría, Subcategoría</th>
+                                                    <th>Precio Unit.</th>
+                                                    <th>Cantidad</th>
+                                                    <th>Total</th>
+                                                    <th class="text-center">Acción</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr th:if="${mensaje != null}">
+                                                    <td colspan="4" class="text-center" th:text="${mensaje}"></td>
+                                                </tr>
+                                                <tr th:each="producto,iterStat : ${carrito}">
+                                                    <td th:text="${producto.productoEnZona.productoIdproducto.codigo}"></td>
+                                                    <td>
+                                                        <img th:src="@{../images/product/img-1.png}" alt="product-img"
+                                                             title="product-img" class="avatar-md" />
+                                                    </td>
+                                                    <td>
+                                                        <h5 class="font-size-14 text-truncate"><a href="#" class="text-reset" th:text="${producto.productoEnZona.productoIdproducto.nombre}"></a></h5>
+                                                        <p class="mb-0">Proveedor : <span class="fw-medium" th:text="${producto.productoEnZona.productoIdproducto.proveedorIdproveedor.tienda}"></span></p>
+                                                    </td>
+                                                    <td th:text="${producto.productoEnZona.productoIdproducto.subcategoriaIdsubcategoria.categoriaIdcategoria.nombre} + ', ' + ${producto.productoEnZona.productoIdproducto.subcategoriaIdsubcategoria.nombre}"></td>
 
-                                            <td th:text="'S/. '+ ${producto.productoEnZona.productoIdproducto.precio}"></td>
+                                                    <td th:id="'precio-'+ ${iterStat.index + 1}"   th:text="'S/. '+ ${producto.productoEnZona.productoIdproducto.precio}"></td>
 
-                                            <td th:text="${producto.cantidad}">
-                                                <!--<div style="width: 120px;" class="product-cart-touchspin">
-                                                    <input data-bs-toggle="touchspin" type="text" th:value="${producto.cantidad}">
-                                                </div> -->
-                                            </td>
-                                            <td th:text="'S/. ' + (${producto.productoEnZona.productoIdproducto.precio} * ${producto.cantidad})"></td>
-                                            <td style="width: 90px;" class="text-center">
-                                                <button type="button" class="btn btn-danger waves-effect waves-light btn-sm" data-bs-toggle="modal" th:data-bs-target="'#deleteProductModal' + ${producto.productoEnZona.productoIdproducto.id}">
-                                                    <i class="ri-indeterminate-circle-fill "></i>
-                                                </button>
-                                            </td>
-                                            <!-- Modal -->
-                                            <div class="modal fade" th:id="'deleteProductModal' + ${producto.productoEnZona.productoIdproducto.id}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                                                <div class="modal-dialog" role="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title" id="deleteProductLabel">Eliminar Producto</h5>
-                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    <!-- Guardar la cantidad de producto -->
+                                                    <td>
+                                                        <div style="width: 120px;"  class="product-cart-touchspin">
+                                                            <button type="button"
+                                                                    th:onclick="'disminuir(\'cantidad-' + ${iterStat.index + 1} + '\', \'precio-' + ${iterStat.index + 1} + '\', \'total-' + ${iterStat.index + 1} + '\')'">
+                                                                -
+                                                            </button>
+                                                            <label th:for="'cantidad-'+${iterStat.index + 1}"></label><input class="w-25" th:id="'cantidad-'+${iterStat.index + 1}" type="text" th:value="${producto.cantidad}" readonly>
+                                                            <button type="button"
+                                                                    th:onclick="'incrementar(\'cantidad-' + ${iterStat.index + 1} + '\', \'precio-' + ${iterStat.index + 1} + '\', \'total-' + ${iterStat.index + 1} + '\')'">
+                                                                +
+                                                            </button>
+
                                                         </div>
-                                                        <div class="modal-body">
-                                                            <p>¿Está seguro de que desea eliminar <strong th:text="${producto.productoEnZona.productoIdproducto.codigo}"></strong> de su carrito de compras?</p>
-                                                        </div>
-                                                        <form th:action="@{/usuario/eliminarProducto}" method="post">
-                                                            <input type="hidden" name="productoId" th:value="${producto.productoEnZona.productoIdproducto.id}" />
-                                                            <input type="hidden" name="usuarioId" th:value="${usuario.id}" />
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">No</button>
-                                                                <button type="submit" class="btn btn-success">Sí</button>
+                                                    </td>
+                                                    <td th:id="'total-'+ ${iterStat.index + 1}"  th:text="'S/. ' + (${producto.productoEnZona.productoIdproducto.precio} * ${producto.cantidad})"></td>
+                                                    <script>
+                                                        let totales = []; // Array para almacenar los totales
+                                                        let subtotal =0;
+                                                        let total =0;
+                                                        document.addEventListener("DOMContentLoaded", function() {
+                                                            // Ejecutar al cargar la página para calcular los valores iniciales
+                                                            inicializarTotales();
+                                                        });
+                                                        function inicializarTotales() {
+                                                            // Iterar sobre los productos y calcular el total de cada uno
+                                                            let productos = document.querySelectorAll("[id^=cantidad-]"); // Asumiendo que los IDs de las cantidades siguen el formato "cantidad-{id}"
+                                                            console.log(productos);
+                                                            productos.forEach(producto => {
+                                                                let id = producto.id.split('-')[1]; // Obtener el ID del producto desde el formato "cantidad-{id}"
+                                                                let cantidadId = `cantidad-${id}`;
+                                                                let precioId = `precio-${id}`;
+                                                                let totalId = `total-${id}`;
+                                                                console.log("producto: " ,productos )
+                                                                console.log("id: " ,id)
+                                                                let total = actualizarTotal(cantidadId, precioId, totalId);
+                                                                totales[totalId] = total;
+                                                            });
+                                                            // Actualizar el subtotal inicial
+                                                            actualizarSubTotal();
+                                                        }
+                                                        document.addEventListener('click', (event) => {
+                                                            if (event.target.matches('button[data-action="incrementar"]')) {
+                                                                const cantidadId = event.target.dataset.cantidadId;
+                                                                const precioId = event.target.dataset.precioId;
+                                                                const totalId = event.target.dataset.totalId;
+                                                                incrementar(cantidadId, precioId, totalId);
+                                                            } else if (event.target.matches('button[data-action="disminuir"]')) {
+                                                                const cantidadId = event.target.dataset.cantidadId;
+                                                                const precioId = event.target.dataset.precioId;
+                                                                const totalId = event.target.dataset.totalId;
+                                                                disminuir(cantidadId, precioId, totalId);
+                                                            }
+                                                        });
+
+                                                        function incrementar(cantidadId, precioId, totalId) {
+                                                            let cantidadInput = document.getElementById(cantidadId);
+                                                            let cantidadActual = parseInt(cantidadInput.value);
+                                                            cantidadActual += 1;
+                                                            cantidadInput.value = cantidadActual;
+                                                            let total = actualizarTotal(cantidadId, precioId, totalId);
+                                                            totales[totalId] = total;
+                                                            actualizarSubTotal();
+                                                        }
+                                                        function disminuir(cantidadId, precioId, totalId) {
+                                                            let cantidadInput = document.getElementById(cantidadId);
+                                                            let cantidadActual = parseInt(cantidadInput.value);
+                                                            if (cantidadActual > 1) {
+                                                                cantidadActual -= 1;
+                                                                cantidadInput.value = cantidadActual;
+                                                                let total = actualizarTotal(cantidadId, precioId, totalId);
+                                                                totales[totalId] = total;
+                                                                actualizarSubTotal();
+                                                            }
+                                                        }
+                                                        function actualizarTotal(cantidadId, precioId, totalId) {
+                                                            let cantidad = parseInt(document.getElementById(cantidadId).value);
+                                                            let precio = parseFloat(document.getElementById(precioId).textContent.replace('S/. ', ''));
+                                                            let nuevoTotal = cantidad * precio;
+                                                            document.getElementById("input-cantidad").value = cantidad;
+                                                            // Imprimir valores para verificar
+                                                            console.log("Nuevo cantidad: ", cantidad);
+                                                            document.getElementById(totalId).innerText = `S/. ${nuevoTotal.toFixed(2)}`;
+                                                            return nuevoTotal;
+                                                        }
+                                                        function actualizarSubTotal() {
+                                                            let subTotal = Object.values(totales).reduce((acc, curr) => acc + curr, 0);
+                                                            document.getElementById("subtotal").innerText = `S/. ${subTotal.toFixed(2)}`;
+                                                            // Obtener el costo de envío dinámico desde el DOM
+                                                            let costoEnvio = parseFloat(document.getElementById("envio").textContent.replace('S/. ', ''));
+                                                            // Calcular y actualizar el total (subtotal + costo de envío)
+                                                            let total = subTotal + costoEnvio;
+                                                            document.getElementById("total").innerText = `S/. ${total.toFixed(2)}`;
+                                                            // Actualizar los campos ocultos en el formulario
+                                                            document.getElementById("input-total").value = total.toFixed(2);
+                                                            document.getElementById("input-costoTotal").value = subTotal.toFixed(2);
+                                                            document.getElementById("input-costoEnvio").value = costoEnvio.toFixed(2);
+                                                            // Imprimir valores para verificar
+                                                            console.log("Nuevo total: ", subTotal);
+                                                        }
+                                                    </script>
+                                                    <td style="width: 90px;" class="text-center">
+                                                        <button type="button" class="btn btn-danger waves-effect waves-light btn-sm" data-bs-toggle="modal" th:data-bs-target="'#deleteProductModal' + ${producto.productoEnZona.productoIdproducto.id}">
+                                                            <i class="ri-indeterminate-circle-fill "></i>
+                                                        </button>
+                                                    </td>
+                                                    <!-- Modal
+                                                    <div class="modal fade" th:id="'deleteProductModal' + ${producto.productoEnZona.productoIdproducto.id}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                                        <div class="modal-dialog" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title" id="deleteProductLabel">Eliminar Producto</h5>
+                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <p>¿Está seguro de que desea eliminar <strong th:text="${producto.productoEnZona.productoIdproducto.codigo}"></strong> de su carrito de compras?</p>
+                                                                </div>
+                                                                <form th:action="@{/usuario/eliminarProducto}" method="post">
+                                                                    <input type="hidden" name="productoId" th:value="${producto.productoEnZona.productoIdproducto.id}" />
+                                                                    <input type="hidden" name="usuarioId" th:value="${usuario.id}" />
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">No</button>
+                                                                        <button type="submit" class="btn btn-success">Sí</button>
+                                                                    </div>
+                                                                </form>
                                                             </div>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </tr>
-                                        <tr class="bg-light text-end">
-
-                                            <th scope="row" colspan="7">
-                                                Sub Total :
-                                            </th>
-
-                                            <td th:text="'S/. ' + ${costoTotal}"></td>
-                                        </tr>
-                                        <tr class="bg-light text-end">
-
-                                            <th scope="row" colspan="7">
-                                                Costo de envío :
-                                            </th>
-
-                                            <td th:text="'S/. ' +${costoEnvio}"></td>
-                                        </tr>
-                                        <tr class="bg-light text-end">
-
-                                            <th scope="row" colspan="7">
-                                                Total :
-                                            </th>
-
-                                            <td th:text="'S/. ' + (${costoTotal} + ${costoEnvio})"></td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                    <div class="mt-3 text-end">
-                                        <a th:href="@{/usuario/checkout-info}" type="button" class="btn btn-primary" >Comprar</a>
+                                                        </div>
+                                                    </div>-->
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="table-responsive">
+                                            <table class="table table-centered mb-0 table-nowrap">
+                                                <tbody>
+                                                <tr class="bg-light text-end">
+                                                    <th scope="row" colspan="8">Sub Total :</th>
+                                                    <td id="subtotal" th:text="'S/. ' + (${costoTotal != null ? costoTotal : 0.00})"></td>
+                                                </tr>
+                                                <tr class="bg-light text-end">
+                                                    <th scope="row" colspan="8">Costo de envío :</th>
+                                                    <td id="envio" th:text="'S/. ' + (${costoEnvio != null ? costoEnvio : 0.00})"></td>
+                                                </tr>
+                                                <tr class="bg-light text-end">
+                                                    <th scope="row" colspan="8">Total :</th>
+                                                    <td id="total"  th:text="'S/. ' + ((${costoTotal != null ? costoTotal : 0.00}) + (${costoEnvio != null ? costoEnvio : 0.00}))">
+                                                </tr>
+                                                <tr class="bg-light text-end">
+                                                    <th scope="row" colspan="8"></th>
+                                                    <td  th:classappend="${#lists.isEmpty(carrito)} ? 'disabled' : ''" th:attr="aria-disabled=${#lists.isEmpty(carrito)}" >
+                                                        <!--<form th:action="@{/usuario/actualizarCantidad}" method="post">
+                                                            <input type="hidden" name="costoTotal" id="input-costoTotal" th:value="${costoTotal}"/>
+                                                            <input type="hidden" name="costoEnvio" id="input-costoEnvio" th:value="${costoEnvio}"/>
+                                                            <input type="hidden" name="cantidad" id="input-cantidad" >
+                                                            <input type="hidden" name="total" id="input-total" />
+                                                            <button type="submit" class="btn btn-primary btn-sm">Pagar</button>
+                                                        </form> -->
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- <div class="mt-3 text-end">
+                                     <a th:href="@{/usuario/checkout-info}" type="button" class="btn btn-primary" >Comprar</a>
+                                 </div>-->
                             </div>
                         </div>
                     </div>
 
                 </div>
-
 
             </div> <!-- container-fluid -->
         </div>

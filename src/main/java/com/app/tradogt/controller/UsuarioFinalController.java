@@ -1,6 +1,7 @@
 package com.app.tradogt.controller;
 
 
+import com.app.tradogt.dto.OrdenCompraUserDto;
 import com.app.tradogt.entity.*;
 import jakarta.validation.constraints.NotNull;
 import org.hibernate.query.Order;
@@ -14,17 +15,39 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 import com.app.tradogt.repository.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.security.SecureRandom;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
+import java.util.stream.Collectors;
 
 
 @Controller
 @RequestMapping("/usuario")
 public class UsuarioFinalController {
+    public static class RandomCodeGenerator {
+
+        private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        private static final SecureRandom RANDOM = new SecureRandom();
+
+        public static String generateRandomCode(int length) {
+            StringBuilder code = new StringBuilder(length);
+            for (int i = 0; i < length; i++) {
+                int index = RANDOM.nextInt(CHARACTERS.length());
+                code.append(CHARACTERS.charAt(index));
+            }
+            return code.toString();
+        }
+    }
 
     final ProductosRepository productosRepository;
     final OrdenRepository ordenRepository;
@@ -38,8 +61,10 @@ public class UsuarioFinalController {
     final PagoRepository pagoRepository;
     final ResenaRepository resenaRepository;
     final ProductoEnCarritoRepository productoEnCarritoRepository;
+    final AutenticacionRepository autenticacionRepository;
+    final EstadoOrdenRepository estadoOrdenRepository;
 
-    public UsuarioFinalController(ProductosRepository productosRepository, OrdenRepository ordenRepository, UsuarioRepository usuarioRepository, ProductoEnZonaRepository productoEnZonaRepository, PublicacionRepository publicacionRepository, ComentarioRepository comentarioRepository, SubCategoriaRepository subCategoriaRepository, CarritoRepository carritoRepository, PagoRepository pagoRepository, ResenaRepository resenaRepository, ProductoEnCarritoRepository productoEnCarritoRepository) {
+    public UsuarioFinalController(ProductosRepository productosRepository, OrdenRepository ordenRepository, UsuarioRepository usuarioRepository, ProductoEnZonaRepository productoEnZonaRepository, PublicacionRepository publicacionRepository, ComentarioRepository comentarioRepository, SubCategoriaRepository subCategoriaRepository, CarritoRepository carritoRepository, PagoRepository pagoRepository, ResenaRepository resenaRepository, ProductoEnCarritoRepository productoEnCarritoRepository, AutenticacionRepository autenticacionRepository, EstadoOrdenRepository estadoOrdenRepository) {
         this.productosRepository = productosRepository;
         this.ordenRepository = ordenRepository;
         this.usuarioRepository = usuarioRepository;
@@ -52,6 +77,8 @@ public class UsuarioFinalController {
         this.pagoRepository = pagoRepository;
         this.resenaRepository = resenaRepository;
         this.productoEnCarritoRepository = productoEnCarritoRepository;
+        this.autenticacionRepository = autenticacionRepository;
+        this.estadoOrdenRepository = estadoOrdenRepository;
     }
 
     //Metodo auxiliar para obtener el id del usuario
@@ -82,11 +109,23 @@ public class UsuarioFinalController {
 
     @GetMapping("/misPedidos")
     public String misPedidos(Model model) {
-
-
-
-        List<Orden> listarOrdenes = ordenRepository.findAllByIsDeleted( 0);
-        model.addAttribute("listaPedidos", listarOrdenes);
+        int idUsuario = getAuthenticatedUserId();
+        // Usuario user = usuarioRepository.findById(idUsuario).get();
+        List<Object[]> resultados = ordenRepository.findOrdersByUsuarioIdusuario(idUsuario);
+        List<OrdenCompraUserDto> listaOrdenes = resultados.stream()
+                .map(result -> new OrdenCompraUserDto(
+                        (Integer) result[0],  // idOrden
+                        (String) result[1],  // codigoOrden
+                        (BigDecimal) result[2],  // costoTotal
+                        ((java.sql.Date) result[3]).toLocalDate(),  // fechaCreacion
+                        (String) result[4],  // estadoOrden
+                        result[5] != null ? (String) result[5] : "No asignado",  // agente (manejo de null)
+                        result[6] != null ? (int) ((Byte) result[6]).byteValue() : 0)// valoracion
+                )
+                .collect(Collectors.toList());
+        // Añadir la lista de órdenes al modelo para ser usada en la vista
+        model.addAttribute("listaOrdenes", listaOrdenes);
+        // model.addAttribute("listaPedidos", resultados);
         return "Usuario/listaOrdenes";
     }
 
@@ -141,7 +180,7 @@ public class UsuarioFinalController {
     @GetMapping("/perfil")
     public String verPerfil(Model model){
 
-        Integer userId = 17;
+        Integer userId = getAuthenticatedUserId();
 
         // Buscar el usuario en la base de datos
         Optional<Usuario> usuarioOptional = usuarioRepository.findById(userId);
@@ -158,13 +197,74 @@ public class UsuarioFinalController {
         return "Usuario/profile_user";
     }
 
+    @GetMapping("/editProfile")
+    public String editProfile(Model model) {
+
+        //Obtengo el id del usuario
+        Integer userId = getAuthenticatedUserId();
+        Optional<Usuario> usuarioOptional = usuarioRepository.findById(userId);
+        if (usuarioOptional.isPresent()) {
+            Usuario usuario = usuarioOptional.get();
+            model.addAttribute("usuario", usuario);
+
+        }
+
+        return "Usuario/profile_user_edit";
+    }
+
+    @PostMapping("/subirFoto")
+    private String subirFoto(@RequestParam("foto") MultipartFile file, Model model) throws IOException {
+
+        int user = getAuthenticatedUserId();
+
+        Optional<Usuario> usuarioOptional = usuarioRepository.findById(user);
+        if (usuarioOptional.isPresent()) {
+            // Ruta donde se guardarán las imágenes (ajusta según tu estructura)
+            String uploadDir = "src/main/resources/static/images/users/";
+
+            // Guardar el archivo en la ruta definida
+            byte[] bytes = file.getBytes();
+            Path path = Paths.get(uploadDir + file.getOriginalFilename());
+            Files.write(path, bytes);
+
+            Usuario usuario = usuarioOptional.get();
+            usuario.setFoto(file.getOriginalFilename());
+            usuarioRepository.save(usuario);
+        }
+
+        return "redirect:/usuario/perfil";
+    }
+
+    @PostMapping("/saveProfile")
+    private String saveProfile(Model model,
+                               @RequestParam(value = "telefono", required = false) String telefono,
+                               @RequestParam(value = "direccion", required = false) String direccion) {
+
+        int user = getAuthenticatedUserId();
+        Optional<Usuario> usuarioOptional = usuarioRepository.findById(user);
+        if (usuarioOptional.isPresent()) {
+            Usuario usuario = usuarioOptional.get();
+            // Verifica si el campo teléfono no es nulo ni está vacío
+            if (telefono != null && !telefono.isEmpty()) {
+                usuario.setTelefono(telefono);
+            }
+            // Verifica si el campo dirección no es nulo ni está vacío
+            if (direccion != null && !direccion.isEmpty()) {
+                usuario.setDireccion(direccion);
+            }
+            // Guarda solo si hay cambios
+            usuarioRepository.save(usuario);
+        }
+        return "redirect:/usuario/perfil";
+    }
+
     @GetMapping("/editarOrdenes")
     public String formularioPedido() {
         return "Usuario/formOrdenes";
     }
 
-    @GetMapping("/tracking/{id}")
-    public String tracking(@PathVariable("id") int id, Model model) {
+    @GetMapping("/tracking")
+    public String tracking(@RequestParam("id") int id, Model model) {
 
         //Lista de todos los productos de mi orden
         Optional<Orden> orden = ordenRepository.findById(id);
@@ -186,8 +286,8 @@ public class UsuarioFinalController {
 
 
             //Obtener el costo total
-           BigDecimal monto = ord.getPagoIdpago().getMonto();
-           model.addAttribute("monto", monto);
+            BigDecimal monto = ord.getPagoIdpago().getMonto();
+            model.addAttribute("monto", monto);
 
         }else {
             System.out.println("Orden no encontrada"); }
@@ -195,8 +295,8 @@ public class UsuarioFinalController {
         return "Usuario/trackingOrd";
     }
 
-    @GetMapping("/editOrden/{id}")
-    public String editOrden(@PathVariable("id") int id, Model model) {
+    @GetMapping("/editOrden")
+    public String editOrden(@RequestParam("id") int id, Model model) {
 
         //Lista de todos los productos de mi orden
         Optional<Orden> orden = ordenRepository.findById(id);
@@ -280,53 +380,76 @@ public class UsuarioFinalController {
         }
     }
 
-/*
     @GetMapping("/carrito")
     public String showCarrito( Model model) {
 
-        Integer user = 17;
+        //Usuario
+        int user = getAuthenticatedUserId();
         Usuario usuario = usuarioRepository.findById(user).get();
-        model.addAttribute("usuario", usuario);
-        // Lista de productos en el carrito
-        List<Carrito> miCarrito = carritoRepository.findByOrdenIdordenAndUsuarioIdusuario(null,usuario );
 
-        if (!miCarrito.isEmpty()) {
-            // Inicializa el costo por producto y el costo total
-            BigDecimal totalSubTotal = BigDecimal.ZERO;
-            BigDecimal totalCosto = BigDecimal.ZERO;
+        Carrito miCarrito = carritoRepository.findByusuarioIdusuarioAndIsDelete(usuario, (byte) 0);
+        if (miCarrito != null) {
+            List<ProductoEnCarrito> misProductos = productoEnCarritoRepository.findBycarritoIdcarrito( miCarrito);
+            if(misProductos.isEmpty()) {
+                model.addAttribute("mensaje", "El carrito se encuentra vacío");
+            }else {
+                model.addAttribute("carrito", misProductos);
 
-            for (Carrito producto : miCarrito) {
-                // Precio Unitario
-                BigDecimal costoUnidad = producto.getProductoEnZona().getProductoIdproducto().getPrecio();
-                // Cantidad por producto
-                int cantidad = producto.getCantidad();
-                // Obtiene el subtotal para cada producto
-                BigDecimal subTotal = costoUnidad.multiply(new BigDecimal(cantidad));
-                totalSubTotal = totalSubTotal.add(subTotal);
-                // Establece el subtotal para cada producto
-                producto.setCosto(subTotal);
-                // Actualiza el costo total
-                totalCosto = totalCosto.add(subTotal);
-                producto.setTotalCosto(totalCosto);
-                // Guarda los cambios en la base de datos
-                carritoRepository.save(producto);
+                ProductoEnCarrito item = misProductos.get(0);
+                BigDecimal costoEnvio = item.getProductoEnZona().getCostoEnvio();
+                model.addAttribute("costoEnvio", costoEnvio);
             }
-            Carrito item = miCarrito.get(0); // Primer elemento
-            ProductoEnZona productoEnZona = item.getProductoEnZona();
-            BigDecimal costoEnvio = productoEnZona.getCostoEnvio();
-            //Costo de envio
-            model.addAttribute("costoEnvio", costoEnvio);
 
-            // Costo total del último elemento
-            BigDecimal ultimoCostoTotal = miCarrito.get(miCarrito.size() - 1).getTotalCosto();
-            System.out.println("Costo: " + ultimoCostoTotal);
-            model.addAttribute("costoTotal", ultimoCostoTotal);
+        }else {
+            model.addAttribute("mensaje", "El carrito se encuentra vacío");
+            return "Usuario/carrito-usuario";
         }
-        model.addAttribute("carrito", miCarrito);
-        System.out.println("Carrito: " + miCarrito);
+
         return "Usuario/carrito-usuario";
     }
-*/
+   /* @PostMapping("/actualizarCantidad")
+    public String actualizarCantidad (
+            @RequestParam("costoTotal") BigDecimal costoTotal,
+            @RequestParam("costoEnvio") BigDecimal costoEnvio,
+            @RequestParam("total") BigDecimal total,
+            @RequestParam("cantidad") int cantidad,
+            Model model) {
+
+        int id = getAuthenticatedUserId();
+        Usuario usuario = usuarioRepository.findById(id).get();
+        Carrito micarrito = carritoRepository.findByUsuarioIdusuarioAndIsDelete(usuario,(byte) 0);
+
+        micarrito.setCostoTotal(total);
+        carritoRepository.save(micarrito);
+        List<ProductoEnCarrito> misproductos = productoEnCarritoRepository.findBycarritoIdcarrito(micarrito);
+        misproductos.get(0).setCantidad(cantidad);
+        productoEnCarritoRepository.save(misproductos.get(0));
+
+        //Obtener la zona del usuario
+        Zona zone = usuario.getZonaIdzona();
+        //obtener el id del producto
+        int idproduct = micarrito.getId();
+
+        //listar los productos en zona
+        Optional<ProductoEnZona> almacen = productoEnZonaRepository.findByProductoIdproductoAndZonaIdzona(, zone);
+        int totalProducto = almacen.get().getCantidad();
+        int newTotal = totalProducto - cantidad;
+        if (newTotal >= 25) {
+            almacen.get().setEstadoRepo((byte) 0);
+            almacen.get().setCantidad(newTotal);
+
+        }else {
+            almacen.get().setEstadoRepo((byte) 1);
+            almacen.get().setCantidad(newTotal);
+        }
+        productoEnZonaRepository.save(almacen.get());
+
+        return "redirect:/usuario/checkout-info";
+    }*/
+
+
+
+
     /*
     //Eliminar un producto  de la lista
     @PostMapping("/eliminarProducto")
@@ -638,42 +761,71 @@ public class UsuarioFinalController {
         model.addAttribute("marcaList", productosRepository.findDistinctMarca(4));
         return "Usuario/CategoriaMuebles-usuario";
     }
-/*
     @GetMapping("/checkout-info")
     public String showcheckout(Model model) {
 
-        Integer iduser = 17;
-        Usuario usuario = usuarioRepository.findById(iduser).get();
+        int user = getAuthenticatedUserId();
+        Usuario myuser = usuarioRepository.findByIdUsuario(user);
 
-        model.addAttribute("usuario", usuario);
+        model.addAttribute("usuario", myuser);
 
         //Ingresar los datos de nuestro carrito actual
-        List<Carrito> miCarrito = carritoRepository.findByOrdenIdordenAndUsuarioIdusuario(null,usuario );
+        Carrito miCarrito = carritoRepository.findByusuarioIdusuarioAndIsDelete(myuser, (byte) 0);
+        BigDecimal total = miCarrito.getCostoTotal();
+        model.addAttribute("total", total); //Se obtiene el costo total
 
-        if (!miCarrito.isEmpty()) {
-            model.addAttribute("carrito", miCarrito);
-            //Sub total
-            BigDecimal ultimoCostoTotal = miCarrito.get(miCarrito.size() - 1).getTotalCosto();
-            model.addAttribute("costoSubTotal", ultimoCostoTotal);
+        if (miCarrito != null) {
+            List<ProductoEnCarrito> misProductos = productoEnCarritoRepository.findBycarritoIdcarrito( miCarrito);
+            if(misProductos.isEmpty()) {
+                model.addAttribute("mensaje", "El carrito se encuentra vacío");
+            }else {
+                model.addAttribute("carrito", misProductos);
 
-            //Costo de envio
-            Carrito item = miCarrito.get(0); // Primer elemento
-            ProductoEnZona productoEnZona = item.getProductoEnZona();
-            BigDecimal costoEnvio = productoEnZona.getCostoEnvio();
-            model.addAttribute("costoEnvio", costoEnvio);
+                ProductoEnCarrito item = misProductos.get(0);
+                BigDecimal costoEnvio = item.getProductoEnZona().getCostoEnvio();
+                model.addAttribute("costoEnvio", costoEnvio);
+            }
+
+        }else {
+            model.addAttribute("mensaje", "El carrito se encuentra vacío");
+            return "Usuario/carrito-usuario";
         }
         return "Usuario/billing-info-usuario";
     }
-*/
+
     //Guardar los datos de pago
     @PostMapping("/savePayment")
-    private String showSavePayment(@RequestParam("metodo") String metodo,
+    private String showSavePayment(@RequestParam("nombre") String nombre,
+                                   @RequestParam("apellido") String apellido,
+                                   @RequestParam("correo") String correo,
+                                   @RequestParam("telefono") String telefono,
+                                   @RequestParam("dni") String dni,
+                                   @RequestParam("distrito") String distrito,
+                                   @RequestParam("direccion") String direccion,
+                                   @RequestParam("metodo") String metodo,
                                    @RequestParam("nombreTarjeta") String nombreTarjeta,
                                    @RequestParam("numeroTarjeta") String numeroTarjeta,
                                    @RequestParam("fechaTarjeta") String fechaTarjeta,
                                    @RequestParam("codigoCVV") String codigoCVV,
                                    @RequestParam("monto") BigDecimal monto,
-                                   Model model){
+                                   Model model,  RedirectAttributes attr){
+
+        System.out.println("-------------------");
+        System.out.println("Nombre" + nombre);
+
+        Autenticacion facturacion = new Autenticacion();
+        facturacion.setNombre(nombre);
+        facturacion.setApellido(apellido);
+        facturacion.setCorreo(correo);
+        facturacion.setTelefono(telefono);
+        facturacion.setDni(dni);
+        facturacion.setDistrito(distrito);
+        facturacion.setDireccion(direccion);
+
+        autenticacionRepository.save(facturacion);
+        int user = getAuthenticatedUserId();
+        Usuario myuser = usuarioRepository.findByIdUsuario(user);
+
         // Crear una instancia de Pago y asignar los valores del formulario
         Pago pago = new Pago();
         pago.setMetodo(metodo);
@@ -684,46 +836,51 @@ public class UsuarioFinalController {
         pago.setMonto(monto);
         pago.setFechaTarjeta(fechaTarjeta);
         pago.setFecha(LocalDate.now());
+        pago.setAutenticacionIdautenticacion(facturacion);
+        System.out.println("Pago antes de guardar: " + pago.toString());
         List<Pago> listaPago = pagoRepository.findAll();
         pago.setId(listaPago.size() +1);
         pagoRepository.save(pago);
+        //Se genera una nueva orden
+        Orden orden = new Orden();
+        List<EstadoOrden> listaEstadoOrden = estadoOrdenRepository.findAll();
+        EstadoOrden primerEstadoOrden = listaEstadoOrden.get(0);
 
+        //Listar agentes de compra
+        List<Usuario> listaAgente = usuarioRepository.findAllByRolIdrolIdAndIsActivated(3, (byte) 1);
+        //Cambio al id de orden del carrito a null -> k
+        Carrito carrito = carritoRepository.findByusuarioIdusuarioAndIsDelete(myuser, (byte) 0 );
 
+        Usuario agente = null;
+        if (!listaAgente.isEmpty()) {
+            Random random = new Random();
+            int index = random.nextInt(listaAgente.size());
+            orden.setEstadoordenIdestadoorden(primerEstadoOrden);
+            orden.setFechaCreacion(LocalDate.now());
+            orden.setFechaArribo(LocalDate.now().plusWeeks(2));
+            orden.setIsDeleted((byte) 0);
+            orden.setCodigo(RandomCodeGenerator.generateRandomCode(5));
+            orden.setCostoTotal(monto);
+            orden.setPagoIdpago(pago);
+            orden.setUsuarioIdusuario(myuser);
+            orden.setCarritoIdcarrito(carrito);
 
-        return "Usuario/billing-info-usuario";
-    }
-
-    //Validar los datos ingresados
-
-    /*@GetMapping("/checkout-view")
-    public String showshippingInfo(Model model) {
-        Integer iduser = 17;
-        Usuario usuario = usuarioRepository.findById(iduser).get();
-
-        model.addAttribute("usuario", usuario);
-
-        //Ingresar los datos de nuestro carrito actual
-        List<Carrito> miCarrito = carritoRepository.findByOrdenIdordenAndUsuarioIdusuario(null,usuario );
-
-        if (!miCarrito.isEmpty()) {
-            model.addAttribute("carrito", miCarrito);
-            //Sub total
-            BigDecimal ultimoCostoTotal = miCarrito.get(miCarrito.size() - 1).getTotalCosto();
-            model.addAttribute("costoSubTotal", ultimoCostoTotal);
-
-            //Costo de envio
-            Carrito item = miCarrito.get(0); // Primer elemento
-            ProductoEnZona productoEnZona = item.getProductoEnZona();
-            BigDecimal costoEnvio = productoEnZona.getCostoEnvio();
-            model.addAttribute("costoEnvio", costoEnvio);
         }
+        // Guardar la orden
+        ordenRepository.save(orden);
+        Integer idOrden = orden.getId();
+        attr.addFlashAttribute("exito", "Se ha generado correctamente la orden de compra!");
+        model.addAttribute("orden", orden);
 
-        return "Usuario/shipping-info-usuario";
+
+
+
+        if (carrito != null) {
+            carrito.setIsDelete((byte) 1);
+            carritoRepository.save(carrito);
+        }
+        System.out.println("ID de la orden generada: " + idOrden);
+        return "redirect:/usuario/misPedidos";
     }
-    @GetMapping("/checkout-pay")
-    public String showPaymentInfo() {
-
-        return "Usuario/payment-info-usuario";
-    }*/
 
 }
