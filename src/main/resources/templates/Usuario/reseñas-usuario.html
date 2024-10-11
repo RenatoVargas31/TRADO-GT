@@ -76,7 +76,7 @@
                                             <div class="col-md-12 d-flex justify-content-end">
                                                 <div class="search-box me-2">
                                                     <div class="position-relative">
-                                                        <input type="text" class="form-control rounded" id="search-input" placeholder="Search...">
+                                                        <input type="text" class="form-control rounded" id="search-input" placeholder="Buscar...">
                                                         <i class="mdi mdi-magnify search-icon"></i>
                                                     </div>
                                                 </div>
@@ -91,193 +91,36 @@
 
 
                                         <div class="row g-0 mt-5">
-                                            <div class="col-xl-3 col-sm-6">
-                                                <div class="card product-box">
-                                                    <a href="/usuario/verReseña" class="text-decoration-none">
-                                                        <div class="product-img">
-                                                            <img th:src="@{../images/product/img-1.png}" alt="img-1" class="img-fluid mx-auto d-block">
-                                                        </div>
-                                                        <div class="text-center p-3">
-                                                            <p class="font-size-12 mb-1">Categoría, Subcategoría</p>
-                                                            <h5 class="font-size-15"><a href="#" class="text-reset">Nombre del producto</a></h5>
-                                                            <div class="d-inline-flex align-items-center mb-2">
-                                                                <div class="text-muted me-2" style="font-size: 12px;">
-                                                                    <span class="mdi mdi-star text-warning"></span>
-                                                                    <span class="mdi mdi-star text-warning"></span>
-                                                                    <span class="mdi mdi-star text-warning"></span>
-                                                                    <span class="mdi mdi-star text-warning"></span>
-                                                                    <span class="mdi mdi-star"></span>
-                                                                </div>
-                                                                <div class="text-muted" style="font-size: 12px;">4.0</div>
-                                                            </div>
-                                                            <span class="product-ribbon badge bg-warning">NK128</span><br>
-                                                            <div class="provider-info d-flex align-items-center justify-content-center">
-                                                                <span class="provider-name" style="font-size: 12px;">Nombre del Provedor</span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="provider-info d-flex flex-column align-items-center justify-content-center">
-                                                            <span class="provider-name" style="font-size: 12px;">Creado por <strong>Nombre del Usuario</strong></span>
-                                                            <span style="font-size: 12px;">11 de Octubre de 2024</span>
-                                                        </div>
-                                                    </a>
-                                                </div>
+                                            <div id="no-results-message" style="display:none; text-align: center; color: #000000; font-size: 18px; margin-top: 20px;">
+                                                Reseña no encontrada
                                             </div>
-
-
-                                            <div class="col-xl-3 col-sm-6">
+                                            <div th:each="resena : ${resenas}" class="col-xl-3 col-sm-6">
                                                 <div class="card product-box">
-                                                    <a href="/usuario/verReseña" class="text-decoration-none">
+                                                    <a th:href="@{/usuario/verReseña/{id}(id=${resena.id})}" class="text-decoration-none">
                                                         <div class="product-img">
-                                                            <img th:src="@{../images/product/img-2.png}" alt="img-2" class="img-fluid mx-auto d-block">
+                                                            <img th:src="@{'/images/reseñasUsuarios/' + ${resena.foto}}" alt="img-1" class="img-fluid mx-auto d-block">
                                                         </div>
                                                         <div class="text-center p-3">
-                                                            <p class="font-size-12 mb-1">Categoría, Subcategoría</p>
-                                                            <h5 class="font-size-15"><a href="#" class="text-reset">Nombre del producto</a></h5>
+                                                            <p class="font-size-12 mb-1" th:text="${resena.productoIdproducto.subcategoriaIdsubcategoria.categoriaIdcategoria.nombre} + ', ' + ${resena.productoIdproducto.subcategoriaIdsubcategoria.nombre} ">Categoría, Subcategoría</p>
+                                                            <h5 class="font-size-15" th:text="${resena.productoIdproducto.nombre}"><b class="text-reset">Nombre del producto</b></h5>
                                                             <div class="d-inline-flex align-items-center mb-2">
                                                                 <div class="text-muted me-2" style="font-size: 12px;">
-                                                                    <span class="mdi mdi-star text-warning"></span>
-                                                                    <span class="mdi mdi-star text-warning"></span>
-                                                                    <span class="mdi mdi-star text-warning"></span>
-                                                                    <span class="mdi mdi-star text-warning"></span>
-                                                                    <span class="mdi mdi-star"></span>
+                                                                    <span class="mdi mdi-star text-warning" th:if="${resena.calificacion >= 1}"></span>
+                                                                    <span class="mdi mdi-star text-warning" th:if="${resena.calificacion >= 2}"></span>
+                                                                    <span class="mdi mdi-star text-warning" th:if="${resena.calificacion >= 3}"></span>
+                                                                    <span class="mdi mdi-star text-warning" th:if="${resena.calificacion >= 4}"></span>
+                                                                    <span class="mdi mdi-star text-warning" th:if="${resena.calificacion >= 5}"></span>
                                                                 </div>
-                                                                <div class="text-muted" style="font-size: 12px;">4.0</div>
+                                                                <div class="text-muted" style="font-size: 12px;" th:text="${resena.calificacion + '.0'}"></div>
                                                             </div>
-                                                            <span class="product-ribbon badge bg-warning">NK128</span><br>
+                                                            <span class="product-ribbon badge bg-warning" th:text="${resena.productoIdproducto.codigo}">NK128</span><br>
                                                             <div class="provider-info d-flex align-items-center justify-content-center">
-                                                                <span class="provider-name" style="font-size: 12px;">Nombre del Provedor</span>
+                                                                <span class="provider-name" th:text="${resena.productoIdproducto.proveedorIdproveedor.nombre} + ',' + ${resena.productoIdproducto.proveedorIdproveedor.apellido}" style="font-size: 12px;"></span>
                                                             </div>
                                                         </div>
                                                         <div class="provider-info d-flex flex-column align-items-center justify-content-center">
-                                                            <span class="provider-name" style="font-size: 12px;">Creado por <strong>Nombre del Usuario</strong></span>
-                                                            <span style="font-size: 12px;">11 de Octubre de 2024</span>
-                                                        </div>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                            <div class="col-xl-3 col-sm-6">
-                                                <div class="card product-box">
-                                                    <a href="/usuario/verReseña" class="text-decoration-none">
-                                                        <div class="product-img">
-
-                                                            <img th:src="@{../images/product/img-3.png}" alt="img-3" class="img-fluid mx-auto d-block">
-                                                        </div>
-                                                        <div class="text-center p-3">
-                                                            <p class="font-size-12 mb-1">Categoría, Subcategoría</p>
-                                                            <h5 class="font-size-15"><a href="#" class="text-reset">Nombre del producto</a></h5>
-                                                            <div class="d-inline-flex align-items-center mb-2">
-                                                                <div class="text-muted me-2" style="font-size: 12px;">
-                                                                    <span class="mdi mdi-star text-warning"></span>
-                                                                    <span class="mdi mdi-star text-warning"></span>
-                                                                    <span class="mdi mdi-star text-warning"></span>
-                                                                    <span class="mdi mdi-star text-warning"></span>
-                                                                    <span class="mdi mdi-star"></span>
-                                                                </div>
-                                                                <div class="text-muted" style="font-size: 12px;">4.0</div>
-                                                            </div>
-                                                            <span class="product-ribbon badge bg-warning">NK128</span><br>
-                                                            <div class="provider-info d-flex align-items-center justify-content-center">
-                                                                <span class="provider-name" style="font-size: 12px;">Nombre del Provedor</span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="provider-info d-flex flex-column align-items-center justify-content-center">
-                                                            <span class="provider-name" style="font-size: 12px;">Creado por <strong>Nombre del Usuario</strong></span>
-                                                            <span style="font-size: 12px;">11 de Octubre de 2024</span>
-                                                        </div>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                            <div class="col-xl-3 col-sm-6">
-                                                <div class="card product-box">
-                                                    <a href="/usuario/verReseña" class="text-decoration-none">
-                                                        <div class="product-img">
-
-                                                            <img th:src="@{../images/product/img-4.png}" alt="img-4" class="img-fluid mx-auto d-block">
-                                                        </div>
-                                                        <div class="text-center p-3">
-                                                            <p class="font-size-12 mb-1">Categoría, Subcategoría</p>
-                                                            <h5 class="font-size-15"><a href="#" class="text-reset">Nombre del producto</a></h5>
-                                                            <div class="d-inline-flex align-items-center mb-2">
-                                                                <div class="text-muted me-2" style="font-size: 12px;">
-                                                                    <span class="mdi mdi-star text-warning"></span>
-                                                                    <span class="mdi mdi-star text-warning"></span>
-                                                                    <span class="mdi mdi-star text-warning"></span>
-                                                                    <span class="mdi mdi-star text-warning"></span>
-                                                                    <span class="mdi mdi-star"></span>
-                                                                </div>
-                                                                <div class="text-muted" style="font-size: 12px;">4.0</div>
-                                                            </div>
-                                                            <span class="product-ribbon badge bg-warning">NK128</span><br>
-                                                            <div class="provider-info d-flex align-items-center justify-content-center">
-                                                                <span class="provider-name" style="font-size: 12px;">Nombre del Provedor</span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="provider-info d-flex flex-column align-items-center justify-content-center">
-                                                            <span class="provider-name" style="font-size: 12px;">Creado por <strong>Nombre del Usuario</strong></span>
-                                                            <span style="font-size: 12px;">11 de Octubre de 2024</span>
-                                                        </div>
-                                                    </a>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-xl-3 col-sm-6">
-                                                <div class="card product-box">
-                                                    <a href="/usuario/verReseña" class="text-decoration-none">
-                                                        <div class="product-img">
-                                                            <img th:src="@{../images/product/img-5.png}" alt="img-5" class="img-fluid mx-auto d-block">
-                                                        </div>
-                                                        <div class="text-center p-3">
-                                                            <p class="font-size-12 mb-1">Categoría, Subcategoría</p>
-                                                            <h5 class="font-size-15"><a href="#" class="text-reset">Nombre del producto</a></h5>
-                                                            <div class="d-inline-flex align-items-center mb-2">
-                                                                <div class="text-muted me-2" style="font-size: 12px;">
-                                                                    <span class="mdi mdi-star text-warning"></span>
-                                                                    <span class="mdi mdi-star text-warning"></span>
-                                                                    <span class="mdi mdi-star text-warning"></span>
-                                                                    <span class="mdi mdi-star text-warning"></span>
-                                                                    <span class="mdi mdi-star"></span>
-                                                                </div>
-                                                                <div class="text-muted" style="font-size: 12px;">4.0</div>
-                                                            </div>
-                                                            <span class="product-ribbon badge bg-warning">NK128</span><br>
-                                                            <div class="provider-info d-flex align-items-center justify-content-center">
-                                                                <span class="provider-name" style="font-size: 12px;">Nombre del Provedor</span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="provider-info d-flex flex-column align-items-center justify-content-center">
-                                                            <span class="provider-name" style="font-size: 12px;">Creado por <strong>Nombre del Usuario</strong></span>
-                                                            <span style="font-size: 12px;">11 de Octubre de 2024</span>
-                                                        </div>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                            <div class="col-xl-3 col-sm-6">
-                                                <div class="card product-box">
-                                                    <a href="/usuario/verReseña" class="text-decoration-none">
-                                                        <div class="product-img">
-                                                            <img th:src="@{../images/product/img-5.png}" alt="img-5" class="img-fluid mx-auto d-block">
-                                                        </div>
-                                                        <div class="text-center p-3">
-                                                            <p class="font-size-12 mb-1">Categoría, Subcategoría</p>
-                                                            <h5 class="font-size-15"><a href="#" class="text-reset">Nombre del producto</a></h5>
-                                                            <div class="d-inline-flex align-items-center mb-2">
-                                                                <div class="text-muted me-2" style="font-size: 12px;">
-                                                                    <span class="mdi mdi-star text-warning"></span>
-                                                                    <span class="mdi mdi-star text-warning"></span>
-                                                                    <span class="mdi mdi-star text-warning"></span>
-                                                                    <span class="mdi mdi-star text-warning"></span>
-                                                                    <span class="mdi mdi-star"></span>
-                                                                </div>
-                                                                <div class="text-muted" style="font-size: 12px;">4.0</div>
-                                                            </div>
-                                                            <span class="product-ribbon badge bg-warning">NK128</span><br>
-                                                            <div class="provider-info d-flex align-items-center justify-content-center">
-                                                                <span class="provider-name" style="font-size: 12px;">Nombre del Provedor</span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="provider-info d-flex flex-column align-items-center justify-content-center">
-                                                            <span class="provider-name" style="font-size: 12px;">Creado por <strong>Nombre del Usuario</strong></span>
-                                                            <span style="font-size: 12px;">11 de Octubre de 2024</span>
+                                                            <span class="provider-name" style="font-size: 12px;">Creado por <strong th:text="${resena.usuarioIdusuario.nombre} + ', ' + ${resena.usuarioIdusuario.apellido}" ></strong></span>
+                                                            <span style="font-size: 12px;" th:text="${resena.fechaCreacion}">11 de Octubre de 2024</span>
                                                         </div>
                                                     </a>
                                                 </div>
@@ -864,40 +707,7 @@
             </footer>
 
             <script>
-                document.addEventListener("DOMContentLoaded", function() {
-                    const searchInput = document.getElementById('search-input');
-                    const clearBtn = document.getElementById('clear-btn');
-                    const productCards = document.querySelectorAll('.product-box'); // Selecciona todas las tarjetas de producto
-
-                    // Filtra los productos al escribir en el campo de búsqueda
-                    searchInput.addEventListener('keyup', function() {
-                        const searchTerm = searchInput.value.toLowerCase(); // Convierte a minúsculas para facilitar la búsqueda
-                        productCards.forEach(card => {
-                            const productName = card.querySelector('h5').textContent.toLowerCase(); // Nombre del producto
-                            const providerName = card.querySelector('.provider-name').textContent.toLowerCase(); // Nombre del proveedor
-                            const productCode = card.querySelector('.product-ribbon').textContent.toLowerCase(); // Código del producto
-
-                            // Mostrar la tarjeta si coincide el nombre, el código o el nombre del proveedor
-                            if (productName.includes(searchTerm) || providerName.includes(searchTerm) || productCode.includes(searchTerm)) {
-                                card.style.display = ''; // Mostrar la tarjeta
-                            } else {
-                                card.style.display = 'none'; // Ocultar la tarjeta
-                            }
-                        });
-                    });
-
-                    // Limpiar el campo de búsqueda y restaurar la vista original
-                    clearBtn.addEventListener('click', function() {
-                        searchInput.value = ''; // Limpiar el input de búsqueda
-                        productCards.forEach(card => {
-                            card.style.display = ''; // Mostrar todas las tarjetas
-                        });
-                    });
-                });
-            </script>
-
-            <script>
-                document.addEventListener("DOMContentLoaded", function() {
+                document.addEventListener("DOMContentLoaded", function () {
                     const itemsPerPage = 4; // Número de productos por página
                     let currentPage = 1;
 
@@ -908,6 +718,9 @@
                     const paginationElement = document.getElementById('pagination');
                     const currentPageElement = document.getElementById('current-page');
                     const totalPagesElement = document.getElementById('total-pages');
+                    const searchInput = document.getElementById('search-input');
+                    const clearBtn = document.getElementById('clear-btn');
+                    const noResultsMessage = document.getElementById('no-results-message'); // Elemento para mostrar el mensaje de "Reseña no encontrada"
 
                     totalPagesElement.textContent = totalPages; // Mostrar el total de páginas
 
@@ -931,6 +744,106 @@
                         document.getElementById('next-page').classList.toggle('disabled', currentPage === totalPages);
                     }
 
+                    // Filtra los productos al escribir en el campo de búsqueda
+                    function filterProducts() {
+                        const searchTerm = searchInput.value.toLowerCase(); // Convierte a minúsculas para facilitar la búsqueda
+                        let filteredCount = 0;
+
+                        productCards.forEach(card => {
+                            const productName = card.querySelector('h5').textContent.toLowerCase(); // Nombre del producto
+                            const providerName = card.querySelector('.provider-name').textContent.toLowerCase(); // Nombre del proveedor
+                            const productCode = card.querySelector('.product-ribbon').textContent.toLowerCase(); // Código del producto
+
+                            // Mostrar la tarjeta si coincide el nombre, el código o el nombre del proveedor
+                            if (productName.includes(searchTerm) || providerName.includes(searchTerm) || productCode.includes(searchTerm)) {
+                                card.style.display = ''; // Mostrar la tarjeta
+                                filteredCount++;
+                            } else {
+                                card.style.display = 'none'; // Ocultar la tarjeta
+                            }
+                        });
+
+                        // Mostrar o ocultar el mensaje de "Reseña no encontrada"
+                        if (filteredCount === 0) {
+                            noResultsMessage.style.display = 'block'; // Mostrar el mensaje
+                        } else {
+                            noResultsMessage.style.display = 'none'; // Ocultar el mensaje
+                        }
+
+                        // Actualizar la paginación con los resultados filtrados
+                        currentPage = 1; // Reinicia la paginación a la primera página
+                        updatePagination(filteredCount);
+                        showPage(currentPage); // Muestra la primera página de los resultados filtrados
+                    }
+
+                    // Actualiza la paginación cuando se filtran productos
+                    function updatePagination(filteredCount) {
+                        const newTotalPages = Math.ceil(filteredCount / itemsPerPage);
+                        totalPagesElement.textContent = newTotalPages;
+                        currentPage = Math.min(currentPage, newTotalPages); // Asegura que la página actual no exceda las páginas disponibles
+                        document.getElementById('next-page').classList.toggle('disabled', currentPage >= newTotalPages);
+                    }
+
+                    // Manejar el evento de clic para la paginación
+                    paginationElement.addEventListener('click', function (event) {
+                        if (event.target.closest('li')) {
+                            const pageItem = event.target.closest('li');
+                            if (pageItem.id === 'prev-page' && currentPage > 1) {
+                                showPage(currentPage - 1);
+                            } else if (pageItem.id === 'next-page' && currentPage < totalPages) {
+                                showPage(currentPage + 1);
+                            }
+                        }
+                    });
+
+                    // Al escribir en el campo de búsqueda, filtrar los productos
+                    searchInput.addEventListener('keyup', filterProducts);
+
+                    // Limpiar el campo de búsqueda y restaurar la vista original
+                    clearBtn.addEventListener('click', function () {
+                        searchInput.value = ''; // Limpiar el input de búsqueda
+                        filterProducts(); // Actualizar la vista a todos los productos
+                    });
+
+                    // Mostrar la primera página al cargar la página
+                    showPage(currentPage);
+                });
+            </script>
+
+            <script>
+                document.addEventListener("DOMContentLoaded", function() {
+                    const itemsPerPage = 4; // Número de productos por página
+                    let currentPage = 1;
+
+                    const productCards = document.querySelectorAll('.product-box'); // Selecciona todas las tarjetas de producto
+                    const totalItems = productCards.length;
+                    const totalPages = Math.ceil(totalItems / itemsPerPage);
+
+                    const paginationElement = document.getElementById('pagination');
+                    const currentPageElement = document.getElementById('current-page');
+                    const totalPagesElement = document.getElementById('total-pages');
+
+                    totalPagesElement.textContent = totalPages; // Mostrar el total de páginas
+
+                    // Mostrar solo los productos de la página actual
+                    function showPage(page) {
+                        currentPage = page;
+
+                        // Ocultar todos los productos y mostrar solo los correspondientes a la página actual
+                        productCards.forEach((card, index) => {
+                            card.style.display = 'none'; // Ocultar todos los productos
+                            if (index >= (page - 1) * itemsPerPage && index < page * itemsPerPage) {
+                                card.style.display = 'block'; // Mostrar productos en la página actual
+                            }
+                        });
+
+                        // Actualizar el número de página actual
+                        currentPageElement.textContent = currentPage;
+
+                        // Habilitar o deshabilitar los botones "prev" y "next"
+                        document.getElementById('prev-page').classList.toggle('disabled', currentPage === 1);
+                        document.getElementById('next-page').classList.toggle('disabled', currentPage === totalPages);
+                    }
                     // Manejar el evento de clic para la paginación
                     paginationElement.addEventListener('click', function(event) {
                         if (event.target.closest('li')) {
