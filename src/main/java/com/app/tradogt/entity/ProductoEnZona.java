@@ -41,4 +41,10 @@ public class ProductoEnZona {
     @ColumnDefault("0")
     @Column(name = "isDeleted", nullable = false)
     private Byte isDeleted = 0;
+
+    public void setProductoyZona (Producto producto,Zona zona){
+        this.id = new ProductoEnZonaId(producto.getId(),zona.getId());
+        this.productoIdproducto = producto;
+        this.zonaIdzona = zona;
+    }
 }

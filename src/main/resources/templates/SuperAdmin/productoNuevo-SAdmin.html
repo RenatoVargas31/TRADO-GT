@@ -45,15 +45,23 @@
                                                 <input type="text" id="basicpill-firstname-input" class="form-control" th:field="*{producto.nombre}" />
                                             </div>
                                         </div>
-                                        <div class="col-lg-6">
+                                        <div class="col-lg-3">
                                             <div class="mb-3">
                                                 <label for="category">Categoría</label>
                                                 <select id="category" class="form-select">
                                                     <option disabled selected>--Selecciona una categoría--</option>
-                                                    <option value="Ropa Masculina">Ropa Masculina</option>
-                                                    <option value="Ropa Femenina">Ropa Femenina</option>
-                                                    <option value="Electrónica">Electrónica</option>
-                                                    <option value="Muebles">Muebles</option>
+                                                    <option value="1">Ropa mujer</option>
+                                                    <option value="2">Ropa hombre</option>
+                                                    <option value="3">Tecnología</option>
+                                                    <option value="4">Muebles para el hogar</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <div class="mb-3">
+                                                <label for="subcategoria">SubCategoría</label>
+                                                <select id="subcategoria" class="form-select" name="producto.subcategoriaIdsubcategoria">
+                                                    <option disabled selected>--Selecciona una subcategoría--</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -68,78 +76,147 @@
                                         <div class="col-lg-3">
                                             <div class="mb-3">
                                                 <label class="form-label" for="demo2">Costo Unitario</label>
-                                                <input id="demo2" type="text"  class="form-control" />
+                                                <input id="demo2" type="text" th:field="*{producto.precio}"  class="form-control"  />
                                             </div>
                                         </div>
                                         <div class="col-lg-3">
                                             <div class="mb-3">
-                                                <label class="form-label" for="demo4">NUMERO</label>
-                                                <input id="demo4" type="text" class="form-control" />
+                                                <label class="form-label" for="demo4">Peso</label>
+                                                <input id="demo4" type="text" class="form-control" th:field="*{producto.peso}" />
                                             </div>
                                         </div>
                                         <div class="col-lg-4">
                                             <div class="mb-3">
                                                 <label for="proveedor">Proveedor</label>
-                                                <select id="proveedor" class="form-select" >
-                                                    <option disabled selected>--Seleccione un Proveedor--</option>
-                                                    <option value="Proveedor 1">Proveedor 1</option>
-                                                    <option value="Proveedor 2">Proveedor 2</option>
-                                                    <option value="Proveedor 3">Proveedor 3</option>
-                                                    <option value="Proveedor 4">Proveedor 4</option>
+                                                <select id="proveedor" class="form-select" name="producto.proveedorIdproveedor">
+                                                    <option disabled selected>--Sin Asignar--</option>
+                                                    <option th:each="proveedor : ${proveedores}" th:value="${proveedor.id}" th:text="${proveedor.nombre}+' '+${proveedor.apellido}+' - '+${proveedor.tienda}"></option>
                                                 </select>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <input type="hidden" th:field="*{productoEnZonaNorte.zonaIdzona.id}" th:value="1" />
-                                        <div class="col-lg-3">
-                                            <div class="mb-3">
-                                                <label class="form-label" for="demo5">ZONA NORTE</label>
-                                                <input id="demo5" type="text" th:field="*{productoEnZonaNorte.cantidad}" />
+                                        <div class="col-lg-6">
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                    <div class="mb-3">
+                                                        <label class="form-label" for="marca">Marca</label>
+                                                        <input type="text" id="marca" class="form-control" th:field="*{producto.marca}" />
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label class="form-label" for="color">Color</label>
+                                                        <input type="text" id="color" class="form-control" th:field="*{producto.color}" />
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label class="form-label" for="modelo">Modelo</label>
+                                                        <input type="text" id="modelo" class="form-control" th:field="*{producto.modelo}" />
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="mb-3" data-category="1,2">
+                                                        <label class="form-label" for="talla">Talla</label>
+                                                        <input type="text" id="talla" class="form-control" th:field="*{producto.talla}" />
+                                                    </div>
+                                                    <div class="mb-3" data-category="1,2">
+                                                        <label class="form-label" for="material">Material</label>
+                                                        <input type="text" id="material" class="form-control" th:field="*{producto.material}" />
+                                                    </div>
+                                                    <div class="mb-3" data-category="3,4">
+                                                        <label class="form-label" for="ancho">Ancho</label>
+                                                        <input type="text" id="ancho" class="form-control" th:field="*{producto.ancho}" />
+                                                    </div>
+                                                    <div class="mb-3" data-category="3,4">
+                                                        <label class="form-label" for="alto">Alto</label>
+                                                        <input type="text" id="alto" class="form-control" th:field="*{producto.alto}" />
+                                                    </div>
+                                                    <div class="mb-3" data-category="3,4">
+                                                        <label class="form-label" for="profundidad">Profundidad</label>
+                                                        <input type="text" id="profundidad" class="form-control" th:field="*{producto.profundidad}" />
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-lg-4">
+                                                        <div class="mb-3" data-category="3">
+                                                            <label class="form-label" for="resolucion">Resolución de Pantalla</label>
+                                                            <input type="text" id="resolucion" class="form-control" th:field="*{producto.resolucion}" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <div class="mb-3" data-category="3">
+                                                            <label class="form-label" for="ram">Memoria RAM</label>
+                                                            <input type="text" id="ram" class="form-control" th:field="*{producto.ram}" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <div class="mb-3" data-category="3">
+                                                            <label class="form-label" for="almacenamiento">Almacenamiento</label>
+                                                            <input type="text" id="almacenamiento" class="form-control" th:field="*{producto.almacenamiento}" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                    <div class="mb-3">
+                                                        <label class="form-label" for="demo5">ZONA NORTE</label>
+                                                        <input id="demo5" type="text" th:field="*{productoEnZonaNorte.cantidad}" />
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="mb-3">
+                                                        <label class="form-label" for="demo9">Costo de envío C/25 uni.</label>
+                                                        <input id="demo9" type="text" th:field="*{productoEnZonaNorte.costoEnvio}" class="form-control" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                    <div class="mb-3">
+                                                        <label class="form-label" for="demo6">ZONA SUR</label>
+                                                        <input id="demo6" type="text" th:field="*{productoEnZonaSur.cantidad}" />
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="mb-3">
+                                                        <label class="form-label" for="demo10">Costo de envío C/25 uni.</label>
+                                                        <input id="demo10" type="text" th:field="*{productoEnZonaSur.costoEnvio}" class="form-control" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                    <div class="mb-3">
+                                                        <label class="form-label" for="demo7">ZONA ESTE</label>
+                                                        <input id="demo7" type="text" th:field="*{productoEnZonaEste.cantidad}" />
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="mb-3">
+                                                        <label class="form-label" for="demo11">Costo de envío C/25 uni.</label>
+                                                        <input id="demo11" type="text" th:field="*{productoEnZonaEste.costoEnvio}" class="form-control" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                    <div class="mb-3">
+                                                        <label class="form-label" for="demo8">ZONA OESTE</label>
+                                                        <input id="demo8" type="text" th:field="*{productoEnZonaOeste.cantidad}" />
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="mb-3">
+                                                        <label class="form-label" for="demo12">Costo de envío C/25 uni.</label>
+                                                        <input id="demo12" type="text" value="0" th:field="*{productoEnZonaOeste.costoEnvio}" class="form-control" />
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="col-lg-3">
+                                        <div class="col-lg-6">
                                             <div class="mb-3">
-                                                <label class="form-label" for="demo9">Costo de envío C/25 uni.</label>
-                                                <input id="demo9" type="text" th:field="*{productoEnZonaNorte.costoEnvio}" class="form-control" />
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-3">
-                                            <div class="mb-3">
-                                                <label class="form-label" for="demo6">ZONA SUR</label>
-                                                <input id="demo6" type="text" th:field="*{productoEnZonaSur.cantidad}" />
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-3">
-                                            <div class="mb-3">
-                                                <label class="form-label" for="demo10">Costo de envío C/25 uni.</label>
-                                                <input id="demo10" type="text" th:field="*{productoEnZonaSur.costoEnvio}" class="form-control" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-lg-3">
-                                            <div class="mb-3">
-                                                <label class="form-label" for="demo7">ZONA ESTE</label>
-                                                <input id="demo7" type="text" th:field="*{productoEnZonaEste.cantidad}" />
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-3">
-                                            <div class="mb-3">
-                                                <label class="form-label" for="demo11">Costo de envío C/25 uni.</label>
-                                                <input id="demo11" type="text" th:field="*{productoEnZonaEste.costoEnvio}" class="form-control" />
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-3">
-                                            <div class="mb-3">
-                                                <label class="form-label" for="demo8">ZONA OESTE</label>
-                                                <input id="demo8" type="text" th:field="*{productoEnZonaOeste.cantidad}" />
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-3">
-                                            <div class="mb-3">
-                                                <label class="form-label" for="demo12">Costo de envío C/25 uni.</label>
-                                                <input id="demo12" type="text" value="0" th:field="*{productoEnZonaOeste.costoEnvio}" class="form-control" />
+                                                <label class="form-label" for="productdesc">Descripción</label>
+                                                <textarea class="form-control" id="productdesc" rows="24" th:field="*{producto.descripcion}"></textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -161,17 +238,38 @@
     <script th:src="@{../js/pages/form-advanced.init.js}"></script>
     <script>
         $(document).ready(function() {
-            $('#demo3').TouchSpin({ initval: 0, min:0, max:100000 });
-            $("#demo2").TouchSpin({ initval: 0, min: 0, max: 100000, step: 0.01, decimals: 2, boostat: 5, maxboostedstep: 10, prefix: 'S/.' });
-            $("#demo4").TouchSpin({ min: 0, max: 100000, step: 0.01, decimals: 2, boostat: 5, maxboostedstep: 10, prefix: 'S/.' });
-            $('#demo5').TouchSpin({ initval: 0, min:0, max:100000 });
-            $('#demo6').TouchSpin({ initval: 0, min:0, max:100000 });
-            $('#demo7').TouchSpin({ initval: 0, min:0, max:100000 });
-            $('#demo8').TouchSpin({ initval: 0, min:0, max:100000 });
-            $("#demo9").TouchSpin({ initval: 0, min: 0, max: 100000, step: 0.01, decimals: 2, boostat: 5, maxboostedstep: 10, prefix: 'S/.' });
-            $("#demo10").TouchSpin({ initval: 0, min: 0, max: 100000, step: 0.01, decimals: 2, boostat: 5, maxboostedstep: 10, prefix: 'S/.' });
-            $("#demo11").TouchSpin({ initval: 0, min: 0, max: 100000, step: 0.01, decimals: 2, boostat: 5, maxboostedstep: 10, prefix: 'S/.' });
-            $("#demo12").TouchSpin({ initval: 0, min: 0, max: 100000, step: 0.01, decimals: 2, boostat: 5, maxboostedstep: 10, prefix: 'S/.' });
+            $('#demo3').TouchSpin({ min: 0, max: 100000 });
+            $('#demo3').attr('placeholder', '0');
+
+            $("#demo2").TouchSpin({ min: 0, max: 100000, step: 0.01, decimals: 2, boostat: 5, maxboostedstep: 10, prefix: 'S/.' });
+            $('#demo2').attr('placeholder', '0.00');
+
+            $("#demo4").TouchSpin({ min: 0, max: 100000, step: 0.01, decimals: 2, boostat: 5, maxboostedstep: 10, prefix: 'Kg.' });
+            $('#demo4').attr('placeholder', '0.00');
+
+            $('#demo5').TouchSpin({ min: 0, max: 100000 });
+            $('#demo5').attr('placeholder', '0');
+
+            $('#demo6').TouchSpin({ min: 0, max: 100000 });
+            $('#demo6').attr('placeholder', '0');
+
+            $('#demo7').TouchSpin({ min: 0, max: 100000 });
+            $('#demo7').attr('placeholder', '0');
+
+            $('#demo8').TouchSpin({ min: 0, max: 100000 });
+            $('#demo8').attr('placeholder', '0');
+
+            $("#demo9").TouchSpin({ min: 0, max: 100000, step: 0.01, decimals: 2, boostat: 5, maxboostedstep: 10, prefix: 'S/.' });
+            $('#demo9').attr('placeholder', '0.00');
+
+            $("#demo10").TouchSpin({ min: 0, max: 100000, step: 0.01, decimals: 2, boostat: 5, maxboostedstep: 10, prefix: 'S/.' });
+            $('#demo10').attr('placeholder', '0.00');
+
+            $("#demo11").TouchSpin({ min: 0, max: 100000, step: 0.01, decimals: 2, boostat: 5, maxboostedstep: 10, prefix: 'S/.' });
+            $('#demo11').attr('placeholder', '0.00');
+
+            $("#demo12").TouchSpin({ min: 0, max: 100000, step: 0.01, decimals: 2, boostat: 5, maxboostedstep: 10, prefix: 'S/.' });
+            $('#demo12').attr('placeholder', '0.00');
 
             // Function to reset demo5, demo6, demo7, and demo8 to 0
             function resetDemos() {
@@ -240,6 +338,82 @@
             // Initialize the values
             resetDemos();
             toggleIncrementButtons(false); // Ensure buttons are enabled initially
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const categorySelect = document.getElementById('category');
+            const subcategorySelect = document.getElementById('subcategoria');
+
+            const subcategories = {
+                '1': [
+                    { id: 1, nombre: 'Blusas' },
+                    { id: 2, nombre: 'Short' },
+                    { id: 3, nombre: 'Poleras' },
+                    { id: 4, nombre: 'Pantalones' },
+                    { id: 5, nombre: 'Vestidos' }
+                ],
+                '2': [
+                    { id: 6, nombre: 'Polos' },
+                    { id: 7, nombre: 'Poleras' },
+                    { id: 8, nombre: 'Camisas' },
+                    { id: 9, nombre: 'Chompas' },
+                    { id: 10, nombre: 'Pantalones' }
+                ],
+                '3': [
+                    { id: 11, nombre: 'Computadoras' },
+                    { id: 12, nombre: 'Laptops' },
+                    { id: 13, nombre: 'Tablets' },
+                    { id: 14, nombre: 'Celulares' },
+                    { id: 15, nombre: 'Auriculares' }
+                ],
+                '4': [
+                    { id: 16, nombre: 'Juego de comedor' },
+                    { id: 17, nombre: 'Sillones' },
+                    { id: 18, nombre: 'Armarios' },
+                    { id: 19, nombre: 'Literas' },
+                    { id: 20, nombre: 'Estantes' }
+                ]
+            };
+
+            categorySelect.addEventListener('change', function() {
+                const selectedCategory = categorySelect.value;
+                const options = subcategories[selectedCategory] || [];
+
+                // Clear previous options
+                subcategorySelect.innerHTML = '<option disabled selected>--Selecciona una subcategoría--</option>';
+
+                // Populate new options
+                options.forEach(subcategory => {
+                    const option = document.createElement('option');
+                    option.value = subcategory.id;
+                    option.textContent = subcategory.nombre;
+                    subcategorySelect.appendChild(option);
+                });
+            });
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const categorySelect = document.getElementById('category');
+            const inputs = document.querySelectorAll('[data-category]');
+
+            function updateInputsVisibility() {
+                const selectedCategory = categorySelect.value;
+                inputs.forEach(input => {
+                    const categories = input.getAttribute('data-category').split(',');
+                    if (categories.includes(selectedCategory)) {
+                        input.style.display = 'block';
+                    } else {
+                        input.style.display = 'none';
+                    }
+                });
+            }
+
+            categorySelect.addEventListener('change', updateInputsVisibility);
+
+            // Initial call to set the correct visibility on page load
+            updateInputsVisibility();
         });
     </script>
 </div>

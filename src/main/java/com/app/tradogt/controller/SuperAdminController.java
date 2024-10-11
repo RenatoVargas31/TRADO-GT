@@ -375,6 +375,10 @@ public class SuperAdminController {
         //Enviar un producto
         FormProducto formProducto = new FormProducto();
         model.addAttribute("formProducto", formProducto);
+        //Enviar subcategorias
+        model.addAttribute("subcategorias", subCategoriaRepository.findAll());
+        //Enviar Proveedores
+        model.addAttribute("proveedores", proveedorRepository.findAll());
 
         return "SuperAdmin/productoNuevo-SAdmin";
     }
@@ -382,35 +386,31 @@ public class SuperAdminController {
     public String viewProductoNuevo(@ModelAttribute FormProducto formProducto) {
         // Crear una instancia de Producto
         Producto producto = formProducto.getProducto();
-        producto.setCodigo(ProductCodeGenerator.generateProductCode(producto));
+        System.out.println(producto);
         // Guardar el producto
+        productosRepository.save(producto);
+        //Genrar un código de producto con ProductCodeGenerator
+        producto.setCodigo(ProductCodeGenerator.generateProductCode(producto));
+        //Guardar el producto
         productosRepository.save(producto);
         //Crear instancias de ProductoEnZona
         //Norte
         ProductoEnZona productoEnZonaNorte = formProducto.getProductoEnZonaNorte();
-        productoEnZonaNorte.setId(new ProductoEnZonaId(producto.getId(),1));
-        productoEnZonaNorte.setProductoIdproducto(producto);
-        productoEnZonaNorte.setZonaIdzona(zonaRepository.findById(1).get());
-        System.out.println(productoEnZonaNorte);
+        productoEnZonaNorte.setProductoyZona(producto,zonaRepository.findById(1).get());
         productoEnZonaRepository.save(productoEnZonaNorte);
         //Sur
         ProductoEnZona productoEnZonaSur = formProducto.getProductoEnZonaSur();
-        productoEnZonaSur.setId(new ProductoEnZonaId(producto.getId(),2));
-        productoEnZonaSur.setProductoIdproducto(producto);
-        productoEnZonaSur.setZonaIdzona(zonaRepository.findById(2).get());
+        productoEnZonaSur.setProductoyZona(producto,zonaRepository.findById(2).get());
         productoEnZonaRepository.save(productoEnZonaSur);
         //Este
         ProductoEnZona productoEnZonaEste = formProducto.getProductoEnZonaEste();
-        productoEnZonaEste.setId(new ProductoEnZonaId(producto.getId(),3));
-        productoEnZonaEste.setProductoIdproducto(producto);
-        productoEnZonaEste.setZonaIdzona(zonaRepository.findById(3).get());
+        productoEnZonaEste.setProductoyZona(producto,zonaRepository.findById(3).get());
         productoEnZonaRepository.save(productoEnZonaEste);
         //Oeste
         ProductoEnZona productoEnZonaOeste = formProducto.getProductoEnZonaOeste();
-        productoEnZonaOeste.setId(new ProductoEnZonaId(producto.getId(),4));
-        productoEnZonaOeste.setProductoIdproducto(producto);
-        productoEnZonaOeste.setZonaIdzona(zonaRepository.findById(4).get());
+        productoEnZonaOeste.setProductoyZona(producto,zonaRepository.findById(4).get());
         productoEnZonaRepository.save(productoEnZonaOeste);
+
         return "redirect:/superadmin/productoNuevoForm";
     }
     @GetMapping("/productoEditar")
