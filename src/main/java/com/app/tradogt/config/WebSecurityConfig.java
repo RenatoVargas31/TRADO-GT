@@ -19,9 +19,11 @@ import java.util.EnumSet;
 public class WebSecurityConfig {
 
     final DataSource dataSource;
+    final CustomAccessDeniedHandler customAccessDeniedHandler;
 
-    public WebSecurityConfig(DataSource dataSource) {
+    public WebSecurityConfig(DataSource dataSource, CustomAccessDeniedHandler customAccessDeniedHandler) {
         this.dataSource = dataSource;
+        this.customAccessDeniedHandler = customAccessDeniedHandler;
     }
 
     // Bean para la codificación de contraseñas usando BCrypt
@@ -111,7 +113,8 @@ public class WebSecurityConfig {
                         .deleteCookies("JSESSIONID") // Borrar cookies de sesión
                         .invalidateHttpSession(true) // Invalidar la sesión
                         .permitAll()
-                );
+                )
+                .exceptionHandling((exceptions) -> exceptions.accessDeniedHandler(customAccessDeniedHandler));
 
 
             return http.build();
