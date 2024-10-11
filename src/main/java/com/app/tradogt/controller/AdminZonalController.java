@@ -4,6 +4,9 @@ import com.app.tradogt.dto.AgenteInfoZon;
 import com.app.tradogt.entity.Orden;
 import com.app.tradogt.entity.Producto;
 import com.app.tradogt.entity.ProductoEnZona;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -44,6 +47,21 @@ public class AdminZonalController {
         this.distritoRepository = distritoRepository;
         this.rolRepository = rolRepository;
         this.zonaRepository = zonaRepository;
+    }
+
+    private int getAuthenticatedUserId() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Object principal = authentication.getPrincipal();
+        String correoUsuario;
+
+        if (principal instanceof UserDetails) {
+            correoUsuario = ((UserDetails) principal).getUsername();
+        } else {
+            correoUsuario = principal.toString();
+        }
+
+        Usuario usuario = usuarioRepository.findByCorreo(correoUsuario);
+        return usuario.getId();
     }
 
     @GetMapping("/vacio")
@@ -87,8 +105,24 @@ public class AdminZonalController {
         return "AdminZonal/faq";
     }
     @GetMapping("/perfil")
-    public String showPerfil() {
-        return "AdminZonal/profile";
+    public String showPerfil (@ModelAttribute("user") Usuario user,  Model model) {
+        Optional<Usuario> usuario = usuarioRepository.findById(getAuthenticatedUserId());
+        if (usuario.isPresent()) {
+            model.addAttribute("user", usuario.get());
+            return "AdminZonal/profile";
+        } else {
+            return "redirect:/logout";
+        }
+
+    }
+
+    @PostMapping("/editarPerfil")
+    public String editarPerfil(@ModelAttribute("user") Usuario user, Model model) {
+        Usuario usuario = usuarioRepository.findById(getAuthenticatedUserId()).get();
+        usuario.setDireccion(user.getDireccion());
+        usuario.setTelefono(user.getTelefono());
+        usuarioRepository.save(usuario);
+        return "redirect:/adminzonal/perfil";
     }
 
     @GetMapping("/contraseña")
