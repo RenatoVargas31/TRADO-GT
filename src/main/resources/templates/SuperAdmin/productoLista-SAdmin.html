@@ -64,27 +64,41 @@
                                     <table id="datatable-producto-lista-almacen" class="table table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                         <thead>
                                         <tr>
-                                            <th>Código</th>
-                                            <th>Proveedor</th>
-                                            <th>Tienda</th>
-                                            <th>Categoría</th>
-                                            <th>Marca</th>
-                                            <th>Peso</th>
+                                            <th rowspan="2">Código</th>
+                                            <th colspan="2">Zona Norte</th>
+                                            <th colspan="2">Zona Sur</th>
+                                            <th colspan="2">Zona Este</th>
+                                            <th colspan="2">Zona Oeste</th>
+                                            <th rowspan="2">Precio</th>
+                                            <th rowspan="2">Acciones</th>
+                                        </tr>
+                                        <tr>
                                             <th>Cantidad</th>
-                                            <th>Precio Unitario</th>
-                                            <th>Acciones</th>
+                                            <th>Envío</th>
+                                            <th>Cantidad</th>
+                                            <th>Envío</th>
+                                            <th>Cantidad</th>
+                                            <th>Envío</th>
+                                            <th>Cantidad</th>
+                                            <th>Envío</th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         <tr th:each="producto : ${productos}">
                                             <td th:text="${producto.codigo}">Código del Producto</td>
+                                            <!--
                                             <td th:text="${producto.proveedorIdproveedor.nombre} +' '+ ${producto.proveedorIdproveedor.apellido}">Nombre del Proveedor</td>
-                                            <td th:text="${producto.proveedorIdproveedor.tienda}">Nombre de Tienda</td>
                                             <td th:text="${producto.subcategoriaIdsubcategoria.categoriaIdcategoria.nombre}">Categoría</td>
-                                            <td th:text="${producto.marca}">Marca</td>
-                                            <td th:text="${producto.peso}+' '+'Kg'">Peso</td>
-                                            <td th:text="${producto.cantidad}+' uni.'">Cantidad</td>
-                                            <td th:text="'S/.'+' '+${producto.precio}">Precio Unitario</td>
+                                            -->
+                                            <td th:text="${productoZonaCantidad[producto.id.longValue()]?.get(1)?.get('cantidad')}+' '+'uni.'">Zona Norte</td>
+                                            <td th:text="'S/.'+' '+${productoZonaCantidad[producto.id.longValue()]?.get(1)?.get('costoEnvio')}">Zona Norte</td>
+                                            <td th:text="${productoZonaCantidad[producto.id.longValue()]?.get(2).get('cantidad')}+' '+'uni.'">Zona Sur</td>
+                                            <td th:text="'S/.'+' '+${productoZonaCantidad[producto.id.longValue()]?.get(2).get('costoEnvio')}">Zona Sur</td>
+                                            <td th:text="${productoZonaCantidad[producto.id.longValue()]?.get(3).get('cantidad')}+' '+'uni.'">Zona Este</td>
+                                            <td th:text="'S/.'+' '+${productoZonaCantidad[producto.id.longValue()]?.get(3).get('costoEnvio')}">Zona Este</td>
+                                            <td th:text="${productoZonaCantidad[producto.id.longValue()]?.get(4).get('cantidad')}+' '+'uni.'">Zona Oeste</td>
+                                            <td th:text="'S/.'+' '+${productoZonaCantidad[producto.id.longValue()]?.get(4).get('costoEnvio')}">Zona Oeste</td>
+                                            <td th:text="'S/.'+' '+${producto.precio}">Precio</td>
                                             <td>
                                                 <a th:href="@{'/superadmin/productoEditar/' + ${producto.id}}" class="btn btn-success btn-sm waves-effect waves-light" title="Editar"><i class="ri-pencil-fill"></i></a>
                                                 <a href="#" class="btn btn-danger btn-sm waves-effect waves-light" title="Eliminar" data-bs-toggle="modal" data-bs-target="#deleteConfirmModal"><i class="ri-delete-bin-fill"></i></a>

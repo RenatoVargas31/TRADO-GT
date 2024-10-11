@@ -4,6 +4,7 @@ import com.app.tradogt.entity.*;
 import com.app.tradogt.helpers.PasswordGenerator;
 import com.app.tradogt.helpers.ProductCodeGenerator;
 import com.app.tradogt.repository.*;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -83,7 +84,10 @@ public class SuperAdminController {
     @PostMapping("/admZonalNuevo")
     public String viewAdmZonalNuevoForm(@ModelAttribute Usuario usuario) {
         //Asignar una contraseña por random de 10 dígitos y que combine número y letras
-        usuario.setContrasena(PasswordGenerator.generateRandomPassword());
+        String password = PasswordGenerator.generateRandomPassword();
+        //Encriptar la contraseña con BCrypt de 10 rondas
+        String passwordEncrypted = BCrypt.hashpw(password, BCrypt.gensalt(10));
+        usuario.setContrasena(passwordEncrypted);
         //Guardar usuario
         usuarioRepository.save(usuario);
         return "redirect:/superadmin/admZonalNuevoForm";

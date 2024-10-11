@@ -61,9 +61,18 @@ public class WebSecurityConfig {
                         .requestMatchers("/loginForm", "/processLogin", "/sistema/CreateAcc", "/sistema/PassRestore").permitAll()
                         // Solo accesibles por el rol "SuperAdmin"
                         .requestMatchers("/superadmin", "/superadmin/**").hasAnyAuthority("SuperAdmin")
-                        // Cualquier otra petición requiere autenticación
+                        // Solo accesibles por el rol "Administrador Zonal"
+                        .requestMatchers("/adminzonal", "/adminzonal/**").hasAnyAuthority("Administrador Zonal")
+                        // Solo accesibles por el rol "Agente de Compra"
+                        .requestMatchers("/agente", "/agente/**").hasAnyAuthority("Agente de Compra")
+                        // Solo accesibles por el rol "Usuario"
+                        .requestMatchers("/usuario", "/usuario/**").hasAnyAuthority("Usuario")
+                        //Solo accesible para usuarios no autenticados
+                        .requestMatchers("/loginForm").anonymous()
+                        // Todas las demás rutas requieren autenticación
                         .anyRequest().authenticated()
                 )
+
                 // Configuración del login
                 .formLogin((form) -> form
                         .loginPage("/loginForm") // Página de inicio de sesión
@@ -95,13 +104,16 @@ public class WebSecurityConfig {
                             }
                         })
                 )
+
                 // Configuración del logout
                 .logout(logout -> logout
-                        .logoutSuccessUrl("/sistema/loguin") // URL de redirección después de logout
+                        .logoutSuccessUrl("/loginForm") // URL de redirección después de logout
                         .deleteCookies("JSESSIONID") // Borrar cookies de sesión
                         .invalidateHttpSession(true) // Invalidar la sesión
+                        .permitAll()
                 );
 
-        return http.build();
+
+            return http.build();
     }
 }
