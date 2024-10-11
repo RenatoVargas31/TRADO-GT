@@ -17,8 +17,11 @@ import java.io.IOException;
 public class LoginController {
 
     @GetMapping("/loginForm")
-    public String loginForm(HttpServletRequest request, HttpServletResponse response) {
+    public String loginForm(HttpServletRequest request, HttpServletResponse response, Model model,
+                            @RequestParam(value = "error", required = false) String error) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        // Verificar si el usuario ya está autenticado
         if (auth != null && auth.isAuthenticated() && !(auth instanceof AnonymousAuthenticationToken)) {
             String rol = "";
             for (GrantedAuthority role : auth.getAuthorities()) {
@@ -35,6 +38,11 @@ public class LoginController {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+
+        // Verificar si hubo un error de credenciales
+        if (error != null) {
+            model.addAttribute("error", "Credenciales incorrectas. Por favor, inténtalo de nuevo.");
         }
         return "loguin";
     }
