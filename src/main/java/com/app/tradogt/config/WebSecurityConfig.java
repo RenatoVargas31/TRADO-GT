@@ -66,7 +66,7 @@ public class WebSecurityConfig {
                         // Solo accesibles por el rol "Agente de Compra"
                         .requestMatchers("/agente", "/agente/**").hasAnyAuthority("Agente de Compra")
                         // Solo accesibles por el rol "Usuario"
-                        .requestMatchers("/usuario", "/usuario/**").hasAnyAuthority("Usuario")
+                        .requestMatchers("/usuario", "/usuario/**").hasAnyAuthority("Usuario Final")
                         //Solo accesible para usuarios no autenticados
                         .requestMatchers("/loginForm").anonymous()
                         // Todas las demás rutas requieren autenticación
@@ -99,7 +99,7 @@ public class WebSecurityConfig {
                                     case "SuperAdmin" -> response.sendRedirect("superadmin/inicio");
                                     case "Administrador Zonal" -> response.sendRedirect("adminzonal/dashboard");
                                     case "Agente de Compra" -> response.sendRedirect("agente/inicio");
-                                    default -> response.sendRedirect("usuario/inicio");
+                                    case "Usuario Final" -> response.sendRedirect("usuario/inicio");
                                 }
                             }
                         })
