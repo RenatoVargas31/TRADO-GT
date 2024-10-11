@@ -57,32 +57,32 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-md-9 justify-content-center">
-                                        <h5 class="text-center" th:text="${resena.titulo}"></h5>
+                                        <h5 class="text-center" th:text="${resena.titulo}">Amo esta Camisa Azul</h5>
                                         <p class="text-justify" th:text="${resena.cuerpo}">
-                                            <!-- Aquí se mostrará el contenido de la reseña -->
+                                            Descripción de la reseña.
                                         </p>
                                     </div>
 
                                     <div class="col-md-3 text-center">
                                         <div class="product-img">
-                                            <img th:src="@{'/' + ${resena.foto}}" alt="img-product" class="img-fluid mx-auto d-block">
+                                            <img th:src="@{'/images/reseñasUsuarios/' + ${resena.foto}}"  alt="img-5" class="img-fluid mx-auto d-block">
                                         </div>
                                         <div class="text-center p-3">
-                                            <p class="font-size-12 mb-1" th:text="${resena.carrito.productoEnZona.productoIdproducto.subcategoriaIdsubcategoria.categoriaIdcategoria.nombre} + ', ' + ${resena.carrito.productoEnZona.productoIdproducto.subcategoriaIdsubcategoria.nombre}">Categoría, Subcategoría</p>
-                                            <h5 class="font-size-15"><a href="#" class="text-reset" th:text="${resena.carrito.productoEnZona.productoIdproducto.nombre}"></a></h5>
-                                            <span class="product-ribbon badge bg-warning" th:text="${resena.carrito.productoEnZona.productoIdproducto.codigo}"></span><br>
+                                            <p class="font-size-12 mb-1" th:text="${resena.productoIdproducto.subcategoriaIdsubcategoria.categoriaIdcategoria.nombre} + ', ' + ${resena.productoIdproducto.subcategoriaIdsubcategoria.nombre}">Categoría, Subcategoría</p>
+                                            <h5 class="font-size-15"><a href="#" class="text-reset" th:text="${resena.productoIdproducto.nombre}">Nombre del producto</a></h5>
+                                            <span class="product-ribbon badge bg-warning" th:text="${resena.productoIdproducto.codigo}">NK128</span><br>
                                             <div class="d-inline-flex align-items-center mb-2">
                                                 <div class="text-muted me-2" style="font-size: 12px;">
-                                                    <span class="mdi mdi-star" th:classappend="${resena.calificacion >= 1 ? 'text-warning' : ''}"></span>
-                                                    <span class="mdi mdi-star" th:classappend="${resena.calificacion >= 2 ? 'text-warning' : ''}"></span>
-                                                    <span class="mdi mdi-star" th:classappend="${resena.calificacion >= 3 ? 'text-warning' : ''}"></span>
-                                                    <span class="mdi mdi-star" th:classappend="${resena.calificacion >= 4 ? 'text-warning' : ''}"></span>
-                                                    <span class="mdi mdi-star" th:classappend="${resena.calificacion >= 5 ? 'text-warning' : ''}"></span>
+                                                    <span class="mdi mdi-star text-warning" th:if="${resena.calificacion >= 1}"></span>
+                                                    <span class="mdi mdi-star text-warning" th:if="${resena.calificacion >= 2}"></span>
+                                                    <span class="mdi mdi-star text-warning" th:if="${resena.calificacion >= 3}"></span>
+                                                    <span class="mdi mdi-star text-warning" th:if="${resena.calificacion >= 4}"></span>
+                                                    <span class="mdi mdi-star text-warning" th:if="${resena.calificacion >= 5}"></span>
                                                 </div>
                                             </div>
                                             <div class="provider-info d-flex align-items-center justify-content-center">
                                                 <img th:src="@{/images/product/iconoProvedor.png}" alt="Proveedor Icono" class="rounded-circle me-2" style="width: 30px; height: 30px;">
-                                                <span class="provider-name" th:text="${resena.carrito.productoEnZona.productoIdproducto.proveedorIdproveedor.nombre} + ', ' + ${resena.carrito.productoEnZona.productoIdproducto.proveedorIdproveedor.apellido}"></span>
+                                                <span class="provider-name" th:text="${resena.productoIdproducto.proveedorIdproveedor.nombre} + ', ' + ${resena.productoIdproducto.proveedorIdproveedor.apellido}">Nombre del provedor</span>
                                             </div>
                                         </div>
                                     </div>
@@ -92,18 +92,21 @@
                                     <div class="col-md-12  mt-2">
                                         <div class="d-flex ">
                                             <p class="mt-2 card-title-desc me-2" style="font-size: 12px;">
-                                                <span>Publicado en </span><span th:text="${resena.fechaCreacion}"></span><span> por </span>
+                                                <span>Publicado en </span>
+                                                <span th:text="${resena.fechaCreacion}">Fecha de publicación</span>
+                                                <span> por </span>
                                             </p>
                                         </div>
                                         <div >
-                                            <img th:src="@{/images/product/iconoProvedor.png}" alt="Proveedor Icono" class="rounded-circle me-2" style="width: 40px; height: 40px;">
-                                            <span class="provider-name" th:text="${resena.carrito.usuarioIdusuario.nombre} + ', ' + ${resena.carrito.usuarioIdusuario.apellido}"></span>
+                                            <img th:src="@{'/images/users/' + ${resena.usuarioIdusuario.foto}}" alt="Proveedor Icono" class="rounded-circle me-2" style="width: 40px; height: 40px;">
+                                            <span class="provider-name" th:text="${resena.usuarioIdusuario.nombre} + ', ' + ${resena.usuarioIdusuario.apellido}"  >Nombre del Usuario</span>
                                         </div>
                                     </div>
+
                                 </div>
+
                             </div>
                         </div>
-                        <!-- Sección para añadir comentarios -->
                     </div>
                 </div> <!-- container-fluid -->
             </div>

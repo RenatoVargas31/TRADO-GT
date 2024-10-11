@@ -3,7 +3,7 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Inicio | TRADO</title>
+    <title>Crear Cuenta | TRADO</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
     <meta content="Themesdesign" name="author" />
@@ -13,7 +13,10 @@
     <meta th:replace="~{Common/cssBase :: css_Base}">
     <!-- End CSS BASE -->
     <style>
-
+        .auth-logo-container {
+            margin-top: 100px; /* Espacio superior para evitar que se mueva el contenido cuando aparece el error */
+            margin-bottom: 20px; /* Espacio inferior para evitar que se mueva el contenido cuando aparece el error */
+        }
         /* Ensure the right image takes up the full height and width of its column */
         .right-side-image {
             height: 100vh; /* Full viewport height */
@@ -22,19 +25,22 @@
         }
 
         /* Responsive for smaller screens */
-        @media (max-width: 768px) {
-            .right-side-image {
-                display: none; /* Hide the image on smaller screens */
+        @media (min-width: 992px) {
+            .fixed-right-side {
+                position: fixed; /* Fija la imagen del lado derecho para evitar que se corte */
+                right: 0;
+                top: 0;
+                width: 66.66%; /* Dos tercios de la pantalla (ajustable) */
+                height: 100%; /* Toda la altura */
+                z-index: -1; /* Para que no se superponga sobre el contenido */
             }
         }
     </style>
 </head>
-
 <body class="auth-body-bg">
 <div>
     <div class="container-fluid p-0">
         <div class="row g-0">
-            <!-- Left side content -->
             <div class="col-lg-4">
                 <div class="authentication-page-content p-4 d-flex align-items-center min-vh-100">
                     <div class="w-100">
@@ -42,73 +48,71 @@
                             <div class="col-lg-9">
                                 <div>
                                     <div class="text-center">
-                                        <div>
-                                            <img src="/images/trado-dark.png" alt="" height="60" class="auth-logo logo-dark mx-auto">
+                                        <div class="auth-logo-container">
+                                            <img src="/images/trado-dark.png" alt="" height="40" class="auth-logo logo-dark mx-auto">
                                         </div>
                                         <h4 class="font-size-18 mt-2">¡Bienvenido a Trado!</h4>
-                                        <p class="text-muted">Ingrese los datos pedidos</p>
+                                        <p class="text-muted">Registro de Nuevo Usuario</p>
                                     </div>
 
                                     <div class="p-2 mt-2">
-                                        <form class="">
+                                        <form method="post" th:action="@{/crearCuenta}">
                                             <div class="auth-form-group-custom mb-2">
-                                                <i class="ri-passport-line  auti-custom-input-icon"></i>
-                                                <label for="DNI" class="fw-semibold">DNI</label>
-                                                <input type="text" class="form-control" id="DNI" placeholder="Ingresar DNI">
+                                                <i class="ri-passport-line auti-custom-input-icon"></i>
+                                                <label for="dni" class="fw-semibold">DNI</label>
+                                                <input type="text" class="form-control" id="dni" name="dni" placeholder="Ingresar DNI" required>
                                             </div>
                                             <div class="auth-form-group-custom mb-2">
                                                 <i class="ri-user-2-line auti-custom-input-icon"></i>
                                                 <label for="nombre" class="fw-semibold">Nombres</label>
-                                                <input type="text" class="form-control" id="nombre" placeholder="Ingresar nombres">
+                                                <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Ingresar nombres" required>
                                             </div>
                                             <div class="auth-form-group-custom mb-2">
                                                 <i class="ri-user-2-line auti-custom-input-icon"></i>
                                                 <label for="apellido" class="fw-semibold">Apellidos</label>
-                                                <input type="text" class="form-control" id="apellido" placeholder="Ingresar apellidos">
+                                                <input type="text" class="form-control" id="apellido" name="apellido" placeholder="Ingresar apellidos" required>
                                             </div>
-
                                             <div class="auth-form-group-custom mb-2">
                                                 <i class="ri-mail-line auti-custom-input-icon"></i>
-                                                <label for="useremail">Correo electrónico</label>
-                                                <input type="email" class="form-control" id="useremail" placeholder="Ingrese su correo">
+                                                <label for="correo">Correo electrónico</label>
+                                                <input type="email" class="form-control" id="correo" name="correo" placeholder="Ingrese su correo" required>
                                             </div>
-
                                             <div class="auth-form-group-custom mb-2">
-                                                <i class="ri-community-line  auti-custom-input-icon"></i>
+                                                <i class="ri-community-line auti-custom-input-icon"></i>
                                                 <label for="direccion" class="fw-semibold">Dirección</label>
-                                                <input type="text" class="form-control" id="direccion" placeholder="Ingresar dirección">
+                                                <input type="text" class="form-control" id="direccion" name="direccion" placeholder="Ingresar dirección" required>
                                             </div>
-
                                             <div class="auth-form-group-custom mb-2">
-                                                <i class="ri-map-2-line  auti-custom-input-icon"></i>
+                                                <i class="ri-map-2-line auti-custom-input-icon"></i>
                                                 <label for="distrito" class="fw-semibold">Distrito</label>
-                                                <input type="text" class="form-control" id="distrito" placeholder="Ingresar distrito">
+                                                <select name="distrito" id="distrito" class="form-control" required>
+                                                    <option th:each="distrito : ${distritos}"
+                                                            th:value="${distrito.nombre}"
+                                                            th:text="${distrito.nombre}">
+                                                    </option>
+                                                </select>
                                             </div>
-                                            <div class="mt-3 text-center">
-                                                <a href="/sistema/CreateAccConfirm" class="btn btn-primary w-md waves-effect waves-light" type="submit">Crear cuenta</a>
+                                            <input type="hidden" name="rolIdrol" value="4">
+                                            <div class="mt-4 text-center">
+                                                <button class="w-100 btn btn-lg btn-primary" type="submit">Registrar</button>
                                             </div>
                                         </form>
                                         <div class="mt-3 text-center">
-                                            <p>¿Ya tienes una cuenta? <a href="/sistema/loguin" class="fw-medium text-primary"> Inicia sesión </a> </p>
+                                            <p>¿Ya tienes una cuenta? <a href="/loginForm" class="fw-medium text-primary"> Inicia sesión </a></p>
                                             <p>© <script>document.write(new Date().getFullYear())</script> TRADO. Creado con <i class="mdi mdi-heart text-danger"></i> por Telesoft GT</p>
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- Right side image -->
-            <div class="col-lg-8 d-none d-lg-block">
+            <div class="col-lg-8 d-none d-lg-block fixed-right-side">
                 <img src="/images/297451387_172154511984888_7597808842372857148_n.jpg" alt="" class="right-side-image">
             </div>
         </div>
     </div>
 </div>
-<!-- JAVASCRIPT BASE-->
-<span th:replace="~{Common/jsBase :: js_Base}"></span>
-<!-- End JAVASCRIPT BASE-->
 </body>
 </html>

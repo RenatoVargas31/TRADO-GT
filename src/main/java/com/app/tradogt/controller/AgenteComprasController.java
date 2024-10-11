@@ -4,12 +4,10 @@ import com.app.tradogt.dto.OrdenCompraAgtDto;
 import com.app.tradogt.dto.PasswordChangeDto;
 import com.app.tradogt.dto.ProductDetailsAgtDto;
 import com.app.tradogt.dto.ProveedorInfoAgtDto;
+import com.app.tradogt.entity.EstadoOrden;
 import com.app.tradogt.entity.Orden;
 import com.app.tradogt.entity.Usuario;
-import com.app.tradogt.repository.OrdenRepository;
-import com.app.tradogt.repository.ProductosRepository;
-import com.app.tradogt.repository.ProveedorRepository;
-import com.app.tradogt.repository.UsuarioRepository;
+import com.app.tradogt.repository.*;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -41,12 +39,14 @@ public class AgenteComprasController {
     final OrdenRepository ordenRepository;
     private final ProveedorRepository proveedorRepository;
     final ProductosRepository productosRepository;
+    final EstadoOrdenRepository estadoOrdenRepository;
 
-    public AgenteComprasController(UsuarioRepository usuarioRepository, OrdenRepository ordenRepository, ProveedorRepository proveedorRepository, ProductosRepository productosRepository) {
+    public AgenteComprasController(UsuarioRepository usuarioRepository, OrdenRepository ordenRepository, ProveedorRepository proveedorRepository, ProductosRepository productosRepository, EstadoOrdenRepository estadoOrdenRepository) {
         this.usuarioRepository = usuarioRepository;
         this.ordenRepository = ordenRepository;
         this.proveedorRepository = proveedorRepository;
         this.productosRepository = productosRepository;
+        this.estadoOrdenRepository = estadoOrdenRepository;
     }
 
     @Autowired
@@ -261,7 +261,7 @@ public class AgenteComprasController {
     //OJO: Se crean múltiples vistas de estos detalles con el objetivo de mostrar el html
     //mas una vez se defina en el backend la lógica solo será necesario una vista que
     //varíe según corresponda el estado
-
+    /*
     @GetMapping("/detailsOrderEnProgreso")
     public String showInfoOrder() {
         return "Agente/detallesEnProgresoProducto-Agente";
@@ -282,14 +282,16 @@ public class AgenteComprasController {
     public String showInfoOrderCancelada() {
         return "Agente/detallesCanceladoProducto-Agente";
     }
-
+    */
 
     //Información de órdenes de usuarios asignados (este es el definitivo xD)
     @GetMapping("/detailsOrder")
     public String showDetails(Model model, @RequestParam ("idOrden") int idOrden,
                                            @RequestParam ("idUsuario") int idUsuario){
+        int idAgente = getAuthenticatedUserId();
+        model.addAttribute("idAgente",idAgente);
 
-         Optional<Orden> optionalOrden = ordenRepository.findById(idOrden);
+        Optional<Orden> optionalOrden = ordenRepository.findById(idOrden);
 
          if(optionalOrden.isPresent()){
 
@@ -374,6 +376,39 @@ public class AgenteComprasController {
 
         // Redirigimos a la página de listado de órdenes después de eliminar
         return "redirect:/agente/allOrders";
+    }
+
+    //Tomado de órdenes
+    // Método para manejar la solicitud POST
+    @PostMapping("/tomarOrden")
+    public String takeOrder(
+            @RequestParam("idOrden") int idOrden,
+            @RequestParam("idAgente") int idAgente,
+            RedirectAttributes redirectAttributes) {
+
+        // Buscamos la orden por su ID
+        Optional<Orden> optionalOrden = ordenRepository.findById(idOrden);
+
+        if (optionalOrden.isPresent()) {
+            Orden orden = optionalOrden.get();
+            EstadoOrden estadoOrden = estadoOrdenRepository.findById(2).get();
+            Usuario agente = usuarioRepository.findById(idAgente).get();
+            // Cambiamos el estado de la orden a estado 2 (En validación)
+            orden.setEstadoordenIdestadoorden(estadoOrden);
+            // Asignamos el id del agente que toma la orden
+            orden.setAgentcompraIdusuario(agente);
+            // Guardar los cambios en la base de datos
+            ordenRepository.save(orden);
+
+            // Agregar mensaje de éxito al flash attributes
+            redirectAttributes.addFlashAttribute("msgOrden", "La orden ha sido asignada con éxito.");
+        } else {
+            // Si no se encuentra el usuario
+            redirectAttributes.addFlashAttribute("errorOrden", "La orden no fue encontrada.");
+        }
+
+        // Redirigir a la página de usuarios baneados
+        return "redirect:/agente/enProcesoOrders";
     }
 
 

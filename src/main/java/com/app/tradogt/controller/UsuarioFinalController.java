@@ -370,6 +370,9 @@ public class UsuarioFinalController {
 
     @GetMapping("/reseñas")
     public String showResenhas(Model model) {
+        List<Resena> resenas = resenaRepository.findAll();
+        model.addAttribute("resenas", resenas);
+
         return "Usuario/reseñas-usuario";
     }
 
@@ -429,16 +432,20 @@ public class UsuarioFinalController {
     }
 
     @GetMapping("/verReseña/{id}")
-    public String showDetalleResena(@PathVariable("id") Integer resenaId, Model model) {
-        // Obtener la reseña del repositorio por su ID
-        Resena resena = resenaRepository.findById(resenaId).orElse(null);
-        // Si no encuentra la reseña, redirige o maneja el error
+    public String showDetalleResena(@PathVariable("id") Integer id, Model model) {
+        // Buscar la reseña por id
+        Resena resena = resenaRepository.findById(id).orElse(null);
+
+        // Si la reseña no se encuentra, puedes redirigir a una página de error o similar
         if (resena == null) {
-            return "redirect:/error";
+            return "redirect:/error";  // Página de error personalizada
         }
-        // Agregar la reseña al modelo para que esté disponible en la vista
+
+        // Pasar la reseña al modelo para que esté disponible en la vista
         model.addAttribute("resena", resena);
-        return "Usuario/verReseña-usuario"; // Nombre de la vista Thymeleaf
+
+        // Nombre de la vista Thymeleaf
+        return "Usuario/verReseña-usuario";
     }
 
     @GetMapping("/solicitud")

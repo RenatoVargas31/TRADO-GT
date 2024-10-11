@@ -149,20 +149,19 @@
                         data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <img class="rounded-circle header-profile-user" th:src="@{../images/users/avatar-2.jpg}"
                          alt="Header Avatar">
-                    <span class="d-none d-xl-inline-block ms-1">Kevin</span>
+                    <span class="d-none d-xl-inline-block ms-1" th:text="*{#authentication.name}" ></span>
                     <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
                 </button>
                 <div class="dropdown-menu dropdown-menu-end">
                     <!-- item-->
                     <a class="dropdown-item" href="#"><i class="ri-user-line align-middle me-1"></i> Profile</a>
-                    <a class="dropdown-item" href="#"><i class="ri-wallet-2-line align-middle me-1"></i> My Wallet</a>
-                    <a class="dropdown-item d-block" href="#"><span class="badge bg-success float-end mt-1">11</span><i class="ri-settings-2-line align-middle me-1"></i> Settings</a>
-                    <a class="dropdown-item" href="#"><i class="ri-lock-unlock-line align-middle me-1"></i> Lock screen</a>
+                    <a class="dropdown-item d-block" href="#"><i class="ri-settings-2-line align-middle me-1"></i> Settings</a>
                     <div class="dropdown-divider"></div>
-                    <div sec:authorize="isAuthenticated()" class="d-flex align-items-center">
-                        <span th:text="|Bienvenido ${#authentication.name}|"></span>
-                        <form th:action="@{/logout}" method="post">
-                            <input class="btn btn-link" type="submit" value="(Cerrar Sesión)">
+                    <div sec:authorize="isAuthenticated()">
+                        <form th:action="@{/logout}" method="post" style="display: inline;">
+                            <button type="submit" class="dropdown-item text-danger" style="border: none; background: none;">
+                                <i class="ri-shut-down-line align-middle me-1 text-danger"></i> Cerrar sesión
+                            </button>
                         </form>
                     </div>
                 </div>
