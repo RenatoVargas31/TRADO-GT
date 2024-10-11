@@ -1,5 +1,6 @@
 package com.app.tradogt.controller;
 
+import com.app.tradogt.dto.AgenteInfoZon;
 import com.app.tradogt.entity.Orden;
 import com.app.tradogt.entity.Producto;
 import org.springframework.stereotype.Controller;
@@ -98,7 +99,10 @@ public class AdminZonalController {
         /*List<Object[]> usuarioDetails = usuarioRepository.getUsuarioOrderProductDetails();
         model.addAttribute("usuarioDetails", usuarioDetails);*/
 
-        List<Usuario> agentes = usuarioRepository.findAllByAdmzonalIdusuario_IdAndIsActivated(2, Byte.parseByte("1"));
+        /*List<Usuario> agentes = usuarioRepository.findAllByAdmzonalIdusuario_IdAndIsActivated(2, Byte.parseByte("1"));
+        model.addAttribute("agentes", agentes);*/
+
+        List<AgenteInfoZon> agentes = usuarioRepository.getAgentesbyZonal(2);
         model.addAttribute("agentes", agentes);
 
         List<Usuario> usuarios = usuarioRepository.findAll();
@@ -136,7 +140,9 @@ public class AdminZonalController {
 
     @GetMapping("/verAgente/{id}")
     public String showVerAgente(@PathVariable("id") Integer usuarioId, Model model) {
-        List<Object[]> agenteDetails = usuarioRepository.getAgenteDetailsById(usuarioId);
+        Optional<Usuario> usuario = usuarioRepository.findById(usuarioId);
+        model.addAttribute(usuario.get());
+        /*List<Object[]> agenteDetails = usuarioRepository.getAgenteDetailsById(usuarioId);
 
         if (!agenteDetails.isEmpty()) {
             Object[] details = agenteDetails.get(0);
@@ -152,7 +158,7 @@ public class AdminZonalController {
             model.addAttribute("CodigoDespachador", details[9]);
             model.addAttribute("AgenteRUC", details[10]);
             model.addAttribute("AgenteRazonSocial", details[11]);
-        }
+        }*/
         return "AdminZonal/verAgente-AdminZonal";
     }
 

@@ -55,11 +55,11 @@
                             <div class="col-md-4" th:each="agente : ${agentes}">
                                 <div class="card">
                                     <div class="card-body">
-                                        <a th:href="@{/adminzonal/verAgente/{id}(id=${agente.id})}">
+                                        <a th:href="@{/adminzonal/verAgente/{id}(id=${agente.getId()})}">
                                             <div class="d-flex">
                                                 <div class="flex-1 overflow-hidden">
-                                                    <p class="text-truncate font-size-14 mb-2" th:text="${agente.distritoIddistrito.nombre}">Distrito</p> <!-- DistritoNombre -->
-                                                    <h4 class="mb-0" th:text="${agente.nombre} + ' ' + ${agente.apellido}">Nombre del Agente</h4> <!-- AgenteNombre + AgenteApellido -->
+                                                    <p class="text-truncate font-size-14 mb-2" th:text="${agente.getNombredistrito()}">Distrito</p> <!-- DistritoNombre -->
+                                                    <h4 class="mb-0" th:text="${agente.getNombres()}">Nombre del Agente</h4> <!-- AgenteNombre + AgenteApellido -->
                                                 </div>
                                                 <div class="text-primary ms-auto">
                                                     <i class="ri-user-line font-size-24"></i>
@@ -82,7 +82,7 @@
                                                         <h5 class="font-size-14 mb-0">N. Usuarios asignados</h5>
                                                     </td>
                                                     <td>
-                                                        <p class="text-muted mb-0" th:text="${agente.razonSocial}"></p> <!-- NumeroDeUsuarios -->
+                                                        <p class="text-muted mb-0" th:text="${agente.getUsasignados()}"></p> <!-- NumeroDeUsuarios -->
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -95,7 +95,7 @@
                                                         <h5 class="font-size-14 mb-0">Importaciones finalizados</h5>
                                                     </td>
                                                     <td>
-                                                        <p class="text-muted mb-0" th:text="${agente.nombre}"></p> <!-- Finalizados -->
+                                                        <p class="text-muted mb-0" th:text="${agente.getImportafin()}"></p> <!-- Finalizados -->
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -108,7 +108,7 @@
                                                         <h5 class="font-size-14 mb-0">Calificación</h5>
                                                     </td>
                                                     <td>
-                                                        <p class="text-muted mb-0" th:text="${agente.motivoBaneo}"></p> <!-- ValoracionAgente -->
+                                                        <p class="text-muted mb-0" th:text="${agente.getCalificacion()}"></p> <!-- ValoracionAgente -->
                                                     </td>
                                                 </tr>
                                                 </tbody>

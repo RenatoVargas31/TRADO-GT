@@ -1,5 +1,6 @@
 package com.app.tradogt.repository;
 
+import com.app.tradogt.dto.AgenteInfoZon;
 import com.app.tradogt.entity.Usuario;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.Modifying;
@@ -179,4 +180,30 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
     void updateImportador(String correoUsuario, String direccionUsuario, Integer idDistrito, Integer id);
     //</editor-fold>
     */
+
+    @Query(value = """
+        SELECT\s
+        	u.idUsuario as id,
+            d.nombre as nombredistrito,
+            CONCAT(u.nombre," ", u.apellido) AS nombres,
+            COUNT(DISTINCT asignados.idUsuario) AS usAsignados,
+            COUNT(DISTINCT o1.idOrden) AS importaFin,
+            AVG(o2.valoracionAgente) AS calificacion
+        FROM\s
+            Usuario u
+        LEFT JOIN\s
+            Usuario asignados ON asignados.agentCompra_idUsuario = u.idUsuario
+        LEFT JOIN\s
+            Orden o1 ON o1.estadoOrden_idEstadoOrden = 7 and o1.agentCompra_idUsuario = u.idUsuario -- Para contar las órdenes con estado 7
+        LEFT JOIN\s
+            Orden o2 ON o2.agentCompra_idUsuario = u.idUsuario AND o2.valoracionAgente IS NOT NULL-- Para obtener la calificación no nula
+        LEFT JOIN
+        	Distrito d ON d.idDistrito = u.distrito_idDistrito
+        where u.admZonal_idUsuario = 2 and u.isActivated = 1
+        GROUP BY\s
+            u.idUsuario ;
+    """, nativeQuery = true)
+    List<AgenteInfoZon> getAgentesbyZonal(@Param("zonalId") Integer zonalId);
+
+
 }

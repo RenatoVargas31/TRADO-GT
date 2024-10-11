@@ -65,25 +65,25 @@
                                         <div class="row mb-3">
                                             <label class="col-sm-3 col-form-label">Nombre</label>
                                             <div class="col-sm-9">
-                                                <input class="form-control-plaintext" type="text" th:value="${AgenteNombre}" readonly>
+                                                <input class="form-control-plaintext" type="text" th:value="${usuario.nombre}" readonly>
                                             </div>
                                         </div>
                                         <div class="row mb-3">
                                             <label class="col-sm-3 col-form-label">Apellidos</label>
                                             <div class="col-sm-9">
-                                                <input class="form-control-plaintext" type="text" th:value="${AgenteApellido}" readonly>
+                                                <input class="form-control-plaintext" type="text" th:value="${usuario.apellido}" readonly>
                                             </div>
                                         </div>
                                         <div class="row mb-3">
                                             <label class="col-sm-3 col-form-label">DNI</label>
                                             <div class="col-sm-9">
-                                                <input class="form-control-plaintext" type="text" th:value="${AgenteDni}" readonly>
+                                                <input class="form-control-plaintext" type="text" th:value="${usuario.dni}" readonly>
                                             </div>
                                         </div>
                                         <div class="row mb-3">
                                             <label class="col-sm-3 col-form-label">Correo electrónico</label>
                                             <div class="col-sm-9">
-                                                <input class="form-control-plaintext" type="email" th:value="${AgenteCorreo}" readonly>
+                                                <input class="form-control-plaintext" type="email" th:value="${usuario.correo}" readonly>
                                             </div>
                                         </div>
                                     </div>
@@ -91,25 +91,25 @@
                                         <div class="row mb-3">
                                             <label class="col-sm-3 col-form-label">Teléfono</label>
                                             <div class="col-sm-9">
-                                                <input class="form-control-plaintext" type="text" th:value="${AgenteTelefono}" readonly>
+                                                <input class="form-control-plaintext" type="text" th:value="${usuario.telefono}" readonly>
                                             </div>
                                         </div>
                                         <div class="row mb-3">
                                             <label class="col-sm-3 col-form-label">Zona</label>
                                             <div class="col-sm-9">
-                                                <input class="form-control-plaintext" type="text" th:value="${ZonaNombre}" readonly>
+                                                <input class="form-control-plaintext" type="text" th:value="${usuario.zonaIdzona.nombre}" readonly>
                                             </div>
                                         </div>
                                         <div class="row mb-3">
                                             <label class="col-sm-3 col-form-label">Distrito</label>
                                             <div class="col-sm-9">
-                                                <input class="form-control-plaintext" type="text" th:value="${DistritoNombre}" readonly>
+                                                <input class="form-control-plaintext" type="text" th:value="${usuario.distritoIddistrito.nombre}" readonly>
                                             </div>
                                         </div>
                                         <div class="row mb-3">
                                             <label class="col-sm-3 col-form-label">Dirección</label>
                                             <div class="col-sm-9">
-                                                <input class="form-control-plaintext" type="text" th:value="${AgenteDireccion}" readonly>
+                                                <input class="form-control-plaintext" type="text" th:value="${usuario.direccion}" readonly>
                                             </div>
                                         </div>
                                     </div>
@@ -129,19 +129,19 @@
                                     <div class="row mb-3">
                                         <label class="col-sm-6 col-form-label">Código de despachador de aduana</label>
                                         <div class="col-sm-6">
-                                            <input class="form-control-plaintext" type="text" th:value="${CodigoDespachador}" readonly>
+                                            <input class="form-control-plaintext" type="text" th:value="${usuario.codigoDespachador}" readonly>
                                         </div>
                                     </div>
                                     <div class="row mb-3">
                                         <label class="col-sm-6 col-form-label">RUC</label>
                                         <div class="col-sm-6">
-                                            <input class="form-control-plaintext" type="text" th:value="${AgenteRUC}" readonly>
+                                            <input class="form-control-plaintext" type="text" th:value="${usuario.ruc}" readonly>
                                         </div>
                                     </div>
                                     <div class="row mb-3">
                                         <label class="col-sm-6 col-form-label">Razón Social</label>
                                         <div class="col-sm-6">
-                                            <input class="form-control-plaintext" type="text" th:value="${AgenteRazonSocial}" readonly>
+                                            <input class="form-control-plaintext" type="text" th:value="${usuario.razonSocial}" readonly>
                                         </div>
                                     </div>
                                 </div>

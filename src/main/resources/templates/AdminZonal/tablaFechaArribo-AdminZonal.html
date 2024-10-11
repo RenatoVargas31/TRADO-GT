@@ -88,8 +88,8 @@
                                                title="Edit"
                                                data-bs-toggle="modal"
                                                data-bs-target="#staticBackdrop"
-                                               data-id="${order.codigo}"
-                                               data-fecha-arribo="${order.fechaArribo}">
+                                               data-fecha-arribo="${order.fechaArribo}"
+                                               data-codigo="${order.codigo}">
                                                 <i class="ri-pencil-fill"></i>
                                             </a>
                                         </td>
@@ -173,7 +173,7 @@
             button.addEventListener('click', function() {
                 // Obtener la fecha de arribo de la fila seleccionada
                 var fechaArribo = button.getAttribute('data-fecha-arribo');
-                var codigo = button.getAttribute('data-id'); // Obtener el código (ID) de la orden
+                var codigo = button.getAttribute('data-codigo'); // Obtener el código (ID) de la orden
 
                 // Asignar la fecha al campo de texto del modal
                 document.getElementById('arrivalDate').value = fechaArribo;
