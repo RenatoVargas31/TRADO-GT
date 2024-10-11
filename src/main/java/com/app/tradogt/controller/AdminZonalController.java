@@ -1,5 +1,6 @@
 package com.app.tradogt.controller;
 
+import com.app.tradogt.dto.AgenteInfoZon;
 import com.app.tradogt.entity.Orden;
 import com.app.tradogt.entity.Producto;
 import org.springframework.stereotype.Controller;
@@ -98,7 +99,10 @@ public class AdminZonalController {
         /*List<Object[]> usuarioDetails = usuarioRepository.getUsuarioOrderProductDetails();
         model.addAttribute("usuarioDetails", usuarioDetails);*/
 
-        List<Usuario> agentes = usuarioRepository.findAllByAdmzonalIdusuario_IdAndIsActivated(2, Byte.parseByte("1"));
+        /*List<Usuario> agentes = usuarioRepository.findAllByAdmzonalIdusuario_IdAndIsActivated(2, Byte.parseByte("1"));
+        model.addAttribute("agentes", agentes);*/
+
+        List<AgenteInfoZon> agentes = usuarioRepository.getAgentesbyZonal(2);
         model.addAttribute("agentes", agentes);
 
         List<Usuario> usuarios = usuarioRepository.findAll();
