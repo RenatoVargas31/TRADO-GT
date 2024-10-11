@@ -89,6 +89,7 @@ public class SuperAdminController {
     public String viewAdmZonalNuevoForm(@ModelAttribute Usuario usuario) {
         //Asignar una contraseña por random de 10 dígitos y que combine número y letras
         String password = PasswordGenerator.generateRandomPassword();
+        System.out.println(password);
         //Encriptar la contraseña con BCrypt de 10 rondas
         String passwordEncrypted = BCrypt.hashpw(password, BCrypt.gensalt(10));
         usuario.setContrasena(passwordEncrypted);
@@ -368,6 +369,7 @@ public class SuperAdminController {
         usuario.setIsActivated((byte) 1);
         //Asignar una contraseña por random de 10 dígitos y que combine número y letras
         String password = PasswordGenerator.generateRandomPassword();
+        System.out.println(password);
         //Encriptar la contraseña con BCrypt de 10 rondas
         String passwordEncrypted = BCrypt.hashpw(password, BCrypt.gensalt(10));
         usuario.setContrasena(passwordEncrypted);
