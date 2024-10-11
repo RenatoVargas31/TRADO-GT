@@ -69,7 +69,7 @@ public class Usuario {
     private String correo;
 
     @Size(max = 120)
-    @Column(name = "contrasena", length = 45)
+    @Column(name = "contrasena", length = 80)
     private String contrasena;
 
     @Size(max = 10)
