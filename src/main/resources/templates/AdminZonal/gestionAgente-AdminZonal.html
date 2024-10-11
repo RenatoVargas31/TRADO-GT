@@ -55,10 +55,10 @@
                             <div class="col-md-4" th:each="agente : ${agentes}">
                                 <div class="card">
                                     <div class="card-body">
-                                        <a th:href="@{/adminzonal/verAgente/{id}(id=${agente.getNombres()})}">
+                                        <a th:href="@{/adminzonal/verAgente/{id}(id=${agente.getId()})}">
                                             <div class="d-flex">
                                                 <div class="flex-1 overflow-hidden">
-                                                    <p class="text-truncate font-size-14 mb-2" th:text="${agente.getNombres()}">Distrito</p> <!-- DistritoNombre -->
+                                                    <p class="text-truncate font-size-14 mb-2" th:text="${agente.getNombredistrito()}">Distrito</p> <!-- DistritoNombre -->
                                                     <h4 class="mb-0" th:text="${agente.getNombres()}">Nombre del Agente</h4> <!-- AgenteNombre + AgenteApellido -->
                                                 </div>
                                                 <div class="text-primary ms-auto">

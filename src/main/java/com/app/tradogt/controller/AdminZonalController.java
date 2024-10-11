@@ -140,7 +140,9 @@ public class AdminZonalController {
 
     @GetMapping("/verAgente/{id}")
     public String showVerAgente(@PathVariable("id") Integer usuarioId, Model model) {
-        List<Object[]> agenteDetails = usuarioRepository.getAgenteDetailsById(usuarioId);
+        Optional<Usuario> usuario = usuarioRepository.findById(usuarioId);
+        model.addAttribute(usuario.get());
+        /*List<Object[]> agenteDetails = usuarioRepository.getAgenteDetailsById(usuarioId);
 
         if (!agenteDetails.isEmpty()) {
             Object[] details = agenteDetails.get(0);
@@ -156,7 +158,7 @@ public class AdminZonalController {
             model.addAttribute("CodigoDespachador", details[9]);
             model.addAttribute("AgenteRUC", details[10]);
             model.addAttribute("AgenteRazonSocial", details[11]);
-        }
+        }*/
         return "AdminZonal/verAgente-AdminZonal";
     }
 
