@@ -32,7 +32,10 @@
   <div class="main-content">
     <div class="page-content">
       <div class="container-fluid">
-
+        <div th:if="${success}" class="alert alert-success alert-dismissible fade show" role="alert">
+          <span th:text="${success}"></span>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
         <div class="row">
           <div class="col-12">
             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
