@@ -13,7 +13,10 @@
     <meta th:replace="~{Common/cssBase :: css_Base}">
     <!-- End CSS BASE -->
     <style>
-
+        .auth-logo-container {
+            margin-top: 100px; /* Espacio superior para evitar que se mueva el contenido cuando aparece el error */
+            margin-bottom: 20px; /* Espacio inferior para evitar que se mueva el contenido cuando aparece el error */
+        }
         /* Ensure the right image takes up the full height and width of its column */
         .right-side-image {
             height: 100vh; /* Full viewport height */
@@ -22,9 +25,14 @@
         }
 
         /* Responsive for smaller screens */
-        @media (max-width: 768px) {
-            .right-side-image {
-                display: none; /* Hide the image on smaller screens */
+        @media (min-width: 992px) {
+            .fixed-right-side {
+                position: fixed; /* Fija la imagen del lado derecho para evitar que se corte */
+                right: 0;
+                top: 0;
+                width: 66.66%; /* Dos tercios de la pantalla (ajustable) */
+                height: 100%; /* Toda la altura */
+                z-index: -1; /* Para que no se superponga sobre el contenido */
             }
         }
     </style>
@@ -42,11 +50,11 @@
                             <div class="col-lg-9">
                                 <div>
                                     <div class="text-center">
-                                        <div>
-                                            <img src="/images/trado-dark.png" alt="" height="60" class="auth-logo logo-dark mx-auto">
+                                        <div class="auth-logo-container">
+                                            <img src="/images/trado-dark.png" alt="" height="40" class="auth-logo logo-dark mx-auto">
                                         </div>
                                         <h4 class="font-size-18 mt-2">¡Bienvenido a Trado!</h4>
-                                        <p class="text-muted">Ingrese los datos pedidos</p>
+                                        <p class="text-muted">Registro de Nuevo Usuario</p>
                                     </div>
 
                                     <div class="p-2 mt-2">
@@ -101,7 +109,7 @@
                 </div>
             </div>
             <!-- Right side image -->
-            <div class="col-lg-8 d-none d-lg-block">
+            <div class="col-lg-8 d-none d-lg-block fixed-right-side">
                 <img src="/images/297451387_172154511984888_7597808842372857148_n.jpg" alt="" class="right-side-image">
             </div>
         </div>
