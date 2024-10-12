@@ -325,6 +325,10 @@ public class UsuarioFinalController {
             BigDecimal monto = ord.getPagoIdpago().getMonto();
             model.addAttribute("monto", monto);
 
+            //Obtener el costo de envio
+            BigDecimal costoEnvio = mispedidos.get(0).getProductoEnZona().getCostoEnvio();
+            model.addAttribute("costoEnvio", costoEnvio);
+
         }else {
             System.out.println("Orden no encontrada"); }
 

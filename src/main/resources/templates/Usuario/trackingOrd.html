@@ -81,13 +81,13 @@
                                             <h5>Datos personales</h5>
                                             <p><strong>Nombre de comprador: </strong><span   th:text="${usuario.nombre} + ' ' + ${usuario.apellido}"></span></p>
                                             <p><strong>Número DNI: </strong> <span   th:text="${usuario.dni}"></span></p>
-                                            <p><strong>Domicilio: </strong> <span   th:text="${usuario.direccion}"></span></p>
+                                            <p><strong>Domicilio: </strong> <span   th:text="${usuario.direccion} + ', ' + ${usuario.distritoIddistrito.nombre}"></span></p>
                                         </div>
                                         <div class="col-md-6">
                                             <h5>Fecha y Número de Orden</h5>
                                             <p><strong>Fecha: </strong> <span   th:text="${orden.fechaCreacion}"></span></p>
                                             <p><strong>No. de orden: </strong> <span   th:text="${orden.codigo}"></span></p>
-                                            <p><strong>Ciudad, Estado: </strong> <span   th:text="${usuario.distritoIddistrito.nombre} + ', ' + ${usuario.distritoIddistrito.zonaIdzona.nombre}"></span></p>
+                                            <p><strong>Estado: </strong> <span  class="text-info" th:text="${orden.estadoordenIdestadoorden.nombre}"></span></p>
                                         </div>
                                     </div>
                                 </div>
@@ -316,7 +316,7 @@
                                         <form>
                                             <div class="input-group">
                                                 <input type="text" class="form-control" placeholder="Escribe un mensaje...">
-                                                <button class="btn btn-primary" type="submit">Enviar</button>
+                                                <a  class="btn btn-primary" type="button">Enviar</a>
                                             </div>
                                         </form>
                                     </div>
