@@ -374,6 +374,21 @@ public class UsuarioFinalController {
     @GetMapping("/productoDetalles/{id}")
     public String showProductoDetalles(@PathVariable int id, Model model) {
         // Buscar el producto por id
+        int id2 = getAuthenticatedUserId();
+        Optional<Usuario> optionalUsuario = usuarioRepository.findById(id2);
+        if (optionalUsuario.isPresent()) {
+            Usuario usuario = optionalUsuario.get();
+            Optional<ProductoEnZona> productoEnZona = productoEnZonaRepository.findByIdAndZona(id, usuario.getDistritoIddistrito().getZonaIdzona().getId());
+
+            if (productoEnZona.isPresent()) {
+                model.addAttribute("productoDetalles", productoEnZona.get());
+            } else {
+                return "redirect:/usuario/inicio";
+            }
+        } else {
+            // Manejar el caso en que no se encuentra el usuario
+            return "redirect:/usuario/inicio";
+        }
         Optional<Producto> productoOpt = productosRepository.findById(id);
 
         if (productoOpt.isPresent()) {
