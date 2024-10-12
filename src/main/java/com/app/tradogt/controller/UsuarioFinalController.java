@@ -264,10 +264,10 @@ public class UsuarioFinalController {
     }
 
     @GetMapping("/tracking")
-    public String tracking(@RequestParam("id") int id, Model model) {
+    public String tracking(@RequestParam("id")String code, Model model) {
 
         //Lista de todos los productos de mi orden
-        Optional<Orden> orden = ordenRepository.findById(id);
+        Optional<Orden> orden = ordenRepository.findByCodigo(code);
         if (orden.isPresent()) {
             Orden ord = orden.get();
             model.addAttribute("orden", ord);
@@ -289,6 +289,10 @@ public class UsuarioFinalController {
             BigDecimal monto = ord.getPagoIdpago().getMonto();
             model.addAttribute("monto", monto);
 
+            //Obtener el costo de envio
+            BigDecimal costoEnvio = mispedidos.get(0).getProductoEnZona().getCostoEnvio();
+            model.addAttribute("costoEnvio", costoEnvio);
+
         }else {
             System.out.println("Orden no encontrada"); }
 
@@ -296,10 +300,10 @@ public class UsuarioFinalController {
     }
 
     @GetMapping("/editOrden")
-    public String editOrden(@RequestParam("id") int id, Model model) {
+    public String editOrden(@RequestParam("id") String code, Model model) {
 
         //Lista de todos los productos de mi orden
-        Optional<Orden> orden = ordenRepository.findById(id);
+        Optional<Orden> orden = ordenRepository.findByCodigo(code);
         if (orden.isPresent()) {
             Orden ord = orden.get();
             model.addAttribute("orden", ord);
@@ -326,6 +330,28 @@ public class UsuarioFinalController {
 
         return "Usuario/trackingOrdEdit";
     }
+
+    //Asignación de un Agente
+    @PostMapping("/asignarAgente")
+    public String asignarAgente(@RequestParam("codigoOrden") String code,
+                                @RequestParam("id") int id,  RedirectAttributes attr) {
+        Optional<Orden> orden = ordenRepository.findByCodigo(code);
+        //Listar agentes de compra
+        List<Usuario> listaAgente = usuarioRepository.findAllByRolIdrolIdAndIsActivated(3, (byte) 1);
+        Usuario agente = null;
+        if (orden.isPresent()) {
+            Orden ord = orden.get();
+            Random random = new Random();
+            int index = random.nextInt(listaAgente.size());
+            agente = listaAgente.get(index);
+            ord.setAgentcompraIdusuario(agente);
+            ordenRepository.save(ord);
+            attr.addFlashAttribute("msjAgente", "Se le ha asignado el agente " + agente.getNombre() + " " + agente.getApellido() + " en la orden " + code);
+            return "redirect:/usuario/misPedidos";
+        }
+        return "redirect:/usuario/misPedidos";
+    }
+
 
     @PostMapping("/updateDireccion")
     public String updateDireccion(@RequestParam("direccion") String direccion, Model model) {
