@@ -52,26 +52,30 @@
               <hr class="my-0">
               <div class="card-body">
                 <!-- Alertas de error o éxito -->
-                <div th:if="${error}" class="alert alert-danger" role="alert">
+                <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
                   <span th:text="${error}"></span>
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
 
-                <div th:if="${success}" class="alert alert-success" role="alert">
+                <div th:if="${success}" class="alert alert-success alert-dismissible fade show" role="alert">
                   <span th:text="${success}"></span>
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
                 <!-- Formulario para cambiar la contraseña -->
                 <form th:action="@{/agente/cambiarContrasena}" method="post" th:object="${passwordChangeDto}">
 
                   <!-- Mostrar errores de validación si existen -->
-                  <div th:if="${#fields.hasErrors()}" class="alert alert-danger">
+                  <div th:if="${#fields.hasErrors()}" class="alert alert-danger alert-dismissible fade show">
                     <ul>
                       <li th:each="err : ${#fields.errors('*')}" th:text="${err}"></li>
                     </ul>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                   </div>
 
                   <!-- Mostrar mensaje de éxito si la contraseña se cambió correctamente -->
-                  <div th:if="${success}" class="alert alert-success">
+                  <div th:if="${success}" class="alert alert-success alert-dismissible fade show">
                     <p th:text="${success}"></p>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                   </div>
 
                   <div class="row">

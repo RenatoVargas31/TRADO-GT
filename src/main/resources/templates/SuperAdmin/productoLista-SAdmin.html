@@ -15,6 +15,11 @@
 
         <!-- Responsive datatable examples -->
         <link th:href="@{../libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css}" rel="stylesheet" type="text/css" />
+        <style>
+            .vertical-align-middle {
+                vertical-align: middle !important;
+            }
+        </style>
     </head>
 
     <body data-sidebar="dark">
@@ -43,12 +48,12 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                                <h4 class="mb-sm-0">Lista de Productos</h4>
+                                <h4 class="mb-sm-0">Gestión de Productos</h4>
 
                                 <div class="page-title-right">
                                     <ol class="breadcrumb m-0">
                                         <li class="breadcrumb-item"><a href="javascript: void(0);">Inventario</a></li>
-                                        <li class="breadcrumb-item active">Lista de Productos</li>
+                                        <li class="breadcrumb-item active">Gestión de Productos/li>
                                     </ol>
                                 </div>
 
@@ -60,55 +65,65 @@
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-body">
-                                    <h4 class="mb-sm-0 font-size-18 fw-bold">Almacén</h4>
+                                    <h4 class="mb-sm-0 font-size-18 fw-bold">Lista de Productos</h4>
                                     <table id="datatable-producto-lista-almacen" class="table table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                         <thead>
                                         <tr>
-                                            <th rowspan="2">Código</th>
-                                            <th colspan="2">Zona Norte</th>
-                                            <th colspan="2">Zona Sur</th>
-                                            <th colspan="2">Zona Este</th>
-                                            <th colspan="2">Zona Oeste</th>
-                                            <th rowspan="2">Precio</th>
-                                            <th rowspan="2">Acciones</th>
+                                            <th rowspan="2" class="text-center vertical-align-middle">Código</th>
+                                            <th colspan="3" class="text-center">Zona Norte</th>
+                                            <th colspan="3" class="text-center">Zona Sur</th>
+                                            <th colspan="3" class="text-center">Zona Este</th>
+                                            <th colspan="3" class="text-center">Zona Oeste</th>
+                                            <th rowspan="2" class="text-center">Acciones</th>
                                         </tr>
                                         <tr>
-                                            <th>Cantidad</th>
-                                            <th>Envío</th>
-                                            <th>Cantidad</th>
-                                            <th>Envío</th>
-                                            <th>Cantidad</th>
-                                            <th>Envío</th>
-                                            <th>Cantidad</th>
-                                            <th>Envío</th>
+                                            <th class="text-center">Stock</th>
+                                            <th class="text-center">Envío</th>
+                                            <th class="text-center">Repos</th>
+                                            <th class="text-center">Stock</th>
+                                            <th class="text-center">Envío</th>
+                                            <th class="text-center">Repos</th>
+                                            <th class="text-center">Stock</th>
+                                            <th class="text-center">Envío</th>
+                                            <th class="text-center">Repos</th>
+                                            <th class="text-center">Stock</th>
+                                            <th class="text-center">Envío</th>
+                                            <th class="text-center">Repos</th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         <tr th:each="producto : ${productos}">
-                                            <td th:text="${producto.codigo}">Código del Producto</td>
-                                            <!--
-                                            <td th:text="${producto.proveedorIdproveedor.nombre} +' '+ ${producto.proveedorIdproveedor.apellido}">Nombre del Proveedor</td>
-                                            <td th:text="${producto.subcategoriaIdsubcategoria.categoriaIdcategoria.nombre}">Categoría</td>
-                                            -->
-                                            <td th:text="${productoZonaCantidad[producto.id.longValue()]?.get(1)?.get('cantidad')}+' '+'uni.'">Zona Norte</td>
-                                            <td th:text="'S/.'+' '+${productoZonaCantidad[producto.id.longValue()]?.get(1)?.get('costoEnvio')}">Zona Norte</td>
-                                            <td th:text="${productoZonaCantidad[producto.id.longValue()]?.get(2).get('cantidad')}+' '+'uni.'">Zona Sur</td>
-                                            <td th:text="'S/.'+' '+${productoZonaCantidad[producto.id.longValue()]?.get(2).get('costoEnvio')}">Zona Sur</td>
-                                            <td th:text="${productoZonaCantidad[producto.id.longValue()]?.get(3).get('cantidad')}+' '+'uni.'">Zona Este</td>
-                                            <td th:text="'S/.'+' '+${productoZonaCantidad[producto.id.longValue()]?.get(3).get('costoEnvio')}">Zona Este</td>
-                                            <td th:text="${productoZonaCantidad[producto.id.longValue()]?.get(4).get('cantidad')}+' '+'uni.'">Zona Oeste</td>
-                                            <td th:text="'S/.'+' '+${productoZonaCantidad[producto.id.longValue()]?.get(4).get('costoEnvio')}">Zona Oeste</td>
-                                            <td th:text="'S/.'+' '+${producto.precio}">Precio</td>
-                                            <td>
+                                            <td class="text-center" th:text="${producto.codigo}">Código del Producto</td>
+                                            <td class="text-center" th:text="${productoZonaCantidad[producto.id.longValue()]?.get(1)?.get('cantidad')} + ' uni.'">Zona Norte</td>
+                                            <td class="text-center" th:text="'S/.' + ${productoZonaCantidad[producto.id.longValue()]?.get(1)?.get('costoEnvio')}">Zona Norte</td>
+                                            <td class="text-center">
+                                                <i th:classappend="${productoZonaCantidad[producto.id.longValue()]?.get(1)?.get('estadoRepo') == 1} ? 'fas fa-exclamation-circle text-warning' : 'fas fa-check-circle text-success'"></i>
+                                            </td>
+                                            <td class="text-center" th:text="${productoZonaCantidad[producto.id.longValue()]?.get(2)?.get('cantidad')} + ' uni.'">Zona Sur</td>
+                                            <td class="text-center" th:text="'S/.' + ${productoZonaCantidad[producto.id.longValue()]?.get(2)?.get('costoEnvio')}">Zona Sur</td>
+                                            <td class="text-center">
+                                                <i th:classappend="${productoZonaCantidad[producto.id.longValue()]?.get(2)?.get('estadoRepo') == 1} ? 'fas fa-exclamation-circle text-warning' : 'fas fa-check-circle text-success'"></i>
+                                            </td>
+                                            <td class="text-center" th:text="${productoZonaCantidad[producto.id.longValue()]?.get(3)?.get('cantidad')} + ' uni.'">Zona Este</td>
+                                            <td class="text-center" th:text="'S/.' + ${productoZonaCantidad[producto.id.longValue()]?.get(3)?.get('costoEnvio')}">Zona Este</td>
+                                            <td class="text-center">
+                                                <i th:classappend="${productoZonaCantidad[producto.id.longValue()]?.get(3)?.get('estadoRepo') == 1} ? 'fas fa-exclamation-circle text-warning' : 'fas fa-check-circle text-success'"></i>
+                                            </td>
+                                            <td class="text-center" th:text="${productoZonaCantidad[producto.id.longValue()]?.get(4)?.get('cantidad')} + ' uni.'">Zona Oeste</td>
+                                            <td class="text-center" th:text="'S/.' + ${productoZonaCantidad[producto.id.longValue()]?.get(4)?.get('costoEnvio')}">Zona Oeste</td>
+                                            <td class="text-center">
+                                                <i th:classappend="${productoZonaCantidad[producto.id.longValue()]?.get(4)?.get('estadoRepo') == 1} ? 'fas fa-exclamation-circle text-warning' : 'fas fa-check-circle text-success'"></i>
+                                            </td>
+                                            <td class="text-center">
                                                 <a th:href="@{'/superadmin/productoEditar/' + ${producto.id}}" class="btn btn-success btn-sm waves-effect waves-light" title="Editar"><i class="ri-pencil-fill"></i></a>
-                                                <a href="#" class="btn btn-danger btn-sm waves-effect waves-light" title="Eliminar" data-bs-toggle="modal" data-bs-target="#deleteConfirmModal"><i class="ri-delete-bin-fill"></i></a>
+                                                <button type="button" class="btn btn-danger btn-sm waves-effect waves-light" title="Eliminar" data-bs-toggle="modal" data-bs-target="#deleteConfirmModal"><i class="ri-delete-bin-fill"></i></button>
                                             </td>
                                         </tr>
                                         </tbody>
                                     </table>
                                 </div>
                             </div>
-
+                            <!--
                             <div class="card">
                                 <div class="card-body">
                                     <h4 class="mb-sm-0 font-size-18 fw-bold">Zona Norte</h4>
@@ -245,6 +260,7 @@
                                     </table>
                                 </div>
                             </div>
+                            -->
                         </div> <!-- end col -->
                     </div>
                     <!-- end row -->

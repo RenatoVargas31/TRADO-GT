@@ -260,7 +260,32 @@ public interface OrdenRepository extends JpaRepository<Orden, Integer> {
 
     List<Object[]> findOrdersByZone();
 
-    List<Orden> findAllByIsDeleted( int k);
+    //LISTAR ORDENES PARA USUARIO
+    @Query(value = "SELECT \n" +
+            "    o.idOrden AS id,\n" +
+            "    o.codigo AS CodigoOrden,\n" +
+            "    p.monto AS CostoTotal,\n" +
+            "    o.fechaCreacion AS fecha,\n" +
+            "    eo.nombre AS EstadoOrden,\n" +
+            "    CASE \n" +
+            "        WHEN o.agentCompra_idUsuario IS NULL THEN 'No asignado'\n" +
+            "        ELSE CONCAT(u.nombre, ' ', u.apellido)\n" +
+            "    END AS Agente,\n" +
+            "    o.valoracionAgente AS Valoracion\n" +
+            "FROM \n" +
+            "    `dev-TRADO_DB`.Orden o\n" +
+            "JOIN \n" +
+            "    `dev-TRADO_DB`.Pago p ON o.Pago_idPago = p.idPago\n" +
+            "JOIN \n" +
+            "    `dev-TRADO_DB`.EstadoOrden eo ON o.estadoOrden_idEstadoOrden = eo.idEstadoOrden\n" +
+            "LEFT JOIN \n" +
+            "    `dev-TRADO_DB`.Usuario u ON o.agentCompra_idUsuario = u.idUsuario\n" +
+            "JOIN \n" +
+            "    `dev-TRADO_DB`.Usuario ua ON o.usuario_idUsuario = ua.idUsuario\n" +
+            "WHERE \n" +
+            "    o.usuario_idUsuario = ? \n" +
+            "    AND o.isDeleted = 0;\n", nativeQuery = true)
+    List<Object[]> findOrdersByUsuarioIdusuario(Integer idUsuario);
 
     Optional<Orden> findByCodigo(String codigo);
 

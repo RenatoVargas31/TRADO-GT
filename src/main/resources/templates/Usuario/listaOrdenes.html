@@ -91,41 +91,41 @@
 
 
                                     <tbody>
-                                    <tr th:each="orden : ${listaPedidos}">
-                                        <td th:text="${orden.id}"></td>
+                                    <tr th:each="orden : ${listaOrdenes}">
+                                        <td th:text="${orden.codigoOrden}"></td>
                                         <td th:text="'S/.' + ${orden.costoTotal}"></td>
                                         <td th:text="${orden.fechaCreacion}"></td>
-                                        <td th:text="${orden.estadoordenIdestadoorden.nombre}"></td>
-                                        <td th:text="${orden.getAgentcompraIdusuario().getNombre()} + ' ' + ${orden.getAgentcompraIdusuario().apellido}" ></td>
+                                        <td th:text="${orden.estadoOrden}"></td>
+                                        <td th:text="${orden.agente}" ></td>
                                         <td>
-                                            <a th:href="@{/usuario/tracking/{id}(id=${orden.id})}" class="btn btn-primary btn-sm waves-effect waves-light" title="Ver"><i class="ri-eye-fill"></i></a>
+                                            <a th:href="@{'/usuario/tracking?id=' + ${orden.idOrden}}" class="btn btn-primary btn-sm waves-effect waves-light" title="Ver"><i class="ri-eye-fill"></i></a>
 
                                             <!-- Si la orden está en 'CREADO' o 'EN VALIDACION' -->
-                                            <a th:href="@{/usuario/editOrden/{id}(id=${orden.id})}" class="btn btn-success btn-sm waves-effect waves-light" title="Editar" th:if="${ orden.estadoordenIdestadoorden.nombre == 'EN VALIDACION' || orden.estadoordenIdestadoorden.nombre == 'CREADO' }">
+                                            <a th:href="@{'/usuario/editOrden?id=' + ${orden.idOrden}}" class="btn btn-success btn-sm waves-effect waves-light" title="Editar" th:if="${ orden.estadoOrden == 'EN VALIDACION' || orden.estadoOrden == 'CREADO' }">
                                                 <i class="ri-pencil-fill"></i>
                                             </a>
-                                            <a href="/usuario/editOrden" class="btn btn-secondary btn-sm waves-effect waves-light disabled" title="No editable" th:unless="${ orden.estadoordenIdestadoorden.nombre == 'EN VALIDACION' || orden.estadoordenIdestadoorden.nombre == 'CREADO' }">
+                                            <a href="/usuario/editOrden" class="btn btn-secondary btn-sm waves-effect waves-light disabled" title="No editable" th:unless="${ orden.estadoOrden == 'EN VALIDACION' || orden.estadoOrden == 'CREADO' }">
                                                 <i class="ri-pencil-fill"></i>
                                             </a>
 
                                             <!-- Si la orden está en 'CREADO' o 'EN VALIDACION', mostrar opción de eliminar -->
-                                            <a href="javascript:void(0);" class="btn btn-danger btn-sm waves-effect waves-light" data-bs-toggle="modal" th:data-bs-target="'#deleteProductModal' + ${orden.codigo}" title="Eliminar" th:if="${orden.estadoordenIdestadoorden.nombre == 'EN VALIDACION' || orden.estadoordenIdestadoorden.nombre == 'CREADO'}">
+                                            <a href="javascript:void(0);" class="btn btn-danger btn-sm waves-effect waves-light" data-bs-toggle="modal" th:data-bs-target="'#deleteProductModal' + ${orden.codigoOrden}" title="Eliminar" th:if="${orden.estadoOrden == 'EN VALIDACION' || orden.estadoOrden == 'CREADO'}">
                                                 <i class="ri-indeterminate-circle-fill"></i>
                                             </a>
                                             <a href="javascript:void(0);"
                                                class="btn btn-secondary btn-sm waves-effect waves-light disabled"
                                                title="No eliminable"
-                                               th:unless="${orden.estadoordenIdestadoorden.nombre == 'EN VALIDACION' || orden.estadoordenIdestadoorden.nombre == 'CREADO'}">
+                                               th:unless="${orden.estadoOrden == 'EN VALIDACION' || orden.estadoOrden == 'CREADO'}">
                                                 <i class="ri-indeterminate-circle-fill"></i>
                                             </a>
 
                                             <!-- Si la orden está en 'RECIBIDO' -->
-                                            <a href="#" class="btn btn-warning btn-sm waves-effect waves-light" title="Calificar Agente" th:if="${orden.estadoordenIdestadoorden.nombre == 'RECIBIDO' && orden.getValoracionAgente()==null }" data-bs-toggle="modal" th:data-bs-target="'#rateAgentModal' + ${orden.codigo}">
+                                            <a href="#" class="btn btn-warning btn-sm waves-effect waves-light" title="Calificar Agente" th:if="${orden.estadoOrden == 'RECIBIDO' && orden.agente != 'No asignado' && orden.valoracion == 0}"  data-bs-toggle="modal" th:data-bs-target="'#rateAgentModal' + ${orden.codigoOrden}">
                                                 <i class="ri-star-fill"></i>
                                             </a>
 
                                             <!-- Modal para Confirmar Eliminación -->
-                                            <div class="modal fade" th:id="'deleteProductModal' + ${orden.codigo}" tabindex="-1" aria-labelledby="deleteProductLabel" aria-hidden="true">
+                                            <div class="modal fade" th:id="'deleteProductModal' + ${orden.codigoOrden}" tabindex="-1" aria-labelledby="deleteProductLabel" aria-hidden="true">
                                                 <div class="modal-dialog">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
@@ -133,7 +133,7 @@
                                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                         </div>
                                                         <div class="modal-body">
-                                                            <p>¿Estás seguro de que deseas eliminar la orden <strong th:text="${orden.codigo}"></strong> de la lista?</p>
+                                                            <p>¿Estás seguro de que deseas eliminar la orden <strong th:text="${orden.codigoOrden}"></strong> de la lista?</p>
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
@@ -141,7 +141,7 @@
                                                             <!-- Formulario con mtodo GET para eliminar -->
                                                             <form th:action="@{/usuario/deleteOrden}" method="get">
                                                                 <!-- Campo oculto con el código de la orden -->
-                                                                <input type="hidden" name="codigo" th:value="${orden.codigo}" />
+                                                                <input type="hidden" name="codigo" th:value="${orden.codigoOrden}" />
                                                                 <button type="submit" class="btn btn-danger">Eliminar y Realizar Reembolso</button>
                                                             </form>
                                                         </div>
@@ -149,8 +149,7 @@
                                                 </div>
                                             </div>
                                             <!-- Modal para Calificar Agente -->
-                                            <!-- Modal para Calificar Agente -->
-                                            <div class="modal fade" th:id="'rateAgentModal' + ${orden.codigo}" tabindex="-1" aria-labelledby="rateAgentLabel" aria-hidden="true">
+                                            <div class="modal fade" th:id="'rateAgentModal' + ${orden.codigoOrden}" tabindex="-1" aria-labelledby="rateAgentLabel" aria-hidden="true">
                                                 <div class="modal-dialog">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
@@ -159,15 +158,15 @@
                                                         </div>
                                                         <form th:action="@{/usuario/calificarAgente}" method="post">
                                                             <div class="modal-body">
-                                                                <p>Califica el rendimiento de tu agente de compra: <strong th:text="${orden.getAgentcompraIdusuario().getNombre()} + ' ' + ${orden.getAgentcompraIdusuario().apellido}"></strong></p>
+                                                                <p>Califica el rendimiento de tu agente de compra: <strong th:text="${orden.agente}"></strong></p>
                                                                 <div class="rating">
-                                                                    <input type="radio" name="valoracionAgente" th:id="'rating5-' + ${orden.codigo}" value="5"><label th:for="'rating5-' + ${orden.codigo}">5 ☆</label>
-                                                                    <input type="radio" name="valoracionAgente" th:id="'rating4-' + ${orden.codigo}" value="4"><label th:for="'rating4-' + ${orden.codigo}">4 ☆</label>
-                                                                    <input type="radio" name="valoracionAgente" th:id="'rating3-' + ${orden.codigo}" value="3"><label th:for="'rating3-' + ${orden.codigo}">3 ☆</label>
-                                                                    <input type="radio" name="valoracionAgente" th:id="'rating2-' + ${orden.codigo}" value="2"><label th:for="'rating2-' + ${orden.codigo}">2 ☆</label>
-                                                                    <input type="radio" name="valoracionAgente" th:id="'rating1-' + ${orden.codigo}" value="1"><label th:for="'rating1-' + ${orden.codigo}">1 ☆</label>
+                                                                    <input type="radio" name="valoracionAgente" th:id="'rating5-' + ${orden.codigoOrden}" value="5"><label th:for="'rating5-' + ${orden.codigoOrden}">5 ☆</label>
+                                                                    <input type="radio" name="valoracionAgente" th:id="'rating4-' + ${orden.codigoOrden}" value="4"><label th:for="'rating4-' + ${orden.codigoOrden}">4 ☆</label>
+                                                                    <input type="radio" name="valoracionAgente" th:id="'rating3-' + ${orden.codigoOrden}" value="3"><label th:for="'rating3-' + ${orden.codigoOrden}">3 ☆</label>
+                                                                    <input type="radio" name="valoracionAgente" th:id="'rating2-' + ${orden.codigoOrden}" value="2"><label th:for="'rating2-' + ${orden.codigoOrden}">2 ☆</label>
+                                                                    <input type="radio" name="valoracionAgente" th:id="'rating1-' + ${orden.codigoOrden}" value="1"><label th:for="'rating1-' + ${orden.codigoOrden}">1 ☆</label>
                                                                 </div>
-                                                                <input type="hidden" name="ordenCodigo" th:value="${orden.codigo}" />
+                                                                <input type="hidden" name="ordenCodigo" th:value="${orden.codigoOrden}" />
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
@@ -236,7 +235,3 @@
 
 <!-- Datatable init js -->
 <script th:src="@{../js/pages/datatables.init.js}"></script>
-
-
-</body>
-</html>
