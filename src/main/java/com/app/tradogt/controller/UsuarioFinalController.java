@@ -347,6 +347,7 @@ public class UsuarioFinalController {
         Optional<Orden> orden = ordenRepository.findByCodigo(code);
         //Listar agentes de compra
         List<Usuario> listaAgente = usuarioRepository.findAllByRolIdrolIdAndIsActivated(3, (byte) 1);
+        Optional<EstadoOrden> newEstado = estadoOrdenRepository.findById(2);
         Usuario agente = null;
         if (orden.isPresent()) {
             Orden ord = orden.get();
@@ -354,6 +355,11 @@ public class UsuarioFinalController {
             int index = random.nextInt(listaAgente.size());
             agente = listaAgente.get(index);
             ord.setAgentcompraIdusuario(agente);
+            //Cuando se le asigna un agente --> el estado cambia a En validación
+            ord.setEstadoordenIdestadoorden(newEstado.get());
+            //Se guarda la fecha del cambio de estado
+            ord.setFechaValidacion(LocalDate.now());
+            System.out.println("fecha de validacion: " + ord.getFechaValidacion());
             ordenRepository.save(ord);
             attr.addFlashAttribute("msjAgente", "Se le ha asignado el agente " + agente.getNombre() + " " + agente.getApellido() + " en la orden " + code);
             return "redirect:/usuario/misPedidos";
@@ -522,7 +528,7 @@ public class UsuarioFinalController {
 
         return "Usuario/carrito-usuario";
     }
-   @PostMapping("/actualizarCantidad")
+   @PostMapping("/actualizarCantidad") //Aquí se debe guardar una lista o array de las cantidades de cada producto.
     public String actualizarCantidad (
             @RequestParam("total") BigDecimal total,
             @RequestParam("cantidad") int cantidad) {
@@ -542,19 +548,8 @@ public class UsuarioFinalController {
         //obtener el id del producto
         int idproduct = micarrito.getId();
 
-        //listar los productos en zona
-        //Optional<ProductoEnZona> almacen = productoEnZonaRepository.findByProductoIdproductoAndZonaIdzona(, zone);
-        /*int totalProducto = almacen.get().getCantidad();
-        int newTotal = totalProducto - cantidad;
-        if (newTotal >= 25) {
-            almacen.get().setEstadoRepo((byte) 0);
-            almacen.get().setCantidad(newTotal);
+        //CORRREGIRRRRRRRRRRRRR AQUIIIIIIIIII
 
-        }else {
-            almacen.get().setEstadoRepo((byte) 1);
-            almacen.get().setCantidad(newTotal);
-        }
-        productoEnZonaRepository.save(almacen.get());*/
 
         return "redirect:/usuario/checkout-info";
     }
@@ -1026,7 +1021,7 @@ public class UsuarioFinalController {
                                    @RequestParam("codigoCVV") String codigoCVV,
                                    @RequestParam("monto") BigDecimal monto,
                                    @RequestParam("LugarEntrega") String LugarEntrega,
-                                   Model model,  RedirectAttributes attr){
+                                   Model model,  RedirectAttributes attr) {
 
         System.out.println("-------------------");
         System.out.println("Nombre" + nombre);
@@ -1057,8 +1052,24 @@ public class UsuarioFinalController {
         pago.setAutenticacionIdautenticacion(facturacion);
         System.out.println("Pago antes de guardar: " + pago.toString());
         List<Pago> listaPago = pagoRepository.findAll();
-        pago.setId(listaPago.size() +1);
+        pago.setId(listaPago.size() + 1);
         pagoRepository.save(pago);
+
+        //Reducir la cantidad en la tienda por los productos ya pagado
+        //listar los productos en zona
+        //List<ProductoEnZona> almacen = productoEnZonaRepository.findByProductoIdproductoAndZonaIdzona(, zone);
+        /*int totalProducto = almacen.get().getCantidad();
+        int newTotal = totalProducto - cantidad;
+        if (newTotal >= 25) {
+            almacen.get().setEstadoRepo((byte) 0);
+            almacen.get().setCantidad(newTotal);
+
+        }else {
+            almacen.get().setEstadoRepo((byte) 1);
+            almacen.get().setCantidad(newTotal);
+        }
+        productoEnZonaRepository.save(almacen.get());*/
+
         //Se genera una nueva orden
         Orden orden = new Orden();
         List<EstadoOrden> listaEstadoOrden = estadoOrdenRepository.findAll();
@@ -1083,17 +1094,12 @@ public class UsuarioFinalController {
             orden.setUsuarioIdusuario(myuser);
             orden.setCarritoIdcarrito(carrito);
             orden.setLugarEntrega(LugarEntrega);
-
         }
         // Guardar la orden
         ordenRepository.save(orden);
         Integer idOrden = orden.getId();
         attr.addFlashAttribute("exito", "Se ha generado correctamente la orden de compra!");
         model.addAttribute("orden", orden);
-
-
-
-
         if (carrito != null) {
             carrito.setIsDelete((byte) 1);
             carritoRepository.save(carrito);

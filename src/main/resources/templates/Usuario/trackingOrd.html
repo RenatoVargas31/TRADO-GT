@@ -73,20 +73,23 @@
                             <div class="main">
                                 <div class="card mb-4">
                                     <!-- Título Principal -->
-                                    <div class="card-header bg-light d-flex justify-content-between align-items-center"><h5>Orden de compra</h5>
+                                    <div class="card-header bg-light d-flex justify-content-between align-items-center"><h5>Información del comprador y la Orden de compra</h5>
                                     </div>
                                     <!-- Datos Personales y Fecha/No. de Orden -->
                                     <div class="row card-body">
                                         <div class="col-md-6">
-                                            <h5>Datos personales</h5>
                                             <p><strong>Nombre de comprador: </strong><span   th:text="${usuario.nombre} + ' ' + ${usuario.apellido}"></span></p>
                                             <p><strong>Número DNI: </strong> <span   th:text="${usuario.dni}"></span></p>
-                                            <p><strong>Domicilio: </strong> <span   th:text="${usuario.direccion} + ', ' + ${usuario.distritoIddistrito.nombre}"></span></p>
+                                            <p><strong>Teléfono: </strong> <span   th:text="${usuario.telefono}"></span></p>
+                                            <p><strong>Lugar de entrega: </strong> <span   th:text="${orden.lugarEntrega}"></span></p>
                                         </div>
                                         <div class="col-md-6">
-                                            <h5>Fecha y Número de Orden</h5>
-                                            <p><strong>Fecha: </strong> <span   th:text="${orden.fechaCreacion}"></span></p>
-                                            <p><strong>No. de orden: </strong> <span   th:text="${orden.codigo}"></span></p>
+                                            <p><strong>Fecha de creación: </strong> <span   th:text="${orden.fechaCreacion}"></span></p>
+                                            <p><strong>Agente asignado: </strong>
+                                                <span th:if="${orden.agentcompraIdusuario != null}" th:text="${orden.agentcompraIdusuario.nombre} + ' ' + ${orden.agentcompraIdusuario.apellido}"></span>
+                                                <span th:if="${orden.agentcompraIdusuario == null}">Sin asignar</span>
+                                            </p>
+                                            <p><strong>Número de orden: </strong> <span   th:text="${orden.codigo}"></span></p>
                                             <p><strong>Estado: </strong> <span  class="text-info" th:text="${orden.estadoordenIdestadoorden.nombre}"></span></p>
                                         </div>
                                     </div>

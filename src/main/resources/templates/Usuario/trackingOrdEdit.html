@@ -78,7 +78,8 @@
                     <h5>Datos personales</h5>
                     <p><strong>Nombre de comprador: </strong><span  th:text="${usuario.nombre} + ' ' + ${usuario.apellido}"></span></p>
                     <p><strong>Número DNI: </strong> <span  th:text="${usuario.dni}"></span></p>
-                    <p><strong>Domicilio: </strong><span  th:text="${usuario.direccion} + ', ' + ${usuario.distritoIddistrito.nombre}"></span></p>
+                    <label class="form-label">Lugar de entrega</label>
+                    <input th:field="*{orden.lugarEntrega}" type="text" class="form-control">
                   </div>
 
                   <div class="col-md-6 col-sm-12">

@@ -70,4 +70,7 @@ public class Orden {
     @Column(name = "LugarEntrega")
     private String lugarEntrega;
 
+    @Column(name = "fechaValidacion", nullable = false)
+    private LocalDate fechaValidacion;
+
 }
