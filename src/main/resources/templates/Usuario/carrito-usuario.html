@@ -244,13 +244,13 @@
                                                 <tr class="bg-light text-end">
                                                     <th scope="row" colspan="8"></th>
                                                     <td  th:classappend="${#lists.isEmpty(carrito)} ? 'disabled' : ''" th:attr="aria-disabled=${#lists.isEmpty(carrito)}" >
-                                                        <!--<form th:action="@{/usuario/actualizarCantidad}" method="post">
+                                                        <form th:action="@{/usuario/actualizarCantidad}" method="post">
                                                             <input type="hidden" name="costoTotal" id="input-costoTotal" th:value="${costoTotal}"/>
                                                             <input type="hidden" name="costoEnvio" id="input-costoEnvio" th:value="${costoEnvio}"/>
                                                             <input type="hidden" name="cantidad" id="input-cantidad" >
                                                             <input type="hidden" name="total" id="input-total" />
                                                             <button type="submit" class="btn btn-primary btn-sm">Pagar</button>
-                                                        </form> -->
+                                                        </form>
                                                     </td>
                                                 </tr>
                                                 </tbody>
