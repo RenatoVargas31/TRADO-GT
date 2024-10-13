@@ -346,7 +346,7 @@
                                         <!-- Orden creada -->
                                         <li class="activity-list d-flex align-items-start mb-4"
                                             th:id="${orden.estadoordenIdestadoorden.nombre == 'CREADO' ? 'currentState' : ''}">
-                                            <div class="activity-icon avatar-xs me-3 ">
+                                            <div class="activity-icon avatar-xs me-3" th:id="${orden.estadoordenIdestadoorden.nombre == 'CREADO' ? 'currentIcon' : ''}">
                                                 <span th:class="${orden.estadoordenIdestadoorden.nombre == 'CREADO' ||
                                                                  orden.estadoordenIdestadoorden.nombre != 'CREADO' ?
                                                                  'avatar-title bg-primary text-white rounded-circle' :
@@ -363,7 +363,7 @@
                                         <!-- Validación -->
                                         <li class="activity-list d-flex align-items-start mb-4"
                                             th:id="${orden.estadoordenIdestadoorden.nombre == 'EN VALIDACION' ? 'currentState' : ''}">
-                                            <div class="activity-icon avatar-xs me-3">
+                                            <div class="activity-icon avatar-xs me-3" th:id="${orden.estadoordenIdestadoorden.nombre == 'EN VALIDACION' ? 'currentIcon' : ''}">
                                                 <span th:class="${orden.estadoordenIdestadoorden.nombre == 'EN VALIDACION' ||
                                                                  orden.estadoordenIdestadoorden.nombre == 'EN PROCESO' ||
                                                                  orden.estadoordenIdestadoorden.nombre == 'ARRIBO AL PAIS' ||
@@ -384,7 +384,7 @@
                                         <!-- En proceso -->
                                         <li class="activity-list d-flex align-items-start mb-4"
                                             th:id="${orden.estadoordenIdestadoorden.nombre == 'EN PROCESO' ? 'currentState' : ''}">
-                                            <div class="activity-icon avatar-xs me-3">
+                                            <div class="activity-icon avatar-xs me-3" th:id="${orden.estadoordenIdestadoorden.nombre == 'EN PROCESO' ? 'currentIcon' : ''}">
                                                 <span th:class="${orden.estadoordenIdestadoorden.nombre == 'EN PROCESO' ||
                                                                  orden.estadoordenIdestadoorden.nombre == 'ARRIBO AL PAIS' ||
                                                                  orden.estadoordenIdestadoorden.nombre == 'EN ADUANAS' ||
@@ -404,7 +404,7 @@
                                         <!-- Arribo al país -->
                                         <li class="activity-list d-flex align-items-start mb-4"
                                             th:id="${orden.estadoordenIdestadoorden.nombre == 'ARRIBO AL PAIS' ? 'currentState' : ''}">
-                                            <div class="activity-icon avatar-xs me-3">
+                                            <div class="activity-icon avatar-xs me-3" th:id="${orden.estadoordenIdestadoorden.nombre == 'ARRIBO AL PAIS' ? 'currentIcon' : ''}">
                                                 <span th:class="${orden.estadoordenIdestadoorden.nombre == 'ARRIBO AL PAIS' ||
                                                                  orden.estadoordenIdestadoorden.nombre == 'EN ADUANAS' ||
                                                                  orden.estadoordenIdestadoorden.nombre == 'EN RUTA' ||
@@ -423,7 +423,7 @@
                                         <!-- En aduanas -->
                                         <li class="activity-list d-flex align-items-start mb-4"
                                             th:id="${orden.estadoordenIdestadoorden.nombre == 'EN ADUANAS' ? 'currentState' : ''}">
-                                            <div class="activity-icon avatar-xs me-3">
+                                            <div class="activity-icon avatar-xs me-3" th:id="${orden.estadoordenIdestadoorden.nombre == 'EN ADUANAS' ? 'currentIcon' : ''}">
                                                 <span th:class="${orden.estadoordenIdestadoorden.nombre == 'EN ADUANAS' ||
                                                                  orden.estadoordenIdestadoorden.nombre == 'EN RUTA' ||
                                                                  orden.estadoordenIdestadoorden.nombre == 'RECIBIDO' ?
@@ -441,7 +441,7 @@
                                         <!-- En ruta -->
                                         <li class="activity-list d-flex align-items-start mb-4"
                                             th:id="${orden.estadoordenIdestadoorden.nombre == 'EN RUTA' ? 'currentState' : ''}">
-                                            <div class="activity-icon avatar-xs me-3">
+                                            <div class="activity-icon avatar-xs me-3" th:id="${orden.estadoordenIdestadoorden.nombre == 'EN RUTA' ? 'currentIcon' : ''}">
                                                 <span th:class="${orden.estadoordenIdestadoorden.nombre == 'EN RUTA' ||
                                                                  orden.estadoordenIdestadoorden.nombre == 'RECIBIDO' ?
                                                                  'avatar-title bg-primary text-white rounded-circle' :
@@ -458,7 +458,7 @@
                                         <!-- Orden recibida -->
                                         <li class="activity-list d-flex align-items-start mb-4"
                                             th:id="${orden.estadoordenIdestadoorden.nombre == 'RECIBIDO' ? 'currentState' : ''}">
-                                            <div class="activity-icon avatar-xs me-3">
+                                            <div class="activity-icon avatar-xs me-3" th:id="${orden.estadoordenIdestadoorden.nombre == 'RECIBIDO' ? 'currentIcon' : ''}">
                                                 <span th:class="${orden.estadoordenIdestadoorden.nombre == 'RECIBIDO' ?
                                                                  'avatar-title bg-primary text-white rounded-circle' :
                                                                  'avatar-title bg-light text-primary rounded-circle'}">
@@ -614,6 +614,40 @@
         }
     });
 </script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var currentState = document.getElementById("currentState");
+        var currentIcon = document.getElementById("currentIcon");
+
+        if (currentState && currentIcon) {
+            // Desplazar la vista hacia el estado actual
+            currentState.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+            // Detectar cuando el elemento es visible en la pantalla (scroll terminado)
+            var observer = new IntersectionObserver(function(entries) {
+                // Si el estado actual está visible en el viewport
+                if (entries[0].isIntersecting === true) {
+                    // Aplicar efecto de escalado al icono
+                    currentIcon.style.transition = "transform 0.5s ease"; // Transición suave
+                    currentIcon.style.transform = "scale(1.5)"; // Escalado al 150%
+
+                    // Volver al tamaño normal después de un tiempo
+                    setTimeout(function() {
+                        currentIcon.style.transform = "scale(1)"; // Escalar de vuelta al tamaño original
+                    }, 1000); // Duración de 1000ms (1 segundo)
+
+                    // Una vez que se ejecuta la animación, dejamos de observar
+                    observer.disconnect();
+                }
+            }, { threshold: 0.5 }); // El threshold indica que el 50% del elemento debe estar visible
+
+            // Iniciar la observación del estado actual
+            observer.observe(currentState);
+        }
+    });
+</script>
+
+
 
 <!-- Required datatable js -->
 <script th:src="@{../libs/datatables.net/js/jquery.dataTables.min.js}"></script>
