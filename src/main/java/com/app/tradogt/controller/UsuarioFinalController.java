@@ -690,7 +690,18 @@ public class UsuarioFinalController {
     public String vistaPostulacion() {return "Usuario/postulacion";}
 
     @GetMapping("/registro")
-    public String registroPostulacion() {return "Usuario/registroSolicitud";}
+    public String registroPostulacion(Model model) {
+        Integer usuarioId = 17; // Simulamos que el usuario con id 17 está autenticado.
+
+        // Obtener el usuario logueado de la base de datos
+        Usuario usuario = usuarioRepository.findById(usuarioId).orElseThrow();
+
+        // Añadir los datos del usuario al modelo para mostrarlos en la vista
+        model.addAttribute("usuario", usuario);
+
+        return "Usuario/registroSolicitud";
+    }
+
     @GetMapping("/contraseña")
     public  String showpassword(){
         return "Usuario/password-usuario";

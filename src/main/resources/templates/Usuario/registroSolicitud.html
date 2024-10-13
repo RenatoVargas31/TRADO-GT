@@ -66,7 +66,7 @@
                                                     <div class="mb-3">
                                                         <label for="validationCustom01" class="form-label">Nombres</label>
                                                         <input type="text" class="form-control" id="validationCustom01"
-                                                            placeholder="Nombres" required>
+                                                            placeholder="Nombres" th:value="${usuario.nombre}" readonly>
                                                         <div class="valid-feedback">
                                                             ¡Correcto!
                                                         </div>
@@ -75,8 +75,8 @@
                                                 <div class="col-md-6">
                                                     <div class="mb-3">
                                                         <label for="validationCustom01" class="form-label">Apellidos</label>
-                                                        <input type="text" class="form-control" id="validationCustom02"
-                                                               placeholder="Apellidos" required>
+                                                        <input type="text" class="form-control" id="validationCustom02" th:value="${usuario.apellido}"
+                                                               placeholder="Apellidos" readonly>
                                                         <div class="valid-feedback">
                                                             ¡Correcto!
                                                         </div>
@@ -87,22 +87,15 @@
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="mb-3">
-                                                        <label for="validationCustom03" class="form-label">Distrito</label>
-                                                        <select class="form-select" id="validationCustom03" required>
-                                                            <option selected disabled value="">Lima</option>
-                                                            <option>...</option>
-                                                        </select>
-                                                        <div class="invalid-feedback">
-                                                            Please select a valid state.
-                                                        </div>
-        
+                                                        <label class="form-label">Distrito</label>
+                                                        <input type="text" class="form-control" th:value="${usuario.distritoIddistrito.nombre}" readonly>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="mb-3">
                                                         <label for="validationCustom01" class="form-label">DNI</label>
                                                         <input type="number" class="form-control" id="validationCustom04"
-                                                               placeholder="DNI" required>
+                                                               placeholder="DNI" th:value="${usuario.dni}" readonly>
                                                         <div class="valid-feedback">
                                                             ¡Correcto!
                                                         </div>
@@ -115,7 +108,7 @@
                                                     <div class="mb-3">
                                                         <label for="validationCustom01" class="form-label">Dirección</label>
                                                         <input type="text" class="form-control" id="validationCustom05"
-                                                               placeholder="Dirección" required>
+                                                               placeholder="Dirección" th:value="${usuario.direccion}" readonly>
                                                         <div class="valid-feedback">
                                                             ¡Correcto!
                                                         </div>
@@ -125,7 +118,7 @@
                                                     <div class="mb-3">
                                                         <label for="validationCustom06" class="form-label">Correo electrónico</label>
                                                         <input type="email" class="form-control" id="validationCustom06"
-                                                               placeholder="Correo" required>
+                                                               placeholder="Correo" th:value="${usuario.correo}" readonly>
                                                         <div class="valid-feedback">
                                                             ¡Correcto!
                                                         </div>
@@ -150,7 +143,7 @@
                                                     <div class="mb-3">
                                                         <label for="validationCustom08" class="form-label">Teléfono</label>
                                                         <input type="number" class="form-control" id="validationCustom08"
-                                                               placeholder="Teléfono" required>
+                                                               placeholder="Teléfono" th:value="${usuario.telefono}" readonly>
                                                         <div class="valid-feedback">
                                                             ¡Correcto!
                                                         </div>
@@ -158,9 +151,9 @@
                                                 </div>
                                                 <div class="col-md-4">
                                                     <div class="mb-3">
-                                                        <label for="validationCustom09" class="form-label">Código de Jurisdicción</label>
+                                                        <label for="validationCustom09" class="form-label">RUC</label>
                                                         <input type="text" class="form-control" id="validationCustom09"
-                                                               placeholder="Codigo de jurisdiccion" required>
+                                                               placeholder="RUC" required>
                                                         <div class="valid-feedback">
                                                             ¡Correcto!
                                                         </div>
