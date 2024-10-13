@@ -18,7 +18,7 @@ $(document).ready(function () {
         drawCallback: function () {
             $(".dataTables_paginate > .pagination").addClass("pagination-rounded")
         },
-        buttons: ["copiar", "excel", "pdf", "colvis"]
+        buttons: ["excel", "pdf", "csv"]
     });
     a.buttons().container().appendTo("#datatable-buttons_wrapper .col-md-6:eq(0)");
     $(".dataTables_length select").addClass("form-select form-select-sm");
@@ -34,7 +34,7 @@ $(document).ready(function () {
         drawCallback: function () {
             $(".dataTables_paginate > .pagination").addClass("pagination-rounded")
         },
-        buttons: ["print", "excel", "pdf", "csv"],
+        buttons: ["excel", "pdf", "csv"],
         columnDefs: [
             { targets: -1, searchable: false } // Deshabilitar búsqueda en la última columna
         ]
@@ -52,7 +52,7 @@ $(document).ready(function () {
         drawCallback: function () {
             $(".dataTables_paginate > .pagination").addClass("pagination-rounded")
         },
-        buttons: ["print", "excel", "pdf", "csv"],
+        buttons: ["excel", "pdf", "csv"],
         columnDefs: [
             { targets: -1, searchable: false } // Deshabilitar búsqueda en la última columna
         ]
@@ -70,7 +70,7 @@ $(document).ready(function () {
         drawCallback: function () {
             $(".dataTables_paginate > .pagination").addClass("pagination-rounded")
         },
-        buttons: ["print", "excel", "pdf", "csv"],
+        buttons: ["excel", "pdf", "csv"],
         columnDefs: [
             { targets: -1, searchable: false } // Deshabilitar búsqueda en la última columna
         ]
@@ -88,7 +88,7 @@ $(document).ready(function () {
         drawCallback: function () {
             $(".dataTables_paginate > .pagination").addClass("pagination-rounded")
         },
-        buttons: ["print", "excel", "pdf", "csv"],
+        buttons: ["excel", "pdf", "csv"],
         columnDefs: [
             { targets: -1, searchable: false } // Deshabilitar búsqueda en la última columna
         ]
@@ -105,7 +105,7 @@ $(document).ready(function () {
         drawCallback: function () {
             $(".dataTables_paginate > .pagination").addClass("pagination-rounded")
         },
-        buttons: ["print", "excel", "pdf", "csv"],
+        buttons: ["excel", "pdf", "csv"],
         columnDefs: [
             { targets: -1, searchable: false } // Deshabilitar búsqueda en la última columna
         ]
@@ -123,7 +123,7 @@ $(document).ready(function () {
         drawCallback: function () {
             $(".dataTables_paginate > .pagination").addClass("pagination-rounded")
         },
-        buttons: ["print", "excel", "pdf", "csv"],
+        buttons: ["excel", "pdf", "csv"],
         columnDefs: [
             { targets: -1, searchable: false } // Deshabilitar búsqueda en la última columna
         ]
@@ -140,7 +140,7 @@ $(document).ready(function () {
         drawCallback: function () {
             $(".dataTables_paginate > .pagination").addClass("pagination-rounded")
         },
-        buttons: ["print", "excel", "pdf", "csv"],
+        buttons: ["excel", "pdf", "csv"],
         columnDefs: [
             { targets: -1, searchable: false } // Deshabilitar búsqueda en la última columna
         ]
@@ -157,7 +157,7 @@ $(document).ready(function () {
         drawCallback: function () {
             $(".dataTables_paginate > .pagination").addClass("pagination-rounded")
         },
-        buttons: ["print", "excel", "pdf", "csv"],
+        buttons: ["excel", "pdf", "csv"],
         columnDefs: [
             { targets: -1, searchable: false } // Deshabilitar búsqueda en la última columna
         ]
@@ -175,7 +175,7 @@ $(document).ready(function () {
         drawCallback: function () {
             $(".dataTables_paginate > .pagination").addClass("pagination-rounded")
         },
-        buttons: ["print", "excel", "pdf", "csv"],
+        buttons: ["excel", "pdf", "csv"],
         columnDefs: [
             { targets: -1, searchable: false } // Deshabilitar búsqueda en la última columna
         ]
@@ -192,7 +192,7 @@ $(document).ready(function () {
         drawCallback: function () {
             $(".dataTables_paginate > .pagination").addClass("pagination-rounded")
         },
-        buttons: ["print", "excel", "pdf", "csv"],
+        buttons: ["excel", "pdf", "csv"],
         columnDefs: [
             { targets: -1, searchable: false } // Deshabilitar búsqueda en la última columna
         ]
@@ -209,7 +209,7 @@ $(document).ready(function () {
         drawCallback: function () {
             $(".dataTables_paginate > .pagination").addClass("pagination-rounded")
         },
-        buttons: ["print", "excel", "pdf", "csv"],
+        buttons: ["excel", "pdf", "csv"],
         columnDefs: [
             { targets: -1, searchable: false } // Deshabilitar búsqueda en la última columna
         ]
@@ -227,7 +227,7 @@ $(document).ready(function () {
         drawCallback: function () {
             $(".dataTables_paginate > .pagination").addClass("pagination-rounded")
         },
-        buttons: ["print", "excel", "pdf", "csv"],
+        buttons: ["excel", "pdf", "csv"],
         columnDefs: [
             { targets: -1, searchable: false } // Deshabilitar búsqueda en la última columna
         ]
@@ -245,11 +245,12 @@ $(document).ready(function () {
         drawCallback: function () {
             $(".dataTables_paginate > .pagination").addClass("pagination-rounded")
         },
-        buttons: ["print", "excel", "pdf", "csv"],
+        buttons: ["excel", "pdf", "csv"],
         columnDefs: [
-            { targets: -1, searchable: false } // Deshabilitar búsqueda en la última columna
+            { targets: -1, searchable: false },// Deshabilitar búsqueda en la última columna
         ]
     });
+
     a.buttons().container().appendTo("#datatable-producto-lista_wrapper .col-md-6:eq(0)");
     $(".dataTables_length select").addClass("form-select form-select-sm");
 });
@@ -262,7 +263,7 @@ $(document).ready(function () {
         drawCallback: function () {
             $(".dataTables_paginate > .pagination").addClass("pagination-rounded")
         },
-        buttons: ["print", "excel", "pdf", "csv"],
+        buttons: ["excel", "pdf", "csv"],
         columnDefs: [
             { targets: -1, searchable: false } // Deshabilitar búsqueda en la última columna
         ]
@@ -279,7 +280,7 @@ $(document).ready(function () {
         drawCallback: function () {
             $(".dataTables_paginate > .pagination").addClass("pagination-rounded")
         },
-        buttons: ["print", "excel", "pdf", "csv"],
+        buttons: ["excel", "pdf", "csv"],
         columnDefs: [
             { targets: -1, searchable: false } // Deshabilitar búsqueda en la última columna
         ]
@@ -296,7 +297,7 @@ $(document).ready(function () {
         drawCallback: function () {
             $(".dataTables_paginate > .pagination").addClass("pagination-rounded")
         },
-        buttons: ["print", "excel", "pdf", "csv"],
+        buttons: ["excel", "pdf", "csv"],
         columnDefs: [
             { targets: -1, searchable: false } // Deshabilitar búsqueda en la última columna
         ]
@@ -313,7 +314,7 @@ $(document).ready(function () {
         drawCallback: function () {
             $(".dataTables_paginate > .pagination").addClass("pagination-rounded")
         },
-        buttons: ["print", "excel", "pdf", "csv"],
+        buttons: ["excel", "pdf", "csv"],
         columnDefs: [
             { targets: -1, searchable: false } // Deshabilitar búsqueda en la última columna
         ]
@@ -331,7 +332,7 @@ $(document).ready(function () {
         drawCallback: function () {
             $(".dataTables_paginate > .pagination").addClass("pagination-rounded")
         },
-        buttons: ["print", "excel", "pdf", "csv"],
+        buttons: ["excel", "pdf", "csv"],
         columnDefs: [
             { targets: -1, searchable: false } // Deshabilitar búsqueda en la última columna
         ]
