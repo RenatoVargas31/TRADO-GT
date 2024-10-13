@@ -414,10 +414,7 @@ public class UsuarioFinalController {
                     model.addAttribute("productList", productosRepository.findAll());
                     break;
             }
-
-
             return "Usuario/producto-detalles";
-
             // Devuelve la vista con el producto
         } else {
             // Si no se encuentra el producto, redirige o muestra una página de error
@@ -427,7 +424,7 @@ public class UsuarioFinalController {
     //Seleción de producto al carrito
    @PostMapping("/selecionarProducto")
     public String selecionarProducto(@RequestParam("productoId") int productoId,
-                                     @RequestParam("cantidad") String cantidadOculta , RedirectAttributes attr) {
+                                     @RequestParam("cantidad") String cantidadOculta , RedirectAttributes attr, Model model) {
 
         //Busco un carrito creado a mi id
         int idUser= getAuthenticatedUserId();
@@ -447,44 +444,50 @@ public class UsuarioFinalController {
        ProductoEnCarrito misProductoEnCarrito = new ProductoEnCarrito();
        //Producto en Zona (TIENDA)
        Optional<ProductoEnZona> productoEnZona = productoEnZonaRepository.findByIdAndZona(productoId, usuario.getDistritoIddistrito().getZonaIdzona().getId());
+
+       int stock = productoEnZona.get().getCantidad();
+
        ProductoEnCarritoId id_ProductoEnCarrito = new ProductoEnCarritoId();
        id_ProductoEnCarrito.setProductoenzonaProductoIdproducto(productoId);
        id_ProductoEnCarrito.setProductoenzonaZonaIdzona(zonaid);
-        if(hayCarrito != null) {
-            //Hay carrito --> Añadimos el producto
-            Carrito miCarritoActual = carritoRepository.findByUsuarioIdusuarioAndIsDelete(usuario, (byte) 0);
 
-            //Añado un nuevo producto
-            id_ProductoEnCarrito.setCarritoIdcarrito(miCarritoActual.getId());
-            //mensaje
-            attr.addFlashAttribute("mensajeProductNuevo", "Se ha añadido un nuevo producto: " + producto.getNombre());
-            misProductoEnCarrito.setCantidad(cantidadP);
-            misProductoEnCarrito.setCarritoIdcarrito(miCarritoActual);
-            misProductoEnCarrito.setId(id_ProductoEnCarrito);
-            misProductoEnCarrito.setProductoEnZona(productoEnZona.get());
-            productoEnCarritoRepository.save(misProductoEnCarrito);
+       if(stock>=cantidadP) {
+           if(hayCarrito != null) {
+               //Hay carrito --> Añadimos el producto
+               Carrito miCarritoActual = carritoRepository.findByUsuarioIdusuarioAndIsDelete(usuario, (byte) 0);
 
-        }else{
-            //No hay carrito --> Creamos uno nuevo
-            Carrito miCarritoNuevo = new Carrito();
-            miCarritoNuevo.setUsuarioIdusuario(usuario);
-            miCarritoNuevo.setIsDelete((byte) 0);
-            carritoRepository.save(miCarritoNuevo);
+               //Añado un nuevo producto
+               id_ProductoEnCarrito.setCarritoIdcarrito(miCarritoActual.getId());
+               //mensaje
+               attr.addFlashAttribute("mensajeProductNuevo", "Se ha añadido un nuevo producto: " + producto.getNombre());
+               misProductoEnCarrito.setCantidad(cantidadP);
+               misProductoEnCarrito.setCarritoIdcarrito(miCarritoActual);
+               misProductoEnCarrito.setId(id_ProductoEnCarrito);
+               misProductoEnCarrito.setProductoEnZona(productoEnZona.get());
+               productoEnCarritoRepository.save(misProductoEnCarrito);
 
-            id_ProductoEnCarrito.setCarritoIdcarrito(miCarritoNuevo.getId());
+           }else{
+               //No hay carrito --> Creamos uno nuevo
+               Carrito miCarritoNuevo = new Carrito();
+               miCarritoNuevo.setUsuarioIdusuario(usuario);
+               miCarritoNuevo.setIsDelete((byte) 0);
+               carritoRepository.save(miCarritoNuevo);
+               id_ProductoEnCarrito.setCarritoIdcarrito(miCarritoNuevo.getId());
+               //mensaje
+               attr.addFlashAttribute("mensajeProductNuevo", "Se ha añadido un nuevo producto: " + producto.getCodigo() +' ' + producto.getNombre());
 
-            //mensaje
-            attr.addFlashAttribute("mensajeProductNuevo", "Se ha añadido un nuevo producto: " + producto.getNombre());
-
-           misProductoEnCarrito.setCantidad(cantidadP);
-           misProductoEnCarrito.setCarritoIdcarrito(miCarritoNuevo);
-           misProductoEnCarrito.setId(id_ProductoEnCarrito);
-           misProductoEnCarrito.setProductoEnZona(productoEnZona.get());
-          productoEnCarritoRepository.save(misProductoEnCarrito);
-
-        }
-
-        return "redirect:/usuario/carrito";
+               misProductoEnCarrito.setCantidad(cantidadP);
+               misProductoEnCarrito.setCarritoIdcarrito(miCarritoNuevo);
+               misProductoEnCarrito.setId(id_ProductoEnCarrito);
+               misProductoEnCarrito.setProductoEnZona(productoEnZona.get());
+               productoEnCarritoRepository.save(misProductoEnCarrito);
+           }
+       }else {
+           //mensaje de no hay stock suficiente
+           attr.addFlashAttribute("msgError", "No hay stock suficiente para este producto");
+       }
+       // Redirige al detalle del producto
+       return "redirect:/usuario/productoDetalles?id=" + productoId;
     }
 
 
@@ -494,6 +497,7 @@ public class UsuarioFinalController {
         //Usuario
         int user = getAuthenticatedUserId();
         Usuario usuario = usuarioRepository.findById(user).get();
+        model.addAttribute("usuario", usuario);
 
         Carrito miCarrito = carritoRepository.findByusuarioIdusuarioAndIsDelete(usuario, (byte) 0);
         if (miCarrito != null) {
@@ -515,13 +519,10 @@ public class UsuarioFinalController {
 
         return "Usuario/carrito-usuario";
     }
-   /* @PostMapping("/actualizarCantidad")
+   @PostMapping("/actualizarCantidad")
     public String actualizarCantidad (
-            @RequestParam("costoTotal") BigDecimal costoTotal,
-            @RequestParam("costoEnvio") BigDecimal costoEnvio,
             @RequestParam("total") BigDecimal total,
-            @RequestParam("cantidad") int cantidad,
-            Model model) {
+            @RequestParam("cantidad") int cantidad) {
 
         int id = getAuthenticatedUserId();
         Usuario usuario = usuarioRepository.findById(id).get();
@@ -539,8 +540,8 @@ public class UsuarioFinalController {
         int idproduct = micarrito.getId();
 
         //listar los productos en zona
-        Optional<ProductoEnZona> almacen = productoEnZonaRepository.findByProductoIdproductoAndZonaIdzona(, zone);
-        int totalProducto = almacen.get().getCantidad();
+        //Optional<ProductoEnZona> almacen = productoEnZonaRepository.findByProductoIdproductoAndZonaIdzona(, zone);
+        /*int totalProducto = almacen.get().getCantidad();
         int newTotal = totalProducto - cantidad;
         if (newTotal >= 25) {
             almacen.get().setEstadoRepo((byte) 0);
@@ -550,15 +551,10 @@ public class UsuarioFinalController {
             almacen.get().setEstadoRepo((byte) 1);
             almacen.get().setCantidad(newTotal);
         }
-        productoEnZonaRepository.save(almacen.get());
+        productoEnZonaRepository.save(almacen.get());*/
 
         return "redirect:/usuario/checkout-info";
-    }*/
-
-
-
-
-    /*
+    }
     //Eliminar un producto  de la lista
     @PostMapping("/eliminarProducto")
     public String eliminarProducto(@RequestParam("productoId") Integer productoId,
@@ -569,34 +565,30 @@ public class UsuarioFinalController {
         Optional<Usuario> myUser = usuarioRepository.findById(usuarioId);
         //Obtener el id producto
         Optional<Producto> myProduct = productosRepository.findById(productoId);
-        //ID usuario
-        int idUsuer = myUser.get().getId();
-        //Id producto
-        int idProduct = myProduct.get().getId();
-        //Id Zona
-        int idZone = myUser.get().getZonaIdzona().getId();
-        // Encuentra el producto en el carrito por el ID del producto y el ID del usuario
-        //List<Carrito> productosEnCarrito = carritoRepository.findByusuarioIdusuario(usuarioId);
-        // Elimina el producto del carrito
-        if (!productosEnCarrito.isEmpty()) {
 
-            //carritoRepository.deleteAll(productosEnCarrito);
-            Carrito item = productosEnCarrito.get(0);
-            item.setIsDelete(true);
-            carritoRepository.save(item);
-        }
+        //Busco mi carrito
+        Carrito miCarrito = carritoRepository.findByUsuarioIdusuarioAndIsDelete(myUser.get(), (byte) 0);
 
+        //Busco el id del producto en ProductoEnZona
+        Optional<ProductoEnZona> tienda = productoEnZonaRepository.findByIdAndZona(productoId, myUser.get().getDistritoIddistrito().getZonaIdzona().getId());
+        System.out.println("----------------------------");
+        System.out.println("producto en zona id: " + tienda.get().getId());
+
+        ProductoEnCarritoId item = new ProductoEnCarritoId();
+        item.setCarritoIdcarrito(miCarrito.getId());
+        item.setProductoenzonaZonaIdzona(myUser.get().getDistritoIddistrito().getZonaIdzona().getId());
+        item.setProductoenzonaProductoIdproducto(productoId);
+        System.out.println("------------");
+        System.out.println("ID Carrito: " + item.getCarritoIdcarrito());
+        System.out.println("ID Zona: " + item.getProductoenzonaZonaIdzona());
+        System.out.println("ID Producto: " + item.getProductoenzonaProductoIdproducto());
+        //Obtenego el producto
+        Optional<ProductoEnCarrito> itemDelete = productoEnCarritoRepository.findById(item);
+        productoEnCarritoRepository.delete(itemDelete.get());
+        System.out.println("Se ha borrado el producto :D");
         // Añade un mensaje de éxito
-        redirectAttributes.addFlashAttribute("message", "Producto eliminado exitosamente");
-
+        redirectAttributes.addFlashAttribute("message", "El producto " + myProduct.get().getCodigo()+" ha sido eliminado de forma exitosa.");
         return "redirect:/usuario/carrito";
-    }
-*/
-
-
-    @GetMapping("/ordenCompra")
-    public String showordenCompra() {
-        return "Usuario/orden-compra-usuario";
     }
 
     @GetMapping("/reseñas")
