@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>Checkout</title>
+    <title>Pasarela de pago</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- CSS BASE -->
     <meta th:replace="~{Common/cssBase :: css_Base}">
@@ -35,12 +35,12 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                            <h4 class="mb-sm-0">Checkout</h4>
+                            <h4 class="mb-sm-0">Pasarela de pago</h4>
 
                             <div class="page-title-right">
                                 <ol class="breadcrumb m-0">
                                     <li class="breadcrumb-item active">Inicio</li>
-                                    <li class="breadcrumb-item"><a href="javascript: void(0);">Checkout</a></li>
+                                    <li class="breadcrumb-item"><a href="javascript: void(0);">Pasarela de pago</a></li>
                                 </ol>
                             </div>
                         </div>
@@ -48,13 +48,13 @@
                 </div>
                 <!-- end page title -->
                 <div class="row" >
-                    <div class="col-md-5  d-flex align-items-stretch">
+                    <div class="col-md-4 col-12">
                         <div class="card checkout-order-summary">
                             <div class="card-body">
                                 <div class="p-3 bg-light mb-4">
                                     <h5 class="font-size-14 mb-0">Resumen de la Compra<span class="float-end ms-2"></span></h5>
                                 </div>
-                                <div class="table-responsive">
+                                <div class="table-responsive" style="max-height: 700px; overflow-y: auto;">
                                     <table class="table table-centered mb-0 table-nowrap">
                                         <thead>
                                         <tr>
@@ -67,7 +67,7 @@
                                         <tbody>
                                         <tr th:each="producto : ${carrito}">
                                             <th scope="row" th:text="${producto.productoEnZona.productoIdproducto.codigo}"></th>
-                                            <th scope="row"><img th:src="@{../images/product/img-1.png}" alt="product-img" title="product-img" class="avatar-md"></th>
+                                            <th scope="row"><img th:src="@{'../../images/product/product' + ${producto.productoEnZona.productoIdproducto.id} + '.jpg'}" alt="product-img" title="product-img" class="avatar-md"></th>
                                             <td>
                                                 <h5 class="font-size-14 text-truncate"><a href="/usuario/productoDetalles" class="text-reset" th:text="${producto.productoEnZona.productoIdproducto.nombre}"></a></h5>
                                                 <p class="text-muted mb-0" th:text=" 'S/. ' + ${producto.productoEnZona.productoIdproducto.precio} + ' x ' + ${producto.cantidad}"></p>
@@ -84,8 +84,10 @@
                                         <tr>
                                             <td colspan="4">
                                                 <div class="bg-primary-subtle  p-3 rounded">
-                                                    <h5 class="font-size-14 text-primary mb-0"><i class="fas fa-shipping-fast me-2"></i> Envío <span class="float-md-end" th:text="'S/. ' + ${costoEnvio}"></span></h5>
+                                                    <h5 class="font-size-14 text-primary mb-0"><i class="fas fa-shipping-fast"></i> Envío: <span class="float-md-end text-between" th:text="'S/. ' + ${costoEnvio}"></span></h5>
+
                                                 </div>
+
                                             </td>
                                         </tr>
                                         <tr>
@@ -101,7 +103,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-7  d-flex align-items-stretch">
+                    <div class="col-md-8  ">
                         <form method="post" th:action="@{/usuario/savePayment}" id="paymentForm">
                             <div class="card">
                                 <div class="card-body">
@@ -168,6 +170,15 @@
 
                                             </div>
                                         </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="tab-pane active" id="delivery-info">
+                                        <h5 class="card-title">Información de Entrega</h5>
+                                        <p class="card-title-desc">Por favor, ingrese la dirección donde desea recibir su pedido. Asegúrese de que toda la información sea correcta antes de continuar.</p>
+                                        <input type="text" class="form-control" id="LugarEntrega" name="LugarEntrega" maxlength="100" placeholder="Ingresar la dirección de entrega">
                                     </div>
                                 </div>
                             </div>

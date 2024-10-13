@@ -67,4 +67,7 @@ public class Orden {
     @JoinColumn(name = "Usuario_idUsuario")
     private Usuario usuarioIdusuario;
 
+    @Column(name = "LugarEntrega")
+    private String lugarEntrega;
+
 }

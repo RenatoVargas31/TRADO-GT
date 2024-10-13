@@ -25,9 +25,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.SecureRandom;
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -439,7 +437,6 @@ public class UsuarioFinalController {
 
         Carrito hayCarrito = carritoRepository.findByUsuarioIdusuarioAndIsDelete(usuario, (byte) 0);
        System.out.println("hay carrito?: " + hayCarrito);
-       List<Carrito> tamanoCarrito = carritoRepository.findAll();
        //Añadimos el producto al carrito nuevo
        ProductoEnCarrito misProductoEnCarrito = new ProductoEnCarrito();
        //Producto en Zona (TIENDA)
@@ -489,7 +486,6 @@ public class UsuarioFinalController {
        // Redirige al detalle del producto
        return "redirect:/usuario/productoDetalles?id=" + productoId;
     }
-
 
     @GetMapping("/carrito")
     public String showCarrito( Model model) {
@@ -998,6 +994,7 @@ public class UsuarioFinalController {
                                    @RequestParam("fechaTarjeta") String fechaTarjeta,
                                    @RequestParam("codigoCVV") String codigoCVV,
                                    @RequestParam("monto") BigDecimal monto,
+                                   @RequestParam("LugarEntrega") String LugarEntrega,
                                    Model model,  RedirectAttributes attr){
 
         System.out.println("-------------------");
@@ -1054,6 +1051,7 @@ public class UsuarioFinalController {
             orden.setPagoIdpago(pago);
             orden.setUsuarioIdusuario(myuser);
             orden.setCarritoIdcarrito(carrito);
+            orden.setLugarEntrega(LugarEntrega);
 
         }
         // Guardar la orden

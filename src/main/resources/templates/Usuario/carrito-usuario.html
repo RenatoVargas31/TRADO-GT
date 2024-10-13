@@ -83,7 +83,7 @@
                                                              title="product-img" class="avatar-md" />
                                                     </td>
                                                     <td>
-                                                        <h5 class="font-size-14 text-truncate"><a href="#" class="text-reset" th:text="${producto.productoEnZona.productoIdproducto.nombre}"></a></h5>
+                                                        <h5 class="font-size-14 text-truncate"><a th:href="@{'/usuario/productoDetalles?id=' + ${producto.productoEnZona.productoIdproducto.id} }" class="text-reset" th:text="${producto.productoEnZona.productoIdproducto.nombre}"></a></h5>
                                                         <p class="mb-0">Proveedor : <span class="fw-medium" th:text="${producto.productoEnZona.productoIdproducto.proveedorIdproveedor.tienda}"></span></p>
                                                     </td>
                                                     <td th:text="${producto.productoEnZona.productoIdproducto.subcategoriaIdsubcategoria.categoriaIdcategoria.nombre} + ', ' + ${producto.productoEnZona.productoIdproducto.subcategoriaIdsubcategoria.nombre}"></td>
