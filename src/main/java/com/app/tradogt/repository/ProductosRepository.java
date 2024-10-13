@@ -206,4 +206,14 @@ public interface ProductosRepository extends JpaRepository<Producto, Integer> {
     List<Producto> findProductQuery(@Param("query") String query, @Param("tipo") int tipo);
 
     List<Producto> findAllByIsDeleted(Byte isDeleted);
+
+
+    @Query("SELECT p FROM Producto p "
+            + "JOIN ProductoEnCarrito pec ON p.id = pec.productoEnZona.productoIdproducto.id "
+            + "JOIN Carrito c ON pec.carritoIdcarrito.id = c.id "
+            + "JOIN Orden o ON o.carritoIdcarrito.id = c.id "
+            + "WHERE o.estadoordenIdestadoorden.id = 7 AND c.usuarioIdusuario.id = :usuarioId")
+    List<Producto> findProductosRecibidos(@Param("usuarioId") Integer usuarioId);
+
+
 }

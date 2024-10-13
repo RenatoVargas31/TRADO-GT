@@ -491,6 +491,14 @@ public class UsuarioFinalController {
 
     @GetMapping("/nuevaReseña")
     public String nuevaResenha(Model model){
+        Integer usuarioId = 17;  // Simulamos que el usuario con id 17 está autenticado.
+
+        // Obtenemos los productos que el usuario ha recibido
+        List<Producto> productosRecibidos = productosRepository.findProductosRecibidos(usuarioId);
+        // Añadimos la lista de productos al modelo
+        model.addAttribute("productosRecibidos", productosRecibidos);
+
+
         return "Usuario/nuevaReseña-usuario";
     }
 
