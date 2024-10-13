@@ -256,7 +256,7 @@
                                         </div>
                                         <div th:each="product, iterStat : ${productList}" class="col-xl-4 col-sm-6">
                                              <div class="card product-box">
-                                                 <a th:href="@{/usuario/productoDetalles/{id}(id=${product.id})}" class="text-decoration-none">
+                                                 <a th:href="@{'/usuario/productoDetalles?id=' + ${product.id} }" class="text-decoration-none">
                                                  <div class="product-img">
                                                         <div class="product-ribbon badge bg-warning">
                                                             <!-- Mostrar el código de producto -->

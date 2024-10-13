@@ -371,8 +371,8 @@ public class UsuarioFinalController {
     }
 
 
-    @GetMapping("/productoDetalles/{id}")
-    public String showProductoDetalles(@PathVariable int id, Model model) {
+    @GetMapping("/productoDetalles")
+    public String showProductoDetalles(@RequestParam("id") int id, Model model) {
         // Buscar el producto por id
         int id2 = getAuthenticatedUserId();
         Optional<Usuario> optionalUsuario = usuarioRepository.findById(id2);
@@ -424,6 +424,69 @@ public class UsuarioFinalController {
             return "redirect:/usuario/inicio"; // Podrías crear una página de error personalizada
         }
     }
+    //Seleción de producto al carrito
+   @PostMapping("/selecionarProducto")
+    public String selecionarProducto(@RequestParam("productoId") int productoId,
+                                     @RequestParam("cantidad") String cantidadOculta , RedirectAttributes attr) {
+
+        //Busco un carrito creado a mi id
+        int idUser= getAuthenticatedUserId();
+        Usuario usuario = usuarioRepository.findById(idUser).get();
+       System.out.println("usuario: " + usuario.getNombre());
+        int zonaid = usuario.getDistritoIddistrito().getZonaIdzona().getId();
+       System.out.println("zonaid: " + zonaid);
+       int cantidadP = Integer.parseInt(cantidadOculta);
+
+       //Nombre del producto
+       Producto producto = productosRepository.findById(productoId).get();
+
+        Carrito hayCarrito = carritoRepository.findByUsuarioIdusuarioAndIsDelete(usuario, (byte) 0);
+       System.out.println("hay carrito?: " + hayCarrito);
+       List<Carrito> tamanoCarrito = carritoRepository.findAll();
+       //Añadimos el producto al carrito nuevo
+       ProductoEnCarrito misProductoEnCarrito = new ProductoEnCarrito();
+       //Producto en Zona (TIENDA)
+       Optional<ProductoEnZona> productoEnZona = productoEnZonaRepository.findByIdAndZona(productoId, usuario.getDistritoIddistrito().getZonaIdzona().getId());
+       ProductoEnCarritoId id_ProductoEnCarrito = new ProductoEnCarritoId();
+       id_ProductoEnCarrito.setProductoenzonaProductoIdproducto(productoId);
+       id_ProductoEnCarrito.setProductoenzonaZonaIdzona(zonaid);
+        if(hayCarrito != null) {
+            //Hay carrito --> Añadimos el producto
+            Carrito miCarritoActual = carritoRepository.findByUsuarioIdusuarioAndIsDelete(usuario, (byte) 0);
+
+            //Añado un nuevo producto
+            id_ProductoEnCarrito.setCarritoIdcarrito(miCarritoActual.getId());
+            //mensaje
+            attr.addFlashAttribute("mensajeProductNuevo", "Se ha añadido un nuevo producto: " + producto.getNombre());
+            misProductoEnCarrito.setCantidad(cantidadP);
+            misProductoEnCarrito.setCarritoIdcarrito(miCarritoActual);
+            misProductoEnCarrito.setId(id_ProductoEnCarrito);
+            misProductoEnCarrito.setProductoEnZona(productoEnZona.get());
+            productoEnCarritoRepository.save(misProductoEnCarrito);
+
+        }else{
+            //No hay carrito --> Creamos uno nuevo
+            Carrito miCarritoNuevo = new Carrito();
+            miCarritoNuevo.setUsuarioIdusuario(usuario);
+            miCarritoNuevo.setIsDelete((byte) 0);
+            carritoRepository.save(miCarritoNuevo);
+
+            id_ProductoEnCarrito.setCarritoIdcarrito(miCarritoNuevo.getId());
+
+            //mensaje
+            attr.addFlashAttribute("mensajeProductNuevo", "Se ha añadido un nuevo producto: " + producto.getNombre());
+
+           misProductoEnCarrito.setCantidad(cantidadP);
+           misProductoEnCarrito.setCarritoIdcarrito(miCarritoNuevo);
+           misProductoEnCarrito.setId(id_ProductoEnCarrito);
+           misProductoEnCarrito.setProductoEnZona(productoEnZona.get());
+          productoEnCarritoRepository.save(misProductoEnCarrito);
+
+        }
+
+        return "redirect:/usuario/carrito";
+    }
+
 
     @GetMapping("/carrito")
     public String showCarrito( Model model) {

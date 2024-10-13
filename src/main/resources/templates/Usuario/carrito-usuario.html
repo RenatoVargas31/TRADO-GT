@@ -58,6 +58,7 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="table-responsive">
+                                            <div th:if="${mensajeProductNuevo != null}" class="alert alert-success" th:text="${mensajeProductNuevo}"></div>
                                             <table class="table table-centered mb-0 table-nowrap">
                                                 <thead class="bg-light">
                                                 <tr>
@@ -78,7 +79,7 @@
                                                 <tr th:each="producto,iterStat : ${carrito}">
                                                     <td th:text="${producto.productoEnZona.productoIdproducto.codigo}"></td>
                                                     <td>
-                                                        <img th:src="@{../images/product/img-1.png}" alt="product-img"
+                                                        <img th:src="@{'../../images/product/product' + ${producto.productoEnZona.productoIdproducto.id} + '.jpg'}" alt="product-img"
                                                              title="product-img" class="avatar-md" />
                                                     </td>
                                                     <td>
