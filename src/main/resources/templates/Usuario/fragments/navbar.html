@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<!-- @thymesVar id="usuarioAutenticado" type="com.app.tradogt.entity.Usuario" -->
 <body>
     <header th:fragment="nav_bar" id="page-topbar">
     <div class="navbar-header">
@@ -100,16 +101,20 @@
             </div>
             <div class="dropdown d-inline-block">
                 <button type="button" class="btn header-item noti-icon waves-effect">
-                    <a href="/usuario/carrito">
-                        <i  class="ri-shopping-cart-2-fill"></i>
+                    <a href="/usuario/carrito" class="position-relative">
+                        <i class="ri-shopping-cart-2-fill"></i>
+                        <span class="noti-dot position-absolute top-0 start-100 translate-middle bg-success" style="display: inline-block;width: 20px; height: 20px;background-color: #28a745; color: white; border-radius: 50%; text-align: center; line-height: 25px; font-size: 10px; font-weight: bold;top: -10px; right: -10px; ">
+                <span th:text="${cantidadProductosEnCarrito}"></span>
+            </span>
                     </a>
                 </button>
             </div>
+
             <div class="dropdown d-inline-block">
                 <button type="button" class="btn header-item noti-icon waves-effect" id="page-header-notifications-dropdown"
                         data-bs-toggle="dropdown" aria-expanded="false">
                     <i class="ri-notification-3-line"></i>
-                    <span class="noti-dot"></span>
+
                 </button>
                 <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end p-0"
                      aria-labelledby="page-header-notifications-dropdown">
@@ -199,9 +204,9 @@
                         data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <img class="rounded-circle header-profile-user" th:src="@{/images/users/user000017.jpg}"
                          alt="Header Avatar">
-                    <span class="d-none d-xl-inline-block ms-1" th:text="${#authentication.name}">Usuario</span>
+
                     <!-- Mostrar el nombre del usuario autenticado -->
-                   <!-- <span class="d-none d-xl-inline-block ms-1" th:text="${#authentication.name}">Usuario</span> -->
+                    <span class="d-none d-xl-inline-block ms-1" th:text="${usuarioAutenticado.nombre}+' '+${usuarioAutenticado.apellido}" ></span>
                     <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
                 </button>
                 <div class="dropdown-menu dropdown-menu-end">
