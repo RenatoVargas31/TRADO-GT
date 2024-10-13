@@ -2,18 +2,19 @@ package com.app.tradogt.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.savedrequest.DefaultSavedRequest;
 
 import javax.sql.DataSource;
-import java.util.EnumSet;
 
 @Configuration
 public class WebSecurityConfig {
@@ -26,62 +27,55 @@ public class WebSecurityConfig {
         this.customAccessDeniedHandler = customAccessDeniedHandler;
     }
 
-    // Bean para la codificación de contraseñas usando BCrypt
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(10);
     }
 
-    // Configuración de UserDetailsManager para obtener usuarios de la base de datos
     @Bean
     public UserDetailsManager users(DataSource dataSource) {
-        JdbcUserDetailsManager users = new JdbcUserDetailsManager(dataSource);
-
-        // Query para obtener el usuario y su contraseña
-        String sql1 = "SELECT correo, contrasena, isActivated FROM Usuario WHERE correo = ?";
-
-        // Query para obtener los roles del usuario
-        String sql2 = "SELECT U.correo, R.nombre FROM Usuario U " +
-                "INNER JOIN Rol R ON U.rol_idRol = R.idRol " +
-                "WHERE U.correo = ? AND U.isActivated = 1";
-
-        users.setUsersByUsernameQuery(sql1);
-        users.setAuthoritiesByUsernameQuery(sql2);
-        return users;
+        CustomUserDetailsManager user = new CustomUserDetailsManager(dataSource);
+        user.setUsersByUsernameQuery("SELECT correo, contrasena, isActivated, nombre, apellido, codigoDespachador FROM Usuario WHERE correo = ? OR codigoDespachador = ?");
+        user.setAuthoritiesByUsernameQuery(
+                "SELECT U.correo, R.nombre " +
+                        "FROM Usuario U " +
+                        "INNER JOIN Rol R ON U.rol_idRol = R.idRol " +
+                        "WHERE (U.correo = ? OR U.codigoDespachador = ?) AND U.isActivated = 1"
+        );
+        return user;
     }
 
-    // Configuración del SecurityFilterChain para el manejo de la seguridad
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public CustomAuthenticationFilter customAuthenticationFilter(AuthenticationManager authenticationManager) {
+        CustomAuthenticationFilter filter = new CustomAuthenticationFilter();
+        filter.setAuthenticationManager(authenticationManager);
+        return filter;
+    }
 
+    @Bean
+    public AuthenticationManager authenticationManagerBean(AuthenticationConfiguration configuration) throws Exception {
+        return configuration.getAuthenticationManager();
+    }
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http, CustomAuthenticationFilter customAuthenticationFilter) throws Exception {
         http
-                // Definición de rutas y permisos
+                .addFilterBefore(customAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests((requests) -> requests
-                        //Permisos de recursos
-                        .requestMatchers("/css/**", "/js/**", "/images/**","/fonts/**","libs/**").permitAll()
-                        // Rutas públicas
+                        .requestMatchers("/css/**", "/js/**", "/images/**", "/fonts/**", "libs/**").permitAll()
                         .requestMatchers("/loginForm", "/processLogin", "/crearCuenta").permitAll()
-                        // Solo accesibles por el rol "SuperAdmin"
                         .requestMatchers("/superadmin", "/superadmin/**").hasAnyAuthority("SuperAdmin")
-                        // Solo accesibles por el rol "Administrador Zonal"
                         .requestMatchers("/adminzonal", "/adminzonal/**").hasAnyAuthority("Administrador Zonal")
-                        // Solo accesibles por el rol "Agente de Compra"
                         .requestMatchers("/agente", "/agente/**").hasAnyAuthority("Agente de Compra")
-                        // Solo accesibles por el rol "Usuario"
                         .requestMatchers("/usuario", "/usuario/**").hasAnyAuthority("Usuario Final")
-                        //Solo accesible para usuarios no autenticados
-                        .requestMatchers("/loginForm","/crearCuenta").anonymous()
-                        // Todas las demás rutas requieren autenticación
+                        .requestMatchers("/loginForm", "/crearCuenta").anonymous()
                         .anyRequest().authenticated()
                 )
-
-                // Configuración del login
                 .formLogin((form) -> form
-                        .loginPage("/loginForm") // Página de inicio de sesión
-                        .loginProcessingUrl("/processLogin") // URL que procesa el login
-                        .usernameParameter("correo") // Nombre del campo para el usuario
-                        .passwordParameter("password") // Nombre del campo para la contraseña
-                        // Handler para redireccionar dependiendo del rol del usuario
+                        .loginPage("/loginForm")
+                        .loginProcessingUrl("/processLogin")
+                        .usernameParameter("correo")
+                        .passwordParameter("password")
                         .successHandler((request, response, authentication) -> {
                             DefaultSavedRequest defaultSavedRequest =
                                     (DefaultSavedRequest) request.getSession().getAttribute("SPRING_SECURITY_SAVED_REQUEST");
@@ -90,13 +84,11 @@ public class WebSecurityConfig {
                                 String targetURL = defaultSavedRequest.getRedirectUrl();
                                 new DefaultRedirectStrategy().sendRedirect(request, response, targetURL);
                             } else {
-                                // Determinación del rol del usuario autenticado
                                 String rol = "";
                                 for (GrantedAuthority role : authentication.getAuthorities()) {
                                     rol = role.getAuthority();
                                     break;
                                 }
-                                // Redirección según el rol
                                 switch (rol) {
                                     case "SuperAdmin" -> response.sendRedirect("superadmin/inicio");
                                     case "Administrador Zonal" -> response.sendRedirect("adminzonal/dashboard");
@@ -106,17 +98,14 @@ public class WebSecurityConfig {
                             }
                         })
                 )
-
-                // Configuración del logout
                 .logout(logout -> logout
-                        .logoutSuccessUrl("/loginForm") // URL de redirección después de logout
-                        .deleteCookies("JSESSIONID") // Borrar cookies de sesión
-                        .invalidateHttpSession(true) // Invalidar la sesión
+                        .logoutSuccessUrl("/loginForm")
+                        .deleteCookies("JSESSIONID")
+                        .invalidateHttpSession(true)
                         .permitAll()
                 )
                 .exceptionHandling((exceptions) -> exceptions.accessDeniedHandler(customAccessDeniedHandler));
 
-
-            return http.build();
+        return http.build();
     }
 }

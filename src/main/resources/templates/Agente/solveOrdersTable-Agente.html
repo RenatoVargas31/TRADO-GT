@@ -71,19 +71,19 @@
                                 <table id="datatable-ordenesCompraResueltas" class="table table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                     <thead>
                                     <tr>
+                                        <th>Código</th>
                                         <th>Usuario propietario</th>
                                         <th>Fecha de creación</th>
-                                        <th>Método de pago</th>
-                                        <th>Agente de compra asignado</th>
-                                        <th>Ver</th>
+                                        <th>Monto total</th>
+                                        <th>Acción</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     <tr th:each="order : ${listaOrdenes}">
+                                        <td th:text="${order.codigoOrden}"></td>
                                         <td th:text="${order.usuarioPropietario}"></td>
                                         <td th:text="${order.fechaCreacion}"></td>
-                                        <td th:text="${order.metodoPago}"></td>
-                                        <td th:text="${order.agenteCompra}"></td>
+                                        <td th:text="${order.montoTotal}"></td>
                                         <td>
                                             <a th:href="@{'/agente/detailsOrder?idOrden=' + ${order.idOrden} + '&idUsuario=' + ${order.idUsuarioAsignado} }" class="btn btn-primary btn-sm waves-effect waves-light" title="Ver" >
                                                 <i class="ri-eye-fill"></i>
