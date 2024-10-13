@@ -168,14 +168,14 @@
                       <span class="product-ribbon badge bg-warning " th:text="${product.codigo}"></span><br>
                       <h5 class="mt-2" style="font-size: 24px;">
                         <span th:text="'S/.' + ${product.precio}"></span>
-                        <span style="font-size: 12px; color: #888;">por cada 10 unidades</span>
+                        <span style="font-size: 12px; color: #888;"> por unidad</span>
                       </h5>
 
 
-                      <p class="mt-1" style="font-size: 14px;">
+                   <!--   <p class="mt-1" style="font-size: 14px;">
                         Costo por unidad: S/<span th:text="${(product.precio)}"></span>
 
-                      </p>
+                      </p> -->
                       <p  style="font-size: 14px;margin-top: -5px">
                         Stock disponible: <span th:text="${productoDetalles.cantidad}"></span>
 
@@ -217,7 +217,7 @@
                             <label for="cantidad" class="col-sm-3 col-form-label">Cantidad: </label>
                             <div class="col-sm-3">
                               <!-- Input de cantidad que puede modificar el usuario -->
-                              <input type="number" class="form-control" id="cantidad" name="cantidad" min="10" value="10" oninput="actualizarCantidad()">
+                              <input type="number" class="form-control" id="cantidad" name="cantidad" min="20" value="20" oninput="actualizarCantidad()">
                             </div>
                           </div>
 
