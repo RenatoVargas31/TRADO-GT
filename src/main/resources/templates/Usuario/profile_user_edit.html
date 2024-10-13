@@ -63,7 +63,7 @@
                       <!-- Usar la ruta de la foto del usuario desde el modelo -->
                       <!-- Imagen actual del usuario -->
                       <div class="d-flex justify-content-center mb-5">
-                        <img id="fotoUsuario" th:src="@{'/images/users/' + ${usuario.foto}}" alt="user image" class="d-block rounded-circle" style="width: 150px; height: 150px; object-fit: cover;">
+                        <img id="fotoUsuario" th:src="@{'/uploads/fotosUsuarios/' + ${usuario.foto}}" alt="user image" class="d-block rounded-circle" style="width: 150px; height: 150px; object-fit: cover;">
                       </div>
 
                       <!-- Botón para seleccionar una nueva foto -->
