@@ -17,9 +17,9 @@
         <div class="row justify-content-center">
             <div class="col-10">
                 <div class="text-center">
-                    <div class="mb-5">
+                    <div class="mb-4">
 
-                            <img src="/images/trado-transparent.png" alt="" height="90" class="auth-logo logo-dark mx-auto">
+                            <img src="/images/trado-transparent.png" alt="" height="130" class="auth-logo logo-dark mx-auto">
 
                     </div>
 
@@ -31,9 +31,11 @@
                         </div>
                     </div>
 
-                    <!--/*@thymesVar id="errorMessage" type="templates"*/-->
-                    <h3 class="mt-5" th:text="${errorMessage}">Site is Under Maintenance</h3>
-                    <p>Por favor, inténtelo más tarde</p>
+                    <!--Recibir el errorMessage y separar por '. '-->
+                    <!--/*@thymesVar id="errorMessage" type="java.lang.String"*/-->
+
+                    <h3 class="mt-4" th:text="${#strings.arraySplit(errorMessage, '.')[0]}">Site is Under Maintenance</h3>
+                    <p th:text="${#strings.arraySplit(errorMessage, '.')[1]}"></p>
                     <!--
                     <div class="row">
                         <div class="col-md-4">

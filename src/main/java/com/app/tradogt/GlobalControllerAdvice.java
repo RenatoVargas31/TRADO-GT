@@ -37,25 +37,13 @@ public class GlobalControllerAdvice {
 
     @ExceptionHandler(NoResourceFoundException.class)
     public ModelAndView handleNoResourceFoundException(NoResourceFoundException ex, Model model) {
-        model.addAttribute("errorMessage", "La página que buscas no existe.");
-        return new ModelAndView("errorPage");
-    }
-
-    @ExceptionHandler(AccessDeniedException.class)
-    public ModelAndView handleAccessDeniedException(AccessDeniedException ex, Model model) {
-        model.addAttribute("errorMessage", "No tienes permiso para acceder a esta página.");
-        return new ModelAndView("errorPage");
-    }
-
-    @ExceptionHandler(DataAccessException.class)
-    public ModelAndView handleDataAccessException(DataAccessException ex, Model model) {
-        model.addAttribute("errorMessage", "Se perdió la conexión con la base de datos.");
+        model.addAttribute("errorMessage", "La página que buscas no existe. No se encontró el recurso solicitado.");
         return new ModelAndView("errorPage");
     }
 
     @ExceptionHandler(Exception.class)
     public ModelAndView handleException(Exception ex, Model model) {
-        model.addAttribute("errorMessage", "Ocurrió un error inesperado.");
+        model.addAttribute("errorMessage", "Ocurrió un error inesperado. Por favor, intenta de nuevo más tarde.");
         return new ModelAndView("errorPage");
     }
 
