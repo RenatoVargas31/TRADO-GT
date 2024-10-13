@@ -14,8 +14,7 @@ import java.util.List;
 public interface ResenaRepository extends JpaRepository<Resena, Integer> {
     List<Resena> findAll();
 
-    // Si necesitas filtrar reseñas por producto o usuario, podrías agregar más métodos
-    List<Resena> findByUsuarioIdusuario(Usuario usuario);
-
-    List<Resena> findByProductoIdproducto(Producto producto);
+    // Filtrar reseñas de usuarios que no están baneados
+    List<Resena> findByUsuarioIdusuarioIsAcceptedAndUsuarioIdusuarioIsPostulatedAndUsuarioIdusuarioIsActivated(
+            int isAccepted, int isPostulated, int isActivated);
 }

@@ -538,9 +538,15 @@ public class UsuarioFinalController {
 
     @GetMapping("/reseñas")
     public String showResenhas(Model model) {
-        List<Resena> resenas = resenaRepository.findAll();
+        List<Resena> resenas = resenaRepository
+                .findByUsuarioIdusuarioIsAcceptedAndUsuarioIdusuarioIsPostulatedAndUsuarioIdusuarioIsActivated(1, 0, 1);
+
         model.addAttribute("resenas", resenas);
 
+        // Si no hay reseñas, puedes mostrar un mensaje
+        if (resenas.isEmpty()) {
+            model.addAttribute("noResultsMessage", "Reseña no encontrada");
+        }
         return "Usuario/reseñas-usuario";
     }
 
@@ -551,6 +557,7 @@ public class UsuarioFinalController {
         model.addAttribute("publicaciones", publicaciones);
         return "Usuario/comunidad-usuario";
     }
+
     @GetMapping("/foroProblema")
     public String showForoProblema() {
         return "Usuario/problema-soluciones";
@@ -665,6 +672,7 @@ public class UsuarioFinalController {
         List<Producto> productosRecibidos = productosRepository.findProductosRecibidos(usuarioId);
         // Añadimos la lista de productos al modelo
         model.addAttribute("productosRecibidos", productosRecibidos);
+        model.addAttribute("resena", new Resena()); // Agregamos un objeto vacío para el formulario
 
 
         return "Usuario/nuevaReseña-usuario";
