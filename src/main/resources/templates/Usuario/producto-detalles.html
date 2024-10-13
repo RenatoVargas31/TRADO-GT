@@ -327,7 +327,7 @@
                   </div>
                 </div>
 
-                <div class="mt-4">
+                <div class="mt-4 " th:if="${productList.size() != 1}">
                   <h5 class="font-size-14">Otras recomendaciones:</h5>
                   <div class="row">
                     <!-- Iterar sobre productList y mostrar productos excluyendo el actual -->
@@ -356,22 +356,16 @@
                                 <span class="mdi mdi-star text-warning"></span>
                                 <span class="mdi mdi-star"></span>
                               </div>
-                              <!--  <div class="text-muted" style="font-size: 12px;">
-
-                                  <span th:text="${product.rating}">4.1</span> ( <span th:text="${product.reviews}">132</span> )
-                              </div>-->
                             </div>
                             <h5 class="mt-2" style="font-size: 14px;">
                               S/ <span th:text="${producto.precio}">100</span>
                               <span style="font-size: 12px; color: #888;">por cada 10 unidades</span>
                             </h5>
                             <p class="mt-2" style="font-size: 14px;">Costo por unidad original: S/<span th:text="${producto.precio*1.5}"></span></p>
-
                           </div>
 
                           <div class="provider-info d-flex align-items-center justify-content-center">
                             <img th:src="@{../../images/product/iconoProvedor.png}" alt="Proveedor Icono" class="rounded-circle me-2" style="width: 30px; height: 30px;">
-
                             <span th:text="${producto.proveedorIdproveedor.tienda}" class="provider-name">Nombre del proveedor</span>
                           </div>
                         </a>
@@ -379,6 +373,7 @@
                     </div>
                   </div>
                 </div>
+
 
 
 

@@ -35,6 +35,10 @@ import java.util.stream.Collectors;
 @Controller
 @RequestMapping("/usuario")
 public class UsuarioFinalController {
+
+    private Optional<Usuario> authenticatedUser;
+    private int zonaId;
+
     public static class RandomCodeGenerator {
 
         private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -102,6 +106,18 @@ public class UsuarioFinalController {
         // Buscar el usuario (agente) en la base de datos usando el correo
         Usuario usuario = usuarioRepository.findByCorreo(correoUsuario);  // Método para buscar usuario por correo
         return usuario.getId(); // Retornar el ID del agente autenticado
+    }
+
+    @ModelAttribute
+    public void setAuthenticatedUser() {
+        int userId = getAuthenticatedUserId(); // Obtén el ID del usuario autenticado
+        Optional<Usuario> authenticatedUser = usuarioRepository.findById(userId);
+
+        // Verifica si el usuario está presente y asigna el zonaId
+        authenticatedUser.ifPresent(user -> {
+            this.authenticatedUser = authenticatedUser; // Asigna el usuario autenticado
+            this.zonaId = user.getDistritoIddistrito().getZonaIdzona().getId(); // Asigna al campo de clase
+        });
     }
 
     @GetMapping("/inicio")
@@ -410,16 +426,16 @@ public class UsuarioFinalController {
 
             switch(producto.getSubcategoriaIdsubcategoria().getCategoriaIdcategoria().getId()) {
                 case 1:
-                    model.addAttribute("productList", productosRepository.findProductRopaMujer());
+                    model.addAttribute("productList", productosRepository.findProductRopaMujer(zonaId));
                     break;
                 case 2:
-                    model.addAttribute("productList", productosRepository.findProductRopaHombre());
+                    model.addAttribute("productList", productosRepository.findProductRopaHombre(zonaId));
                     break;
                 case 3:
-                    model.addAttribute("productList", productosRepository.findProductElectronico());
+                    model.addAttribute("productList", productosRepository.findProductElectronico(zonaId));
                     break;
                 case 4:
-                    model.addAttribute("productList", productosRepository.findProductMuebles());
+                    model.addAttribute("productList", productosRepository.findProductMuebles(zonaId));
                     break;
                 default:
                     model.addAttribute("productList", productosRepository.findAll());
@@ -830,7 +846,7 @@ public class UsuarioFinalController {
     }
     @GetMapping("/categoriaMujer")
     public String showMujerCategoria(Model model) {
-        model.addAttribute("productList", productosRepository.findProductRopaMujer());
+        model.addAttribute("productList", productosRepository.findProductRopaMujer(zonaId));
         model.addAttribute("tallasList", productosRepository.findDistinctTallas(1));
         model.addAttribute("marcaList", productosRepository.findDistinctMarca(1));
 
@@ -840,7 +856,7 @@ public class UsuarioFinalController {
     }
     @GetMapping("/categoriaHombre")
     public String showHombreCategoria(Model model) {
-        model.addAttribute("productList", productosRepository.findProductRopaHombre());
+        model.addAttribute("productList", productosRepository.findProductRopaHombre(zonaId));
         model.addAttribute("tallasList", productosRepository.findDistinctTallas(2));
         model.addAttribute("coloresList", productosRepository.findDistinctColores(2));
         model.addAttribute("marcaList", productosRepository.findDistinctMarca(2));
@@ -849,7 +865,7 @@ public class UsuarioFinalController {
     }
     @GetMapping("/categoriaTecnologia")
     public String showTecnologiaCategoria(Model model) {
-        model.addAttribute("productList", productosRepository.findProductElectronico());
+        model.addAttribute("productList", productosRepository.findProductElectronico(zonaId));
         model.addAttribute("almacenamientoList", productosRepository.findDistinctAlmacenamiento(3));
         model.addAttribute("ramList", productosRepository.findDistinctRam(3));
         model.addAttribute("marcaList", productosRepository.findDistinctMarca(3));
@@ -858,7 +874,7 @@ public class UsuarioFinalController {
     }
     @GetMapping("/categoriaMuebles")
     public String showMuebleCategoria(Model model) {
-        model.addAttribute("productList", productosRepository.findProductMuebles());
+        model.addAttribute("productList", productosRepository.findProductMuebles(zonaId));
         model.addAttribute("materialesList", productosRepository.findDistinctMaterials(4));
         model.addAttribute("marcaList", productosRepository.findDistinctMarca(4));
         model.addAttribute("categoriasList",subCategoriaRepository.findSubcategorias(4));
@@ -871,7 +887,7 @@ public class UsuarioFinalController {
                                             @RequestParam(value = "marca", required = false) List<String> marca,
                                             @RequestParam(value = "precioMin", required = false) Double precioMin,
                                             @RequestParam(value = "precioMax", required = false) Double precioMax) {
-        model.addAttribute("productList", productosRepository.findProductMueblesFilter(categoria, material, marca, precioMin, precioMax));
+        model.addAttribute("productList", productosRepository.findProductMueblesFilter(zonaId,categoria, material, marca, precioMin, precioMax));
         model.addAttribute("materialesList", productosRepository.findDistinctMaterials(4));
         model.addAttribute("categoriasList",subCategoriaRepository.findSubcategorias(4));
         model.addAttribute("marcaList", productosRepository.findDistinctMarca(4));
@@ -886,7 +902,7 @@ public class UsuarioFinalController {
                                             @RequestParam(value = "marca", required = false) List<String> marca,
                                             @RequestParam(value = "precioMin", required = false) Double precioMin,
                                             @RequestParam(value = "precioMax", required = false) Double precioMax) {
-        model.addAttribute("productList", productosRepository.findProductHombresFilter(categoria, material,marca,color, precioMin, precioMax));
+        model.addAttribute("productList", productosRepository.findProductHombresFilter(zonaId,categoria, material,marca,color, precioMin, precioMax));
         model.addAttribute("tallasList", productosRepository.findDistinctTallas(2));
         model.addAttribute("coloresList", productosRepository.findDistinctColores(2));
         model.addAttribute("categoriasList",subCategoriaRepository.findSubcategorias(2));
@@ -904,7 +920,7 @@ public class UsuarioFinalController {
                                            @RequestParam(value = "marca", required = false) List<String> marca,
                                            @RequestParam(value = "precioMin", required = false) Double precioMin,
                                            @RequestParam(value = "precioMax", required = false) Double precioMax) {
-        model.addAttribute("productList", productosRepository.findProductMujerFilter(categoria, talla,marca, color,precioMin, precioMax));
+        model.addAttribute("productList", productosRepository.findProductMujerFilter(zonaId,categoria, talla,marca, color,precioMin, precioMax));
         model.addAttribute("tallasList", productosRepository.findDistinctTallas(1));
         model.addAttribute("coloresList", productosRepository.findDistinctColores(1));
         model.addAttribute("marcaList", productosRepository.findDistinctMarca(1));
@@ -912,6 +928,7 @@ public class UsuarioFinalController {
 
         return "Usuario/CategoriaMujer-usuario";
     }
+
     @GetMapping("/categoriaTecnologiaFilter")
     public String showTecnologiaCategoriaFilter(Model model,
                                                 @RequestParam(value = "categoria", required = false) List<Integer> categoria,
@@ -920,7 +937,7 @@ public class UsuarioFinalController {
                                                 @RequestParam(value = "marca", required = false) List<String> marca,
                                                 @RequestParam(value = "precioMin", required = false) Double precioMin,
                                                 @RequestParam(value = "precioMax", required = false) Double precioMax) {
-        model.addAttribute("productList", productosRepository.findProductElectroFilter(categoria, almacenamiento,ram,marca,        precioMin, precioMax));
+        model.addAttribute("productList", productosRepository.findProductElectroFilter(zonaId,categoria, almacenamiento,ram,marca,        precioMin, precioMax));
         model.addAttribute("almacenamientoList", productosRepository.findDistinctAlmacenamiento(3));
         model.addAttribute("ramList", productosRepository.findDistinctRam(3));
         model.addAttribute("categoriasList",subCategoriaRepository.findSubcategorias(3));
@@ -933,7 +950,7 @@ public class UsuarioFinalController {
 
 
                                             @RequestParam(value = "query", required = false) String query) {
-        model.addAttribute("productList", productosRepository.findProductQuery(query,2));
+        model.addAttribute("productList", productosRepository.findProductQuery(zonaId,query,2));
         model.addAttribute("tallasList", productosRepository.findDistinctTallas(2));
         model.addAttribute("coloresList", productosRepository.findDistinctColores(2));
         model.addAttribute("categoriasList",subCategoriaRepository.findSubcategorias(2));
@@ -943,7 +960,7 @@ public class UsuarioFinalController {
     @GetMapping("/categoriaMujerSearch")
     public String showMujerCategoriaBuscar(Model model,
                                             @RequestParam(value = "query", required = false) String query) {
-        model.addAttribute("productList", productosRepository.findProductQuery(query,1));
+        model.addAttribute("productList", productosRepository.findProductQuery(zonaId,query,1));
         model.addAttribute("tallasList", productosRepository.findDistinctTallas(1));
         model.addAttribute("coloresList", productosRepository.findDistinctColores(1));
         model.addAttribute("categoriasList",subCategoriaRepository.findSubcategorias(1));
@@ -955,7 +972,7 @@ public class UsuarioFinalController {
 
 
                                             @RequestParam(value = "query", required = false) String query) {
-        model.addAttribute("productList", productosRepository.findProductQuery(query,3));
+        model.addAttribute("productList", productosRepository.findProductQuery(zonaId,query,3));
         model.addAttribute("almacenamientoList", productosRepository.findDistinctAlmacenamiento(3));
         model.addAttribute("ramList", productosRepository.findDistinctRam(3));
         model.addAttribute("categoriasList",subCategoriaRepository.findSubcategorias(3));
@@ -967,7 +984,7 @@ public class UsuarioFinalController {
 
 
                                             @RequestParam(value = "query", required = false) String query) {
-        model.addAttribute("productList", productosRepository.findProductQuery(query,4));
+        model.addAttribute("productList", productosRepository.findProductQuery(zonaId,query,4));
         model.addAttribute("materialesList", productosRepository.findDistinctMaterials(4));
         model.addAttribute("categoriasList",subCategoriaRepository.findSubcategorias(4));
         model.addAttribute("marcaList", productosRepository.findDistinctMarca(4));
