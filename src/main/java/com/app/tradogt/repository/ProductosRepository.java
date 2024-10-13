@@ -49,7 +49,7 @@ public interface ProductosRepository extends JpaRepository<Producto, Integer> {
             JOIN
                 Orden o ON c.idCarrito = o.Carrito_idCarrito  -- Relación con la Orden
             WHERE
-                o.idOrden = 1;  -- Parámetro para filtrar por la orden específica
+                o.idOrden = ?1;  -- Parámetro para filtrar por la orden específica
             -- Filtro dinámico por el ID de la orden
     """, nativeQuery = true)
     List<Object[]> findProductDetailsByOrderId(Integer idOrden);
