@@ -59,7 +59,7 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-body">
-                                <form th:action="@{/usuario/guardarResenha}" method="post">
+                                <form th:action="@{/usuario/guardarResenha}" method="post" enctype="multipart/form-data">
                                     <div class="row">
                                         <div class="col-md-8">
                                             <div class="mb-3 col-md-12">
@@ -118,16 +118,20 @@
                                         <script>
                                             function previewPhoto() {
                                                 const file = document.getElementById('upload-photo').files[0];
-                                                const reader = new FileReader();
-
-                                                reader.onloadend = function () {
-                                                    const preview = document.getElementById('photo-preview');
-                                                    preview.src = reader.result;
-                                                    preview.style.display = 'block';
-                                                }
+                                                const preview = document.getElementById('photo-preview');
 
                                                 if (file) {
+                                                    const reader = new FileReader();
+
+                                                    reader.onloadend = function () {
+                                                        preview.src = reader.result;
+                                                        preview.style.display = 'block';
+                                                    };
+
                                                     reader.readAsDataURL(file);
+                                                } else {
+                                                    preview.src = "";
+                                                    preview.style.display = 'none'; // Ocultar si no hay archivo seleccionado
                                                 }
                                             }
                                         </script>

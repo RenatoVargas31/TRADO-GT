@@ -3,8 +3,10 @@ package com.app.tradogt.controller;
 
 import com.app.tradogt.dto.OrdenCompraUserDto;
 import com.app.tradogt.entity.*;
+import com.app.tradogt.services.StorageService;
 import jakarta.validation.constraints.NotNull;
 import org.hibernate.query.Order;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -23,6 +25,7 @@ import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.security.SecureRandom;
 import java.time.LocalDate;
 import java.util.*;
@@ -46,6 +49,10 @@ public class UsuarioFinalController {
             return code.toString();
         }
     }
+
+    @Autowired
+    private StorageService storageService;
+
 
     final ProductosRepository productosRepository;
     final OrdenRepository ordenRepository;
@@ -781,17 +788,12 @@ public class UsuarioFinalController {
             @RequestParam("calificacion") Integer calificacion,
             @RequestParam("cuerpo") String cuerpo,
             @RequestParam("fueRapido") Byte fueRapido,
-            @RequestParam(value = "foto", required = false) String foto) {
+            @RequestParam("foto") MultipartFile foto) {
 
         int id = getAuthenticatedUserId();
-
-
         Usuario usuario = usuarioRepository.findById(id).orElseThrow();
-
-        // Obtenemos el producto seleccionado
         Producto producto = productosRepository.findById(productoId).orElseThrow();
 
-        // Creamos una nueva reseña
         Resena resena = new Resena();
         resena.setProductoIdproducto(producto);
         resena.setUsuarioIdusuario(usuario);
@@ -801,16 +803,36 @@ public class UsuarioFinalController {
         resena.setFechaCreacion(LocalDate.now());
         resena.setFueRapido(fueRapido);
 
-        // Si no se sube foto, podemos dejarlo en un valor predeterminado
-        resena.setFoto(foto != null ? foto : "default.jpg");
-
-        // Guardamos la reseña
+        // Guardar la reseña sin imagen para obtener el ID
+        resena.setFoto("default.jpg");  // Colocamos un valor temporal por defecto
         resenaRepository.save(resena);
 
-        // Redirigir a la página de reseñas
+        // Ahora que la reseña tiene un ID, podemos guardar la imagen
+        if (!foto.isEmpty()) {
+            try {
+                // Simplemente usar el ID como nombre de archivo sin preocuparse por la extensión
+                String nombreArchivo = String.format("%06d", resena.getId()); // Solo el ID como nombre de archivo
+
+                // Guardar el archivo
+                storageService.guardarArchivo(foto, nombreArchivo);
+
+                // Actualizar la reseña con el nombre del archivo de la foto
+                resena.setFoto(nombreArchivo + ".jpg"); // Aquí puedes ajustar la extensión si es necesario
+                resenaRepository.save(resena);  // Actualizar con el nombre de la foto
+            } catch (IOException e) {
+                e.printStackTrace();
+                // Manejar error en guardar archivo
+            }
+        }
+
+
         return "redirect:/usuario/rese%C3%B1as";
     }
 
+    private String getFileExtension(String fileName) {
+        // Asegúrate de que devuelva solo la extensión correcta con el punto incluido
+        return fileName.substring(fileName.lastIndexOf("."));
+    }
     @GetMapping("/categoriaMujer")
     public String showMujerCategoria(Model model) {
         model.addAttribute("productList", productosRepository.findProductRopaMujer());

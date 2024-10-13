@@ -98,7 +98,7 @@
                                                 <div class="card product-box">
                                                     <a th:href="@{/usuario/verReseña/{id}(id=${resena.id})}" class="text-decoration-none">
                                                         <div class="product-img">
-                                                            <img th:src="@{'/images/reseñasUsuarios/' + ${resena.foto}}" alt="img-1" class="img-fluid mx-auto d-block">
+                                                            <img th:src="@{'/uploads/reseñasUsuarios/' + ${resena.foto}}" alt="Imagen de la reseña" class="img-fluid mx-auto d-block">
                                                         </div>
                                                         <div class="text-center p-3">
                                                             <p class="font-size-12 mb-1" th:text="${resena.productoIdproducto.subcategoriaIdsubcategoria.categoriaIdcategoria.nombre} + ', ' + ${resena.productoIdproducto.subcategoriaIdsubcategoria.nombre} ">Categoría, Subcategoría</p>

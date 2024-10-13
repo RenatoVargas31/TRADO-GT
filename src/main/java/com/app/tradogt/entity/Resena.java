@@ -27,8 +27,8 @@ public class Resena {
     private Usuario usuarioIdusuario;
 
     @Size(max = 150)
-    @NotNull
-    @Column(name = "foto", nullable = false, length = 150)
+
+    @Column(name = "foto", length = 150)
     private String foto;
 
     @NotNull
