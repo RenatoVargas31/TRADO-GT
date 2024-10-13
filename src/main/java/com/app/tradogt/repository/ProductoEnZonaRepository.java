@@ -1,5 +1,6 @@
 package com.app.tradogt.repository;
 
+import com.app.tradogt.entity.Producto;
 import com.app.tradogt.entity.ProductoEnZona;
 import com.app.tradogt.entity.ProductoEnZonaId;
 import com.app.tradogt.entity.Zona;
@@ -21,5 +22,11 @@ public interface ProductoEnZonaRepository extends JpaRepository<ProductoEnZona, 
     */
     List<ProductoEnZona> findAllByIsDeleted(Byte isDeleted);
     List<ProductoEnZona> findAllByZonaIdzonaAndIsDeleted(Zona zona, Byte isDeleted);
+
+    Optional<ProductoEnZona> findByProductoIdproductoAndZonaIdzona(Producto productoIdproducto, Zona zonaIdzona);
+
+    @Query("SELECT p FROM ProductoEnZona p WHERE p.productoIdproducto.id = :productoId AND p.zonaIdzona.id = :zonaId")
+    Optional<ProductoEnZona> findByIdAndZona(@Param("productoId") int productoId, @Param("zonaId") int zona);
+
 
 }

@@ -13,8 +13,6 @@
 
 <body data-sidebar="dark">
 
-<!-- <body data-layout="horizontal" data-topbar="dark"> -->
-
 <!-- Begin page -->
 <div id="layout-wrapper">
 
@@ -36,48 +34,112 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                            <h4 class="mb-sm-0">Editar perfil</h4>
+                            <h4 class="mb-sm-0">Perfil</h4>
 
                             <div class="page-title-right">
                                 <ol class="breadcrumb m-0">
-                                    <li class="breadcrumb-item active">Home</li>
-                                    <li class="breadcrumb-item"><a href="javascript: void(0);">Profile</a></li>
+                                    <li class="breadcrumb-item active">Inicio</li>
+                                    <li class="breadcrumb-item"><a href="javascript: void(0);">Perfil</a></li>
                                 </ol>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="container-xxl flex-grow-1 container-p-y">
-                    <hr class="opacity-0">
+                <div class="main">
+                    <!-- Mensajes de éxito y error -->
+                    <div id="error-message" class="alert alert-danger" style="display: none;" role="alert"></div>
+                    <div id="success-message" class="alert alert-success" style="display: none;" role="alert"></div>
                     <div class="row">
-                        <!-- Bloque de Información de Perfil -->
                         <div class="col-md-3">
-                            <div class="card mb-4 ">
-                                <h5 class="card-header">Foto de perfil</h5>
-                                <div class="user-profile-header d-flex flex-column align-items-center mb-4">
-                                    <hr class="opacity-0">
-                                    <div class="flex-shrink-0">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5>Foto de perfil</h5>
+                                </div>
+                                <div class="card-body user-profile-header d-flex flex-column align-items-center mb-4">
+                                    <div class="flex-shrink-0 mt-3 mb-3">
                                         <!-- Usar la ruta de la foto del usuario desde el modelo -->
-                                        <img th:src="@{'/images/users/' + ${usuario.foto}}" alt="user image" class="d-block rounded-circle" style="width: 150px; height: 150px; object-fit: cover;">
+                                        <img th:src="@{'/images/users/' + ${usuario.foto}}" alt="user image" class="d-block rounded-circle" style="width: 150px; height: 150px; object-fit: cover;"><br>
                                     </div>
-                                    <p class="text-muted mb-0 mt-2" th:text="${usuario.nombre} + ' ' + ${usuario.apellido}">Nombre del Usuario</p>
-                                    <p class="text-muted mb-0">Usuario</p>
-                                    <p class="text-muted mb-0" th:text="${usuario.zonaIdzona != null ? usuario.zonaIdzona.nombre : 'Sin zona asignada'}">Zona este</p>
+                                    <p class="text-dark mb-0 mt-2" th:text="${usuario.nombre} + ' ' + ${usuario.apellido}" style="font-size: 20px;">Nombre del Usuario</p>
+                                    <p class="text-muted mb-0" th:text="${usuario.distritoIddistrito.zonaIdzona.nombre != null ? usuario.distritoIddistrito.zonaIdzona.nombre : 'Sin zona asignada'}"></p><br>
+                                    <!-- Estado de Actividad -->
+                                    <p class="btn" th:classappend="${usuario.isActivated == 1} ? 'btn-success' : 'btn-danger'" th:text="${usuario.isActivated == 1} ? 'Activo' : 'Inactivo'"></p>
 
-                                    <div class="mt-3 text-center">
-                                        <label for="upload" class="btn" style="background-color: purple; color: #ffffff; border: 2px solid #800080;  border-radius: 8px; font-size: 14px; cursor: pointer; transition: background-color 0.3s, border-color 0.3s;" tabindex="0">
-                                            <span class="d-none d-sm-block">Actualizar foto de perfil</span>
-                                            <i class="bx bx-upload d-block d-sm-none"></i>
-                                            <input type="file" id="upload" class="account-file-input" hidden accept="image/png, image/jpeg" name="profilePhoto">
-                                        </label>
+                                    <!-- <div class="mt-3 text-center">
+                                         <label for="upload" class="btn" style="background-color: purple; color: #ffffff; border: 2px solid #800080;  border-radius: 8px; font-size: 14px; cursor: pointer; transition: background-color 0.3s, border-color 0.3s;" tabindex="0">
+                                             <span class="d-none d-sm-block">Actualizar foto de perfil</span>
+                                             <i class="bx bx-upload d-block d-sm-none"></i>
+                                             <input type="file" id="upload" class="account-file-input" hidden accept="image/png, image/jpeg" name="profilePhoto">
+                                         </label>
+                                     </div> -->
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5>Información personal</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="mb-3 col-md-12">
+                                                <label for="firstName" class="form-label" style="font-size: 18px;">Nombres</label>
+                                                <p class="form-control-plaintext" style="font-size: 16px;" id="firstName" th:text="${usuario.nombre}"></p>
+                                            </div>
+
+                                            <div class="mb-3 col-md-6">
+                                                <label for="lastName" class="form-label" style="font-size: 18px;">Apellidos</label>
+                                                <p class="form-control-plaintext" style="font-size: 16px;" id="lastName" th:text="${usuario.apellido}"></p>
+                                            </div>
+
+                                            <div class="mb-3 col-md-6">
+                                                <label for="email" class="form-label" style="font-size: 18px;"><strong>Correo electrónico</strong></label>
+                                                <p class="form-control-plaintext" style="font-size: 16px;" id="email" th:text="${usuario.correo}"></p>
+                                            </div>
+                                            <!--Campo editable -->
+                                            <div class="mb-3 col-md-6">
+                                                <label for="phoneNumber" class="form-label" style="font-size: 18px;">Teléfono</label>
+                                                <p class="form-control-plaintext" style="font-size: 16px;" id="phoneNumber" th:text="${usuario.telefono}"></p>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="mb-3 col-md-6">
+                                                <label for="districto" class="form-label" style="font-size: 18px;">Distrito</label>
+                                                <p class="form-control-plaintext" style="font-size: 16px;" id="districto" th:text="${usuario.distritoIddistrito.nombre}"></p>
+                                            </div>
+
+                                            <!--Campo editable -->
+
+                                            <div class="mb-3 col-md-6">
+                                                <label for="direccion" class="form-label" style="font-size: 18px;">Dirección</label>
+                                                <div class="d-flex align-items-center">
+                                                    <p class="form-control-plaintext mb-0" style="font-size: 16px;" id="direccion" th:text="${usuario.direccion}"></p>
+                                                </div>
+                                            </div>
+                                            <div class="mb-3 col-md-6">
+                                                <label for="birthday" class="form-label" style="font-size: 18px;">Fecha de Nacimiento</label>
+                                                <p class="form-control-plaintext" style="font-size: 16px;" id="birthday" th:text="${usuario.fechaNacimiento}"></p>
+                                            </div>
+                                            <div class="mb-3 col-md-6">
+                                                <label for="rol" class="form-label" style="font-size: 18px;">Rol</label>
+                                                <p class="form-control-plaintext" style="font-size: 16px;" id="rol" th:text="${usuario.rolIdrol.nombre}"></p>
+                                            </div>
+                                        </div>
+                                        <div class="row-cols-7 text-end">
+                                            <a th:href="@{/usuario/editProfile}" class="btn btn-success btn-sm ms-2" >Editar</a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <!-- Bloque de Detalles de Perfil -->
+                    </div>
+                    <div class="row">
+                        <!-- Bloque de Detalles de Perfil
                         <div class="col-md-9">
-                            <div class="card mb-4 pb-1">
+                            <div class="card mb-12">
                                 <h5 class="card-header">Información personal</h5>
 
                                 <div class="card-body">
@@ -85,38 +147,32 @@
                                         <input type="hidden" name="action" value="updateProfile1">
                                         <input type="hidden" name="resetPhoto" id="resetPhoto" value="false">
 
-                                        <div class="row">
-                                            <!-- Nombres -->
+                                       <div class="row">
                                             <div class="mb-3 col-md-6">
                                                 <label for="firstName" class="form-label">Nombres</label>
                                                 <p class="form-control-plaintext" id="firstName" th:text="${usuario.nombre}">Nombre del Usuario</p>
                                             </div>
 
-                                            <!-- Apellidos -->
                                             <div class="mb-3 col-md-6">
                                                 <label for="lastName" class="form-label">Apellidos</label>
                                                 <p class="form-control-plaintext" id="lastName" th:text="${usuario.apellido}">Apellido del Usuario</p>
                                             </div>
 
-                                            <!-- Correo Electrónico -->
                                             <div class="mb-3 col-md-6">
                                                 <label for="email" class="form-label">Correo Electrónico</label>
                                                 <p class="form-control-plaintext" id="email" th:text="${usuario.correo}">correo@ejemplo.com</p>
                                             </div>
 
-                                            <!-- Teléfono -->
                                             <div class="mb-3 col-md-6">
                                                 <label for="phoneNumber" class="form-label">Teléfono</label>
                                                 <input class="form-control" type="text" id="phoneNumber" name="phoneNumber" th:value="${usuario.telefono}" required>
                                             </div>
 
-                                            <!-- Dirección -->
                                             <div class="mb-3 col-md-6">
                                                 <label for="direccion" class="form-label">Dirección</label>
                                                 <input class="form-control" type="text" id="direccion" name="direccion" th:value="${usuario.direccion}" required>
                                             </div>
 
-                                            <!-- Fecha de Nacimiento -->
                                             <div class="mb-3 col-md-6">
                                                 <label for="birthday" class="form-label">Fecha de Nacimiento</label>
                                                 <p class="form-control-plaintext" id="birthday" th:text="${usuario.fechaNacimiento}">01/01/1990</p>
@@ -129,35 +185,26 @@
                                     </form>
                                 </div>
                             </div>
-                        </div>
+                        </div>-->
                     </div>
-
-
-                    </div>
-
-                    <!-- Mensajes de éxito y error -->
-                    <div id="error-message" class="alert alert-danger" style="display: none;" role="alert"></div>
-                    <div id="success-message" class="alert alert-success" style="display: none;" role="alert"></div>
-                    <!-- / Content -->
                 </div>
             </div>
-
         </div>
         <!-- End Page-content -->
-    <footer class="footer">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-sm-6">
-                    <script>document.write(new Date().getFullYear())</script> © TRADO.
-                </div>
-                <div class="col-sm-6">
-                    <div class="text-sm-end d-none d-sm-block">
-                        Crafted with <i class="mdi mdi-heart text-danger"></i> by TelesoftGT
+        <footer class="footer">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <script>document.write(new Date().getFullYear())</script> © TRADO.
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="text-sm-end d-none d-sm-block">
+                            Crafted with <i class="mdi mdi-heart text-danger"></i> by TelesoftGT
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </footer>
+        </footer>
     </div>
     <!-- end main content-->
 </div>
