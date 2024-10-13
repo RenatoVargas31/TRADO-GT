@@ -60,131 +60,100 @@
                                     <div class="card-body">
                                         <h4 class="card-title">Formulario de solicitud</h4>
                                         <p class="card-title-desc">Registra tu solicitud para que el administrador pueda revisarla</p>
-                                        <form class="needs-validation" novalidate>
+                                        <form id="registroForm" th:action="@{/usuario/registro}" method="post" class="needs-validation" novalidate>
                                             <div class="row">
+                                                <!-- Nombres -->
                                                 <div class="col-md-6">
                                                     <div class="mb-3">
-                                                        <label for="validationCustom01" class="form-label">Nombres</label>
-                                                        <input type="text" class="form-control" id="validationCustom01"
-                                                            placeholder="Nombres" required>
-                                                        <div class="valid-feedback">
-                                                            ¡Correcto!
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="mb-3">
-                                                        <label for="validationCustom01" class="form-label">Apellidos</label>
-                                                        <input type="text" class="form-control" id="validationCustom02"
-                                                               placeholder="Apellidos" required>
-                                                        <div class="valid-feedback">
-                                                            ¡Correcto!
-                                                        </div>
+                                                        <label class="form-label">Nombres</label>
+                                                        <input type="text" class="form-control" th:value="${usuario.nombre}" readonly>
                                                     </div>
                                                 </div>
 
-                                            </div>
-                                            <div class="row">
+                                                <!-- Apellidos -->
                                                 <div class="col-md-6">
                                                     <div class="mb-3">
-                                                        <label for="validationCustom03" class="form-label">Distrito</label>
-                                                        <select class="form-select" id="validationCustom03" required>
-                                                            <option selected disabled value="">Lima</option>
-                                                            <option>...</option>
-                                                        </select>
-                                                        <div class="invalid-feedback">
-                                                            Please select a valid state.
-                                                        </div>
-        
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="mb-3">
-                                                        <label for="validationCustom01" class="form-label">DNI</label>
-                                                        <input type="number" class="form-control" id="validationCustom04"
-                                                               placeholder="DNI" required>
-                                                        <div class="valid-feedback">
-                                                            ¡Correcto!
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-4">
-                                                    <div class="mb-3">
-                                                        <label for="validationCustom01" class="form-label">Dirección</label>
-                                                        <input type="text" class="form-control" id="validationCustom05"
-                                                               placeholder="Dirección" required>
-                                                        <div class="valid-feedback">
-                                                            ¡Correcto!
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="mb-3">
-                                                        <label for="validationCustom06" class="form-label">Correo electrónico</label>
-                                                        <input type="email" class="form-control" id="validationCustom06"
-                                                               placeholder="Correo" required>
-                                                        <div class="valid-feedback">
-                                                            ¡Correcto!
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="mb-3">
-                                                        <label for="validationCustom07" class="form-label">Razón Social</label>
-                                                        <input type="text" class="form-control" id="validationCustom07"
-                                                               placeholder="Razón Social" required>
-                                                        <div class="invalid-feedback">
-                                                            Please provide a valid zip.
-                                                        </div>
-
+                                                        <label class="form-label">Apellidos</label>
+                                                        <input type="text" class="form-control" th:value="${usuario.apellido}" readonly>
                                                     </div>
                                                 </div>
                                             </div>
 
-
                                             <div class="row">
-                                                <div class="col-md-4">
+                                                <!-- Distrito -->
+                                                <div class="col-md-6">
                                                     <div class="mb-3">
-                                                        <label for="validationCustom08" class="form-label">Teléfono</label>
-                                                        <input type="number" class="form-control" id="validationCustom08"
-                                                               placeholder="Teléfono" required>
-                                                        <div class="valid-feedback">
-                                                            ¡Correcto!
-                                                        </div>
+                                                        <label class="form-label">Distrito</label>
+                                                        <input type="text" class="form-control" th:value="${usuario.distritoIddistrito.nombre}" readonly>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-4">
-                                                    <div class="mb-3">
-                                                        <label for="validationCustom09" class="form-label">Código de Jurisdicción</label>
-                                                        <input type="text" class="form-control" id="validationCustom09"
-                                                               placeholder="Codigo de jurisdiccion" required>
-                                                        <div class="valid-feedback">
-                                                            ¡Correcto!
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="mb-3">
-                                                        <label for="validationCustom10" class="form-label">Código de despachador de Aduanas</label>
-                                                        <input type="text" class="form-control" id="validationCustom10"
-                                                               placeholder="Codigo" required>
-                                                        <div class="invalid-feedback">
-                                                            Please provide a valid zip.
-                                                        </div>
 
+                                                <!-- DNI -->
+                                                <div class="col-md-6">
+                                                    <div class="mb-3">
+                                                        <label class="form-label">DNI</label>
+                                                        <input type="text" class="form-control" th:value="${usuario.dni}" readonly>
                                                     </div>
                                                 </div>
                                             </div>
 
+                                            <div class="row">
+                                                <!-- Dirección -->
+                                                <div class="col-md-4">
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Dirección</label>
+                                                        <input type="text" class="form-control" th:value="${usuario.direccion}" readonly>
+                                                    </div>
+                                                </div>
 
+                                                <!-- Correo electrónico -->
+                                                <div class="col-md-4">
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Correo electrónico</label>
+                                                        <input type="email" class="form-control" th:value="${usuario.correo}" readonly>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Razón Social (Editable) -->
+                                                <div class="col-md-4">
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Razón Social</label>
+                                                        <input type="text" class="form-control" name="razonSocial" th:value="${usuario.razonSocial}" placeholder="Razón Social" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <!-- Teléfono -->
+                                                <div class="col-md-4">
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Teléfono</label>
+                                                        <input type="text" class="form-control" th:value="${usuario.telefono}" readonly>
+                                                    </div>
+                                                </div>
+
+                                                <!-- RUC (Editable) -->
+                                                <div class="col-md-4">
+                                                    <div class="mb-3">
+                                                        <label class="form-label">RUC</label>
+                                                        <input type="text" class="form-control" name="ruc" th:value="${usuario.ruc}" placeholder="RUC" required>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Código de Despachador (Editable) -->
+                                                <div class="col-md-4">
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Código de despachador de Aduanas</label>
+                                                        <input type="text" class="form-control" name="codigoDespachador" th:value="${usuario.codigoDespachador}" placeholder="Código" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Botones de acción -->
                                             <div>
-                                                <a href="#" class="btn btn-primary" id="sa-registro">Registro</a>
+                                                <button type="button" class="btn btn-primary" id="sa-registro">Registrar Solicitud</button>
                                                 <a href="/usuario/solicitud" class="btn btn-danger">Cancelar</a>
                                             </div>
-                                        </form>
                                     </div>
                                 </div>
                                 <!-- end card -->

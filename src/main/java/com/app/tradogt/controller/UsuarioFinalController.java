@@ -264,10 +264,10 @@ public class UsuarioFinalController {
     }
 
     @GetMapping("/tracking")
-    public String tracking(@RequestParam("id") int id, Model model) {
+    public String tracking(@RequestParam("id")String code, Model model) {
 
         //Lista de todos los productos de mi orden
-        Optional<Orden> orden = ordenRepository.findById(id);
+        Optional<Orden> orden = ordenRepository.findByCodigo(code);
         if (orden.isPresent()) {
             Orden ord = orden.get();
             model.addAttribute("orden", ord);
@@ -288,6 +288,10 @@ public class UsuarioFinalController {
             //Obtener el costo total
             BigDecimal monto = ord.getPagoIdpago().getMonto();
             model.addAttribute("monto", monto);
+
+            //Obtener el costo de envio
+            BigDecimal costoEnvio = mispedidos.get(0).getProductoEnZona().getCostoEnvio();
+            model.addAttribute("costoEnvio", costoEnvio);
 
         }else {
             System.out.println("Orden no encontrada"); }
@@ -296,10 +300,10 @@ public class UsuarioFinalController {
     }
 
     @GetMapping("/editOrden")
-    public String editOrden(@RequestParam("id") int id, Model model) {
+    public String editOrden(@RequestParam("id") String code, Model model) {
 
         //Lista de todos los productos de mi orden
-        Optional<Orden> orden = ordenRepository.findById(id);
+        Optional<Orden> orden = ordenRepository.findByCodigo(code);
         if (orden.isPresent()) {
             Orden ord = orden.get();
             model.addAttribute("orden", ord);
@@ -321,11 +325,37 @@ public class UsuarioFinalController {
             BigDecimal monto = ord.getPagoIdpago().getMonto();
             model.addAttribute("monto", monto);
 
+            //Obtener el costo de envio
+            BigDecimal costoEnvio = mispedidos.get(0).getProductoEnZona().getCostoEnvio();
+            model.addAttribute("costoEnvio", costoEnvio);
+
         }else {
             System.out.println("Orden no encontrada"); }
 
         return "Usuario/trackingOrdEdit";
     }
+
+    //Asignación de un Agente
+    @PostMapping("/asignarAgente")
+    public String asignarAgente(@RequestParam("codigoOrden") String code,
+                                @RequestParam("id") int id,  RedirectAttributes attr) {
+        Optional<Orden> orden = ordenRepository.findByCodigo(code);
+        //Listar agentes de compra
+        List<Usuario> listaAgente = usuarioRepository.findAllByRolIdrolIdAndIsActivated(3, (byte) 1);
+        Usuario agente = null;
+        if (orden.isPresent()) {
+            Orden ord = orden.get();
+            Random random = new Random();
+            int index = random.nextInt(listaAgente.size());
+            agente = listaAgente.get(index);
+            ord.setAgentcompraIdusuario(agente);
+            ordenRepository.save(ord);
+            attr.addFlashAttribute("msjAgente", "Se le ha asignado el agente " + agente.getNombre() + " " + agente.getApellido() + " en la orden " + code);
+            return "redirect:/usuario/misPedidos";
+        }
+        return "redirect:/usuario/misPedidos";
+    }
+
 
     @PostMapping("/updateDireccion")
     public String updateDireccion(@RequestParam("direccion") String direccion, Model model) {
@@ -341,9 +371,24 @@ public class UsuarioFinalController {
     }
 
 
-    @GetMapping("/productoDetalles/{id}")
-    public String showProductoDetalles(@PathVariable int id, Model model) {
+    @GetMapping("/productoDetalles")
+    public String showProductoDetalles(@RequestParam("id") int id, Model model) {
         // Buscar el producto por id
+        int id2 = getAuthenticatedUserId();
+        Optional<Usuario> optionalUsuario = usuarioRepository.findById(id2);
+        if (optionalUsuario.isPresent()) {
+            Usuario usuario = optionalUsuario.get();
+            Optional<ProductoEnZona> productoEnZona = productoEnZonaRepository.findByIdAndZona(id, usuario.getDistritoIddistrito().getZonaIdzona().getId());
+
+            if (productoEnZona.isPresent()) {
+                model.addAttribute("productoDetalles", productoEnZona.get());
+            } else {
+                return "redirect:/usuario/inicio";
+            }
+        } else {
+            // Manejar el caso en que no se encuentra el usuario
+            return "redirect:/usuario/inicio";
+        }
         Optional<Producto> productoOpt = productosRepository.findById(id);
 
         if (productoOpt.isPresent()) {
@@ -369,16 +414,82 @@ public class UsuarioFinalController {
                     model.addAttribute("productList", productosRepository.findAll());
                     break;
             }
-
-
             return "Usuario/producto-detalles";
-
             // Devuelve la vista con el producto
         } else {
             // Si no se encuentra el producto, redirige o muestra una página de error
             return "redirect:/usuario/inicio"; // Podrías crear una página de error personalizada
         }
     }
+    //Seleción de producto al carrito
+   @PostMapping("/selecionarProducto")
+    public String selecionarProducto(@RequestParam("productoId") int productoId,
+                                     @RequestParam("cantidad") String cantidadOculta , RedirectAttributes attr, Model model) {
+
+        //Busco un carrito creado a mi id
+        int idUser= getAuthenticatedUserId();
+        Usuario usuario = usuarioRepository.findById(idUser).get();
+       System.out.println("usuario: " + usuario.getNombre());
+        int zonaid = usuario.getDistritoIddistrito().getZonaIdzona().getId();
+       System.out.println("zonaid: " + zonaid);
+       int cantidadP = Integer.parseInt(cantidadOculta);
+
+       //Nombre del producto
+       Producto producto = productosRepository.findById(productoId).get();
+
+        Carrito hayCarrito = carritoRepository.findByUsuarioIdusuarioAndIsDelete(usuario, (byte) 0);
+       System.out.println("hay carrito?: " + hayCarrito);
+       List<Carrito> tamanoCarrito = carritoRepository.findAll();
+       //Añadimos el producto al carrito nuevo
+       ProductoEnCarrito misProductoEnCarrito = new ProductoEnCarrito();
+       //Producto en Zona (TIENDA)
+       Optional<ProductoEnZona> productoEnZona = productoEnZonaRepository.findByIdAndZona(productoId, usuario.getDistritoIddistrito().getZonaIdzona().getId());
+
+       int stock = productoEnZona.get().getCantidad();
+
+       ProductoEnCarritoId id_ProductoEnCarrito = new ProductoEnCarritoId();
+       id_ProductoEnCarrito.setProductoenzonaProductoIdproducto(productoId);
+       id_ProductoEnCarrito.setProductoenzonaZonaIdzona(zonaid);
+
+       if(stock>=cantidadP) {
+           if(hayCarrito != null) {
+               //Hay carrito --> Añadimos el producto
+               Carrito miCarritoActual = carritoRepository.findByUsuarioIdusuarioAndIsDelete(usuario, (byte) 0);
+
+               //Añado un nuevo producto
+               id_ProductoEnCarrito.setCarritoIdcarrito(miCarritoActual.getId());
+               //mensaje
+               attr.addFlashAttribute("mensajeProductNuevo", "Se ha añadido un nuevo producto: " + producto.getNombre());
+               misProductoEnCarrito.setCantidad(cantidadP);
+               misProductoEnCarrito.setCarritoIdcarrito(miCarritoActual);
+               misProductoEnCarrito.setId(id_ProductoEnCarrito);
+               misProductoEnCarrito.setProductoEnZona(productoEnZona.get());
+               productoEnCarritoRepository.save(misProductoEnCarrito);
+
+           }else{
+               //No hay carrito --> Creamos uno nuevo
+               Carrito miCarritoNuevo = new Carrito();
+               miCarritoNuevo.setUsuarioIdusuario(usuario);
+               miCarritoNuevo.setIsDelete((byte) 0);
+               carritoRepository.save(miCarritoNuevo);
+               id_ProductoEnCarrito.setCarritoIdcarrito(miCarritoNuevo.getId());
+               //mensaje
+               attr.addFlashAttribute("mensajeProductNuevo", "Se ha añadido un nuevo producto: " + producto.getCodigo() +' ' + producto.getNombre());
+
+               misProductoEnCarrito.setCantidad(cantidadP);
+               misProductoEnCarrito.setCarritoIdcarrito(miCarritoNuevo);
+               misProductoEnCarrito.setId(id_ProductoEnCarrito);
+               misProductoEnCarrito.setProductoEnZona(productoEnZona.get());
+               productoEnCarritoRepository.save(misProductoEnCarrito);
+           }
+       }else {
+           //mensaje de no hay stock suficiente
+           attr.addFlashAttribute("msgError", "No hay stock suficiente para este producto");
+       }
+       // Redirige al detalle del producto
+       return "redirect:/usuario/productoDetalles?id=" + productoId;
+    }
+
 
     @GetMapping("/carrito")
     public String showCarrito( Model model) {
@@ -386,6 +497,7 @@ public class UsuarioFinalController {
         //Usuario
         int user = getAuthenticatedUserId();
         Usuario usuario = usuarioRepository.findById(user).get();
+        model.addAttribute("usuario", usuario);
 
         Carrito miCarrito = carritoRepository.findByusuarioIdusuarioAndIsDelete(usuario, (byte) 0);
         if (miCarrito != null) {
@@ -407,13 +519,10 @@ public class UsuarioFinalController {
 
         return "Usuario/carrito-usuario";
     }
-   /* @PostMapping("/actualizarCantidad")
+   @PostMapping("/actualizarCantidad")
     public String actualizarCantidad (
-            @RequestParam("costoTotal") BigDecimal costoTotal,
-            @RequestParam("costoEnvio") BigDecimal costoEnvio,
             @RequestParam("total") BigDecimal total,
-            @RequestParam("cantidad") int cantidad,
-            Model model) {
+            @RequestParam("cantidad") int cantidad) {
 
         int id = getAuthenticatedUserId();
         Usuario usuario = usuarioRepository.findById(id).get();
@@ -431,8 +540,8 @@ public class UsuarioFinalController {
         int idproduct = micarrito.getId();
 
         //listar los productos en zona
-        Optional<ProductoEnZona> almacen = productoEnZonaRepository.findByProductoIdproductoAndZonaIdzona(, zone);
-        int totalProducto = almacen.get().getCantidad();
+        //Optional<ProductoEnZona> almacen = productoEnZonaRepository.findByProductoIdproductoAndZonaIdzona(, zone);
+        /*int totalProducto = almacen.get().getCantidad();
         int newTotal = totalProducto - cantidad;
         if (newTotal >= 25) {
             almacen.get().setEstadoRepo((byte) 0);
@@ -442,15 +551,10 @@ public class UsuarioFinalController {
             almacen.get().setEstadoRepo((byte) 1);
             almacen.get().setCantidad(newTotal);
         }
-        productoEnZonaRepository.save(almacen.get());
+        productoEnZonaRepository.save(almacen.get());*/
 
         return "redirect:/usuario/checkout-info";
-    }*/
-
-
-
-
-    /*
+    }
     //Eliminar un producto  de la lista
     @PostMapping("/eliminarProducto")
     public String eliminarProducto(@RequestParam("productoId") Integer productoId,
@@ -461,41 +565,43 @@ public class UsuarioFinalController {
         Optional<Usuario> myUser = usuarioRepository.findById(usuarioId);
         //Obtener el id producto
         Optional<Producto> myProduct = productosRepository.findById(productoId);
-        //ID usuario
-        int idUsuer = myUser.get().getId();
-        //Id producto
-        int idProduct = myProduct.get().getId();
-        //Id Zona
-        int idZone = myUser.get().getZonaIdzona().getId();
-        // Encuentra el producto en el carrito por el ID del producto y el ID del usuario
-        //List<Carrito> productosEnCarrito = carritoRepository.findByusuarioIdusuario(usuarioId);
-        // Elimina el producto del carrito
-        if (!productosEnCarrito.isEmpty()) {
 
-            //carritoRepository.deleteAll(productosEnCarrito);
-            Carrito item = productosEnCarrito.get(0);
-            item.setIsDelete(true);
-            carritoRepository.save(item);
-        }
+        //Busco mi carrito
+        Carrito miCarrito = carritoRepository.findByUsuarioIdusuarioAndIsDelete(myUser.get(), (byte) 0);
 
+        //Busco el id del producto en ProductoEnZona
+        Optional<ProductoEnZona> tienda = productoEnZonaRepository.findByIdAndZona(productoId, myUser.get().getDistritoIddistrito().getZonaIdzona().getId());
+        System.out.println("----------------------------");
+        System.out.println("producto en zona id: " + tienda.get().getId());
+
+        ProductoEnCarritoId item = new ProductoEnCarritoId();
+        item.setCarritoIdcarrito(miCarrito.getId());
+        item.setProductoenzonaZonaIdzona(myUser.get().getDistritoIddistrito().getZonaIdzona().getId());
+        item.setProductoenzonaProductoIdproducto(productoId);
+        System.out.println("------------");
+        System.out.println("ID Carrito: " + item.getCarritoIdcarrito());
+        System.out.println("ID Zona: " + item.getProductoenzonaZonaIdzona());
+        System.out.println("ID Producto: " + item.getProductoenzonaProductoIdproducto());
+        //Obtenego el producto
+        Optional<ProductoEnCarrito> itemDelete = productoEnCarritoRepository.findById(item);
+        productoEnCarritoRepository.delete(itemDelete.get());
+        System.out.println("Se ha borrado el producto :D");
         // Añade un mensaje de éxito
-        redirectAttributes.addFlashAttribute("message", "Producto eliminado exitosamente");
-
+        redirectAttributes.addFlashAttribute("message", "El producto " + myProduct.get().getCodigo()+" ha sido eliminado de forma exitosa.");
         return "redirect:/usuario/carrito";
-    }
-*/
-
-
-    @GetMapping("/ordenCompra")
-    public String showordenCompra() {
-        return "Usuario/orden-compra-usuario";
     }
 
     @GetMapping("/reseñas")
     public String showResenhas(Model model) {
-        List<Resena> resenas = resenaRepository.findAll();
+        List<Resena> resenas = resenaRepository
+                .findByUsuarioIdusuarioIsAcceptedAndUsuarioIdusuarioIsPostulatedAndUsuarioIdusuarioIsActivated(1, 0, 1);
+
         model.addAttribute("resenas", resenas);
 
+        // Si no hay reseñas, puedes mostrar un mensaje
+        if (resenas.isEmpty()) {
+            model.addAttribute("noResultsMessage", "Reseña no encontrada");
+        }
         return "Usuario/reseñas-usuario";
     }
 
@@ -506,6 +612,7 @@ public class UsuarioFinalController {
         model.addAttribute("publicaciones", publicaciones);
         return "Usuario/comunidad-usuario";
     }
+
     @GetMapping("/foroProblema")
     public String showForoProblema() {
         return "Usuario/problema-soluciones";
@@ -526,6 +633,9 @@ public class UsuarioFinalController {
                                     @RequestParam("publicacionId") Integer publicacionId,
                                     Model model) {
         // Buscar la publicación por su ID
+        int id = getAuthenticatedUserId();
+
+
         Publicacion publicacion = publicacionRepository.findById(publicacionId)
                 .orElseThrow(() -> new IllegalArgumentException("Publicación no encontrada"));
 
@@ -535,8 +645,7 @@ public class UsuarioFinalController {
         comentario.setFechaCreacion(LocalDate.now());  // Fecha actual
         comentario.setPublicacionIdpublicacion(publicacion);
 
-        // Simular el ID del usuario. Actualmente estamos trabajando con el ID 17
-        Usuario usuario = usuarioRepository.findById(17)
+        Usuario usuario = usuarioRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
         comentario.setUsuarioIdusuario(usuario);
 
@@ -575,7 +684,49 @@ public class UsuarioFinalController {
     public String vistaPostulacion() {return "Usuario/postulacion";}
 
     @GetMapping("/registro")
-    public String registroPostulacion() {return "Usuario/registroSolicitud";}
+    public String registroPostulacion(Model model) {
+        int id = getAuthenticatedUserId();
+
+
+
+        // Obtener el usuario logueado de la base de datos
+        Usuario usuario = usuarioRepository.findById(id).orElseThrow();
+
+        // Añadir los datos del usuario al modelo para mostrarlos en la vista
+        model.addAttribute("usuario", usuario);
+
+        return "Usuario/registroSolicitud";
+    }
+
+    @PostMapping("/registro")
+    public String procesarPostulacion(
+            @RequestParam("razonSocial") String razonSocial,
+            @RequestParam("ruc") String ruc,
+            @RequestParam("codigoDespachador") String codigoDespachador,
+            Model model) {
+
+        int id = getAuthenticatedUserId();
+
+
+        // Obtener el usuario logueado de la base de datos
+        Usuario usuario = usuarioRepository.findById(id).orElseThrow();
+
+        // Actualizar los campos editables
+        usuario.setRazonSocial(razonSocial);
+        usuario.setRuc(ruc);
+        usuario.setCodigoDespachador(codigoDespachador);
+
+        // Cambiar el estado de postulación a '1'
+        usuario.setIsPostulated((byte) 1);
+
+        // Guardar los cambios en la base de datos
+        usuarioRepository.save(usuario);
+
+        // Redirigir a la página de inicio
+        return "redirect:/usuario/inicio";
+    }
+
+
     @GetMapping("/contraseña")
     public  String showpassword(){
         return "Usuario/password-usuario";
@@ -596,8 +747,10 @@ public class UsuarioFinalController {
 
     @PostMapping("/nuevaPublicacion")
     public String crearPublicacion(@ModelAttribute("publicacion") Publicacion publicacion, BindingResult result, Model model) {
-        // Suponiendo que estamos usando el idUsuario=17 temporalmente
-        Usuario usuario = usuarioRepository.findById(17).orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
+        int id = getAuthenticatedUserId();
+
+
+        Usuario usuario = usuarioRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
 
         // Asignar el usuario a la publicación
         publicacion.setUsuarioIdusuario(usuario);
@@ -614,7 +767,52 @@ public class UsuarioFinalController {
 
     @GetMapping("/nuevaReseña")
     public String nuevaResenha(Model model){
+        int id = getAuthenticatedUserId();
+
+        // Obtenemos los productos que el usuario ha recibido
+        List<Producto> productosRecibidos = productosRepository.findProductosRecibidos(id);
+        // Añadimos la lista de productos al modelo
+        model.addAttribute("productosRecibidos", productosRecibidos);
+        model.addAttribute("resena", new Resena()); // Agregamos un objeto vacío para el formulario
+
         return "Usuario/nuevaReseña-usuario";
+    }
+
+    @PostMapping("/guardarResenha")
+    public String guardarResenha(
+            @RequestParam("productoId") Integer productoId,
+            @RequestParam("titulo") String titulo,
+            @RequestParam("calificacion") Integer calificacion,
+            @RequestParam("cuerpo") String cuerpo,
+            @RequestParam("fueRapido") Byte fueRapido,
+            @RequestParam(value = "foto", required = false) String foto) {
+
+        int id = getAuthenticatedUserId();
+
+
+        Usuario usuario = usuarioRepository.findById(id).orElseThrow();
+
+        // Obtenemos el producto seleccionado
+        Producto producto = productosRepository.findById(productoId).orElseThrow();
+
+        // Creamos una nueva reseña
+        Resena resena = new Resena();
+        resena.setProductoIdproducto(producto);
+        resena.setUsuarioIdusuario(usuario);
+        resena.setTitulo(titulo);
+        resena.setCalificacion(calificacion);
+        resena.setCuerpo(cuerpo);
+        resena.setFechaCreacion(LocalDate.now());
+        resena.setFueRapido(fueRapido);
+
+        // Si no se sube foto, podemos dejarlo en un valor predeterminado
+        resena.setFoto(foto != null ? foto : "default.jpg");
+
+        // Guardamos la reseña
+        resenaRepository.save(resena);
+
+        // Redirigir a la página de reseñas
+        return "redirect:/usuario/rese%C3%B1as";
     }
 
     @GetMapping("/categoriaMujer")

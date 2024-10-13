@@ -164,7 +164,6 @@
                                         <th>Cantidad</th>
                                         <th>Producto</th>
                                         <th>Costo unitario</th>
-                                        <th th:if="${orden.estadoordenIdestadoorden.nombre=='EN VALIDACION'}">Editar</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -172,11 +171,6 @@
                                         <td th:text="${producto.cantidadProducto}"></td>
                                         <td th:text="${producto.nombreProducto}"></td>
                                         <td th:text="'S/' + ${producto.precioProducto}"></td>
-                                        <td th:if="${orden.estadoordenIdestadoorden.nombre=='EN VALIDACION'}">
-                                            <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#modalEditarCantidad" >
-                                                <i class="mdi mdi-pencil"></i> <!-- Ajustar el tamaño del icono -->
-                                            </button>
-                                        </td>
                                     </tr>
 
 
@@ -240,19 +234,40 @@
                         <div class="card mb-4">
                             <div class="card-header bg-light d-flex justify-content-between align-items-center">
                                 <h5>Estado del Pedido</h5>
+                                <!-- Botón para validar orden (se pasa al estado en proceso)-->
+                                <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#validarOrdenModal"
+                                        th:if="${orden.estadoordenIdestadoorden.nombre == 'EN VALIDACION'}">
+                                    Orden Válida
+                                </button>
+                                <!-- Modal de confirmación de validado -->
+                                <div class="modal fade" id="validarOrdenModal" tabindex="-1" aria-labelledby="validarOrdenModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="validarOrdenModalLabel">Confirmar Validación</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                ¿Está seguro de que ha validado correctamente los datos de la orden? Al confirmar, el estado cambiará a "En Proceso".
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                                <!-- Formulario de cambio de estado a En Proceso dentro del modal -->
+                                                <form th:action="@{/agente/changeToEnProceso}" method="post">
+                                                    <input type="hidden" th:name="idOrden" th:value="${orden.id}"/>
+                                                    <button type="submit" class="btn btn-success">Confirmar</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <!-- Botón Eliminar solo si el estado es "Pendiente" -->
                                 <button type="button" class="btn btn-danger btn-sm" th:if="${orden.estadoordenIdestadoorden.nombre == 'EN VALIDACION'}"
                                         data-bs-toggle="modal" data-bs-target="#deleteModal">
                                     Eliminar
                                 </button>
-                                <!-- Botón Tomar orden solo si el estado es "Sin Asignar" -->
-                                <!--
-                                <button type="button" class="btn btn-primary btn-sm" th:if="${orden.estadoordenIdestadoorden.nombre == 'CREADO'}">
-                                    Tomar orden
-                                </button>
-                                -->
-
-                                <!-- Modal de confirmación -->
+                                <!-- Modal de confirmación de eliminación -->
                                 <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
@@ -305,18 +320,39 @@
                                 <h5>Trayectoria del pedido</h5>
                             </div>
                             <div class="card-body">
-                                <div data-simplebar style="max-height: 300px;">
+                                <!-- Mensaje dinámico de estado actual -->
+                                <div class="alert alert-info" role="alert">
+                                    Su pedido se encuentra actualmente en:
+                                    <strong th:text="${orden.estadoordenIdestadoorden.nombre}">Estado</strong>
+                                </div>
+
+                                <!-- Barra de progreso dinámica -->
+                                <div class="progress mb-4">
+                                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-success"
+                                         role="progressbar"
+                                         th:style="'width: ' + (${orden.estadoordenIdestadoorden.nombre == 'CREADO' ? '14%' :
+                                                                  orden.estadoordenIdestadoorden.nombre == 'EN VALIDACION' ? '28%' :
+                                                                  orden.estadoordenIdestadoorden.nombre == 'EN PROCESO' ? '42%' :
+                                                                  orden.estadoordenIdestadoorden.nombre == 'ARRIBO AL PAIS' ? '56%' :
+                                                                  orden.estadoordenIdestadoorden.nombre == 'EN ADUANAS' ? '72%' :
+                                                                  orden.estadoordenIdestadoorden.nombre == 'EN RUTA' ? '86%' :
+                                                                  orden.estadoordenIdestadoorden.nombre == 'RECIBIDO' ? '100%' : '0%'})">
+                                    </div>
+
+                                </div>
+                                <div data-simplebar style="height: 250px;" id="trackingContainer">
                                     <ul class="list-unstyled activity-wid">
 
                                         <!-- Orden creada -->
-                                        <li class="activity-list d-flex align-items-start mb-4">
+                                        <li class="activity-list d-flex align-items-start mb-4"
+                                            th:id="${orden.estadoordenIdestadoorden.nombre == 'CREADO' ? 'currentState' : ''}">
                                             <div class="activity-icon avatar-xs me-3 ">
-                        <span th:class="${orden.estadoordenIdestadoorden.nombre == 'CREADO' ||
-                                         orden.estadoordenIdestadoorden.nombre != 'CREADO' ?
-                                         'avatar-title bg-primary text-white rounded-circle' :
-                                         'avatar-title bg-light text-primary rounded-circle'}">
-                            <i class="ri-file-add-fill"></i>
-                        </span>
+                                                <span th:class="${orden.estadoordenIdestadoorden.nombre == 'CREADO' ||
+                                                                 orden.estadoordenIdestadoorden.nombre != 'CREADO' ?
+                                                                 'avatar-title bg-primary text-white rounded-circle' :
+                                                                 'avatar-title bg-light text-primary rounded-circle'}">
+                                                    <i class="ri-file-add-fill"></i>
+                                                </span>
                                             </div>
                                             <div>
                                                 <h5 class="font-size-13"> <small class="text-muted">Fecha</small></h5>
@@ -325,18 +361,19 @@
                                         </li>
 
                                         <!-- Validación -->
-                                        <li class="activity-list d-flex align-items-start mb-4">
+                                        <li class="activity-list d-flex align-items-start mb-4"
+                                            th:id="${orden.estadoordenIdestadoorden.nombre == 'EN VALIDACION' ? 'currentState' : ''}">
                                             <div class="activity-icon avatar-xs me-3">
-                        <span th:class="${orden.estadoordenIdestadoorden.nombre == 'EN VALIDACION' ||
-                                         orden.estadoordenIdestadoorden.nombre == 'EN PROCESO' ||
-                                         orden.estadoordenIdestadoorden.nombre == 'ARRIBO AL PAIS' ||
-                                         orden.estadoordenIdestadoorden.nombre == 'EN ADUANAS' ||
-                                         orden.estadoordenIdestadoorden.nombre == 'EN RUTA' ||
-                                         orden.estadoordenIdestadoorden.nombre == 'RECIBIDO' ?
-                                         'avatar-title bg-primary text-white rounded-circle' :
-                                         'avatar-title bg-light text-primary rounded-circle'}">
-                            <i class="ri-search-eye-fill"></i>
-                        </span>
+                                                <span th:class="${orden.estadoordenIdestadoorden.nombre == 'EN VALIDACION' ||
+                                                                 orden.estadoordenIdestadoorden.nombre == 'EN PROCESO' ||
+                                                                 orden.estadoordenIdestadoorden.nombre == 'ARRIBO AL PAIS' ||
+                                                                 orden.estadoordenIdestadoorden.nombre == 'EN ADUANAS' ||
+                                                                 orden.estadoordenIdestadoorden.nombre == 'EN RUTA' ||
+                                                                 orden.estadoordenIdestadoorden.nombre == 'RECIBIDO' ?
+                                                                 'avatar-title bg-primary text-white rounded-circle' :
+                                                                 'avatar-title bg-light text-primary rounded-circle'}">
+                                                    <i class="ri-search-eye-fill"></i>
+                                                </span>
                                             </div>
                                             <div>
                                                 <h5 class="font-size-13"> <small class="text-muted">Fecha</small></h5>
@@ -345,17 +382,18 @@
                                         </li>
 
                                         <!-- En proceso -->
-                                        <li class="activity-list d-flex align-items-start mb-4">
+                                        <li class="activity-list d-flex align-items-start mb-4"
+                                            th:id="${orden.estadoordenIdestadoorden.nombre == 'EN PROCESO' ? 'currentState' : ''}">
                                             <div class="activity-icon avatar-xs me-3">
-                        <span th:class="${orden.estadoordenIdestadoorden.nombre == 'EN PROCESO' ||
-                                         orden.estadoordenIdestadoorden.nombre == 'ARRIBO AL PAIS' ||
-                                         orden.estadoordenIdestadoorden.nombre == 'EN ADUANAS' ||
-                                         orden.estadoordenIdestadoorden.nombre == 'EN RUTA' ||
-                                         orden.estadoordenIdestadoorden.nombre == 'RECIBIDO' ?
-                                         'avatar-title bg-primary text-white rounded-circle' :
-                                         'avatar-title bg-light text-primary rounded-circle'}">
-                            <i class="ri-settings-2-fill"></i>
-                        </span>
+                                                <span th:class="${orden.estadoordenIdestadoorden.nombre == 'EN PROCESO' ||
+                                                                 orden.estadoordenIdestadoorden.nombre == 'ARRIBO AL PAIS' ||
+                                                                 orden.estadoordenIdestadoorden.nombre == 'EN ADUANAS' ||
+                                                                 orden.estadoordenIdestadoorden.nombre == 'EN RUTA' ||
+                                                                 orden.estadoordenIdestadoorden.nombre == 'RECIBIDO' ?
+                                                                 'avatar-title bg-primary text-white rounded-circle' :
+                                                                 'avatar-title bg-light text-primary rounded-circle'}">
+                                                    <i class="ri-settings-2-fill"></i>
+                                                </span>
                                             </div>
                                             <div>
                                                 <h5 class="font-size-13"> <small class="text-muted">Fecha</small></h5>
@@ -364,16 +402,17 @@
                                         </li>
 
                                         <!-- Arribo al país -->
-                                        <li class="activity-list d-flex align-items-start mb-4">
+                                        <li class="activity-list d-flex align-items-start mb-4"
+                                            th:id="${orden.estadoordenIdestadoorden.nombre == 'ARRIBO AL PAIS' ? 'currentState' : ''}">
                                             <div class="activity-icon avatar-xs me-3">
-                        <span th:class="${orden.estadoordenIdestadoorden.nombre == 'ARRIBO AL PAIS' ||
-                                         orden.estadoordenIdestadoorden.nombre == 'EN ADUANAS' ||
-                                         orden.estadoordenIdestadoorden.nombre == 'EN RUTA' ||
-                                         orden.estadoordenIdestadoorden.nombre == 'RECIBIDO' ?
-                                         'avatar-title bg-primary text-white rounded-circle' :
-                                         'avatar-title bg-light text-primary rounded-circle'}">
-                            <i class="ri-plane-fill"></i>
-                        </span>
+                                                <span th:class="${orden.estadoordenIdestadoorden.nombre == 'ARRIBO AL PAIS' ||
+                                                                 orden.estadoordenIdestadoorden.nombre == 'EN ADUANAS' ||
+                                                                 orden.estadoordenIdestadoorden.nombre == 'EN RUTA' ||
+                                                                 orden.estadoordenIdestadoorden.nombre == 'RECIBIDO' ?
+                                                                 'avatar-title bg-primary text-white rounded-circle' :
+                                                                 'avatar-title bg-light text-primary rounded-circle'}">
+                                                    <i class="ri-plane-fill"></i>
+                                                </span>
                                             </div>
                                             <div>
                                                 <h5 class="font-size-13"> <small class="text-muted">Fecha</small></h5>
@@ -382,15 +421,16 @@
                                         </li>
 
                                         <!-- En aduanas -->
-                                        <li class="activity-list d-flex align-items-start mb-4">
+                                        <li class="activity-list d-flex align-items-start mb-4"
+                                            th:id="${orden.estadoordenIdestadoorden.nombre == 'EN ADUANAS' ? 'currentState' : ''}">
                                             <div class="activity-icon avatar-xs me-3">
-                        <span th:class="${orden.estadoordenIdestadoorden.nombre == 'EN ADUANAS' ||
-                                         orden.estadoordenIdestadoorden.nombre == 'EN RUTA' ||
-                                         orden.estadoordenIdestadoorden.nombre == 'RECIBIDO' ?
-                                         'avatar-title bg-primary text-white rounded-circle' :
-                                         'avatar-title bg-light text-primary rounded-circle'}">
-                            <i class="ri-store-fill"></i>
-                        </span>
+                                                <span th:class="${orden.estadoordenIdestadoorden.nombre == 'EN ADUANAS' ||
+                                                                 orden.estadoordenIdestadoorden.nombre == 'EN RUTA' ||
+                                                                 orden.estadoordenIdestadoorden.nombre == 'RECIBIDO' ?
+                                                                 'avatar-title bg-primary text-white rounded-circle' :
+                                                                 'avatar-title bg-light text-primary rounded-circle'}">
+                                                    <i class="ri-store-fill"></i>
+                                                </span>
                                             </div>
                                             <div>
                                                 <h5 class="font-size-13"> <small class="text-muted">Fecha</small></h5>
@@ -399,14 +439,15 @@
                                         </li>
 
                                         <!-- En ruta -->
-                                        <li class="activity-list d-flex align-items-start mb-4">
+                                        <li class="activity-list d-flex align-items-start mb-4"
+                                            th:id="${orden.estadoordenIdestadoorden.nombre == 'EN RUTA' ? 'currentState' : ''}">
                                             <div class="activity-icon avatar-xs me-3">
-                        <span th:class="${orden.estadoordenIdestadoorden.nombre == 'EN RUTA' ||
-                                         orden.estadoordenIdestadoorden.nombre == 'RECIBIDO' ?
-                                         'avatar-title bg-primary text-white rounded-circle' :
-                                         'avatar-title bg-light text-primary rounded-circle'}">
-                            <i class="ri-truck-fill"></i>
-                        </span>
+                                                <span th:class="${orden.estadoordenIdestadoorden.nombre == 'EN RUTA' ||
+                                                                 orden.estadoordenIdestadoorden.nombre == 'RECIBIDO' ?
+                                                                 'avatar-title bg-primary text-white rounded-circle' :
+                                                                 'avatar-title bg-light text-primary rounded-circle'}">
+                                                    <i class="ri-truck-fill"></i>
+                                                </span>
                                             </div>
                                             <div>
                                                 <h5 class="font-size-13"> <small class="text-muted">Fecha</small></h5>
@@ -415,13 +456,14 @@
                                         </li>
 
                                         <!-- Orden recibida -->
-                                        <li class="activity-list d-flex align-items-start mb-4">
+                                        <li class="activity-list d-flex align-items-start mb-4"
+                                            th:id="${orden.estadoordenIdestadoorden.nombre == 'RECIBIDO' ? 'currentState' : ''}">
                                             <div class="activity-icon avatar-xs me-3">
-                        <span th:class="${orden.estadoordenIdestadoorden.nombre == 'RECIBIDO' ?
-                                         'avatar-title bg-primary text-white rounded-circle' :
-                                         'avatar-title bg-light text-primary rounded-circle'}">
-                            <i class="ri-checkbox-circle-fill"></i>
-                        </span>
+                                                <span th:class="${orden.estadoordenIdestadoorden.nombre == 'RECIBIDO' ?
+                                                                 'avatar-title bg-primary text-white rounded-circle' :
+                                                                 'avatar-title bg-light text-primary rounded-circle'}">
+                                                    <i class="ri-checkbox-circle-fill"></i>
+                                                </span>
                                             </div>
                                             <div>
                                                 <h5 class="font-size-13"> <small class="text-muted">Fecha</small></h5>
@@ -564,6 +606,15 @@
 <!-- JAVASCRIPT BASE-->
 <span th:replace="~{Common/jsBase :: js_Base}"></span>
 <!-- End JAVASCRIPT BASE-->
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var currentState = document.getElementById("currentState");
+        if (currentState) {
+            currentState.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    });
+</script>
+
 <!-- Required datatable js -->
 <script th:src="@{../libs/datatables.net/js/jquery.dataTables.min.js}"></script>
 <script th:src="@{../libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js}"></script>

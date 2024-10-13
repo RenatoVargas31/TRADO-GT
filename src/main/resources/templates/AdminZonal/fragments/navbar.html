@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml" lang="en">
 <body>
     <header th:fragment="nav_bar" id="page-topbar">
     <div class="navbar-header">
@@ -196,7 +196,7 @@
                         data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <img class="rounded-circle header-profile-user" th:src="@{/images/users/avatar-2.jpg}"
                          alt="Header Avatar">
-                    <span class="d-none d-xl-inline-block ms-1">Kevin</span>
+                    <span class="d-none d-xl-inline-block ms-1" th:text="*{#authentication.name}" ></span>
                     <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
                 </button>
                 <div class="dropdown-menu dropdown-menu-end">
@@ -204,7 +204,13 @@
                     <a class="dropdown-item" th:href=" @{/adminzonal/perfil}"><i class="ri-user-line align-middle me-1"></i>Mi Perfil</a>
                     <a class="dropdown-item d-block" th:href="@{/adminzonal/contraseña}"><i class="ri-settings-2-line align-middle me-1"></i>Cambiar Contraseña</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item text-danger" href="#"><i class="ri-shut-down-line align-middle me-1 text-danger"></i> Logout</a>
+                    <div sec:authorize="isAuthenticated()">
+                        <form th:action="@{/logout}" method="post" style="display: inline;">
+                            <button type="submit" class="dropdown-item text-danger" style="border: none; background: none;">
+                                <i class="ri-shut-down-line align-middle me-1 text-danger"></i> Cerrar sesión
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </div>
 

@@ -133,8 +133,8 @@ public class AgenteComprasController {
                         (String) result[0],  // usuarioPropietario
                         (Integer) result[1],  // idUsuario
                         (String) result[2],  // fechaCreacion
-                        (String) result[3],  // metodoPago
-                        (String) result[4],  // agenteCompra
+                        (BigDecimal) result[3],  // montoTotal
+                        (String) result[4],  // codigoOrden
                         (Long) result[5],  //idAgenteCompra
                         (String) result[6], //idEstadoPedido
                         (Integer) result[7] //idOrden
@@ -156,8 +156,8 @@ public class AgenteComprasController {
                         (String) result[0],  // usuarioPropietario
                         (Integer) result[1],  // idUsuario
                         (String) result[2],  // fechaCreacion
-                        (String) result[3],  // metodoPago
-                        (String) result[4],  // agenteCompra
+                        (BigDecimal) result[3],  // montoTotal
+                        (String) result[4],  // codigoOrden
                         (Long) result[5],  //idAgenteCompra
                         (String) result[6], //idEstadoPedido
                         (Integer) result[7] //idOrden
@@ -180,8 +180,8 @@ public class AgenteComprasController {
                         (String) result[0],  // usuarioPropietario
                         (Integer) result[1],  // idUsuario
                         (String) result[2],  // fechaCreacion
-                        (String) result[3],  // metodoPago
-                        (String) result[4],  // agenteCompra
+                        (BigDecimal) result[3],  // montoTotal
+                        (String) result[4],  // codigoOrden
                         (Long) result[5],  //idAgenteCompra
                         (String) result[6], //idEstadoPedido
                         (Integer) result[7] //idOrden
@@ -203,8 +203,8 @@ public class AgenteComprasController {
                         (String) result[0],  // usuarioPropietario
                         (Integer) result[1],  // idUsuario
                         (String) result[2],  // fechaCreacion
-                        (String) result[3],  // metodoPago
-                        (String) result[4],  // agenteCompra
+                        (BigDecimal) result[3],  // montoTotal
+                        (String) result[4],  // codigoOrden
                         (Long) result[5],  //idAgenteCompra
                         (String) result[6], //idEstadoPedido
                         (Integer) result[7] //idOrden
@@ -226,8 +226,8 @@ public class AgenteComprasController {
                         (String) result[0],  // usuarioPropietario
                         (Integer) result[1],  // idUsuario
                         (String) result[2],  // fechaCreacion
-                        (String) result[3],  // metodoPago
-                        (String) result[4],  // agenteCompra
+                        (BigDecimal) result[3],  // montoTotal
+                        (String) result[4],  // codigoOrden
                         (Long) result[5],  //idAgenteCompra
                         (String) result[6], //idEstadoPedido
                         (Integer) result[7] //idOrden
@@ -358,6 +358,31 @@ public class AgenteComprasController {
 
     }
     // Método para eliminar la orden (cambio lógico de isDeleted)
+    @PostMapping("/changeToEnProceso")
+    public String changeStateInProcess(@RequestParam("idOrden") int idOrden, RedirectAttributes redirectAttributes) {
+
+        // Buscamos la orden por ID
+        Optional<Orden> optionalOrden = ordenRepository.findById(idOrden);
+
+        if (optionalOrden.isPresent()) {
+            Orden orden = optionalOrden.get();
+            EstadoOrden estadoOrden = estadoOrdenRepository.findById(3).get();
+            // Cambiamos el estado de la orden a estado 3 (En proceso)
+            orden.setEstadoordenIdestadoorden(estadoOrden);
+            // Guardar los cambios en la base de datos
+            ordenRepository.save(orden);
+            // Agregar un mensaje flash para la confirmación
+            redirectAttributes.addFlashAttribute("mensaje", "La orden ha sido validada con éxito.");
+        }else{
+            // Si no se encuentra la orden
+            redirectAttributes.addFlashAttribute("error", "La orden no se encontró.");
+        }
+
+        // Redirigimos a la página de listado de órdenes después de eliminar
+        return "redirect:/agente/enProcesoOrders";
+    }
+
+    // Método para eliminar la orden (cambio lógico de isDeleted)
     @PostMapping("/deleteOrder")
     public String deleteOrder(@RequestParam("idOrden") int idOrden, RedirectAttributes redirectAttributes) {
 
@@ -449,8 +474,8 @@ public class AgenteComprasController {
                         (String) result[0],  // usuarioPropietario
                         (Integer) result[1],  // idUsuario
                         (String) result[2],  // fechaCreacion
-                        (String) result[3],  // metodoPago
-                        (String) result[4],  // agenteCompra
+                        (BigDecimal) result[3],  // montoTotal
+                        (String) result[4],  // codigoOrden
                         (Long) result[5],  //idAgenteCompra
                         (String) result[6], //idEstadoPedido
                         (Integer) result[7] //idOrden

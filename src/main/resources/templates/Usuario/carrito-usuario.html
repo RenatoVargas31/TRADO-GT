@@ -58,6 +58,7 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="table-responsive">
+                                            <div th:if="${message != null}" class="alert alert-success" th:text="${message}"></div>
                                             <table class="table table-centered mb-0 table-nowrap">
                                                 <thead class="bg-light">
                                                 <tr>
@@ -78,7 +79,7 @@
                                                 <tr th:each="producto,iterStat : ${carrito}">
                                                     <td th:text="${producto.productoEnZona.productoIdproducto.codigo}"></td>
                                                     <td>
-                                                        <img th:src="@{../images/product/img-1.png}" alt="product-img"
+                                                        <img th:src="@{'../../images/product/product' + ${producto.productoEnZona.productoIdproducto.id} + '.jpg'}" alt="product-img"
                                                              title="product-img" class="avatar-md" />
                                                     </td>
                                                     <td>
@@ -191,32 +192,37 @@
                                                         }
                                                     </script>
                                                     <td style="width: 90px;" class="text-center">
-                                                        <button type="button" class="btn btn-danger waves-effect waves-light btn-sm" data-bs-toggle="modal" th:data-bs-target="'#deleteProductModal' + ${producto.productoEnZona.productoIdproducto.id}">
-                                                            <i class="ri-indeterminate-circle-fill "></i>
+                                                        <button type="button" class="btn btn-danger waves-effect waves-light btn-sm"
+                                                                th:data-bs-target="'#deleteProductModal' + ${producto.productoEnZona.productoIdproducto.id}"
+                                                                data-bs-toggle="modal">
+                                                            <i class="ri-indeterminate-circle-fill"></i>
                                                         </button>
-                                                    </td>
-                                                    <!-- Modal
-                                                    <div class="modal fade" th:id="'deleteProductModal' + ${producto.productoEnZona.productoIdproducto.id}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                                                        <div class="modal-dialog" role="document">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <h5 class="modal-title" id="deleteProductLabel">Eliminar Producto</h5>
-                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                                </div>
-                                                                <div class="modal-body">
-                                                                    <p>¿Está seguro de que desea eliminar <strong th:text="${producto.productoEnZona.productoIdproducto.codigo}"></strong> de su carrito de compras?</p>
-                                                                </div>
-                                                                <form th:action="@{/usuario/eliminarProducto}" method="post">
-                                                                    <input type="hidden" name="productoId" th:value="${producto.productoEnZona.productoIdproducto.id}" />
-                                                                    <input type="hidden" name="usuarioId" th:value="${usuario.id}" />
-                                                                    <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">No</button>
-                                                                        <button type="submit" class="btn btn-success">Sí</button>
+                                                        <div class="modal fade"
+                                                             th:id="'deleteProductModal' + ${producto.productoEnZona.productoIdproducto.id}"
+                                                             data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog"
+                                                             aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                                            <div class="modal-dialog" role="document">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title" id="deleteProductLabel">Eliminar Producto</h5>
+                                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                                     </div>
-                                                                </form>
+                                                                    <div class="modal-body">
+                                                                        <p>¿Está seguro de que desea eliminar <strong th:text="${producto.productoEnZona.productoIdproducto.codigo}"></strong> de su carrito de compras?</p>
+                                                                    </div>
+                                                                    <form th:action="@{/usuario/eliminarProducto}" method="post">
+                                                                        <input type="hidden" name="productoId" th:value="${producto.productoEnZona.productoIdproducto.id}" />
+                                                                        <input type="hidden" name="usuarioId" th:value="${usuario.id}" />
+                                                                        <div class="modal-footer">
+                                                                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">No</button>
+                                                                            <button type="submit" class="btn btn-success">Sí</button>
+                                                                        </div>
+                                                                    </form>
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                    </div>-->
+                                                    </td>
+
                                                 </tr>
                                                 </tbody>
                                             </table>
@@ -243,13 +249,11 @@
                                                 <tr class="bg-light text-end">
                                                     <th scope="row" colspan="8"></th>
                                                     <td  th:classappend="${#lists.isEmpty(carrito)} ? 'disabled' : ''" th:attr="aria-disabled=${#lists.isEmpty(carrito)}" >
-                                                        <!--<form th:action="@{/usuario/actualizarCantidad}" method="post">
-                                                            <input type="hidden" name="costoTotal" id="input-costoTotal" th:value="${costoTotal}"/>
-                                                            <input type="hidden" name="costoEnvio" id="input-costoEnvio" th:value="${costoEnvio}"/>
+                                                        <form th:action="@{/usuario/actualizarCantidad}" method="post">
                                                             <input type="hidden" name="cantidad" id="input-cantidad" >
                                                             <input type="hidden" name="total" id="input-total" />
                                                             <button type="submit" class="btn btn-primary btn-sm">Pagar</button>
-                                                        </form> -->
+                                                        </form>
                                                     </td>
                                                 </tr>
                                                 </tbody>
@@ -258,16 +262,10 @@
                                         </div>
                                     </div>
                                 </div>
-
-                                <!-- <div class="mt-3 text-end">
-                                     <a th:href="@{/usuario/checkout-info}" type="button" class="btn btn-primary" >Comprar</a>
-                                 </div>-->
                             </div>
                         </div>
                     </div>
-
                 </div>
-
             </div> <!-- container-fluid -->
         </div>
 

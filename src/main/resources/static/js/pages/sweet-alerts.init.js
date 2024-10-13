@@ -57,29 +57,37 @@
                     icon: "error"
                 })
             })
-        }), t("#sa-registro").click(function () {
+        }), $("#sa-registro").click(function () {
             Swal.fire({
                 title: "¿Está seguro de postular como Agente?",
-                text: "Asegurese de haber completado bien sus datos",
+                text: "Asegúrese de haber completado bien sus datos",
                 icon: "warning",
-                showCancelButton: !0,
+                showCancelButton: true,
                 confirmButtonText: "Sí, postular",
                 cancelButtonText: "No, cancelar",
                 confirmButtonClass: "btn btn-success mt-2",
                 cancelButtonClass: "btn btn-danger ms-2 mt-2",
-                buttonsStyling: !1
-            }).then(function (t) {
-                t.value ? Swal.fire({
-                    title: "Listo",
-                    text: "Un administrador revisará tu solicitud",
-                    icon: "success"
-                }) : t.dismiss === Swal.DismissReason.cancel && Swal.fire({
-                    title: "Cancelado",
-                    text: "Su solicitud no fue enviada",
-                    icon: "error"
-                })
-            })
-        }), t("#sa-params2").click(function () {
+                buttonsStyling: false
+            }).then(function (result) {
+                if (result.isConfirmed) {
+                    // Mostrar mensaje de éxito y enviar el formulario
+                    Swal.fire({
+                        title: "Listo",
+                        text: "Un administrador revisará tu solicitud",
+                        icon: "success"
+                    }).then(function () {
+                        // Después de confirmar, enviamos el formulario
+                        $("#registroForm").submit();
+                    });
+                } else if (result.dismiss === Swal.DismissReason.cancel) {
+                    Swal.fire({
+                        title: "Cancelado",
+                        text: "Su solicitud no fue enviada",
+                        icon: "error"
+                    });
+                }
+            });
+        }); t("#sa-params2").click(function () {
             Swal.fire({
                 title: "¿Estás seguro de solicitar reembolso?",
                 text: "¡Esta acción es irreversible!",

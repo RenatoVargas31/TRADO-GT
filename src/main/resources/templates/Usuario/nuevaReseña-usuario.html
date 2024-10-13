@@ -59,72 +59,62 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-body">
-                                <form action="">
+                                <form th:action="@{/usuario/guardarResenha}" method="post">
                                     <div class="row">
                                         <div class="col-md-8">
                                             <div class="mb-3 col-md-12">
-                                                <div class="mb-3 col-md-12">
-                                                    <label class="form-label fw-bolder fs-5">Nombre del Producto</label>
-                                                    <input type="text" class="form-control bg-light" placeholder="Camisa Azul de Cat" readonly>
-                                                    <small class="form-text text-muted">Ingrese el nombre del producto. <strong>Este campo es obligatorio.</strong></small>
-                                                </div>
+                                                <label class="form-label fw-bolder fs-5">Selecciona el Producto</label>
+                                                <select class="form-select" name="productoId" required>
+                                                    <option value="" disabled selected>Seleccione un producto</option>
+                                                    <th:block th:each="producto : ${productosRecibidos}">
+                                                        <option th:value="${producto.id}" th:text="${producto.nombre}"></option>
+                                                    </th:block>
+                                                </select>
+                                                <small class="form-text text-muted">Seleccione el producto del cual desea dejar una reseña.</small>
                                             </div>
-                                            <div class="mb-3 col-md-12">
-                                                <div class="row">
-                                                    <div class="mb-3  col-md-6">
-                                                        <label class="form-label fw-bolder fs-5">Categoría</label>
-                                                        <input type="text" class="form-control bg-light" placeholder="Moda masculína" readonly>
-                                                        <small class="form-text text-muted">Ingrese la categoría del producto. <strong>Este campo es obligatorio.</strong></small>
-                                                    </div>
-                                                    <div class="mb-3 col-md-6">
-                                                        <label class="form-label fw-bolder fs-5">Subcategoría</label>
-                                                        <input type="text" class="form-control bg-light" placeholder="Camisas" readonly>
-                                                        <small class="form-text text-muted">Ingrese la subcategoría del producto. <strong>Este campo es obligatorio.</strong></small>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="mb-3 col-md-12">
-                                                <div class="row">
-                                                    <div class="mb-3  col-md-6">
-                                                        <label class="form-label fw-bolder fs-5">Nombre del Proveedor</label>
-                                                        <input type="text" class="form-control bg-light" placeholder="Nombre del Proveedor" disabled>
-                                                        <small class="form-text text-muted">Este campo está deshabilitado.</small>
-                                                    </div>
-                                                    <div class="mb-3  col-md-6">
-                                                        <label class="form-label fw-bolder fs-5">Código del Producto</label>
-                                                        <input type="text" class="form-control bg-light" placeholder="Código del producto" disabled>
-                                                        <small class="form-text text-muted">Este campo está deshabilitado.</small>
-                                                    </div>
-                                                </div>
-                                            </div>
+
                                             <div class="mb-3 col-md-12">
                                                 <label class="form-label fw-bolder fs-5">Calificación</label>
-                                                    <div class="rating-star">
-                                                        <input type="hidden" class="rating" data-filled="mdi mdi-star text-primary" data-empty="mdi mdi-star-outline text-muted"/>
-                                                    </div>
+                                                <div class="rating-star">
+                                                    <input type="hidden" class="rating" name="calificacion" data-filled="mdi mdi-star text-primary" data-empty="mdi mdi-star-outline text-muted" required />
+                                                </div>
                                                 <small class="form-text text-muted">Califique el producto de 1 a 5 estrellas.</small>
                                             </div>
+
                                             <div class="mb-3 col-md-8">
                                                 <label class="form-label fw-bolder fs-5">Ingrese un título</label>
-                                                <input type="text" class="form-control" placeholder="Ingrese el título aquí" required>
+                                                <input type="text" class="form-control" name="titulo" placeholder="Ingrese el título aquí" required>
                                                 <small class="form-text text-muted">Ingrese un máximo de 30 caracteres. <strong>Este campo es obligatorio.</strong></small>
                                             </div>
 
                                             <div class="mb-3 col-md-12">
                                                 <label class="form-label fw-bolder fs-5">Ingrese el cuerpo de la reseña</label>
-                                                <textarea class="form-control" rows="5" placeholder="Ingrese el cuerpo de la publicación aquí" required></textarea>
+                                                <textarea class="form-control" name="cuerpo" rows="5" placeholder="Ingrese el cuerpo de la publicación aquí" required></textarea>
                                                 <small class="form-text text-muted">Ingrese un máximo de 1000 caracteres.</small>
                                                 <small class="form-text text-muted">Complete este formulario para compartir su experiencia con la comunidad.</small>
                                             </div>
+
+                                            <!-- Selector de si el producto llegó rápido -->
+                                            <div class="mb-3 col-md-6">
+                                                <label class="form-label fw-bolder fs-5">¿El producto llegó rápido?</label>
+                                                <select class="form-select" name="fueRapido" required>
+                                                    <option value="" disabled selected>Seleccione una opción</option>
+                                                    <option value="1">Sí</option>
+                                                    <option value="0">No</option>
+                                                </select>
+                                                <small class="form-text text-muted">Indica si el producto llegó en el tiempo estimado.</small>
+                                            </div>
                                         </div>
+
                                         <div class="col-md-4">
-                                            <label class="form-label fw-bolder fs-5">Subir una foto</label>
-                                            <input type="file" class="form-control" accept="image/*" id="upload-photo" onchange="previewPhoto()">
+                                            <label class="form-label fw-bolder fs-5">Subir una foto (Opcional)</label>
+                                            <input type="file" class="form-control" accept="image/*" id="upload-photo" name="foto" onchange="previewPhoto()">
                                             <small class="form-text text-muted">Sube una imagen en formato JPG o PNG.</small>
                                             <div class="mt-3">
                                                 <img id="photo-preview" src="" alt="Previsualización de la imagen" style="display: none; max-width: 100%;">
                                             </div>
                                         </div>
+
                                         <script>
                                             function previewPhoto() {
                                                 const file = document.getElementById('upload-photo').files[0];
@@ -142,29 +132,11 @@
                                             }
                                         </script>
                                     </div>
+
                                     <div class="row">
                                         <div class="col-md-12 d-flex justify-content-end">
                                             <a th:href="@{/usuario/reseñas}" class="btn btn-danger btn-sm waves-effect waves-light me-2" title="Cancelar">Cancelar</a>
-                                            <a href="#" class="btn btn-primary btn-sm waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#saveConfirmModal" title="Guardar">Publicar</a>
-                                        </div>
-                                    </div>
-
-                                    <!-- Modal para Confirmar Guardado -->
-                                    <div class="modal fade" id="saveConfirmModal" tabindex="-1" aria-labelledby="saveConfirmLabel" aria-hidden="true">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="saveConfirmLabel">Confirmar Publicación</h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <p>¿Estás seguro de que deseas publicar esta reseña?</p>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-                                                    <a th:href="@{/usuario/reseñas}" class="btn btn-success">Publicar</a>
-                                                </div>
-                                            </div>
+                                            <button type="submit" class="btn btn-primary btn-sm waves-effect waves-light" title="Guardar">Publicar</button>
                                         </div>
                                     </div>
                                 </form>

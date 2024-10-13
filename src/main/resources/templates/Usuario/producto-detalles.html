@@ -88,7 +88,7 @@
                   <li class="breadcrumb-item active">Productos</li>
 
                   <li class="breadcrumb-item active">
-                    <a class="text-primary" th:text="${product.subcategoriaIdsubcategoria.categoriaIdcategoria.nombre}"></a>
+                    <a  th:text="${product.subcategoriaIdsubcategoria.categoriaIdcategoria.nombre}"></a>
                   </li>
 
                   <li class="breadcrumb-item">
@@ -107,6 +107,8 @@
         <div class="row">
           <div class="col-lg-12">
             <div class="card">
+              <div th:if="${mensajeProductNuevo != null}" class="alert alert-success" th:text="${mensajeProductNuevo}"></div>
+              <div th:if="${msgError != null}" class="alert alert-danger" th:text="${msgError}"></div>
               <div class="card-body">
                 <div class="row">
 
@@ -115,56 +117,40 @@
                       <div class="row">
                         <!-- Sección principal de imágenes y botones de acción -->
                         <div class="col-md-12 col-12">
-                          <div class="tab-content d-flex justify-content-center align-items-center" id="v-pills-tabContent">
+                          <div class="tab-content d-flex  justify-content-center align-items-start mt-2" id="v-pills-tabContent">
                             <!-- Producto 1 -->
                             <div class="tab-pane fade show active" id="product-1" role="tabpanel">
-                              <div th:if="${product.id >= 1 and product.id <= 26}" class="product-img text-center" style="width: 100%; height: 400px; display: flex; justify-content: center; align-items: center;">
-                                <img th:src="@{'../../images/product/product' + ${product.id} + '.jpg'}" alt="img-${product.id}" class="img-fluid zoom-image" data-action="zoom" style="width: 300px; height: 300px; object-fit: contain;">
-                              </div>
-
-                              <div class="row text-center mt-3">
-                                <div class="col-6">
-                                  <a href="/usuario/carrito" class="btn btn-primary btn-block waves-effect waves-light">
-                                    Añadir al carrito
-                                  </a>
-                                </div>
-                                <div class="col-6">
-                                  <a href="#" class="btn btn-light btn-block waves-effect">
-                                    Comprar ahora
-                                  </a>
-                                </div>
+                              <div th:if="${product.id >= 1 and product.id <= 26}" class="product-img text-center" style="width: 100%; height: 500px; display: flex;justify-content: center; align-items: center;">
+                                <img th:src="@{'../../images/product/product' + ${product.id} + '.jpg'}" alt="img-${product.id}" class="img-fluid zoom-image" data-action="zoom" style="width: 100%; height: 100%; object-fit: contain;">
                               </div>
                             </div>
                             <!-- Producto 2 -->
                             <div class="tab-pane fade" id="product-2" role="tabpanel">
                               <div class="product-img text-center" style="width: 100%; height: 400px; display: flex; justify-content: center; align-items: center;">
-                                <img th:src="@{../images/product/img-5.png}" alt="img-5" class="img-fluid zoom-image" style="max-width: 100%; height: auto;">
+                                <img th:src="@{'../../images/product/product' + ${product.id} + '.jpg'}"  alt="img-5" class="img-fluid zoom-image" style="max-width: 100%; height: auto;">
                               </div>
                             </div>
                             <!-- Producto 3 -->
                             <div class="tab-pane fade" id="product-3" role="tabpanel">
                               <div class="product-img text-center" style="width: 100%; height: 400px; display: flex; justify-content: center; align-items: center;">
-                                <img th:src="@{../images/product/img-3.png}" alt="img-3" class="img-fluid zoom-image" style="max-width: 100%; height: auto;">
+                                <img th:src="@{'../../images/product/product' + ${product.id} + '.jpg'}"  alt="img-3" class="img-fluid zoom-image" style="max-width: 100%; height: auto;">
                               </div>
                             </div>
                             <!-- Producto 4 -->
                             <div class="tab-pane fade" id="product-4" role="tabpanel">
                               <div class="product-img text-center" style="width: 100%; height: 400px; display: flex; justify-content: center; align-items: center;">
-                                <img th:src="@{../images/product/img-4.png}" alt="img-4" class="img-fluid zoom-image" style="max-width: 100%; height: auto;">
+                                <img th:src="@{'../../images/product/product' + ${product.id} + '.jpg'}"  alt="img-4" class="img-fluid zoom-image" style="max-width: 100%; height: auto;">
                               </div>
                             </div>
                           </div>
                         </div>
-
-                        <!-- Botones de acción -->
-
                       </div>
                     </div>
 
 
                     <!-- end product img -->
                   </div>
-                  <div class="col-xl-6">
+                  <div class="col-xl-7">
                     <div class="mt-4 mt-xl-3">
                       <div>
                         <a class="text-primary" th:text="${product.subcategoriaIdsubcategoria.nombre}"></a>
@@ -183,19 +169,23 @@
                       </div>
                       <span class="product-ribbon badge bg-warning " th:text="${product.codigo}"></span><br>
                       <h5 class="mt-2" style="font-size: 24px;">
-                        <span th:text=" 'S/.'+${product.precio}"></span>
-                        <span style="font-size: 12px; color: #888;">por cada 10 unidades</span>
+                        <span th:text="'S/.' + ${product.precio}"></span>
+                        <span style="font-size: 12px; color: #888;"> por unidad</span>
                       </h5>
 
-                      <p class="mt-2" style="font-size: 14px;">
-                        Costo por unidad: S/<span th:text="${(product.precio)*1.5}"></span>
+
+                   <!--   <p class="mt-1" style="font-size: 14px;">
+                        Costo por unidad: S/<span th:text="${(product.precio)}"></span>
+
+                      </p> -->
+                      <p  style="font-size: 14px;margin-top: -5px">
+                        Stock disponible: <span th:text="${productoDetalles.cantidad}"></span>
+
                       </p>
 
-
-                      <p class="mt-3" th:text="${product.descripcion}"></p>
                       <hr class="my-4">
                       <div class="row mt-4">
-                        <div class="col-md-12 col-lg-6">
+                        <div class="col-md-6 col-lg-6">
                           <strong class="fw-bolder fs-5 mb-2 ">Especificaciones:</strong>
                           <ul class="list-unstyled product-desc-list mt-2">
                             <li>
@@ -208,57 +198,73 @@
                             </li>
                             <li><i class="mdi mdi-circle-medium me-1 align-middle"></i> Hecho de <span th:text="${product.material}"></span></li>
                             <li><i class="mdi mdi-circle-medium me-1 align-middle"></i> Marca: <span th:text="${product.marca}"></span></li>
-                            <li><i class="mdi mdi-circle-medium me-1 align-middle"></i> Unidades en stock: <span th:text="${product.cantidad}"></span></li>
                           </ul>
-
-
-
                         </div>
-                        <div class="col-12 col-md-6" th:if="${product.talla != null}">
-                          <div class="product-color mt-3">
-                            <h5 class="font-size-14">Talla :</h5>
-                            <div class="btn-group d-flex justify-content-center flex-wrap" role="group">
-                              <!-- Botón Tamaño S solo si el producto es de tamaño S -->
-                              <input type="radio" class="btn-check" name="size" id="sizeS" autocomplete="off"
-                                     th:checked="${product.talla == 'S'}">
-                              <label class="btn btn-outline-primary m-1" for="sizeS" style="width: 50px; height: 40px;"
-                                     th:if="${product.talla == 'S'}">
-                                S
-                              </label>
-
-                              <!-- Botón Tamaño M solo si el producto es de tamaño M -->
-                              <input type="radio" class="btn-check" name="size" id="sizeM" autocomplete="off"
-                                     th:checked="${product.talla == 'M'}">
-                              <label class="btn btn-outline-primary m-1" for="sizeM" style="width: 50px; height: 40px;"
-                                     th:if="${product.talla == 'M'}">
-                                M
-                              </label>
-
-                              <!-- Botón Tamaño L solo si el producto es de tamaño L -->
-                              <input type="radio" class="btn-check" name="size" id="sizeL" autocomplete="off"
-                                     th:checked="${product.talla == 'L'}">
-                              <label class="btn btn-outline-primary m-1" for="sizeL" style="width: 50px; height: 40px;"
-                                     th:if="${product.talla == 'L'}">
-                                L
-                              </label>
+                        <div class="col-lg-6 col-md-6" >
+                          <div class="product-color mt-3 " th:if="${product.talla != null}">
+                            <label class="font-size-14"><strong>Talla :</strong></label>
+                            <label
+                                    th:if="${product.talla == 'S'}">
+                              S
+                            </label>
+                            <label
+                                    th:if="${product.talla == 'M'}">
+                              M
+                            </label>
+                            <label th:if="${product.talla == 'L'}">
+                              L
+                            </label>
+                          </div>
+                          <div class="form-group row align-items-center">
+                            <label for="cantidad" class="col-sm-3 col-form-label">Cantidad: </label>
+                            <div class="col-sm-3">
+                              <!-- Input de cantidad que puede modificar el usuario -->
+                              <input type="number" class="form-control" id="cantidad" name="cantidad" min="20" value="20" oninput="actualizarCantidad()">
                             </div>
+                          </div>
+
+                          <!-- Botones de acción -->
+                          <div class="row text-start mt-3">
+                            <div class="col-12">
+                              <form method="post" th:action="@{/usuario/selecionarProducto}">
+                                <!-- Campo oculto para la cantidad -->
+                                <input type="hidden" id="cantidadOculta" name="cantidad">
+                                <!-- Campo oculto para el ID del producto -->
+                                <input type="hidden" name="productoId" th:value="${product.id}">
+                                <button type="submit" class="btn btn-primary btn-block waves-effect waves-light" onclick="actualizarCantidad()">Añadir al carrito</button>
+                              </form>
+                            </div>
+                          </div>
+
+                          <script>
+                            function actualizarCantidad() {
+                              // Copia el valor del input visible (cantidad) al input oculto
+                              var cantidad = document.getElementById("cantidad").value;
+                              if (cantidad === '') {
+                                cantidad = 20;
+                              }
+
+                              document.getElementById("cantidadOculta").value = cantidad;
+                              console.log("Cantidad actualizada:", cantidad);
+                            }
+
+                            // Inicializa el valor del campo oculto al cargar la página
+                            document.addEventListener('DOMContentLoaded', (event) => {
+                              actualizarCantidad();
+                            });
+                          </script>
 
 
-
+                          <div class="provider-info mt-3">
+                            <div class="provider-label mb-1">
+                              <strong class="fw-bold fs-5 ">Proveedor:</strong>
+                            </div>
+                            <div class="d-flex align-items-center">
+                              <img th:src="@{../../images/product/iconoProvedor.png}" alt="Proveedor Icono" class="me-2" style="width: 40px; height: 40px;">
+                              <span class="provider-name" th:text="${product.proveedorIdproveedor.tienda}">Nombre del Proveedor</span>
+                            </div>
                           </div>
                         </div>
-                        <hr class="my-4">
-                        <div class="provider-info">
-                          <div class="provider-label mb-2">
-                            <strong class="fw-bold fs-5 ">Proveedor:</strong>
-                          </div>
-                          <div class="d-flex align-items-center">
-                            <img th:src="@{../../images/product/iconoProvedor.png}" alt="Proveedor Icono" class="me-2" style="width: 40px; height: 40px;">
-                            <span class="provider-name" th:text="${product.proveedorIdproveedor.tienda}">Nombre del Proveedor</span>
-                          </div>
-                        </div>
-
-
                       </div>
                     </div>
                   </div>
@@ -359,7 +365,10 @@
                               S/ <span th:text="${producto.precio}">100</span>
                               <span style="font-size: 12px; color: #888;">por cada 10 unidades</span>
                             </h5>
-                            <p class="mt-2" style="font-size: 14px;">Costo por unidad: S/<span th:text="${producto.precio*1.5}"></span></p>     </div>
+                            <p class="mt-2" style="font-size: 14px;">Costo por unidad original: S/<span th:text="${producto.precio*1.5}"></span></p>
+
+                          </div>
+
                           <div class="provider-info d-flex align-items-center justify-content-center">
                             <img th:src="@{../../images/product/iconoProvedor.png}" alt="Proveedor Icono" class="rounded-circle me-2" style="width: 30px; height: 30px;">
 
