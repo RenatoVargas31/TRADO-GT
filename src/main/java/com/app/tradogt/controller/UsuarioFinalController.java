@@ -641,6 +641,9 @@ public class UsuarioFinalController {
                                     @RequestParam("publicacionId") Integer publicacionId,
                                     Model model) {
         // Buscar la publicación por su ID
+        int id = getAuthenticatedUserId();
+
+
         Publicacion publicacion = publicacionRepository.findById(publicacionId)
                 .orElseThrow(() -> new IllegalArgumentException("Publicación no encontrada"));
 
@@ -650,8 +653,7 @@ public class UsuarioFinalController {
         comentario.setFechaCreacion(LocalDate.now());  // Fecha actual
         comentario.setPublicacionIdpublicacion(publicacion);
 
-        // Simular el ID del usuario. Actualmente estamos trabajando con el ID 17
-        Usuario usuario = usuarioRepository.findById(17)
+        Usuario usuario = usuarioRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
         comentario.setUsuarioIdusuario(usuario);
 
@@ -691,10 +693,12 @@ public class UsuarioFinalController {
 
     @GetMapping("/registro")
     public String registroPostulacion(Model model) {
-        Integer usuarioId = 17; // Simulamos que el usuario con id 17 está autenticado.
+        int id = getAuthenticatedUserId();
+
+
 
         // Obtener el usuario logueado de la base de datos
-        Usuario usuario = usuarioRepository.findById(usuarioId).orElseThrow();
+        Usuario usuario = usuarioRepository.findById(id).orElseThrow();
 
         // Añadir los datos del usuario al modelo para mostrarlos en la vista
         model.addAttribute("usuario", usuario);
@@ -709,10 +713,11 @@ public class UsuarioFinalController {
             @RequestParam("codigoDespachador") String codigoDespachador,
             Model model) {
 
-        Integer usuarioId = 17; // Simulamos que el usuario con id 17 está autenticado.
+        int id = getAuthenticatedUserId();
+
 
         // Obtener el usuario logueado de la base de datos
-        Usuario usuario = usuarioRepository.findById(usuarioId).orElseThrow();
+        Usuario usuario = usuarioRepository.findById(id).orElseThrow();
 
         // Actualizar los campos editables
         usuario.setRazonSocial(razonSocial);
@@ -750,8 +755,10 @@ public class UsuarioFinalController {
 
     @PostMapping("/nuevaPublicacion")
     public String crearPublicacion(@ModelAttribute("publicacion") Publicacion publicacion, BindingResult result, Model model) {
-        // Suponiendo que estamos usando el idUsuario=17 temporalmente
-        Usuario usuario = usuarioRepository.findById(17).orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
+        int id = getAuthenticatedUserId();
+
+
+        Usuario usuario = usuarioRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
 
         // Asignar el usuario a la publicación
         publicacion.setUsuarioIdusuario(usuario);
@@ -768,10 +775,10 @@ public class UsuarioFinalController {
 
     @GetMapping("/nuevaReseña")
     public String nuevaResenha(Model model){
-        Integer usuarioId = 17;  // Simulamos que el usuario con id 17 está autenticado.
+        int id = getAuthenticatedUserId();
 
         // Obtenemos los productos que el usuario ha recibido
-        List<Producto> productosRecibidos = productosRepository.findProductosRecibidos(usuarioId);
+        List<Producto> productosRecibidos = productosRepository.findProductosRecibidos(id);
         // Añadimos la lista de productos al modelo
         model.addAttribute("productosRecibidos", productosRecibidos);
         model.addAttribute("resena", new Resena()); // Agregamos un objeto vacío para el formulario
@@ -788,8 +795,10 @@ public class UsuarioFinalController {
             @RequestParam("fueRapido") Byte fueRapido,
             @RequestParam(value = "foto", required = false) String foto) {
 
-        // Simulamos que el usuario con id 17 está autenticado
-        Usuario usuario = usuarioRepository.findById(17).orElseThrow();
+        int id = getAuthenticatedUserId();
+
+
+        Usuario usuario = usuarioRepository.findById(id).orElseThrow();
 
         // Obtenemos el producto seleccionado
         Producto producto = productosRepository.findById(productoId).orElseThrow();
