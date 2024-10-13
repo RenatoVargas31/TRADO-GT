@@ -413,6 +413,7 @@ public class SuperAdminController {
         ProductoEnZona productoEnZonaNorte = formProducto.getProductoEnZonaNorte();
         productoEnZonaNorte.setProductoyZona(producto,zonaRepository.findById(1).get());
         productoEnZonaRepository.save(productoEnZonaNorte);
+        System.out.println(productoEnZonaNorte.getId());
         //Sur
         ProductoEnZona productoEnZonaSur = formProducto.getProductoEnZonaSur();
         productoEnZonaSur.setProductoyZona(producto,zonaRepository.findById(2).get());
@@ -456,6 +457,61 @@ public class SuperAdminController {
         model.addAttribute("productos", productos);
         model.addAttribute("productoZonaCantidad", productoZonaCantidad);
         return "SuperAdmin/productoLista-SAdmin";
+    }
+    @PostMapping("/productoEditarForm")
+    public String viewProductoEditarForm(Model model, Integer idProducto, ProductoEnZonaId productoEnZonaIdNorte, ProductoEnZonaId productoEnZonaIdSur, ProductoEnZonaId productoEnZonaIdEste, ProductoEnZonaId productoEnZonaIdOeste) {
+        //Buscar producto por id
+        Producto producto = productosRepository.findById(idProducto).get();
+        //Buscar producto en las zonas
+        ProductoEnZona productoEnZonaNorte = productoEnZonaRepository.findById(productoEnZonaIdNorte).get();
+        ProductoEnZona productoEnZonaSur = productoEnZonaRepository.findById(productoEnZonaIdSur).get();
+        ProductoEnZona productoEnZonaEste = productoEnZonaRepository.findById(productoEnZonaIdEste).get();
+        ProductoEnZona productoEnZonaOeste = productoEnZonaRepository.findById(productoEnZonaIdOeste).get();
+        //Nuevo FormProducto
+        FormProducto formProducto = new FormProducto();
+        formProducto.setProducto(producto);
+        formProducto.setProductoEnZonaNorte(productoEnZonaNorte);
+        formProducto.setProductoEnZonaSur(productoEnZonaSur);
+        formProducto.setProductoEnZonaEste(productoEnZonaEste);
+        formProducto.setProductoEnZonaOeste(productoEnZonaOeste);
+        //Enviar a la vista
+        model.addAttribute("formProducto", formProducto);
+        //Enviar subcategorias
+        model.addAttribute("subcategorias", subCategoriaRepository.findAll());
+        //Enviar Proveedores
+        model.addAttribute("proveedores", proveedorRepository.findAll());
+        return "SuperAdmin/productoEditar-SAdmin";
+    }
+    @GetMapping("/productoBorrar")
+    public String viewProductoBorrar(Integer id,RedirectAttributes redirectAttributes) {
+        Producto producto = productosRepository.findById(id).get();
+        //Buscar el producto en las zonas
+        ProductoEnZona productoEnZonaNorte = productoEnZonaRepository.findById(new ProductoEnZonaId(producto.getId(), 1)).get();
+        ProductoEnZona productoEnZonaSur = productoEnZonaRepository.findById(new ProductoEnZonaId(producto.getId(), 2)).get();
+        ProductoEnZona productoEnZonaEste = productoEnZonaRepository.findById(new ProductoEnZonaId(producto.getId(), 3)).get();
+        ProductoEnZona productoEnZonaOeste = productoEnZonaRepository.findById(new ProductoEnZonaId(producto.getId(), 4)).get();
+        //Borrado lógico del producto si la contidad en cada zona es 0
+        if (productoEnZonaNorte.getCantidad() == 0 && productoEnZonaSur.getCantidad() == 0 && productoEnZonaEste.getCantidad() == 0 && productoEnZonaOeste.getCantidad() == 0) {
+            producto.setIsDeleted((byte) 1);
+            productoEnZonaNorte.setIsDeleted((byte) 1);
+            productoEnZonaSur.setIsDeleted((byte) 1);
+            productoEnZonaEste.setIsDeleted((byte) 1);
+            productoEnZonaOeste.setIsDeleted((byte) 1);
+
+            productosRepository.save(producto);
+            productoEnZonaRepository.save(productoEnZonaNorte);
+            productoEnZonaRepository.save(productoEnZonaSur);
+            productoEnZonaRepository.save(productoEnZonaEste);
+            productoEnZonaRepository.save(productoEnZonaOeste);
+
+            //Enviar mensaje de éxito como redirect attribute
+            redirectAttributes.addFlashAttribute("successMessage", "Producto borrado correctamente.");
+            return "redirect:/superadmin/productoLista";
+        }else{
+            //Enviar mensaje de error como redirect attribute
+            redirectAttributes.addFlashAttribute("errorMessage", "No se puede borrar el producto porque tiene stock en alguna zona.");
+            return "redirect:/superadmin/productoLista";
+        }
     }
 
     //</editor-fold>

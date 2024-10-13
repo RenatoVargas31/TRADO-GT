@@ -149,7 +149,8 @@
                         data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <img class="rounded-circle header-profile-user" th:src="@{../images/users/avatar-2.jpg}"
                          alt="Header Avatar">
-                    <span class="d-none d-xl-inline-block ms-1" th:text="*{#authentication.name}" ></span>
+                    <!-- @thymesVar id="currentUser" type="com.app.tradogt.entity.CustomUserDetails" -->
+                    <span class="d-none d-xl-inline-block ms-1" th:text="${currentUser.nombre}+' '+${currentUser.apellido}" ></span>
                     <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
                 </button>
                 <div class="dropdown-menu dropdown-menu-end">
