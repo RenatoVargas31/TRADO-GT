@@ -601,9 +601,15 @@ public class UsuarioFinalController {
 
     @GetMapping("/reseñas")
     public String showResenhas(Model model) {
-        List<Resena> resenas = resenaRepository.findAll();
+        List<Resena> resenas = resenaRepository
+                .findByUsuarioIdusuarioIsAcceptedAndUsuarioIdusuarioIsPostulatedAndUsuarioIdusuarioIsActivated(1, 0, 1);
+
         model.addAttribute("resenas", resenas);
 
+        // Si no hay reseñas, puedes mostrar un mensaje
+        if (resenas.isEmpty()) {
+            model.addAttribute("noResultsMessage", "Reseña no encontrada");
+        }
         return "Usuario/reseñas-usuario";
     }
 
@@ -614,6 +620,7 @@ public class UsuarioFinalController {
         model.addAttribute("publicaciones", publicaciones);
         return "Usuario/comunidad-usuario";
     }
+
     @GetMapping("/foroProblema")
     public String showForoProblema() {
         return "Usuario/problema-soluciones";
@@ -728,9 +735,44 @@ public class UsuarioFinalController {
         List<Producto> productosRecibidos = productosRepository.findProductosRecibidos(usuarioId);
         // Añadimos la lista de productos al modelo
         model.addAttribute("productosRecibidos", productosRecibidos);
-
+        model.addAttribute("resena", new Resena()); // Agregamos un objeto vacío para el formulario
 
         return "Usuario/nuevaReseña-usuario";
+    }
+
+    @PostMapping("/guardarResenha")
+    public String guardarResenha(
+            @RequestParam("productoId") Integer productoId,
+            @RequestParam("titulo") String titulo,
+            @RequestParam("calificacion") Integer calificacion,
+            @RequestParam("cuerpo") String cuerpo,
+            @RequestParam("fueRapido") Byte fueRapido,
+            @RequestParam(value = "foto", required = false) String foto) {
+
+        // Simulamos que el usuario con id 17 está autenticado
+        Usuario usuario = usuarioRepository.findById(17).orElseThrow();
+
+        // Obtenemos el producto seleccionado
+        Producto producto = productosRepository.findById(productoId).orElseThrow();
+
+        // Creamos una nueva reseña
+        Resena resena = new Resena();
+        resena.setProductoIdproducto(producto);
+        resena.setUsuarioIdusuario(usuario);
+        resena.setTitulo(titulo);
+        resena.setCalificacion(calificacion);
+        resena.setCuerpo(cuerpo);
+        resena.setFechaCreacion(LocalDate.now());
+        resena.setFueRapido(fueRapido);
+
+        // Si no se sube foto, podemos dejarlo en un valor predeterminado
+        resena.setFoto(foto != null ? foto : "default.jpg");
+
+        // Guardamos la reseña
+        resenaRepository.save(resena);
+
+        // Redirigir a la página de reseñas
+        return "redirect:/usuario/rese%C3%B1as";
     }
 
     @GetMapping("/categoriaMujer")
