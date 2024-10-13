@@ -694,6 +694,34 @@ public class UsuarioFinalController {
         return "Usuario/registroSolicitud";
     }
 
+    @PostMapping("/registro")
+    public String procesarPostulacion(
+            @RequestParam("razonSocial") String razonSocial,
+            @RequestParam("ruc") String ruc,
+            @RequestParam("codigoDespachador") String codigoDespachador,
+            Model model) {
+
+        Integer usuarioId = 17; // Simulamos que el usuario con id 17 está autenticado.
+
+        // Obtener el usuario logueado de la base de datos
+        Usuario usuario = usuarioRepository.findById(usuarioId).orElseThrow();
+
+        // Actualizar los campos editables
+        usuario.setRazonSocial(razonSocial);
+        usuario.setRuc(ruc);
+        usuario.setCodigoDespachador(codigoDespachador);
+
+        // Cambiar el estado de postulación a '1'
+        usuario.setIsPostulated((byte) 1);
+
+        // Guardar los cambios en la base de datos
+        usuarioRepository.save(usuario);
+
+        // Redirigir a la página de inicio
+        return "redirect:/usuario/inicio";
+    }
+
+
     @GetMapping("/contraseña")
     public  String showpassword(){
         return "Usuario/password-usuario";
