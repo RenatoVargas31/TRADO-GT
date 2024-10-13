@@ -37,13 +37,13 @@ public class GlobalControllerAdvice {
 
     @ExceptionHandler(NoResourceFoundException.class)
     public ModelAndView handleNoResourceFoundException(NoResourceFoundException ex, Model model) {
-        model.addAttribute("errorMessage", "La página que buscas no existe. No se encontró el recurso solicitado.");
+        model.addAttribute("errorMessage", "La página que buscas no existe.||No se encontró el recurso solicitado.");
         return new ModelAndView("errorPage");
     }
 
     @ExceptionHandler(Exception.class)
     public ModelAndView handleException(Exception ex, Model model) {
-        model.addAttribute("errorMessage", "Ocurrió un error inesperado. Por favor, intenta de nuevo más tarde.");
+        model.addAttribute("errorMessage", "Ocurrió un error inesperado.||Por favor, intenta de nuevo más tarde.");
         return new ModelAndView("errorPage");
     }
 

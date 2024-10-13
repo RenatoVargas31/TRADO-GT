@@ -34,8 +34,8 @@
                     <!--Recibir el errorMessage y separar por '. '-->
                     <!--/*@thymesVar id="errorMessage" type="java.lang.String"*/-->
 
-                    <h3 class="mt-4" th:text="${#strings.arraySplit(errorMessage, '.')[0]}">Site is Under Maintenance</h3>
-                    <p th:text="${#strings.arraySplit(errorMessage, '.')[1]}"></p>
+                    <h3 class="mt-4" th:text="${#strings.arraySplit(errorMessage, '||')[0]}">Site is Under Maintenance</h3>
+                    <p th:text="${#strings.arraySplit(errorMessage, '||')[1]}"></p>
                     <!--
                     <div class="row">
                         <div class="col-md-4">
