@@ -10,6 +10,9 @@ public class MvcConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/uploads/reseñasUsuarios/**")
-                .addResourceLocations("file:/C:/Users/Sergio/Desktop/CHAMBEAR/TRADO-GT/uploads/reseñasUsuarios/");
+                .addResourceLocations("file:./uploads/reseñasUsuarios/");
+
+        registry.addResourceHandler("/uploads/fotosUsuarios/**")
+                .addResourceLocations("file:./uploads/fotosUsuarios/");
     }
 }
