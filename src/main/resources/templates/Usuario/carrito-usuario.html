@@ -252,7 +252,8 @@
                                                         <form th:action="@{/usuario/actualizarCantidad}" method="post">
                                                             <input type="hidden" name="cantidad" id="input-cantidad" >
                                                             <input type="hidden" name="total" id="input-total" />
-                                                            <button type="submit" class="btn btn-primary btn-sm">Pagar</button>
+                                                            <button type="submit" class="btn btn-primary btn-sm" th:if="${!carrito.isEmpty}">Pagar</button>
+
                                                         </form>
                                                     </td>
                                                 </tr>
