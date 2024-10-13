@@ -205,5 +205,17 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
     """, nativeQuery = true)
     List<AgenteInfoZon> getAgentesbyZonal(@Param("zonalId") Integer zonalId);
 
+    //Esto me sirve para los usuarios asignados al agente (perdí tiempo, pero con querys carga más rápdio la página, creo unu, ya lo comprobé si es más rápida la carga xd)
+    @Query(value = """
+            SELECT DISTINCT u.dni, u.nombre, u.apellido, d.nombre AS distrito, u.correo, u.idUsuario
+            FROM Orden o
+            JOIN Usuario u ON o.Usuario_idUsuario = u.idUsuario
+            JOIN Distrito d ON u.distrito_idDistrito = d.idDistrito
+            WHERE o.agentCompra_idUsuario = ?1
+            AND u.isActivated = 1;
+            """,
+            nativeQuery = true)
+    List<Object[]> findUniqueUsersByAgent(int idAgente);
+
 
 }

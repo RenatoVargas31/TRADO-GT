@@ -4,6 +4,7 @@ import com.app.tradogt.dto.OrdenCompraAgtDto;
 import com.app.tradogt.dto.PasswordChangeDto;
 import com.app.tradogt.dto.ProductDetailsAgtDto;
 import com.app.tradogt.dto.ProveedorInfoAgtDto;
+import com.app.tradogt.entity.Distrito;
 import com.app.tradogt.entity.EstadoOrden;
 import com.app.tradogt.entity.Orden;
 import com.app.tradogt.entity.Usuario;
@@ -26,9 +27,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
@@ -40,6 +39,8 @@ public class AgenteComprasController {
     private final ProveedorRepository proveedorRepository;
     final ProductosRepository productosRepository;
     final EstadoOrdenRepository estadoOrdenRepository;
+    @Autowired
+    private DistritoRepository distritoRepository;
 
     public AgenteComprasController(UsuarioRepository usuarioRepository, OrdenRepository ordenRepository, ProveedorRepository proveedorRepository, ProductosRepository productosRepository, EstadoOrdenRepository estadoOrdenRepository) {
         this.usuarioRepository = usuarioRepository;
@@ -435,7 +436,7 @@ public class AgenteComprasController {
         }
 
         // Redirigir a la página de usuarios baneados
-        return "redirect:/agente/enProcesoOrders";
+        return "redirect:/agente/pendingOrders";
     }
 
 
@@ -443,13 +444,37 @@ public class AgenteComprasController {
 
     @GetMapping("/allUsers")
     public String showAllUsers(Model model) {
-        //Por el momento yo mismo le asigno el id que usará para buscar los usuarios asignadas
-        //pues este id será proporcionado recién automáticamente cuando se realice el LOGIN
-        List<Usuario> usuarioList = usuarioRepository.findByAgentcompraIdusuario_Id(4);
+        int idAgente = getAuthenticatedUserId();  // Obtener el ID del usuario autenticado
+
+        // Realizar la consulta nativa para obtener los usuarios únicos asignados a las órdenes del agente
+        List<Object[]> usuariosDatos = usuarioRepository.findUniqueUsersByAgent(idAgente);
+
+        // Crear una lista de usuarios formateada para pasarla a la vista
+        List<Usuario> usuarioList = new ArrayList<>();
+
+        // Procesar los datos recibidos para construir los objetos Usuario
+        for (Object[] usuarioData : usuariosDatos) {
+
+            Usuario usuario = new Usuario();
+            usuario.setDni((String) usuarioData[0]);  // DNI
+            usuario.setNombre((String) usuarioData[1]);  // Nombre
+            usuario.setApellido((String) usuarioData[2]);  // Apellido
+            Distrito distrito = distritoRepository.findByNombre(String.valueOf(usuarioData[3])).get();
+            usuario.setDistritoIddistrito(distrito) ;
+            usuario.setCorreo((String) usuarioData[4]);  // Correo
+            usuario.setId((Integer) usuarioData[5]);  // ID del usuario
+
+
+            // Añadir al Set para evitar duplicados
+            usuarioList.add(usuario);
+        }
+
+        // Pasar los datos de usuarios únicos al modelo
         model.addAttribute("usuarioList", usuarioList);
 
         return "Agente/allUsersTable-Agente";
     }
+
     @GetMapping("/habilitadosUsers")
     public String showHabilitadosUsers(Model model) {
         model.addAttribute("usuarioList", usuarioRepository.findByIsActivatedAndAgentcompraIdusuario_Id((byte) 1,4));
@@ -508,6 +533,15 @@ public class AgenteComprasController {
             // Guardar los cambios en la base de datos
             usuarioRepository.save(usuario);
 
+            //Buscamos todas las órdenes que tengan asignado el id del usuario
+            List<Orden> listaOrdenesAsignadas = ordenRepository.findAllByUsuarioIdusuario(usuario);
+
+            // Marcamos cada orden como eliminada (isDeleted = 1)
+            for (Orden orden : listaOrdenesAsignadas) {
+                orden.setIsDeleted((byte) 1);  // Cambiamos el valor de isDeleted a 1
+                ordenRepository.save(orden);   // Guardamos los cambios en la base de datos
+            }
+
             // Agregar mensaje de éxito al flash attributes
             redirectAttributes.addFlashAttribute("mensaje", "El usuario ha sido baneado con éxito.");
         } else {
@@ -515,8 +549,8 @@ public class AgenteComprasController {
             redirectAttributes.addFlashAttribute("error", "El usuario no fue encontrado.");
         }
 
-        // Redirigir a la página de usuarios baneados
-        return "redirect:/agente/baneadosUsers";
+        // Redirigir a la página de usuarios
+        return "redirect:/agente/allUsers";
     }
 
     //CHAT CON USUARIOS

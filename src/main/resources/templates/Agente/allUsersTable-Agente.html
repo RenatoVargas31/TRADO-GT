@@ -55,6 +55,10 @@
                 </div>
                 <!-- end page title -->
                 <div class="row">
+                    <div th:if="${mensaje}" class="alert alert-success alert-dismissible fade show" role="alert">
+                        <span th:text="${mensaje}"></span>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
                     <div class="col-12">
                         <div class="card">
                             <div class="card-body">
@@ -75,7 +79,6 @@
                                         <th>Nombre de usuario</th>
                                         <th>Distrito</th>
                                         <th>Correo</th>
-                                        <th>Estado de usuario</th>
                                         <th>Ver</th>
                                     </tr>
                                     </thead>
@@ -86,19 +89,49 @@
                                         <td th:text="${usuario.distritoIddistrito.nombre}"></td>
                                         <td th:text="${usuario.correo}"></td>
                                         <td>
-                                            <span th:classappend="${usuario.isActivated == 0} ? 'badge bg-danger fs-6' : 'badge bg-success fs-6'">
-                                                <span th:text="${usuario.isActivated == 0} ? 'Desactivado' : 'Habilitado'"></span>
-                                            </span>
-                                        </td>
-                                        <td>
-                                            <a th:href="'/agente/infoUsuario?idUsuario=' + ${usuario.id}"
-                                               class="btn btn-primary btn-sm waves-effect waves-light" title="Ver">
+                                            <!-- Botón que abre el modal correcto -->
+                                            <a th:href="'/agente/infoUsuario?idUsuario=' + ${usuario.id}" class="btn btn-primary btn-sm waves-effect waves-light" title="Ver">
                                                 <i class="ri-eye-fill"></i>
                                             </a>
+                                            <!-- Aquí el data-bs-target apunta al modal dinámico generado por el id del usuario -->
+                                            <button type="button" class="btn btn-danger btn-sm waves-effect waves-light"
+                                                    th:data-bs-target="'#banUserModal-' + ${usuario.id}" data-bs-toggle="modal">
+                                                <i class="ri-indeterminate-circle-fill"></i>
+                                            </button>
                                         </td>
+
+                                        <!-- Modal dinámico para cada usuario -->
+                                        <div class="modal fade" th:id="'banUserModal-' + ${usuario.id}" tabindex="-1" aria-labelledby="banUserModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" th:text="'Confirmar baneo de ' + ${usuario.nombre} + ' ' + ${usuario.apellido}">Confirmar baneo</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <!-- ID del formulario dinámico -->
+                                                        <form th:id="'banUserForm-' + ${usuario.id}" th:action="@{/agente/banearImportador}" method="post">
+                                                            <input type="hidden" id="idImportador" name="idImportador" th:value="${usuario.id}" />
+                                                            <div class="mb-3">
+                                                                <label for="banReason" class="form-label">Razón del baneo</label>
+                                                                <textarea class="form-control" id="banReason" name="banReason" rows="4" placeholder="Ingresa la razón del baneo" required></textarea>
+                                                                <div id="banReasonError" class="text-danger"></div>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                                        <!-- Aquí el botón de submit hace referencia al formulario único -->
+                                                        <button type="submit" th:form="'banUserForm-' + ${usuario.id}" class="btn btn-danger">Confirmar baneo</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </tr>
                                     </tbody>
                                 </table>
+
+
 
                             </div>
                         </div>

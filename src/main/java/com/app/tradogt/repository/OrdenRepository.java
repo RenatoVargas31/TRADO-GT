@@ -268,5 +268,6 @@ SELECT
 
     List<Orden> findAllByAgentcompraIdusuario(Usuario usuario);
 
+    List<Orden> findAllByUsuarioIdusuario(Usuario idUsuario);
 
 }

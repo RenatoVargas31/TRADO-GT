@@ -283,7 +283,7 @@
                                                 <!-- Formulario de eliminación dentro del modal -->
                                                 <form th:action="@{/agente/deleteOrder}" method="post">
                                                     <input type="hidden" th:name="idOrden" th:value="${orden.id}"/>
-                                                    <button type="submit" class="btn btn-danger">Confirmar cancelación</button>
+                                                    <button type="submit" class="btn btn-danger">Confirmar</button>
                                                 </form>
                                             </div>
                                         </div>
@@ -485,44 +485,57 @@
                             </div>
                             <div data-simplebar class="card-body" style="max-height: 250px;">
                                 <div class="chat-messages">
-                                    <!-- Mensaje del agente -->
-                                    <div class="d-flex mb-3">
-                                        <div class="avatar me-3">
-                                            <span class="avatar-title bg-primary-subtle text-primary rounded-circle" style="width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; border-radius: 50%;">
-                                                                <i class="ri-user-fill"></i>
-                                            </span>
-                                        </div>
-                                        <div>
-                                            <h6 class="mb-1">Agente (Juan Pérez) <small class="text-muted">10:15 AM</small></h6>
-                                            <p class="bg-light p-2 rounded">Hola, el pedido ya está en aduanas. ¿Tienes alguna pregunta?</p>
-                                        </div>
-                                    </div>
-                                    <!-- Mensaje del importador -->
+                                    <!-- Mensaje del agente (debe estar a la derecha) -->
                                     <div class="d-flex justify-content-end mb-3">
                                         <div>
-                                            <h6 class="mb-1 text-end">Importador (Luis Gómez) <small class="text-muted">10:18 AM</small></h6>
-                                            <p class="bg-primary text-white p-2 rounded">Gracias por la información. ¿Cuándo se espera la entrega?</p>
+                                            <h6 class="mb-1 text-end">
+                                                <span th:text="${orden.agentcompraIdusuario.nombre} + ' ' + ${orden.agentcompraIdusuario.apellido}"></span>
+                                                <small class="text-muted">10:15 AM</small>
+                                            </h6>
+                                            <p class="bg-primary text-white p-2 rounded">Hola, el pedido ya está en aduanas. ¿Tienes alguna pregunta?</p>
                                         </div>
                                         <div class="avatar ms-3">
-                                            <span class="avatar-title bg-primary text-white rounded-circle" style="width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; border-radius: 50%;">
-                                                                <i class="ri-user-fill"></i>
-                                            </span>
+                <span class="avatar-title bg-primary text-white rounded-circle" style="width: 50px; height: 50px; display: flex; justify-content: center; align-items: center;">
+                    <i class="ri-user-fill"></i>
+                </span>
                                         </div>
                                     </div>
-                                    <!-- Mensaje del agente -->
+
+                                    <!-- Mensaje del importador (debe estar a la izquierda) -->
                                     <div class="d-flex mb-3">
                                         <div class="avatar me-3">
-                                            <span class="avatar-title bg-primary-subtle text-primary rounded-circle" style="width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; border-radius: 50%;">
-                                                                <i class="ri-user-fill"></i>
-                                            </span>
+                <span class="avatar-title bg-primary-subtle text-primary rounded-circle" style="width: 50px; height: 50px; display: flex; justify-content: center; align-items: center;">
+                    <i class="ri-user-fill"></i>
+                </span>
                                         </div>
                                         <div>
-                                            <h6 class="mb-1">Agente (Juan Pérez) <small class="text-muted">10:20 AM</small></h6>
-                                            <p class="bg-light p-2 rounded">Se espera la entrega para el 25/09/2024. Si hay algún cambio, te avisaremos.</p>
+                                            <h6 class="mb-1">
+                                                <span th:text="${usuario.nombre} + ' ' + ${usuario.apellido}"></span>
+                                                <small class="text-muted">10:18 AM</small>
+                                            </h6>
+                                            <p class="bg-light p-2 rounded">Gracias por la información. ¿Cuándo se espera la entrega?</p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Mensaje del agente (debe estar a la derecha) -->
+                                    <div class="d-flex justify-content-end mb-3">
+                                        <div>
+                                            <h6 class="mb-1 text-end">
+                                                <span th:text="${orden.agentcompraIdusuario.nombre} + ' ' + ${orden.agentcompraIdusuario.apellido}"></span>
+                                                <small class="text-muted">10:20 AM</small>
+                                            </h6>
+                                            <p class="bg-primary text-white p-2 rounded">Se espera la entrega para el 25/09/2024. Si hay algún cambio, te avisaremos.</p>
+                                        </div>
+                                        <div class="avatar ms-3">
+                <span class="avatar-title bg-primary text-white rounded-circle" style="width: 50px; height: 50px; display: flex; justify-content: center; align-items: center;">
+                    <i class="ri-user-fill"></i>
+                </span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+
+
                             <div class="card-footer">
                                 <form>
                                     <div class="input-group">
@@ -646,6 +659,22 @@
         }
     });
 </script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Buscar la barra de progreso
+        var progressBar = document.querySelector('.progress-bar');
+
+        // Obtener el valor del ancho actual de la barra
+        var progressWidth = progressBar.style.width;
+
+        // Si la barra está al 100%
+        if (progressWidth === '100%') {
+            // Eliminar las clases que hacen que la barra sea animada
+            progressBar.classList.remove('progress-bar-striped', 'progress-bar-animated');
+        }
+    });
+</script>
+
 
 
 

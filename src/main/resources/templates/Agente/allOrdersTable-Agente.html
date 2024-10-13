@@ -92,27 +92,28 @@
                     <td th:text="${order.montoTotal}"></td>
                     <!-- Aquí utilizamos th:switch para manejar diferentes estados -->
                     <td>
-                      <span th:switch="${order.estadoPedido}">
-                          <span th:case="'CREADO'" class="badge bg-secondary fs-6">Sin asignar</span>
-                          <span th:case="'EN VALIDACION'" class="badge bg-warning fs-6">Pendiente</span>
-                          <span th:case="'EN PROCESO'" class="badge bg-info fs-6">En proceso</span>
-                          <span th:case="'ARRIBO AL PAIS'" class="badge bg-info fs-6">En proceso</span>
-                          <span th:case="'EN ADUANAS'" class="badge bg-info fs-6">En proceso</span>
-                          <span th:case="'EN RUTA'" class="badge bg-info fs-6">En proceso</span>
-                          <span th:case="'RECIBIDO'" class="badge bg-success fs-6">Resuelto</span>
-                          <span th:case="*">Desconocido</span>  <!-- Este es un caso por defecto -->
-                      </span>
+                <span th:switch="${order.estadoPedido}">
+                    <span th:case="'CREADO'" class="badge bg-secondary fs-6">Sin asignar</span>
+                    <span th:case="'EN VALIDACION'" class="badge bg-warning fs-6">Pendiente</span>
+                    <span th:case="'EN PROCESO'" class="badge bg-info fs-6">En proceso</span>
+                    <span th:case="'ARRIBO AL PAIS'" class="badge bg-info fs-6">En proceso</span>
+                    <span th:case="'EN ADUANAS'" class="badge bg-info fs-6">En proceso</span>
+                    <span th:case="'EN RUTA'" class="badge bg-info fs-6">En proceso</span>
+                    <span th:case="'RECIBIDO'" class="badge bg-success fs-6">Resuelto</span>
+                    <span th:case="*">Desconocido</span>
+                </span>
                     </td>
                     <td>
-                      <a th:href="@{'/agente/detailsOrder?idOrden=' + ${order.idOrden} + '&idUsuario=' + ${order.idUsuarioAsignado} }" class="btn btn-primary btn-sm waves-effect waves-light" title="Ver" >
+                      <a th:href="@{'/agente/detailsOrder?idOrden=' + ${order.idOrden} + '&idUsuario=' + ${order.idUsuarioAsignado} }" class="btn btn-primary btn-sm waves-effect waves-light" title="Ver">
                         <i class="ri-eye-fill"></i>
                       </a>
-                      <button class="btn btn-danger btn-sm waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#deleteProductModal" title="Eliminar" th:if="${order.estadoPedido == 'EN VALIDACION'}">
+                      <!-- Botón que abre el modal dinámico para eliminar la orden -->
+                      <button class="btn btn-danger btn-sm waves-effect waves-light" th:data-bs-target="'#deleteProductModal-' + ${order.idOrden}" data-bs-toggle="modal" title="Eliminar" th:if="${order.estadoPedido == 'EN VALIDACION'}">
                         <i class="ri-indeterminate-circle-fill"></i>
                       </button>
                     </td>
-                    <!-- Modal de confirmación -->
-                    <div class="modal fade" id="deleteProductModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                    <!-- Modal dinámico de confirmación para cada orden -->
+                    <div class="modal fade" th:id="'deleteProductModal-' + ${order.idOrden}" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
                       <div class="modal-dialog">
                         <div class="modal-content">
                           <div class="modal-header">
@@ -120,13 +121,13 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                           </div>
                           <div class="modal-body">
-                            <p>¿Estás seguro que deseas eliminar esta orden? Las órdenes solo pueden eliminar previa coordinación con el usuario mediante el chat entre el agente y el usuario final (importador).</p>
+                            <p>¿Estás seguro de que deseas eliminar esta orden? Las órdenes solo pueden eliminarse previa coordinación con el usuario mediante el chat entre el agente y el usuario final (importador).</p>
                           </div>
                           <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                            <!-- Formulario de eliminación dentro del modal -->
-                            <form th:action="@{/agente/deleteOrder}" method="post">
-                              <input type="hidden" th:name="idOrden" th:value="${order.idOrden}"/>
+                            <!-- Formulario dinámico para cada orden -->
+                            <form th:id="'deleteForm-' + ${order.idOrden}" th:action="@{/agente/deleteOrder}" method="post">
+                              <input type="hidden" name="idOrden" th:value="${order.idOrden}" />
                               <button type="submit" class="btn btn-danger">Confirmar eliminación</button>
                             </form>
                           </div>
@@ -135,11 +136,8 @@
                     </div>
                   </tr>
                   </tbody>
-
-
-
-
                 </table>
+
 
               </div>
             </div>

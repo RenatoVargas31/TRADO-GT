@@ -351,7 +351,7 @@ $(document).ready(function () {
         drawCallback: function () {
             $(".dataTables_paginate > .pagination").addClass("pagination-rounded")
         },
-        buttons: ["copy", "excel", "pdf", "colvis"],
+        buttons: ["csv", "excel", "pdf"],
         columnDefs: [
             { targets: -1, searchable: false } // Deshabilitar búsqueda en la última columna
         ]
@@ -369,7 +369,7 @@ $(document).ready(function () {
         drawCallback: function () {
             $(".dataTables_paginate > .pagination").addClass("pagination-rounded")
         },
-        buttons: ["copy", "excel", "pdf", "colvis"],
+        buttons: ["csv", "excel", "pdf"],
         columnDefs: [
             { targets: -1, searchable: false } // Deshabilitar búsqueda en la última columna
         ]
@@ -380,7 +380,7 @@ $(document).ready(function () {
 
 
 //DATATABLES - AGENTE
-//Tabla de todos los productos
+//Tabla de todos las órdenes
 $(document).ready(function () {
     var a = $("#datatable-ordenesCompraAll").DataTable({
         lengthChange: !1,
@@ -390,7 +390,26 @@ $(document).ready(function () {
         drawCallback: function () {
             $(".dataTables_paginate > .pagination").addClass("pagination-rounded")
         },
-        buttons: ["copy", "excel", "pdf", "colvis"],
+        buttons: [
+            {
+                extend: 'csv',
+                exportOptions: {
+                    columns: ':not(:last-child)' // Excluir la última columna
+                }
+            },
+            {
+                extend: 'excel',
+                exportOptions: {
+                    columns: ':not(:last-child)' // Excluir la última columna
+                }
+            },
+            {
+                extend: 'pdf',
+                exportOptions: {
+                    columns: ':not(:last-child)' // Excluir la última columna
+                }
+            }
+        ],
         columnDefs: [
             { targets: -1, searchable: false } // Deshabilitar búsqueda en la última columna
         ]
@@ -408,7 +427,26 @@ $(document).ready(function () {
         drawCallback: function () {
             $(".dataTables_paginate > .pagination").addClass("pagination-rounded")
         },
-        buttons: ["copy", "excel", "pdf", "colvis"],
+        buttons: [
+            {
+                extend: 'csv',
+                exportOptions: {
+                    columns: ':not(:last-child)' // Excluir la última columna
+                }
+            },
+            {
+                extend: 'excel',
+                exportOptions: {
+                    columns: ':not(:last-child)' // Excluir la última columna
+                }
+            },
+            {
+                extend: 'pdf',
+                exportOptions: {
+                    columns: ':not(:last-child)' // Excluir la última columna
+                }
+            }
+        ],
         columnDefs: [
             { targets: -1, searchable: false } // Deshabilitar búsqueda en la última columna
         ]
@@ -426,7 +464,26 @@ $(document).ready(function () {
         drawCallback: function () {
             $(".dataTables_paginate > .pagination").addClass("pagination-rounded")
         },
-        buttons: ["copy", "excel", "pdf", "colvis"],
+        buttons: [
+            {
+                extend: 'csv',
+                exportOptions: {
+                    columns: ':not(:last-child)' // Excluir la última columna
+                }
+            },
+            {
+                extend: 'excel',
+                exportOptions: {
+                    columns: ':not(:last-child)' // Excluir la última columna
+                }
+            },
+            {
+                extend: 'pdf',
+                exportOptions: {
+                    columns: ':not(:last-child)' // Excluir la última columna
+                }
+            }
+        ],
         columnDefs: [
             { targets: -1, searchable: false } // Deshabilitar búsqueda en la última columna
         ]
@@ -444,7 +501,26 @@ $(document).ready(function () {
         drawCallback: function () {
             $(".dataTables_paginate > .pagination").addClass("pagination-rounded")
         },
-        buttons: ["copy", "excel", "pdf", "colvis"],
+        buttons: [
+            {
+                extend: 'csv',
+                exportOptions: {
+                    columns: ':not(:last-child)' // Excluir la última columna
+                }
+            },
+            {
+                extend: 'excel',
+                exportOptions: {
+                    columns: ':not(:last-child)' // Excluir la última columna
+                }
+            },
+            {
+                extend: 'pdf',
+                exportOptions: {
+                    columns: ':not(:last-child)' // Excluir la última columna
+                }
+            }
+        ],
         columnDefs: [
             { targets: -1, searchable: false } // Deshabilitar búsqueda en la última columna
         ]
@@ -462,7 +538,26 @@ $(document).ready(function () {
         drawCallback: function () {
             $(".dataTables_paginate > .pagination").addClass("pagination-rounded")
         },
-        buttons: ["copy", "excel", "pdf", "colvis"],
+        buttons: [
+            {
+                extend: 'csv',
+                exportOptions: {
+                    columns: ':not(:last-child)' // Excluir la última columna
+                }
+            },
+            {
+                extend: 'excel',
+                exportOptions: {
+                    columns: ':not(:last-child)' // Excluir la última columna
+                }
+            },
+            {
+                extend: 'pdf',
+                exportOptions: {
+                    columns: ':not(:last-child)' // Excluir la última columna
+                }
+            }
+        ],
         columnDefs: [
             { targets: -1, searchable: false } // Deshabilitar búsqueda en la última columna
         ]
@@ -480,7 +575,26 @@ $(document).ready(function () {
         drawCallback: function () {
             $(".dataTables_paginate > .pagination").addClass("pagination-rounded")
         },
-        buttons: ["copy", "excel", "pdf", "colvis"],
+        buttons: [
+            {
+                extend: 'csv',
+                exportOptions: {
+                    columns: ':not(:last-child)' // Excluir la última columna
+                }
+            },
+            {
+                extend: 'excel',
+                exportOptions: {
+                    columns: ':not(:last-child)' // Excluir la última columna
+                }
+            },
+            {
+                extend: 'pdf',
+                exportOptions: {
+                    columns: ':not(:last-child)' // Excluir la última columna
+                }
+            }
+        ],
         columnDefs: [
             { targets: -1, searchable: false } // Deshabilitar búsqueda en la última columna
         ]
@@ -498,7 +612,26 @@ $(document).ready(function () {
         drawCallback: function () {
             $(".dataTables_paginate > .pagination").addClass("pagination-rounded")
         },
-        buttons: ["copy", "excel", "pdf", "colvis"],
+        buttons: [
+            {
+                extend: 'csv',
+                exportOptions: {
+                    columns: ':not(:last-child)' // Excluir la última columna
+                }
+            },
+            {
+                extend: 'excel',
+                exportOptions: {
+                    columns: ':not(:last-child)' // Excluir la última columna
+                }
+            },
+            {
+                extend: 'pdf',
+                exportOptions: {
+                    columns: ':not(:last-child)' // Excluir la última columna
+                }
+            }
+        ],
         columnDefs: [
             { targets: -1, searchable: false } // Deshabilitar búsqueda en la última columna
         ]
@@ -506,7 +639,7 @@ $(document).ready(function () {
     a.buttons().container().appendTo("#datatable-usuariosHabilitados_wrapper .col-md-6:eq(0)");
     $(".dataTables_length select").addClass("form-select form-select-sm");
 });
-//Tablas de usuarios baneados
+//Tablas de usuarios bloqueados
 $(document).ready(function () {
     var a = $("#datatable-usuariosBaneados").DataTable({
         lengthChange: !1,
@@ -516,7 +649,26 @@ $(document).ready(function () {
         drawCallback: function () {
             $(".dataTables_paginate > .pagination").addClass("pagination-rounded")
         },
-        buttons: ["copy", "excel", "pdf", "colvis"],
+        buttons: [
+            {
+                extend: 'csv',
+                exportOptions: {
+                    columns: ':not(:last-child)' // Excluir la última columna
+                }
+            },
+            {
+                extend: 'excel',
+                exportOptions: {
+                    columns: ':not(:last-child)' // Excluir la última columna
+                }
+            },
+            {
+                extend: 'pdf',
+                exportOptions: {
+                    columns: ':not(:last-child)' // Excluir la última columna
+                }
+            }
+        ],
         columnDefs: [
             { targets: -1, searchable: false } // Deshabilitar búsqueda en la última columna
         ]
@@ -536,7 +688,26 @@ $(document).ready(function () {
         drawCallback: function () {
             $(".dataTables_paginate > .pagination").addClass("pagination-rounded")
         },
-        buttons: ["excel", "pdf"],
+        buttons: [
+            {
+                extend: 'csv',
+                exportOptions: {
+                    columns: ':not(:last-child)' // Excluir la última columna
+                }
+            },
+            {
+                extend: 'excel',
+                exportOptions: {
+                    columns: ':not(:last-child)' // Excluir la última columna
+                }
+            },
+            {
+                extend: 'pdf',
+                exportOptions: {
+                    columns: ':not(:last-child)' // Excluir la última columna
+                }
+            }
+        ],
         columnDefs: [
             { targets: -1, searchable: false } // Deshabilitar búsqueda en la última columna
         ]
@@ -553,7 +724,7 @@ $(document).ready(function () {
         drawCallback: function () {
             $(".dataTables_paginate > .pagination").addClass("pagination-rounded")
         },
-        buttons: ["excel", "pdf"],
+        buttons: ["csv", "excel", "pdf"],
         columnDefs: [
             { targets: -1, searchable: false } // Deshabilitar búsqueda en la última columna
         ]
