@@ -49,7 +49,7 @@ public class GlobalControllerAdvice {
 
     @ExceptionHandler(DataAccessException.class)
     public ModelAndView handleDataAccessException(DataAccessException ex, Model model) {
-        model.addAttribute("errorMessage", "Se perdió la conexión con la base de datos. Por favor, inténtelo de nuevo más tarde.");
+        model.addAttribute("errorMessage", "Se perdió la conexión con la base de datos.");
         return new ModelAndView("errorPage");
     }
 
@@ -100,6 +100,7 @@ public class GlobalControllerAdvice {
         } else {
             // Si no hay usuario autenticado o no tiene carrito, establecer la cantidad en 0
             model.addAttribute("cantidadProductosEnCarrito", 0);
+
         }
     }
 }
