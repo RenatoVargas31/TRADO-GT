@@ -75,6 +75,7 @@
                                 Además, tendrás la opción de eliminar un pedido si este aún no ha sido procesado. </p>
 
                                 <div th:if="${saveEdit != null}" class="alert alert-success" th:text="${saveEdit}"></div>
+                                <div th:if="${exito != null}" class="alert alert-success" th:text="${exito}"></div>
                                 <div th:if="${saveEditError != null}" class="alert alert-danger" th:text="${saveEditError}"></div>
                                 <div th:if="${msjAgente != null}" class="alert alert-success" th:text="${msjAgente}"></div>
                                 <div th:if="${mensaje != null}" class="alert alert-success" th:text="${mensaje}"></div>
