@@ -113,45 +113,61 @@
                         <div class="card mt-4">
                             <div class="card-body">
                                 <h6>Ver comentarios</h6>
-                                <div class="border p-4 rounded" th:each="comentario : ${comentarios}" >
-                                    <div class="d-flex border-bottom pb-3">
-                                        <div class="flex-1">
-                                            <p class="text-muted mb-2" th:text="${comentario.cuerpo}">To an English person, it will seem like simplified English, as a skeptical Cambridge</p>
-                                            <h5 class="font-size-15 mb-3" th:text="${comentario.usuarioIdusuario.nombre} + ', ' + ${comentario.usuarioIdusuario.apellido} ">James</h5>
 
-                                            <ul class="list-inline product-review-link mb-0">
-                                                <li class="list-inline-item">
-                                                    <a href="#" onclick="showReplyForm(event, 'reply-form-1')"><i class="mdi mdi-message-text align-middle me-1"></i> Comment</a>
-                                                </li>
-                                            </ul>
+                                <!-- Verifica si la lista de comentarios está vacía -->
+                                <div th:if="${#lists.isEmpty(comentarios)}" class="text-center">
+                                    <p>Aún no hay comentarios</p>
+                                </div>
 
-                                            <div id="reply-form-1" class="reply-form" style="display: none; margin-top: 10px;">
-                                                <form>
-                                                    <div class="mb-3">
-                                                        <label for="reply-text" class="form-label">Tu respuesta:</label>
-                                                        <textarea class="form-control" id="reply-text" rows="3"></textarea>
-                                                    </div>
-                                                    <button type="submit" class="btn btn-primary">Publicar</button>
-                                                    <button type="button" class="btn btn-danger" onclick="hideReplyForm('reply-form-1')">Cancelar</button>
-                                                </form>
+                                <!-- Mostrar comentarios si la lista no está vacía -->
+                                <div th:if="${!#lists.isEmpty(comentarios)}">
+                                    <div class="border p-4 rounded" th:each="comentario : ${comentarios}">
+                                        <div class="d-flex border-bottom pb-3">
+                                            <div class="flex-1">
+                                                <p class="text-muted mb-2" th:text="${comentario.cuerpo}">
+                                                    To an English person, it will seem like simplified English, as a skeptical Cambridge
+                                                </p>
+                                                <h5 class="font-size-15 mb-3" th:text="${comentario.usuarioIdusuario.nombre} + ', ' + ${comentario.usuarioIdusuario.apellido}">
+                                                    James
+                                                </h5>
+
+                                                <ul class="list-inline product-review-link mb-0">
+                                                    <li class="list-inline-item">
+                                                        <a href="#" onclick="showReplyForm(event, 'reply-form-1')">
+                                                            <i class="mdi mdi-message-text align-middle me-1"></i> Comment
+                                                        </a>
+                                                    </li>
+                                                </ul>
+
+                                                <div id="reply-form-1" class="reply-form" style="display: none; margin-top: 10px;">
+                                                    <form>
+                                                        <div class="mb-3">
+                                                            <label for="reply-text" class="form-label">Tu respuesta:</label>
+                                                            <textarea class="form-control" id="reply-text" rows="3"></textarea>
+                                                        </div>
+                                                        <button type="submit" class="btn btn-primary">Publicar</button>
+                                                        <button type="button" class="btn btn-danger" onclick="hideReplyForm('reply-form-1')">Cancelar</button>
+                                                    </form>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                        <script>
-                                            function showReplyForm(event, formId) {
-                                                event.preventDefault();
-                                                document.getElementById(formId).style.display = 'block';
-                                            }
-
-                                            function hideReplyForm(formId) {
-                                                document.getElementById(formId).style.display = 'none';
-                                            }
-                                        </script>
 
                                         <p class="float-sm-end font-size-12" th:text="${comentario.fechaCreacion}">11 Feb, 2020</p>
                                     </div>
                                 </div>
                             </div>
+                        </div>
+
+                        <script>
+                            function showReplyForm(event, formId) {
+                                event.preventDefault();
+                                document.getElementById(formId).style.display = 'block';
+                            }
+
+                            function hideReplyForm(formId) {
+                                document.getElementById(formId).style.display = 'none';
+                            }
+                        </script>
 
                     </div>
 
