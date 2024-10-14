@@ -129,6 +129,8 @@ public class UsuarioFinalController {
 
         //Listar los pedidos recientes
 
+
+
         return "Usuario/inicio-usuario";
     }
 
@@ -156,7 +158,7 @@ public class UsuarioFinalController {
 
 
     //Borrar una orden
-    @GetMapping("/deleteOrden")
+    @PostMapping("/deleteOrden")
     public String deleteOrden(Model model, @RequestParam("codigo") String codigo, RedirectAttributes attr) {
 
 
@@ -1174,6 +1176,9 @@ public class UsuarioFinalController {
         System.out.println("carr: " + miCarrito.getIsDelete());
         List<ProductoEnCarrito> misProductos = productoEnCarritoRepository.findBycarritoIdcarrito(miCarrito);//la cantidad de cada producto está aqui
 
+        int salvavida = 0;
+        ProductoEnCarrito productoError = new ProductoEnCarrito();
+
         if(misProductos.isEmpty()) {
             //No debería estar aquí
             attr.addFlashAttribute("error", "No hay productos en el carrito.");
@@ -1191,6 +1196,12 @@ public class UsuarioFinalController {
 
                 //busco el producto en la tienda
                 Optional<ProductoEnZona> tienda =productoEnZonaRepository.findById(itemTienda);
+                if (!tienda.isPresent()) {
+                    attr.addFlashAttribute("error", "El producto no se encontró en la tienda.");
+                    return "redirect:/usuario/carrito";
+                }
+
+
                 System.out.println("-------");
                 System.out.println("ID producto: " + item.getProductoEnZona().getProductoIdproducto().getId());
 
@@ -1200,48 +1211,67 @@ public class UsuarioFinalController {
                 System.out.println("cantidad :" + cantidadSelecionada);
 
                 int newTotal = Stock - cantidadSelecionada;
+                salvavida = newTotal;
+                productoError= item;
 
-                System.out.println("Nuevo stock: " + newTotal);
-                tienda.get().setCantidad(newTotal);
-                productoEnZonaRepository.save(tienda.get());
-                System.out.println("AYUDDDDDDDDDDDDDDDA");
+                if(newTotal<0){
+                    break;
+
+                }else {
+                    System.out.println("Nuevo stock: " + newTotal);
+                    tienda.get().setCantidad(newTotal);
+                    productoEnZonaRepository.save(tienda.get());
+                    System.out.println("AYUDDDDDDDDDDDDDDDA");
+                }
+
             }
         }
 
-        //Se genera una nueva orden
-        Orden orden = new Orden();
-        List<EstadoOrden> listaEstadoOrden = estadoOrdenRepository.findAll();
-        EstadoOrden primerEstadoOrden = listaEstadoOrden.get(0);
-        System.out.println("se creó una orden :DDDDDDDDDD");
+        if(salvavida<0){
+            attr.addFlashAttribute("error", "No hay stock suficiente para el producto "
+                    + productoError.getProductoEnZona().getProductoIdproducto().getNombre()
+                    + ". Stock actual: "
+                    + productoError.getProductoEnZona().getCantidad());
 
-        //Cambio al id de orden del carrito a null -> k
-        Carrito carrito = carritoRepository.findByusuarioIdusuarioAndIsDelete(myuser, (byte) 0 );
+            return "redirect:/usuario/carrito";
+        }else {
+            //Se genera una nueva orden
+            Orden orden = new Orden();
+            List<EstadoOrden> listaEstadoOrden = estadoOrdenRepository.findAll();
+            EstadoOrden primerEstadoOrden = listaEstadoOrden.get(0);
+            System.out.println("se creó una orden :DDDDDDDDDD");
 
-
-        //Generamos una nueva orden
-        orden.setEstadoordenIdestadoorden(primerEstadoOrden);
-        orden.setFechaCreacion(LocalDate.now());
-        //orden.setFechaArribo(LocalDate.now().plusWeeks(3));
-        orden.setIsDeleted((byte) 0);
-        orden.setCodigo(RandomCodeGenerator.generateRandomCode(5));
-        orden.setCostoTotal(monto);
-        orden.setPagoIdpago(pago);
-        orden.setUsuarioIdusuario(myuser);
-        orden.setCarritoIdcarrito(carrito);
-        orden.setLugarEntrega(LugarEntrega);
+            //Cambio al id de orden del carrito a null -> k
+            Carrito carrito = carritoRepository.findByusuarioIdusuarioAndIsDelete(myuser, (byte) 0 );
 
 
-        // Guardar la orden
-        ordenRepository.save(orden);
-        Integer idOrden = orden.getId();
-        attr.addFlashAttribute("exito", "Se ha generado correctamente la orden de compra!");
-        model.addAttribute("orden", orden);
-        if (carrito != null) {
-            carrito.setIsDelete((byte) 1);
-            carritoRepository.save(carrito);
+            //Generamos una nueva orden
+            orden.setEstadoordenIdestadoorden(primerEstadoOrden);
+            orden.setFechaCreacion(LocalDate.now());
+            //orden.setFechaArribo(LocalDate.now().plusWeeks(3));
+            orden.setIsDeleted((byte) 0);
+            orden.setCodigo(RandomCodeGenerator.generateRandomCode(5));
+            orden.setCostoTotal(monto);
+            orden.setPagoIdpago(pago);
+            orden.setUsuarioIdusuario(myuser);
+            orden.setCarritoIdcarrito(carrito);
+            orden.setLugarEntrega(LugarEntrega);
+
+
+            // Guardar la orden
+            ordenRepository.save(orden);
+            Integer idOrden = orden.getId();
+            attr.addFlashAttribute("exito", "Se ha generado correctamente la orden de compra!");
+            model.addAttribute("orden", orden);
+            if (carrito != null) {
+                carrito.setIsDelete((byte) 1);
+                carritoRepository.save(carrito);
+            }
+            System.out.println("ID de la orden generada: " + idOrden);
+            return "redirect:/usuario/misPedidos";
         }
-        System.out.println("ID de la orden generada: " + idOrden);
-        return "redirect:/usuario/misPedidos";
+
+
     }
 
 }

@@ -58,7 +58,8 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="table-responsive">
-                                            <div th:if="${message != null}" class="alert alert-success" th:text="${message}"></div>
+                                            <div th:if="${error != null}" class="alert alert-danger" th:text="${error}"></div>
+                                            <div th:if="${message != null}" class="alert alert-danger" th:text="${message}"></div>
                                             <table class="table table-centered mb-0 table-nowrap">
                                                 <thead class="bg-light">
                                                 <tr>
@@ -95,7 +96,7 @@
                                                         <div style="width: 120px;" class="product-cart-touchspin">
                                                             <button type="button" th:onclick="'disminuir(\'cantidad-' + ${iterStat.index + 1} + '\', \'precio-' + ${iterStat.index + 1} + '\', \'total-' + ${iterStat.index + 1} + '\')'">-</button>
                                                             <label th:for="'cantidad-'+${iterStat.index + 1}"></label>
-                                                            <input class="w-25" th:id="'cantidad-'+${iterStat.index + 1}" type="text" th:value="${producto.cantidad}" readonly>
+                                                            <input class="w-50" th:id="'cantidad-'+${iterStat.index + 1}" type="text" th:value="${producto.cantidad}" readonly>
                                                             <button type="button" th:onclick="'incrementar(\'cantidad-' + ${iterStat.index + 1} + '\', \'precio-' + ${iterStat.index + 1} + '\', \'total-' + ${iterStat.index + 1} + '\')'">+</button>
                                                         </div>
                                                     </td>

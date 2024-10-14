@@ -134,7 +134,7 @@
                                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
 
                                                             <!-- Formulario con mtodo GET para eliminar -->
-                                                            <form th:action="@{/usuario/deleteOrden}" method="get">
+                                                            <form th:action="@{/usuario/deleteOrden}" method="post">
                                                                 <!-- Campo oculto con el código de la orden -->
                                                                 <input type="hidden" name="codigo" th:value="${orden.codigoOrden}" />
                                                                 <button type="submit" class="btn btn-danger">Eliminar y Realizar Reembolso</button>
