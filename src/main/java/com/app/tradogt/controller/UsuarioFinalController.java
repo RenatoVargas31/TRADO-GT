@@ -434,10 +434,14 @@ public class UsuarioFinalController {
         }
         Optional<Producto> productoOpt = productosRepository.findById(id);
 
+
+
         if (productoOpt.isPresent()) {
             Producto producto = productoOpt.get();
             // Si el producto existe, agregarlo al modelo
             model.addAttribute("product",producto);
+            model.addAttribute("rating", resenaRepository.findRating(id));
+            model.addAttribute("conteoRating", resenaRepository.countResena(id));
             model.addAttribute("currentId",id);
 
             switch(producto.getSubcategoriaIdsubcategoria().getCategoriaIdcategoria().getId()) {
