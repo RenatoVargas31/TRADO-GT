@@ -240,25 +240,29 @@ public class UsuarioFinalController {
     }
 
     @PostMapping("/subirFoto")
-    private String subirFoto(@RequestParam("foto") MultipartFile file, Model model) throws IOException {
+    public String viewSubirFoto(@RequestParam("foto") MultipartFile file, Model model) throws IOException {
+        System.out.println("Entré al controler");
 
-        int user = getAuthenticatedUserId();
+        // Ruta dinámica donde se guardarán las imágenes (fuera de static)
+        String uploadDir = "uploads/fotosUsuarios/";
 
-        Optional<Usuario> usuarioOptional = usuarioRepository.findById(user);
-        if (usuarioOptional.isPresent()) {
-            // Ruta donde se guardarán las imágenes (ajusta según tu estructura)
-            String uploadDir = "src/main/resources/static/images/users/";
+        // Guardar el archivo en la ruta definida
+        byte[] bytes = file.getBytes();
+        Path path = Paths.get(uploadDir + file.getOriginalFilename());
+        Files.write(path, bytes);
+        System.out.println("Guardé la foto en: " + path);
 
-            // Guardar el archivo en la ruta definida
-            byte[] bytes = file.getBytes();
-            Path path = Paths.get(uploadDir + file.getOriginalFilename());
-            Files.write(path, bytes);
+        // Obtener el usuario autenticado desde el modelo
+        Usuario usuario = (Usuario) model.getAttribute("usuarioAutenticado");
+        assert usuario != null;
 
-            Usuario usuario = usuarioOptional.get();
-            usuario.setFoto(file.getOriginalFilename());
-            usuarioRepository.save(usuario);
-        }
+        // Actualizar el nombre de la foto en la base de datos
+        usuario.setFoto(file.getOriginalFilename());
+        System.out.println("Seteé la foto como: " + file.getOriginalFilename());
+        usuarioRepository.save(usuario);
+        System.out.println("Guardé el usuario");
 
+        // Redirigir al perfil
         return "redirect:/usuario/perfil";
     }
 
