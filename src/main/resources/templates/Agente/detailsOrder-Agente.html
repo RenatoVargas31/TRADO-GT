@@ -217,13 +217,13 @@
                             </div>
                             <div class="card-body row">
                                 <div class="col">
-                                    <p><strong>Subtotal:</strong> <span th:text="'$'+${subtotal}"></span></p>
+                                    <p><strong>Subtotal:</strong> <span th:text="'S/. '+${subtotal}"></span></p>
                                 </div>
                                 <div class="col">
-                                    <p><strong>Envío:</strong> <span th:text="'$'+${totalEnvio}"></span></p>
+                                    <p><strong>Envío:</strong> <span th:text="'S/. '+${totalEnvio}"></span></p>
                                 </div>
                                 <div class="col">
-                                    <p><strong>Total:</strong> <span th:text="'$'+${total}"></span></p>
+                                    <p><strong>Total:</strong> <span th:text="'S/. '+${total}"></span></p>
                                 </div>
                             </div>
                         </div>
@@ -359,7 +359,7 @@
                                                 </span>
                                             </div>
                                             <div>
-                                                <h5 class="font-size-13"> <small class="text-muted">Fecha</small></h5>
+                                                <h5 class="font-size-13"> <small class="text-muted">Fecha: <a th:text="${orden.fechaCreacion}"></a></small></h5>
                                                 <p class="text-muted mb-0">Orden CREADA</p>
                                             </div>
                                         </li>
@@ -380,7 +380,12 @@
                                                 </span>
                                             </div>
                                             <div>
-                                                <h5 class="font-size-13"> <small class="text-muted">Fecha</small></h5>
+                                                <h5 class="font-size-13">
+                                                    <small class="text-muted">Fecha:
+                                                        <span th:if="${orden.fechaValidacion != null}" th:text="${orden.fechaValidacion}"></span>
+                                                        <span th:if="${orden.fechaValidacion == null}">--</span>
+                                                    </small>
+                                                </h5>
                                                 <p class="text-muted mb-0">Orden EN VALIDACIÓN</p>
                                             </div>
                                         </li>
@@ -400,7 +405,12 @@
                                                 </span>
                                             </div>
                                             <div>
-                                                <h5 class="font-size-13"> <small class="text-muted">Fecha</small></h5>
+                                                <h5 class="font-size-13">
+                                                    <small class="text-muted">Fecha:
+                                                        <span th:if="${orden.fechaEnProceso != null}" th:text="${orden.fechaEnProceso}"></span>
+                                                        <span th:if="${orden.fechaEnProceso == null}">--</span>
+                                                    </small>
+                                                </h5>
                                                 <p class="text-muted mb-0">Orden EN PROCESO</p>
                                             </div>
                                         </li>
@@ -419,7 +429,12 @@
                                                 </span>
                                             </div>
                                             <div>
-                                                <h5 class="font-size-13"> <small class="text-muted">Fecha</small></h5>
+                                                <h5 class="font-size-13">
+                                                    <small class="text-muted">Fecha:
+                                                        <span th:if="${orden.fechaArribo != null}" th:text="${orden.fechaArribo}"></span>
+                                                        <span th:if="${orden.fechaArribo == null}">--</span>
+                                                    </small>
+                                                </h5>
                                                 <p class="text-muted mb-0">Orden ARRIBO AL PAÍS</p>
                                             </div>
                                         </li>
@@ -437,7 +452,12 @@
                                                 </span>
                                             </div>
                                             <div>
-                                                <h5 class="font-size-13"> <small class="text-muted">Fecha</small></h5>
+                                                <h5 class="font-size-13">
+                                                    <small class="text-muted">Fecha:
+                                                        <span th:if="${orden.fechaEnAduanas != null}" th:text="${orden.fechaEnAduanas}"></span>
+                                                        <span th:if="${orden.fechaEnAduanas == null}">--</span>
+                                                    </small>
+                                                </h5>
                                                 <p class="text-muted mb-0">Orden EN ADUANAS</p>
                                             </div>
                                         </li>
@@ -454,7 +474,12 @@
                                                 </span>
                                             </div>
                                             <div>
-                                                <h5 class="font-size-13"> <small class="text-muted">Fecha</small></h5>
+                                                <h5 class="font-size-13">
+                                                    <small class="text-muted">Fecha:
+                                                        <span th:if="${orden.fechaEnRuta != null}" th:text="${orden.fechaEnRuta}"></span>
+                                                        <span th:if="${orden.fechaEnRuta == null}">--</span>
+                                                    </small>
+                                                </h5>
                                                 <p class="text-muted mb-0">Orden EN RUTA</p>
                                             </div>
                                         </li>
@@ -470,7 +495,12 @@
                                                 </span>
                                             </div>
                                             <div>
-                                                <h5 class="font-size-13"> <small class="text-muted">Fecha</small></h5>
+                                                <h5 class="font-size-13">
+                                                    <small class="text-muted">Fecha:
+                                                        <span th:if="${orden.fechaRecibido != null}" th:text="${orden.fechaRecibido}"></span>
+                                                        <span th:if="${orden.fechaRecibido == null}">--</span>
+                                                    </small>
+                                                </h5>
                                                 <p class="text-muted mb-0">Orden RECIBIDA</p>
                                             </div>
                                         </li>

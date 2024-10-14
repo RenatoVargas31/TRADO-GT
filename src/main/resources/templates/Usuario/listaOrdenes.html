@@ -103,14 +103,6 @@
                                         <td>
                                             <a th:href="@{'/usuario/tracking?id=' + ${orden.codigoOrden}}" class="btn btn-primary btn-sm waves-effect waves-light" title="Ver"><i class="ri-eye-fill"></i></a>
 
-                                            <!-- Si la orden está en 'CREADO' o 'EN VALIDACION' -->
-                                            <a th:href="@{'/usuario/editOrden?id=' + ${orden.codigoOrden}}" class="btn btn-success btn-sm waves-effect waves-light" title="Editar" th:if="${ orden.estadoOrden == 'CREADO' &&  orden.agente == 'No asignado' }">
-                                                <i class="ri-pencil-fill"></i>
-                                            </a>
-                                            <a href="/usuario/editOrden" class="btn btn-secondary btn-sm waves-effect waves-light disabled" title="No editable" th:unless="${ orden.estadoOrden == 'CREADO' }">
-                                                <i class="ri-pencil-fill"></i>
-                                            </a>
-
                                             <!-- Si la orden está en 'CREADO' o 'EN VALIDACION', mostrar opción de eliminar -->
                                             <a href="javascript:void(0);" class="btn btn-danger btn-sm waves-effect waves-light" data-bs-toggle="modal" th:data-bs-target="'#deleteProductModal' + ${orden.codigoOrden}" title="Eliminar" th:if="${orden.estadoOrden == 'EN VALIDACION' || orden.estadoOrden == 'CREADO'}">
                                                 <i class="ri-indeterminate-circle-fill"></i>
@@ -225,9 +217,6 @@
 <script th:src="@{../libs/jszip/jszip.min.js}"></script>
 <script th:src="@{../libs/pdfmake/build/pdfmake.min.js}"></script>
 <script th:src="@{../libs/pdfmake/build/vfs_fonts.js}"></script>
-<script th:src="@{../libs/datatables.net-buttons/js/buttons.html5.min.js}"></script>
-<script th:src="@{../libs/datatables.net-buttons/js/buttons.print.min.js}"></script>
-<script th:src="@{../libs/datatables.net-buttons/js/buttons.colVis.min.js}"></script>
 
 <script th:src="@{../libs/datatables.net-keytable/js/dataTables.keyTable.min.js}"></script>
 <script th:src="@{../libs/datatables.net-select/js/dataTables.select.min.js}"></script>

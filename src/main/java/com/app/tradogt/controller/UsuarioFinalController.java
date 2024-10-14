@@ -361,22 +361,6 @@ public class UsuarioFinalController {
 
         return "Usuario/trackingOrdEdit";
     }
-    //Guardar los cambios
-    @PostMapping("/guardarCambiosOrden")
-    public String saveCambiosOrden(RedirectAttributes attr, @ModelAttribute("orden") Orden orden) {
-        // Buscar la orden
-        Optional<Orden> ordenExistente = ordenRepository.findById(orden.getId());
-        if(ordenExistente.isPresent()) {
-            Orden ordenActaulizada = ordenExistente.get();
-            ordenActaulizada.setLugarEntrega(orden.getLugarEntrega());
-            ordenRepository.save(ordenActaulizada);
-            attr.addFlashAttribute("saveEdit", "La orden ha sido actualiza correctamente.");
-        }else{
-            attr.addFlashAttribute("saveEditError", "La orden ha sido no existe");
-        }
-        return "redirect:/usuario/misPedidos";
-    }
-
 
     //Asignación de un Agente
     @PostMapping("/asignarAgente")
@@ -405,8 +389,37 @@ public class UsuarioFinalController {
         return "redirect:/usuario/misPedidos";
     }
 
+    //Actualizar la dirreción de entrega
+    @PostMapping("/updateDelivery")
+    public String updateDireccion(@RequestParam("idOrden") int idOrden,
+                                  @RequestParam("idUsuario") int idUsuario,
+                                  @RequestParam("direccion") String direccionEntrega,
+                                  RedirectAttributes redirectAttributes){
 
-    @PostMapping("/updateDireccion")
+        //Buscamos la orden por id
+        Optional<Orden> orden = ordenRepository.findById(idOrden);
+        String code = orden.get().getCodigo();
+
+        System.out.println("-----------");
+        System.out.println("codigo: " + code);
+
+
+        if(orden.isPresent()) {
+            Orden ord = orden.get();
+            ord.setLugarEntrega(direccionEntrega);
+            ordenRepository.save(ord);
+            // Agregar mensaje de éxito al flash attributes
+            redirectAttributes.addFlashAttribute("saveEdit", "La dirección de entrega ha sido modificada con éxito.");
+        }else {
+            // Si no se encuentra el usuario
+            redirectAttributes.addFlashAttribute("saveEditError", "La orden no fue encontrada. Inténtelo de nuevo más tarde");
+        }
+
+        return "redirect:/usuario/misPedidos";
+    }
+
+
+    @PostMapping("/updateDireccion") //perfil
     public String updateDireccion(@RequestParam("direccion") String direccion, Model model) {
         // Aquí debes obtener el usuario actual, por ejemplo, desde la sesión o un parámetro
 
