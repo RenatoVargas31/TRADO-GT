@@ -1,9 +1,6 @@
 package com.app.tradogt.controller;
 
-import com.app.tradogt.dto.OrdenCompraAgtDto;
-import com.app.tradogt.dto.PasswordChangeDto;
-import com.app.tradogt.dto.ProductDetailsAgtDto;
-import com.app.tradogt.dto.ProveedorInfoAgtDto;
+import com.app.tradogt.dto.*;
 import com.app.tradogt.entity.Distrito;
 import com.app.tradogt.entity.EstadoOrden;
 import com.app.tradogt.entity.Orden;
@@ -444,7 +441,10 @@ public class AgenteComprasController {
     public String changeDireccion(
             @RequestParam("idOrden") int idOrden,
             @RequestParam("idUsuario") int idUsuario,
-            @RequestParam("direccion") String direccionEntrega,
+            @RequestParam("direccion")
+            @NotBlank(message = "La dirección de entrega es obligatoria.")
+            @Size(min = 10, max = 100, message = "La dirección debe tener entre 10 y 100 caracteres.")
+            String direccionEntrega,
             RedirectAttributes redirectAttributes){
 
         // Buscamos la orden por su ID
@@ -458,10 +458,10 @@ public class AgenteComprasController {
             ordenRepository.save(orden);
 
             // Agregar mensaje de éxito al flash attributes
-            redirectAttributes.addFlashAttribute("msgOrden", "La dirección de entrega ha sido modificada con éxito.");
+            redirectAttributes.addFlashAttribute("success", "La dirección de entrega ha sido modificada con éxito.");
         } else {
             // Si no se encuentra el usuario
-            redirectAttributes.addFlashAttribute("errorOrden", "La orden no fue encontrada.");
+            redirectAttributes.addFlashAttribute("error", "La orden no fue encontrada.");
         }
 
         // Redirigir a la página de usuarios baneados
@@ -544,25 +544,29 @@ public class AgenteComprasController {
     // Método para manejar la solicitud POST del formulario de baneo
     @PostMapping("/banearImportador")
     public String banImportador(
-            @RequestParam("idImportador") int idImportador,
-            @RequestParam("banReason")
-            @Size(max = 150, message = "La razón del baneo no puede exceder los 150 caracteres")
-            @NotBlank(message = "La razón del baneo es obligatoria") String banReason,
+            @Valid BanUserDto banUserDTO,
+            BindingResult result,
             RedirectAttributes redirectAttributes) {
 
+        // Verificar si hay errores de validación
+        if (result.hasErrors()) {
+            redirectAttributes.addFlashAttribute("error", "Error en los datos ingresados: " + result.getFieldError().getDefaultMessage());
+            return "redirect:/agente/allUsers";
+        }
+
         // Buscamos al importador por su ID
-        Optional<Usuario> optionalUsuario = usuarioRepository.findById(idImportador);
+        Optional<Usuario> optionalUsuario = usuarioRepository.findById(banUserDTO.getIdImportador());
 
         if (optionalUsuario.isPresent()) {
             Usuario usuario = optionalUsuario.get();
             // Cambiar el estado del usuario a baneado (isActivated = 0)
             usuario.setIsActivated((byte) 0);
             // Establecer el motivo del baneo
-            usuario.setMotivoBaneo(banReason);
+            usuario.setMotivoBaneo(banUserDTO.getBanReason());
             // Guardar los cambios en la base de datos
             usuarioRepository.save(usuario);
 
-            //Buscamos todas las órdenes que tengan asignado el id del usuario
+            // Buscamos todas las órdenes que tengan asignado el id del usuario
             List<Orden> listaOrdenesAsignadas = ordenRepository.findAllByUsuarioIdusuario(usuario);
 
             // Marcamos cada orden como eliminada (isDeleted = 1)

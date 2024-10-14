@@ -112,7 +112,7 @@
                         <i class="ri-indeterminate-circle-fill"></i>
                       </button>
                       <!-- Botón deshabilitado por estética-->
-                      <button class="btn btn-secondary btn-sm waves-effect waves-light" title="Eliminar" th:if="${order.estadoPedido != 'EN VALIDACION'}">
+                      <button class="btn btn-secondary btn-sm waves-effect waves-light" title="Eliminar" disabled th:if="${order.estadoPedido != 'EN VALIDACION'}">
                         <i class="ri-indeterminate-circle-fill"></i>
                       </button>
                     </td>

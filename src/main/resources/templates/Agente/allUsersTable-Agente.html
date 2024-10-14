@@ -78,7 +78,7 @@
                                         <th>Nombre de usuario</th>
                                         <th>Distrito</th>
                                         <th>Correo</th>
-                                        <th>Ver</th>
+                                        <th>Acciones</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -108,24 +108,25 @@
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
                                                     <div class="modal-body">
-                                                        <!-- ID del formulario dinámico -->
+                                                        <!-- Formulario dinámico para el usuario -->
                                                         <form th:id="'banUserForm-' + ${usuario.id}" th:action="@{/agente/banearImportador}" method="post">
                                                             <input type="hidden" id="idImportador" name="idImportador" th:value="${usuario.id}" />
                                                             <div class="mb-3">
-                                                                <label for="banReason" class="form-label">Razón del baneo</label>
-                                                                <textarea class="form-control" id="banReason" name="banReason" rows="4" placeholder="Ingresa la razón del baneo" required></textarea>
-                                                                <div id="banReasonError" class="text-danger"></div>
+                                                                <label th:for="'banReason-' + ${usuario.id}" class="form-label">Razón del baneo</label>
+                                                                <textarea class="form-control" th:id="'banReason-' + ${usuario.id}" name="banReason" rows="4" placeholder="Ingresa la razón del baneo" required></textarea>
+                                                                <div th:id="'banReasonError-' + ${usuario.id}" class="text-danger"></div>
                                                             </div>
                                                         </form>
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                                        <!-- Aquí el botón de submit hace referencia al formulario único -->
-                                                        <button type="submit" th:form="'banUserForm-' + ${usuario.id}" class="btn btn-danger">Confirmar baneo</button>
+                                                        <!-- El botón de envío está deshabilitado inicialmente y vinculado al formulario -->
+                                                        <button type="submit" th:id="'submitButton-' + ${usuario.id}" th:form="'banUserForm-' + ${usuario.id}" class="btn btn-danger" disabled>Confirmar baneo</button>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
+
                                     </tr>
                                     </tbody>
                                 </table>
@@ -166,6 +167,47 @@
 <span th:replace="~{Common/jsBase :: js_Base}"></span>
 <!-- End JAVASCRIPT BASE-->
 
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Seleccionar todos los botones que activan los modales
+        const banButtons = document.querySelectorAll("button[data-bs-toggle='modal']");
+
+        banButtons.forEach(button => {
+            // Al hacer clic en el botón para abrir el modal
+            button.addEventListener("click", function() {
+                const modalId = this.getAttribute("data-bs-target");
+                const usuarioId = modalId.split('-')[1]; // Obtener el ID del usuario desde el modal
+                const form = document.querySelector(`${modalId} form`);
+                const banReasonInput = document.querySelector(`#banReason-${usuarioId}`);
+                const errorMessage = document.querySelector(`#banReasonError-${usuarioId}`);
+                const submitButton = document.querySelector(`#submitButton-${usuarioId}`);
+
+                // Desactivar el botón de enviar al cargar el modal
+                submitButton.disabled = true;
+
+                // Validar dinámicamente cuando el usuario escribe en el campo
+                banReasonInput.addEventListener("input", function() {
+                    const banReason = banReasonInput.value.trim();
+
+                    if (banReason === "") {
+                        errorMessage.textContent = "La razón del baneo es obligatoria.";
+                        submitButton.disabled = true;
+                    } else if (banReason.length < 10) {
+                        errorMessage.textContent = "La razón del baneo debe tener al menos 10 caracteres.";
+                        submitButton.disabled = true;
+                    } else if (banReason.length > 300) {
+                        errorMessage.textContent = "La razón del baneo no puede exceder los 300 caracteres.";
+                        submitButton.disabled = true;
+                    } else {
+                        errorMessage.textContent = ""; // Sin errores
+                        submitButton.disabled = false; // Habilitar el botón
+                    }
+                });
+            });
+        });
+    });
+
+</script>
 <!-- Required datatable js -->
 <script th:src="@{../libs/datatables.net/js/jquery.dataTables.min.js}"></script>
 <script th:src="@{../libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js}"></script>
