@@ -57,6 +57,16 @@
                 <!-- end page title -->
 
                 <div class="row">
+                    <!-- Alertas de error o éxito -->
+                    <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <span th:text="${error}"></span>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+
+                    <div th:if="${success}" class="alert alert-success alert-dismissible fade show" role="alert">
+                        <span th:text="${success}"></span>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
                     <div class="col-md-8">
                         <!-- Card 1: Información de la Orden y del Comprador -->
                         <div class="card mb-4">
@@ -104,29 +114,71 @@
                                     </div>
                                     <form id="form-editar-domicilio" th:action="@{/agente/updateDelivery}" method="post">
                                         <div class="modal-body">
-                                                <!-- Mensaje de coordinación con el importador -->
-                                                <div class="alert alert-warning" role="alert">
-                                                    La modificación de la dirección de entrega debe ser realizada previa coordinación con el importador mediante el chat.
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="direccion" class="form-label">Nueva dirección de entrega</label>
-                                                    <input type="text" class="form-control" id="direccion" th:name="direccion" th:value="${orden.lugarEntrega}">
-                                                    <!-- Campo oculto para el ID de la orden -->
-                                                    <input type="hidden" th:name="idOrden" th:value="${orden.id}">
+                                            <!-- Mensaje de coordinación con el importador -->
+                                            <div class="alert alert-warning" role="alert">
+                                                La modificación de la dirección de entrega debe ser realizada previa coordinación con el importador mediante el chat.
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="direccion" class="form-label">Nueva dirección de entrega</label>
+                                                <input type="text" class="form-control" id="direccion" name="direccion"
+                                                       th:value="${orden.lugarEntrega}">
+                                                <small id="direccion-error" class="text-danger"></small>
+                                                <!-- Campo oculto para el ID de la orden -->
+                                                <input type="hidden" name="idOrden" th:value="${orden.id}">
 
-                                                    <!-- Campo oculto para el ID del usuario -->
-                                                    <input type="hidden" th:name="idUsuario" th:value="${usuario.id}">
-
-                                                </div>
+                                                <!-- Campo oculto para el ID del usuario -->
+                                                <input type="hidden" name="idUsuario" th:value="${usuario.id}">
+                                            </div>
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                                            <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                                            <button type="submit" class="btn btn-primary" id="guardar-btn" disabled>Guardar cambios</button>
                                         </div>
                                     </form>
                                 </div>
                             </div>
                         </div>
+
+                        <!-- Script para validación dinámica -->
+                        <script>
+                            document.addEventListener("DOMContentLoaded", function () {
+                                const direccionInput = document.getElementById("direccion");
+                                const guardarBtn = document.getElementById("guardar-btn");
+                                const direccionError = document.getElementById("direccion-error");
+
+                                // Función para validar la dirección
+                                function validarDireccion() {
+                                    const direccion = direccionInput.value.trim();
+                                    let isValid = true;
+                                    direccionError.textContent = "";  // Limpiar mensaje de error
+
+                                    if (direccion === "") {
+                                        direccionError.textContent = "La dirección no puede estar vacía.";
+                                        isValid = false;
+                                    } else if (direccion.length < 10) {
+                                        direccionError.textContent = "La dirección debe tener al menos 10 caracteres.";
+                                        isValid = false;
+                                    } else if (direccion.length > 100) {
+                                        direccionError.textContent = "La dirección no debe exceder los 100 caracteres.";
+                                        isValid = false;
+                                    }
+
+                                    guardarBtn.disabled = !isValid;  // Habilitar/deshabilitar el botón de guardar
+                                    return isValid;
+                                }
+
+                                // Validar la dirección cada vez que el usuario escribe
+                                direccionInput.addEventListener("input", validarDireccion);
+
+                                // Validar la dirección antes de enviar el formulario
+                                document.getElementById("form-editar-domicilio").addEventListener("submit", function (event) {
+                                    if (!validarDireccion()) {
+                                        event.preventDefault();  // Evitar que el formulario se envíe si no es válido
+                                    }
+                                });
+                            });
+                        </script>
+
 
                         <!-- Card 2: Información de los proveedores de la orden -->
                         <div class="card mb-4">

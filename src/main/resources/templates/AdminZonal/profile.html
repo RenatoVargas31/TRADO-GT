@@ -1,5 +1,8 @@
 <!doctype html>
 <html xmlns:th="http://www.thymeleaf.org" lang="es">
+<!-- @thymesVar id="usuarioAutenticado" type="com.app.tradogt.entity.Usuario" -->
+
+
 
 <head>
     <meta charset="utf-8" />
@@ -55,22 +58,53 @@
                         <div class="col-md-3">
                             <div class="card mb-4 ">
                                 <h5 class="card-header">Foto de perfil</h5>
-                                <div class="user-profile-header d-flex flex-column align-items-center mb-4">
+                                <div class="user-profile-header d-flex flex-column align-items-center mb-4 px-4">
                                     <hr class="opacity-0">
-                                    <div class="flex-shrink-0">
-                                        <img src="/images/users/avatar-2.jpg" alt="user image" class="d-block rounded-circle" style="width: 150px; height: 150px; object-fit: cover;">
-                                    </div>
-                                    <p class="text-muted mb-0 mt-2" th:text="${user.nombre} + ' ' + ${user.apellido}"></p>
-                                    <p class="text-muted mb-0" th:text="${user.rolIdrol.nombre}"></p>
-                                    <p class="text-muted mb-0" th:text="${user.zonaIdzona.nombre}"></p>
+
 
                                     <div class="mt-3 text-center">
-                                        <label for="upload" class="btn" style="background-color: #0e5a05; color: #ffffff; border: 2px solid #115e08;  border-radius: 8px; font-size: 14px; cursor: pointer; transition: background-color 0.3s, border-color 0.3s;" tabindex="0">
-                                            <span class="d-none d-sm-block">Actualizar foto de perfil</span>
-                                            <i class="bx bx-upload d-block d-sm-none"></i>
-                                            <input type="file" id="upload" class="account-file-input" hidden accept="image/png, image/jpeg" name="profilePhoto">
-                                        </label>
+                                        <form th:action="@{/adminzonal/subirFoto}" method="post" enctype="multipart/form-data">
+                                            <!-- Imagen actual del usuario que será reemplazada por la previsualización -->
+                                            <div class="text-center">
+                                                <div class="d-flex justify-content-center">
+                                                    <img id="fotoUsuario" th:src="@{'/uploads/fotosUsuarios/' + ${usuarioAutenticado.foto}}" alt="user image" class="d-block rounded-circle" style="width: 150px; height: 150px; object-fit: cover;">
+                                                </div>
+                                                <p th:text="${usuarioAutenticado.nombre} + ' ' + ${usuarioAutenticado.apellido}"></p>
+                                                <p th:text="${usuarioAutenticado.rolIdrol.nombre}"></p>
+                                                <p th:text="${usuarioAutenticado.correo}"></p>
+                                            </div>
+
+                                            <!-- Botón para seleccionar una nueva foto -->
+                                            <input type="file" id="nuevaFoto" name="foto" accept="image/*" class="form-control mt-2 w-100" onchange="previewFoto(event)">
+
+                                            <div class="text-center mt-3">
+                                                <!-- Botón para enviar la nueva foto -->
+                                                <button id="submitBtn" type="submit" class="btn btn-primary mt-2" style="background-color: #4f7e45; color: #ffffff; border: 2px solid #4f7e45; border-radius: 8px; font-size: 14px; cursor: pointer; transition: background-color 0.3s, border-color 0.3s;" disabled>
+                                                    Guardar nueva foto
+                                                </button>
+                                            </div>
+                                        </form>
+
+                                        <!-- Script para previsualizar la imagen seleccionada y habilitar el botón -->
+                                        <script>
+                                            function previewFoto(event) {
+                                                const fotoUsuario = document.getElementById('fotoUsuario');
+                                                const nuevaFoto = event.target.files[0];
+
+                                                if (nuevaFoto) {
+                                                    // Crear un objeto URL temporal para previsualizar la imagen seleccionada
+                                                    const urlFoto = URL.createObjectURL(nuevaFoto);
+                                                    fotoUsuario.src = urlFoto;
+
+                                                    // Habilitar el botón de envío
+                                                    document.getElementById('submitBtn').disabled = false;
+                                                }
+                                            }
+                                        </script>
+                                        <!-- Script para previsualizar la imagen seleccionada y habilitar el botón -->
                                     </div>
+
+
                                 </div>
                             </div>
                         </div>

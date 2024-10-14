@@ -223,26 +223,33 @@
                                         <div class="p-4 border">
                                             <div class="mb-3">
                                                 <label class="form-label" for="nombreTarjeta">Nombre de la tarjeta</label>
-                                                <input type="text" class="form-control" id="nombreTarjeta" name="nombreTarjeta" placeholder="Nombre en la tarjeta" required>
+                                                <input type="text" class="form-control" id="nombreTarjeta" name="nombreTarjeta" placeholder="Nombre en la tarjeta" required pattern="[A-Za-z\s]+" title="El nombre solo puede contener letras y espacios" oninput="validateNombreTarjeta(this)">
                                             </div>
+
                                             <div class="row">
                                                 <div class="col-lg-4 col-sm-6">
                                                     <div class="mb-3 mb-lg-0">
                                                         <label class="form-label" for="numeroTarjeta">Número de tarjeta</label>
-                                                        <input type="text" class="form-control" id="numeroTarjeta" name="numeroTarjeta" placeholder="0000 0000 0000 0000" required pattern="\d{4} \d{4} \d{4} \d{4}">
+                                                        <input type="text" class="form-control" id="numeroTarjeta" name="numeroTarjeta" placeholder="0000 0000 0000 0000" required pattern="\d{4} \d{4} \d{4} \d{4}" maxlength="19" oninput="formatTarjeta(this)">
                                                     </div>
                                                 </div>
+
                                                 <div class="col-lg-4 col-sm-6">
                                                     <div class="mb-3 mb-lg-0">
                                                         <label class="form-label" for="fechaTarjeta">Fecha de vencimiento</label>
-                                                        <input type="text" class="form-control" id="fechaTarjeta" name="fechaTarjeta" placeholder="MM/YY" required pattern="(0[1-9]|1[0-2])\/([0-9]{2})">
+                                                        <input type="text" class="form-control" id="fechaTarjeta" name="fechaTarjeta" placeholder="MM/YY" required pattern="(0[1-9]|1[0-2])\/([0-9]{2})" maxlength="5" oninput="formatDate(this)">
                                                     </div>
                                                 </div>
+
                                                 <div class="col-lg-4 col-sm-6">
                                                     <div class="mb-3 mb-lg-0">
                                                         <label class="form-label" for="codigoCVV">Código CVV</label>
-                                                        <input type="text" class="form-control" id="codigoCVV" name="codigoCVV" placeholder="Ingrese código CVV" required pattern="\d{3,4}">
+                                                        <input type="text" class="form-control" id="codigoCVV" name="codigoCVV" placeholder="Ingrese código CVV" required oninput="validateCVV(this)" maxlength="3">
+                                                        <small id="cvvError" class="text-danger" style="display:none;">El CVV debe ser un número de 3 dígitos.</small>
                                                     </div>
+
+
+
                                                 </div>
                                             </div>
                                             <div class="mb-3" style="display: none;">
@@ -310,6 +317,7 @@
 
 
 
+
 <!-- JAVASCRIPT BASE-->
 <span th:replace="~{Common/jsBase :: js_Base}"></span>
 
@@ -319,7 +327,99 @@
 <script th:src="@{../libs/twitter-bootstrap-wizard/prettify.js}"></script>
 <!-- ecommerce-checkout init -->
 <script th:src="@{../js/pages/ecommerce-checkout.init.js}"></script>
+
 <!-- End JAVASCRIPT BASE-->
+<script>
+    function validateForm() {
+        const tarjetaInput = document.getElementById("numeroTarjeta");
+        const fechaInput = document.getElementById("fechaTarjeta");
+        const nombreInput = document.getElementById("nombreTarjeta");
+        const tarjetaError = document.getElementById("tarjetaError");
+        const fechaError = document.getElementById("fechaError");
+        const nombreError = document.getElementById("nombreError");
+
+        // Validar número de tarjeta
+        const tarjetaPattern = /^\d{4} \d{4} \d{4} \d{4}$/;
+        if (!tarjetaPattern.test(tarjetaInput.value)) {
+            tarjetaError.style.display = "block"; // Mostrar mensaje de error
+            return false; // Evitar el envío del formulario
+        } else {
+            tarjetaError.style.display = "none"; // Ocultar mensaje de error
+        }
+
+        // Validar fecha de vencimiento
+        const fechaPattern = /^(0[1-9]|1[0-2])\/([0-9]{2})$/;
+        if (!fechaPattern.test(fechaInput.value)) {
+            fechaError.style.display = "block"; // Mostrar mensaje de error
+            return false; // Evitar el envío del formulario
+        } else {
+            fechaError.style.display = "none"; // Ocultar mensaje de error
+        }
+
+        // Validar nombre de la tarjeta
+        if (nombreInput.value.trim() === "") {
+            nombreError.style.display = "block"; // Mostrar mensaje de error
+            return false; // Evitar el envío del formulario
+        } else {
+            nombreError.style.display = "none"; // Ocultar mensaje de error
+        }
+
+        return true; // Permitir el envío del formulario si todo es válido
+    }
+</script>
+<script>
+    function formatDate(input) {
+        // Eliminar caracteres que no son dígitos
+        let value = input.value.replace(/\D/g, '');
+
+        // Añadir el formato MM/YY
+        if (value.length >= 2) {
+            value = value.slice(0, 2) + '/' + value.slice(2, 4);
+        }
+
+        // Limitar a 5 caracteres (MM/YY)
+        input.value = value.substring(0, 5);
+    }
+</script>
+<script>
+    function validateCVV(input) {
+        // Eliminar caracteres que no sean dígitos
+        input.value = input.value.replace(/\D/g, '');
+
+        // Validar longitud del CVV
+        if (input.value.length !== 3) {
+            document.getElementById("cvvError").style.display = "block"; // Mostrar mensaje de error
+        } else {
+            document.getElementById("cvvError").style.display = "none"; // Ocultar mensaje de error
+        }
+    }
+</script>
+
+<script>
+    function validateNombreTarjeta(input) {
+        // Eliminar números del valor
+        input.value = input.value.replace(/[0-9]/g, '');
+    }
+</script>
+<script>
+    function formatTarjeta(input) {
+        // Eliminar caracteres que no son dígitos
+        let value = input.value.replace(/\D/g, '');
+
+        // Añadir espacios cada 4 dígitos
+        let formattedValue = '';
+        for (let i = 0; i < value.length; i++) {
+            if (i > 0 && i % 4 === 0) {
+                formattedValue += ' '; // Agregar espacio
+            }
+            formattedValue += value[i];
+        }
+
+        // Limitar a 19 caracteres (16 números + 3 espacios)
+        input.value = formattedValue.substring(0, 19);
+    }
+</script>
+
 </body>
 
 </html>

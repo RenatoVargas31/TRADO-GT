@@ -18,9 +18,14 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -104,6 +109,37 @@ public class AdminZonalController {
     public String showFaq() {
         return "AdminZonal/faq";
     }
+
+    @PostMapping("/subirFoto")
+    public String viewSubirFoto(@RequestParam("foto") MultipartFile file, Model model) throws IOException {
+        System.out.println("Entré al controler");
+
+        // Ruta dinámica donde se guardarán las imágenes (fuera de static)
+        String uploadDir = "uploads/fotosUsuarios/";
+
+        // Guardar el archivo en la ruta definida
+        byte[] bytes = file.getBytes();
+        Path path = Paths.get(uploadDir + file.getOriginalFilename());
+        Files.write(path, bytes);
+        System.out.println("Guardé la foto en: " + path);
+
+        // Obtener el usuario autenticado desde el modelo
+        Usuario usuario = (Usuario) model.getAttribute("usuarioAutenticado");
+        assert usuario != null;
+
+        // Actualizar el nombre de la foto en la base de datos
+        usuario.setFoto(file.getOriginalFilename());
+        System.out.println("Seteé la foto como: " + file.getOriginalFilename());
+        usuarioRepository.save(usuario);
+        System.out.println("Guardé el usuario");
+
+        // Redirigir al perfil
+        return "redirect:/adminzonal/perfil";
+    }
+
+
+
+
     @GetMapping("/perfil")
     public String showPerfil (@ModelAttribute("user") Usuario user,  Model model) {
         Optional<Usuario> usuario = usuarioRepository.findById(getAuthenticatedUserId());
