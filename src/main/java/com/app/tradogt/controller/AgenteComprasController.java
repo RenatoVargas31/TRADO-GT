@@ -24,9 +24,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -257,6 +262,34 @@ public class AgenteComprasController {
         model.addAttribute("usuario", usuario);
 
         return "Agente/profile-Agente";  // Retorna la vista del perfil del agente
+    }
+
+
+    @PostMapping("/subirFoto")
+    public String viewSubirFoto(@RequestParam("foto") MultipartFile file, Model model) throws IOException {
+        System.out.println("Entré al controler");
+
+        // Ruta dinámica donde se guardarán las imágenes (fuera de static)
+        String uploadDir = "uploads/fotosUsuarios/";
+
+        // Guardar el archivo en la ruta definida
+        byte[] bytes = file.getBytes();
+        Path path = Paths.get(uploadDir + file.getOriginalFilename());
+        Files.write(path, bytes);
+        System.out.println("Guardé la foto en: " + path);
+
+        // Obtener el usuario autenticado desde el modelo
+        Usuario usuario = (Usuario) model.getAttribute("usuarioAutenticado");
+        assert usuario != null;
+
+        // Actualizar el nombre de la foto en la base de datos
+        usuario.setFoto(file.getOriginalFilename());
+        System.out.println("Seteé la foto como: " + file.getOriginalFilename());
+        usuarioRepository.save(usuario);
+        System.out.println("Guardé el usuario");
+
+        // Redirigir al perfil
+        return "redirect:/usuario/perfil";
     }
 
 
