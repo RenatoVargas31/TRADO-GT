@@ -1,8 +1,7 @@
 package com.app.tradogt.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.Data;
 import org.hibernate.annotations.ColumnDefault;
 
@@ -45,11 +44,13 @@ public class Usuario {
 
     @Size(max = 45)
     @NotNull
+    @NotBlank(message = "Campo obligatorio")
     @Column(name = "nombre", nullable = false, length = 45)
     private String nombre;
 
     @Size(max = 45)
     @NotNull
+    @NotBlank(message = "Campo obligatorio")
     @Column(name = "apellido", nullable = false, length = 45)
     private String apellido;
 
@@ -57,13 +58,19 @@ public class Usuario {
     private LocalDate fechaNacimiento;
 
     @Size(max = 8)
+    @Digits(integer = 8, fraction = 0, message = "El DNI debe estar compuesto por 8 dígitos")
+    @NotBlank(message = "El documento de identidad es obligatoria")
     @Column(name = "dni", length = 8)
     private String dni;
 
     @Size(max = 9)
+    @NotBlank(message = "El teléfono es obligatorio")
+    @Pattern(regexp ="^\\+?[0-9. ()-]{7,25}$", message = "El teléfono tiene un formato inválido")
+    @Digits(integer = 9, fraction = 0)
     @Column(name = "telefono", length = 9)
     private String telefono;
 
+    @Email
     @Size(max = 45)
     @Column(name = "correo", length = 45)
     private String correo;
@@ -81,6 +88,8 @@ public class Usuario {
     private String razonSocial;
 
     @Size(max = 45)
+    @NotBlank(message = "La dirección es obligatoria")
+    @Size(max = 45, message = "La dirección no puede tener más de 45 caracteres")
     @Column(name = "direccion", length = 45)
     private String direccion;
 

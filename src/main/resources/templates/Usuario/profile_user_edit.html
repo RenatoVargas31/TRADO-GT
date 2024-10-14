@@ -113,56 +113,58 @@
                   <h5>Editar Información personal</h5>
                 </div>
                 <div class="card-body">
-                  <form action="/usuario/savePorfile" method="post">
-                  <div class="row">
-                      <div class="col-md-5">
-                        <div class="mb-3 col-md-12">
-                          <label for="firstName" class="form-label" style="font-size: 18px;">Nombres</label>
-                          <p class="form-control-plaintext" style="font-size: 16px;" id="firstName" th:text="${usuario.nombre}"></p>
-                        </div>
+                  <form th:action="@{/usuario/saveProfile}" method="post">
+                    <div class="row">
+                        <div class="col-md-5">
+                          <div class="mb-3 col-md-12">
+                            <label for="firstName" class="form-label" style="font-size: 18px;">Nombres</label>
+                            <p class="form-control-plaintext" style="font-size: 16px;" id="firstName" th:text="${usuario.nombre}"></p>
+                          </div>
 
-                        <div class="mb-3 col-md-6">
-                          <label for="lastName" class="form-label" style="font-size: 18px;">Apellidos</label>
-                          <p class="form-control-plaintext" style="font-size: 16px;" id="lastName" th:text="${usuario.apellido}"></p>
-                        </div>
+                          <div class="mb-3 col-md-6">
+                            <label for="lastName" class="form-label" style="font-size: 18px;">Apellidos</label>
+                            <p class="form-control-plaintext" style="font-size: 16px;" id="lastName" th:text="${usuario.apellido}"></p>
+                          </div>
 
-                        <div class="mb-3 col-md-6">
-                          <label for="email" class="form-label" style="font-size: 18px;"><strong>Correo electrónico</strong></label>
-                          <p class="form-control-plaintext" style="font-size: 16px;" id="email" th:text="${usuario.correo}"></p>
-                        </div>
-                        <!--Campo editable -->
-                        <div class="mb-3 col-md-6">
-                          <label for="telefono" class="form-label" style="font-size: 18px;">Teléfono</label>
-                          <input type="text" class="form-control" name="telefono" id="telefono" th:field="*{usuario.telefono}" required >
-                        </div>
-                      </div>
-                      <div class="col-md-6">
-                        <div class="mb-3 col-md-6">
-                          <label for="districto" class="form-label" style="font-size: 18px;">Distrito</label>
-                          <p class="form-control-plaintext" style="font-size: 16px;" id="districto" th:text="${usuario.distritoIddistrito.nombre}"></p>
-                        </div>
+                          <div class="mb-3 col-md-6">
+                            <label for="email" class="form-label" style="font-size: 18px;"><strong>Correo electrónico</strong></label>
+                            <p class="form-control-plaintext" style="font-size: 16px;" id="email" th:text="${usuario.correo}"></p>
+                          </div>
+                          <!--Campo editable -->
+                          <div class="mb-3 col-md-6">
+                            <label  class="form-label" style="font-size: 18px;">Teléfono</label>
+                            <input type="text" class="form-control" name="telefono" th:field="*{usuario.telefono}" required th:classappend="${#fields.hasErrors('usuario.telefono') ? 'is-invalid' : ''}">
+                            <div class="text-danger" th:if="${#fields.hasErrors('usuario.telefono')}" th:errors="*{usuario.telefono}"></div>
+                          </div>
 
-                        <!--Campo editable -->
 
-                        <div class="mb-3 col-md-6">
-                          <label for="direccion" class="form-label" style="font-size: 18px;">Dirección</label>
-                          <div class="d-flex align-items-center">
-                            <input type="text" class="form-control" name="direccion" id="direccion" th:field="*{usuario.direccion}" required >
+                        </div>
+                        <div class="col-md-6">
+                          <div class="mb-3 col-md-6">
+                            <label for="districto" class="form-label" style="font-size: 18px;">Distrito</label>
+                            <p class="form-control-plaintext" style="font-size: 16px;" id="districto" th:text="${usuario.distritoIddistrito.nombre}"></p>
+                          </div>
+
+                          <!--Campo editable -->
+                          <div class="mb-3 col-md-6">
+                            <label for="direccion" class="form-label" style="font-size: 18px;">Dirección</label>
+                            <input type="text" class="form-control" name="direccion" id="direccion" th:field="*{usuario.direccion}" required>
+                            <div class="text-danger" th:if="${#fields.hasErrors('usuario.direccion')}" th:errors="*{usuario.direccion}"></div>
+                          </div>
+                          <div class="mb-3 col-md-6">
+                            <label for="birthday" class="form-label" style="font-size: 18px;">Fecha de Nacimiento</label>
+                            <p class="form-control-plaintext" style="font-size: 16px;" id="birthday" th:text="${usuario.fechaNacimiento}"></p>
+                          </div>
+                          <div class="mb-3 col-md-6">
+                            <label for="rol" class="form-label" style="font-size: 18px;">Rol</label>
+                            <p class="form-control-plaintext" style="font-size: 16px;" id="rol" th:text="${usuario.rolIdrol.nombre}"></p>
                           </div>
                         </div>
-                        <div class="mb-3 col-md-6">
-                          <label for="birthday" class="form-label" style="font-size: 18px;">Fecha de Nacimiento</label>
-                          <p class="form-control-plaintext" style="font-size: 16px;" id="birthday" th:text="${usuario.fechaNacimiento}"></p>
+                        <div class="row-cols-7 text-end">
+                          <input type="hidden" th:value="${usuario.id}">
+                          <button type="submit" class="btn btn-primary  " >Guardar</button>
                         </div>
-                        <div class="mb-3 col-md-6">
-                          <label for="rol" class="form-label" style="font-size: 18px;">Rol</label>
-                          <p class="form-control-plaintext" style="font-size: 16px;" id="rol" th:text="${usuario.rolIdrol.nombre}"></p>
-                        </div>
-                      </div>
-                      <div class="row-cols-7 text-end">
-                        <button type="submit" class="btn btn-primary  " >Guardar</button>
-                      </div>
-                  </div>
+                    </div>
                   </form>
                 </div>
               </div>

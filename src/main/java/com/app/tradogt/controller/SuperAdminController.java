@@ -8,8 +8,6 @@ import com.app.tradogt.repository.*;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -26,7 +24,7 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
+import java.util.SortedMap;
 
 @Controller
 @RequestMapping("/superadmin")
@@ -578,26 +576,45 @@ public class SuperAdminController {
         model.addAttribute("proveedores", proveedorRepository.findAll());
         return "SuperAdmin/productoEditar-SAdmin";
     }
-    @GetMapping("/productoEditar")
-    public String viewProductoEditar(FormProducto formProducto) {
-        //Actualizar producto
-        Producto productoEdit = productosRepository.findById(formProducto.getProducto().getId()).get();
-        //Determinar los nuevos valores
-        productosRepository.save(productoEdit);
-        //Actualizar producto en zona
-        ProductoEnZona productoEnZonaNorteEdit = productoEnZonaRepository.findById(formProducto.getProductoEnZonaNorte().getId()).get();
-        //Determinar los nuevos valores
-        productoEnZonaRepository.save(productoEnZonaNorteEdit);
-        ProductoEnZona productoEnZonaSurEdit = productoEnZonaRepository.findById(formProducto.getProductoEnZonaSur().getId()).get();
-        //Determinar los nuevos valores
-        productoEnZonaRepository.save(productoEnZonaSurEdit);
-        ProductoEnZona productoEnZonaEsteEdit = productoEnZonaRepository.findById(formProducto.getProductoEnZonaEste().getId()).get();
-        //Determinar los nuevos valores
-        productoEnZonaRepository.save(productoEnZonaEsteEdit);
-        ProductoEnZona productoEnZonaOesteEdit = productoEnZonaRepository.findById(formProducto.getProductoEnZonaOeste().getId()).get();
-        //Determinar los nuevos valores
-        productoEnZonaRepository.save(productoEnZonaOesteEdit);
-        return "redirect:/superadmin/productoLista";
+    @PostMapping("/productoEditar")
+    public String viewProductoEditar(FormProducto formProducto,RedirectAttributes redirectAttributes) {
+        //Validar que se estén guardando los datos correctos por categoria de producto
+        Producto producto = formProducto.getProducto();
+        //Los unicos atributos que no deben tener valor son los siguientes: ram, almacenamiento, resolucion, ancho, alto y profundidad
+        Boolean guardaRopa = ((producto.getSubcategoriaIdsubcategoria().getCategoriaIdcategoria().getId() == 1 || (producto.getSubcategoriaIdsubcategoria().getCategoriaIdcategoria().getId() == 2) && producto.getRam().isEmpty() && producto.getAlmacenamiento().isEmpty() && producto.getResolucion().isEmpty() && producto.getAncho().isEmpty() && producto.getAlto().isEmpty() && producto.getProfundidad().isEmpty()));
+        //Para muebles deben estar vacíos los campos de talla, material, resolucion, ram y almacenamiento
+        Boolean guardaMuebles = (producto.getSubcategoriaIdsubcategoria().getCategoriaIdcategoria().getId() == 4 && producto.getTalla().isEmpty() && producto.getMaterial().isEmpty() && producto.getResolucion().isEmpty() && producto.getRam().isEmpty() && producto.getAlmacenamiento().isEmpty());
+        //Para tecnología deben estar vacíos los siguientes atributos: talla y material
+        Boolean guardaTecnologia = (producto.getSubcategoriaIdsubcategoria().getCategoriaIdcategoria().getId() == 5 && producto.getTalla().isEmpty() && producto.getMaterial().isEmpty());
+        System.out.println(formProducto.getProducto());
+        System.out.println(formProducto.getProductoEnZonaNorte());
+        System.out.println(guardaTecnologia);
+        System.out.println(guardaMuebles);
+        System.out.println(guardaRopa);
+        if(guardaRopa || guardaMuebles || guardaTecnologia){
+
+            //Actualizar producto
+            Producto productoEdit = formProducto.getProducto();
+            productosRepository.save(productoEdit);
+            //Determinar los ProductoZonaID
+            formProducto.getProductoEnZonaNorte().setProductoyZona(productoEdit,zonaRepository.findById(1).get());
+            formProducto.getProductoEnZonaSur().setProductoyZona(productoEdit,zonaRepository.findById(2).get());
+            formProducto.getProductoEnZonaEste().setProductoyZona(productoEdit,zonaRepository.findById(3).get());
+            formProducto.getProductoEnZonaOeste().setProductoyZona(productoEdit,zonaRepository.findById(4).get());
+            //Guardar los productos en zona
+            productoEnZonaRepository.save(formProducto.getProductoEnZonaNorte());
+            productoEnZonaRepository.save(formProducto.getProductoEnZonaSur());
+            productoEnZonaRepository.save(formProducto.getProductoEnZonaEste());
+            productoEnZonaRepository.save(formProducto.getProductoEnZonaOeste());
+
+            //Enviar mensaje de éxito como redirect attribute
+            redirectAttributes.addFlashAttribute("successMessage", "Producto editado correctamente.");
+            return "redirect:/superadmin/productoLista";
+        }else{
+            //Enviar mensaje de error como redirect attribute
+            redirectAttributes.addFlashAttribute("errorMessage", "No se puede guardar el producto porque los atributos no coinciden con la categoría.");
+            return "redirect:/superadmin/productoLista";
+        }
     }
     @GetMapping("/productoBorrar")
     public String viewProductoBorrar(Integer id,RedirectAttributes redirectAttributes) {
