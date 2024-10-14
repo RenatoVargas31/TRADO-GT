@@ -71,11 +71,9 @@ public class Orden {
     @Column(name = "LugarEntrega")
     private String lugarEntrega;
 
-    @NotNull
     @Column(name = "fechaValidacion", nullable = false)
     private LocalDate fechaValidacion;
 
-    @NotNull
     @Column(name = "fechaEnProceso", nullable = false)
     private LocalDate fechaEnProceso;
 
