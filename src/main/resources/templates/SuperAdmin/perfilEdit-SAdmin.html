@@ -58,7 +58,7 @@
                         <div class="col-md-3">
                             <div class="card mb-4 h-100">
                                 <h5 class="card-header">Foto de perfil</h5>
-                                <div class="user-profile-header d-flex flex-column align-items-center mt-5 mb-4 px-4">
+                                <div class="user-profile-header d-flex flex-column align-items-center mb-4 px-4">
                                     <hr class="opacity-0">
                                     <div class="flex-shrink-0">
                                         <img th:src="@{'/uploads/fotosUsuarios/' + ${usuarioAutenticado.foto}}" alt="user image" class="d-block rounded-circle" style="width: 150px; height: 150px; object-fit: cover;">
@@ -67,6 +67,17 @@
                                     <p class="text-muted mb-0" th:text="${usuarioAutenticado.rolIdrol.nombre}"></p>
                                     <p class="text-muted mb-0" th:text="${usuarioAutenticado.correo}"></p>
 
+                                    <div class="mt-3 text-center">
+                                        <form th:action="@{/superadmin/subirFoto}" method="post" enctype="multipart/form-data">
+                                            <!-- Botón para seleccionar una nueva foto -->
+                                            <input type="file" id="nuevaFoto" name="foto" accept="image/*" class="form-control mt-2 w-100" onchange="previewFoto(event)">
+
+                                            <div class="text-center">
+                                                <!-- Botón para enviar la nueva foto -->
+                                                <button type="submit" class="btn btn-primary mt-2" style="background-color: #FFA500; color: #ffffff; border: 2px solid #FFA500;  border-radius: 8px; font-size: 14px; cursor: pointer; transition: background-color 0.3s, border-color 0.3s;">Guardar nueva foto</button>
+                                            </div>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -83,11 +94,9 @@
                                 <h5 class="card-header">Información personal</h5>
 
                                 <div class="card-body mt-4 ">
-                                    <form  enctype="multipart/form-data">
-                                        <input type="hidden" name="action" value="updateProfile1">
-                                        <input type="hidden" name="resetPhoto" id="resetPhoto" value="false">
+                                    <form  th:object="${usuarioAutenticado}" method="post" th:action="@{/superadmin/editarPerfil}">
 
-                                        <div class="row ms-5">
+                                        <div class="row">
                                             <div class="mb-3 col-md-6">
                                                 <label for="firstName" class="form-label">Nombres</label>
                                                 <p class="form-control-plaintext" id="firstName" th:text="${usuarioAutenticado.nombre}">Kevin</p>
@@ -102,19 +111,19 @@
                                             </div>
                                             <div class="mb-3 col-md-6">
                                                 <label for="phoneNumber" class="form-label" >Teléfono</label>
-                                                <p class="form-control-plaintext" id="phoneNumber" th:text="${usuarioAutenticado.telefono}"></p>
+                                                <input class="form-control" type="text" id="phoneNumber" name="phoneNumber" th:field="*{telefono}" required>
                                             </div>
                                             <div class="mb-3 col-md-6">
                                                 <label for="direccion" class="form-label">Dirección</label>
-                                                <p class="form-control-plaintext" id="direccion" th:text="${usuarioAutenticado.direccion}"></p>
+                                                <input class="form-control" type="text" id="direccion" name="direccion" th:field="*{direccion}" required>
                                             </div>
                                             <div class="mb-3 col-md-6">
                                                 <label for="birthday" class="form-label">Fecha de Nacimiento</label>
                                                 <p class="form-control-plaintext" id="birthday" th:text="${usuarioAutenticado.fechaNacimiento}"></p>
                                             </div>
                                         </div>
-                                        <div class="mt-2 d-flex">
-                                            <a href="/superadmin/editarPerfilForm" type="submit" class="btn btn-success me-5 ms-auto" tabindex="0">Editar</a>
+                                        <div class="mt-2">
+                                            <button type="submit" class="btn btn-primary me-2" style="background-color: #FFA500; color: #ffffff; border: 2px solid #FFA500;  border-radius: 8px; font-size: 14px; cursor: pointer; transition: background-color 0.3s, border-color 0.3s;" tabindex="0">Guardar cambios</button>
                                         </div>
                                     </form>
                                 </div>
