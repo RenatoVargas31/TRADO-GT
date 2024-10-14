@@ -439,6 +439,35 @@ public class AgenteComprasController {
         return "redirect:/agente/pendingOrders";
     }
 
+    //Cambiar la dirección de la orden
+    @PostMapping("/updateDelivery")
+    public String changeDireccion(
+            @RequestParam("idOrden") int idOrden,
+            @RequestParam("idUsuario") int idUsuario,
+            @RequestParam("direccion") String direccionEntrega,
+            RedirectAttributes redirectAttributes){
+
+        // Buscamos la orden por su ID
+        Optional<Orden> optionalOrden = ordenRepository.findById(idOrden);
+
+        if (optionalOrden.isPresent()) {
+            Orden orden = optionalOrden.get();
+            // Cambiamos la dirección de entrega de la orden a la nueva
+            orden.setLugarEntrega(direccionEntrega);
+            // Guardar los cambios en la base de datos
+            ordenRepository.save(orden);
+
+            // Agregar mensaje de éxito al flash attributes
+            redirectAttributes.addFlashAttribute("msgOrden", "La dirección de entrega ha sido modificada con éxito.");
+        } else {
+            // Si no se encuentra el usuario
+            redirectAttributes.addFlashAttribute("errorOrden", "La orden no fue encontrada.");
+        }
+
+        // Redirigir a la página de usuarios baneados
+        return "redirect:/agente/detailsOrder?idOrden=" + idOrden + "&idUsuario=" + idUsuario;
+    }
+
 
     //Tableros de USUARIOS
 

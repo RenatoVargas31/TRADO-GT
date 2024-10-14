@@ -61,7 +61,7 @@
                                 <div class="user-profile-header d-flex flex-column align-items-center mb-4 px-4">
                                     <hr class="opacity-0">
                                     <div class="flex-shrink-0">
-                                        <img th:src="'/images/users/' + ${usuarioAutenticado.foto}" alt="user image" class="d-block rounded-circle" style="width: 150px; height: 150px; object-fit: cover;">
+                                        <img th:src="@{'/uploads/fotosUsuarios/' + ${usuarioAutenticado.foto}}" alt="user image" class="d-block rounded-circle" style="width: 150px; height: 150px; object-fit: cover;">
                                     </div>
                                     <p class="text-muted mb-0 mt-2" th:text="${usuarioAutenticado.nombre} + ' ' + ${usuarioAutenticado.apellido}">Kevin Doe</p>
                                     <p class="text-muted mb-0" th:text="${usuarioAutenticado.rolIdrol.nombre}"></p>

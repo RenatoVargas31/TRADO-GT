@@ -217,5 +217,6 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
             nativeQuery = true)
     List<Object[]> findUniqueUsersByAgent(int idAgente);
 
-
+    boolean existsByDni(String dni);
+    boolean existsByCorreo(String correo);
 }

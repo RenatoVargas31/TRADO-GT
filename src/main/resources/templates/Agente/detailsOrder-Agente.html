@@ -47,8 +47,7 @@
 
                             <div class="page-title-right">
                                 <ol class="breadcrumb m-0">
-                                    <li class="breadcrumb-item"><a href="javascript: void(0);">Utility</a></li>
-                                    <li class="breadcrumb-item active">Starter page</li>
+                                    <li class="breadcrumb-item">Detalles de orden</li>
                                 </ol>
                             </div>
 
@@ -74,17 +73,16 @@
                                 <div class="col">
                                     <p><strong>Nombre de comprador:</strong> <span th:text="${usuario.nombre} + ' ' + ${usuario.apellido}"></span></p>
                                     <p><strong>Número DNI:</strong> <span th:text="${usuario.dni}"></span></p>
-                                    <p><strong>Domicilio:</strong> <span th:text="${usuario.direccion}"></span></p>
+                                    <p><strong>Teléfono:</strong> <span th:text="${usuario.telefono}"></span></p>
                                     <!--
                                     <p><strong>Compañía:</strong> <span th:text="${usuario.razonSocial}"></span></p>
                                     <p><strong>RUC:</strong> <span th:text="${usuario.ruc}"></span></p>
                                     -->
-                                    <p><strong>Teléfono:</strong> <span th:text="${usuario.telefono}"></span></p>
+                                    <p><strong>Dirección de entrega:</strong> <span th:text="${orden.lugarEntrega}"></span></p>
                                 </div>
 
                                 <!-- Columna derecha: Información de la orden -->
                                 <div class="col">
-                                    <p><strong>RUC:</strong> <span th:text="${usuario.ruc}"></span></p>
                                     <p><strong>Fecha de la orden:</strong> <span th:text="${orden.fechaCreacion}"></span></p>
                                     <p><strong>Número de orden:</strong> <span th:text="${orden.codigo}"></span></p>
                                     <p><strong>Distrito:</strong> <span th:text="${usuario.distritoIddistrito.nombre}"></span></p>
@@ -104,22 +102,28 @@
                                         <h5 class="modal-title" id="modalEditarDomicilioLabel">Editar Domicilio</h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
-                                    <div class="modal-body">
-                                        <form id="form-editar-domicilio">
-                                            <!-- Mensaje de coordinación con el importador -->
-                                            <div class="alert alert-warning" role="alert">
-                                                La modificación del domicilio debe ser realizada previa coordinación con el importador mediante el chat.
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="domicilio-input" class="form-label">Nuevo Domicilio</label>
-                                                <input type="text" class="form-control" id="domicilio-input" th:value="${usuario.direccion}">
-                                            </div>
-                                        </form>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                                        <button type="button" class="btn btn-primary" onclick="guardarDomicilio()">Guardar cambios</button>
-                                    </div>
+                                    <form id="form-editar-domicilio" th:action="@{/agente/updateDelivery}" method="post">
+                                        <div class="modal-body">
+                                                <!-- Mensaje de coordinación con el importador -->
+                                                <div class="alert alert-warning" role="alert">
+                                                    La modificación de la dirección de entrega debe ser realizada previa coordinación con el importador mediante el chat.
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="direccion" class="form-label">Nueva dirección de entrega</label>
+                                                    <input type="text" class="form-control" id="direccion" th:name="direccion" th:value="${orden.lugarEntrega}">
+                                                    <!-- Campo oculto para el ID de la orden -->
+                                                    <input type="hidden" th:name="idOrden" th:value="${orden.id}">
+
+                                                    <!-- Campo oculto para el ID del usuario -->
+                                                    <input type="hidden" th:name="idUsuario" th:value="${usuario.id}">
+
+                                                </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                            <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
                         </div>
@@ -540,7 +544,7 @@
                                 <form>
                                     <div class="input-group">
                                         <input type="text" class="form-control" placeholder="Escribe un mensaje...">
-                                        <button class="btn btn-primary" type="submit">Enviar</button>
+                                        <button class="btn btn-primary" type="button">Enviar</button>
                                     </div>
                                 </form>
                             </div>

@@ -24,6 +24,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -80,27 +81,65 @@ public class LoginController {
     public String registrarUsuario(@Valid @ModelAttribute Usuario usuario,
                                    BindingResult result,
                                    @RequestParam("distrito") String distritoNombre,
-                                   RedirectAttributes redirectAttributes) {
+                                   RedirectAttributes redirectAttributes,
+                                   Model model) {
+        // Volver a cargar la lista de distritos
+        List<Distrito> distritos = distritoRepository.findAll();
+        model.addAttribute("distritos", distritos);
 
-        // Verify if the entered district exists
+        // Verificar si el distrito existe
         Optional<Distrito> distritoOpt = distritoRepository.findByNombre(distritoNombre);
         if (distritoOpt.isEmpty()) {
             result.rejectValue("distritoIddistrito", "error.usuario", "El distrito ingresado no es valido.");
-            return "CreateAcc"; // Return to the form if the district is not valid
+            return "CreateAcc"; // Volver al formulario si el distrito no es válido
         }
 
-        // Assign the district to the user
-        usuario.setDistritoIddistrito(distritoOpt.get());
-
-        // Check for form errors
-        if (result.hasErrors()) {
-            redirectAttributes.addFlashAttribute("denegado", "Usuario registrado sin exito.");
+        // Validate DNI
+        if (!usuario.getDni().matches("\\d{8}")) {
+            result.rejectValue("dni", "error.usuario", "El DNI debe ser un valor único de 8 dígitos.");
+            return "CreateAcc";
+        }
+        if (usuarioRepository.existsByDni(usuario.getDni())) {
+            result.rejectValue("dni", "error.usuario", "El DNI ya está registrado.");
             return "CreateAcc";
         }
 
-        // Save the user in the database
+        // Validate name and surname
+        if (!usuario.getNombre().matches("[a-zA-Z\\s]+")) {
+            result.rejectValue("nombre", "error.usuario", "El nombre no debe contener números.");
+            return "CreateAcc";
+        }
+        if (!usuario.getApellido().matches("[a-zA-Z\\s]+")) {
+            result.rejectValue("apellido", "error.usuario", "El apellido no debe contener números.");
+            return "CreateAcc";
+        }
+
+        // Validate email
+        if (!usuario.getCorreo().matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
+            result.rejectValue("correo", "error.usuario", "El correo debe ser único y contener un @.");
+            return "CreateAcc";
+        }
+        if (usuarioRepository.existsByCorreo(usuario.getCorreo())) {
+            result.rejectValue("correo", "error.usuario", "El correo ya está registrado.");
+            return "CreateAcc";
+        }
+
+        // Validate no empty fields
+        if (usuario.getDni().trim().isEmpty() || usuario.getNombre().trim().isEmpty() ||
+                usuario.getApellido().trim().isEmpty() || usuario.getCorreo().trim().isEmpty() ||
+                usuario.getDireccion().trim().isEmpty()) {
+            result.rejectValue("general", "error.usuario", "Ningún campo debe estar vacío o contener solo espacios.");
+            return "CreateAcc";
+        }
+        // Si hay errores, recargar el formulario con la lista de distritos
+        if (result.hasErrors()) {
+            return "CreateAcc";
+        }
+
+        // Guardar el usuario en la base de datos
+        usuario.setDistritoIddistrito(distritoOpt.get());
         usuarioRepository.save(usuario);
-        redirectAttributes.addFlashAttribute("success", "Usuario registrado con exito.");
+        redirectAttributes.addFlashAttribute("success", "Usuario registrado con éxito.");
         return "CreateAcc-confirm";
     }
 }
