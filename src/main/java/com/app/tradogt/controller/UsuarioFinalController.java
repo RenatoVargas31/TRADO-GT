@@ -6,10 +6,7 @@ import com.app.tradogt.dto.PasswordChangeDto;
 import com.app.tradogt.entity.*;
 import com.app.tradogt.services.StorageService;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
-import org.hibernate.query.Order;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,7 +15,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.data.jpa.repository.JpaRepository;
 import com.app.tradogt.repository.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -41,6 +37,8 @@ public class UsuarioFinalController {
 
     private Optional<Usuario> authenticatedUser;
     private int zonaId;
+   // @Autowired
+    //private MinValidatorForCharSequence minValidatorForCharSequence;
 
     public static class RandomCodeGenerator {
 
@@ -225,19 +223,14 @@ public class UsuarioFinalController {
     }
 
     @GetMapping("/editProfile")
-    public String editProfile(Model model) {
+    public String editProfile(Model model, RedirectAttributes attr) {
 
-        //Obtengo el id del usuario
-        Integer userId = getAuthenticatedUserId();
-        Optional<Usuario> usuarioOptional = usuarioRepository.findById(userId);
-        if (usuarioOptional.isPresent()) {
-            Usuario usuario = usuarioOptional.get();
-            model.addAttribute("usuario", usuario);
-
-        }
-
+        Usuario usuario = usuarioRepository.findById(getAuthenticatedUserId()).get();
+        model.addAttribute("usuario", usuario);
         return "Usuario/profile_user_edit";
+
     }
+
 
     @PostMapping("/subirFoto")
     public String viewSubirFoto(@RequestParam("foto") MultipartFile file, Model model) throws IOException {
@@ -423,19 +416,24 @@ public class UsuarioFinalController {
     }
 
 
-    @PostMapping("/updateDireccion") //perfil
-    public String updateDireccion(@RequestParam("direccion") String direccion, Model model) {
-        // Aquí debes obtener el usuario actual, por ejemplo, desde la sesión o un parámetro
+  /*  @PostMapping("/saveProfile") //perfil
+    public String updateDireccionP(@Valid @ModelAttribute("usuario") Usuario usuario,
+                                  BindingResult result) {
+       if(result.hasErrors()){
+           //Si hay errores de validación, redirige a la vista del formulario
+           return "Usuario/profile_user_edit";
+       }
 
-        int id = getAuthenticatedUserId();
+       Usuario myuser = usuarioRepository.findByIdUsuario(usuario.getId());
 
-        Optional<Usuario> myuser = usuarioRepository.findById(id);
-        myuser.get().setDireccion(direccion);
-        usuarioRepository.save(myuser.get());
+        System.out.println("---------------");
+        System.out.println("nombre: " + myuser.getNombre());
+        System.out.println("apellido: " + myuser.getApellido());
 
-        return "Usuario/listaOrdenes";
-    }
+       usuarioRepository.save(usuario);
 
+        return "redirect: /usuario/inicio";
+    }*/
 
     @GetMapping("/productoDetalles")
     public String showProductoDetalles(@RequestParam("id") int id, Model model) {
@@ -1162,45 +1160,70 @@ public class UsuarioFinalController {
         pagoRepository.save(pago);
 
         //Reducir la cantidad en la tienda por los productos ya pagado
-        //listar los productos en zona
-        //List<ProductoEnZona> almacen = productoEnZonaRepository.findByProductoIdproductoAndZonaIdzona(, zone);
-        /*int totalProducto = almacen.get().getCantidad();
-        int newTotal = totalProducto - cantidad;
-        if (newTotal >= 25) {
-            almacen.get().setEstadoRepo((byte) 0);
-            almacen.get().setCantidad(newTotal);
+        //Busco mi carrito actual
+        Carrito miCarrito = carritoRepository.findByusuarioIdusuarioAndIsDelete(myuser, (byte) 0);
 
+        System.out.println("------------");
+        System.out.println("carr: " + miCarrito.getIsDelete());
+        List<ProductoEnCarrito> misProductos = productoEnCarritoRepository.findBycarritoIdcarrito(miCarrito);//la cantidad de cada producto está aqui
+
+        if(misProductos.isEmpty()) {
+            //No debería estar aquí
+            attr.addFlashAttribute("error", "No hay productos en el carrito.");
         }else {
-            almacen.get().setEstadoRepo((byte) 1);
-            almacen.get().setCantidad(newTotal);
+            System.out.println("-----------------");
+            System.out.println("Aqui estoy");
+            for(ProductoEnCarrito item : misProductos) {
+
+                //Creamos un ProductoEnZonaId
+                ProductoEnZonaId itemTienda = new ProductoEnZonaId();
+                itemTienda.setProductoIdproducto(item.getProductoEnZona().getProductoIdproducto().getId());
+                System.out.println("ID producto en tienda (zona):" + itemTienda.getProductoIdproducto());
+                itemTienda.setZonaIdzona(myuser.getDistritoIddistrito().getZonaIdzona().getId());
+                System.out.println("Id distrito: " + itemTienda.getZonaIdzona());
+
+                //busco el producto en la tienda
+                Optional<ProductoEnZona> tienda =productoEnZonaRepository.findById(itemTienda);
+                System.out.println("-------");
+                System.out.println("ID producto: " + item.getProductoEnZona().getProductoIdproducto().getId());
+
+                //Obtengo el total de stock en tienda
+                int Stock = tienda.get().getCantidad();
+                int cantidadSelecionada = item.getCantidad();
+                System.out.println("cantidad :" + cantidadSelecionada);
+
+                int newTotal = Stock - cantidadSelecionada;
+
+                System.out.println("Nuevo stock: " + newTotal);
+                tienda.get().setCantidad(newTotal);
+                productoEnZonaRepository.save(tienda.get());
+                System.out.println("AYUDDDDDDDDDDDDDDDA");
+            }
         }
-        productoEnZonaRepository.save(almacen.get());*/
 
         //Se genera una nueva orden
         Orden orden = new Orden();
         List<EstadoOrden> listaEstadoOrden = estadoOrdenRepository.findAll();
         EstadoOrden primerEstadoOrden = listaEstadoOrden.get(0);
+        System.out.println("se creó una orden :DDDDDDDDDD");
 
-        //Listar agentes de compra
-        List<Usuario> listaAgente = usuarioRepository.findAllByRolIdrolIdAndIsActivated(3, (byte) 1);
         //Cambio al id de orden del carrito a null -> k
         Carrito carrito = carritoRepository.findByusuarioIdusuarioAndIsDelete(myuser, (byte) 0 );
 
-        Usuario agente = null;
-        if (!listaAgente.isEmpty()) {
-            Random random = new Random();
-            int index = random.nextInt(listaAgente.size());
-            orden.setEstadoordenIdestadoorden(primerEstadoOrden);
-            orden.setFechaCreacion(LocalDate.now());
-            orden.setFechaArribo(LocalDate.now().plusWeeks(2));
-            orden.setIsDeleted((byte) 0);
-            orden.setCodigo(RandomCodeGenerator.generateRandomCode(5));
-            orden.setCostoTotal(monto);
-            orden.setPagoIdpago(pago);
-            orden.setUsuarioIdusuario(myuser);
-            orden.setCarritoIdcarrito(carrito);
-            orden.setLugarEntrega(LugarEntrega);
-        }
+
+        //Generamos una nueva orden
+        orden.setEstadoordenIdestadoorden(primerEstadoOrden);
+        orden.setFechaCreacion(LocalDate.now());
+        //orden.setFechaArribo(LocalDate.now().plusWeeks(3));
+        orden.setIsDeleted((byte) 0);
+        orden.setCodigo(RandomCodeGenerator.generateRandomCode(5));
+        orden.setCostoTotal(monto);
+        orden.setPagoIdpago(pago);
+        orden.setUsuarioIdusuario(myuser);
+        orden.setCarritoIdcarrito(carrito);
+        orden.setLugarEntrega(LugarEntrega);
+
+
         // Guardar la orden
         ordenRepository.save(orden);
         Integer idOrden = orden.getId();

@@ -62,7 +62,7 @@
                                         <img th:src="@{'/uploads/fotosUsuarios/' + ${usuario.foto}}" alt="user image" class="d-block rounded-circle" style="width: 150px; height: 150px; object-fit: cover;"><br>
                                     </div>
                                     <p class="text-dark mb-0 mt-2" th:text="${usuario.nombre} + ' ' + ${usuario.apellido}" style="font-size: 20px;">Nombre del Usuario</p>
-                                    <p class="text-muted mb-0" th:text="${usuario.distritoIddistrito.zonaIdzona.nombre != null ? usuario.distritoIddistrito.zonaIdzona.nombre : 'Sin zona asignada'}"></p><br>
+                                    <p class="text-muted mb-0" th:text="${usuario.rolIdrol.nombre}"></p><br>
                                     <!-- Estado de Actividad -->
                                     <p class="btn" th:classappend="${usuario.isActivated == 1} ? 'btn-success' : 'btn-danger'" th:text="${usuario.isActivated == 1} ? 'Activo' : 'Inactivo'"></p>
 
