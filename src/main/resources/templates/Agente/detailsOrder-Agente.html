@@ -93,7 +93,7 @@
 
                                 <!-- Columna derecha: Información de la orden -->
                                 <div class="col">
-                                    <p><strong>Fecha de la orden:</strong> <span th:text="${orden.fechaCreacion}"></span></p>
+                                    <p><strong>Fecha de la orden:</strong> <span th:text="${#temporals.format(orden.fechaCreacion, 'dd-MM-yyyy')}"></span></p>
                                     <p><strong>Número de orden:</strong> <span th:text="${orden.codigo}"></span></p>
                                     <p><strong>Distrito:</strong> <span th:text="${usuario.distritoIddistrito.nombre}"></span></p>
                                     <!--

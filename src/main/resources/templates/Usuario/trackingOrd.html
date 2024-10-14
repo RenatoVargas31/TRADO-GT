@@ -185,7 +185,7 @@
                                                 <td th:text="${producto.productoEnZona.productoIdproducto.nombre}"></td>
                                                 <td  th:text="'S/ ' + ${producto.productoEnZona.productoIdproducto.precio}"></td>
                                                 <td th:if="${ orden.estadoordenIdestadoorden.nombre == 'RECIBIDO' }">
-                                                    <a th:href="@{/usuario/nuevaReseña}" type="button" class="btn btn-sm btn-outline-primary btn-block">Reseña</a>
+                                                    <a th:href="@{/usuario/nuevaReseña(productoId=${producto.productoEnZona.productoIdproducto.id})}" type="button" class="btn btn-sm btn-outline-primary btn-block">Reseña</a>
                                                 </td>
                                             </tr>
                                             </tbody>

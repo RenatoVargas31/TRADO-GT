@@ -30,12 +30,20 @@
                         </div>
                     </div>
                 </div>
+                <!-- Mostrar mensaje de error -->
+                <div th:if="${errorMessage}" class="alert alert-danger" role="alert">
+                    <span th:text="${errorMessage}"></span>
+                </div>
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="card">
                             <div class="card-body">
                                 <!-- src/main/resources/templates/SuperAdmin/productoNuevo-SAdmin.html -->
-                                <form th:action="@{/superadmin/productoNuevo}" th:object="${formProducto}" method="post">
+                                <form th:action="@{/superadmin/productoEditar}" th:object="${formProducto}" method="post">
+                                    <!--Inputs hidden para enviar el id del producto y las zonas-->
+                                    <input type="hidden" th:field="*{producto.id}" />
+                                    <!--Input hidden para enviar el codigo del producto-->
+                                    <input type="hidden" th:field="*{producto.codigo}" />
                                     <div class="row">
                                         <div class="col-lg-6">
                                             <div class="mb-3">
@@ -219,7 +227,7 @@
                                         </div>
                                     </div>
                                     <div>
-                                        <button class="btn btn-primary" type="submit">Registrar</button>
+                                        <button class="btn btn-primary" type="submit">Guardar</button>
                                         <a th:href="@{/superadmin/productoLista}" class="btn btn-danger">Cancelar</a>
                                     </div>
                                 </form>
@@ -372,7 +380,7 @@
                 const options = subcategories[selectedCategory] || [];
 
                 // Clear previous options
-                subcategorySelect.innerHTML = '<option disabled selected>--Selecciona una subcategoría--</option>';
+                subcategorySelect.innerHTML = '';
 
                 // Populate new options
                 options.forEach(subcategory => {
@@ -381,7 +389,15 @@
                     option.textContent = subcategory.nombre;
                     subcategorySelect.appendChild(option);
                 });
+
+                // Set the first option as selected by default
+                if (options.length > 0) {
+                    subcategorySelect.value = options[0].id;
+                }
             });
+
+            // Trigger change event to initialize subcategory select
+            categorySelect.dispatchEvent(new Event('change'));
         });
     </script>
     <script>

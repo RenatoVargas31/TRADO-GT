@@ -108,6 +108,10 @@
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
                                                     <div class="modal-body">
+                                                        <!-- Descripción sobre el impacto del baneo -->
+                                                        <div class="alert alert-warning" role="alert">
+                                                            <strong>Importante:</strong> Al banear al usuario, todas sus órdenes asignadas serán eliminadas del sistema.
+                                                        </div>
                                                         <!-- Formulario dinámico para el usuario -->
                                                         <form th:id="'banUserForm-' + ${usuario.id}" th:action="@{/agente/banearImportador}" method="post">
                                                             <input type="hidden" id="idImportador" name="idImportador" th:value="${usuario.id}" />

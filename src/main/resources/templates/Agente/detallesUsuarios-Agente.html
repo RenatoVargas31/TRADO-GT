@@ -186,6 +186,10 @@
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
+                                                    <!-- Descripción sobre el impacto del baneo -->
+                                                    <div class="alert alert-warning" role="alert">
+                                                        <strong>Importante:</strong> Al banear al usuario, todas sus órdenes asignadas serán eliminadas del sistema.
+                                                    </div>
                                                     <form id="banUserForm" th:action="@{/agente/banearImportador}" method="post">
                                                         <input type="hidden" id="idImportador" name="idImportador" th:value="${usuario.id}" />
                                                         <div class="mb-3">
@@ -283,17 +287,21 @@
             // Limpiar mensajes anteriores
             document.getElementById("banReasonError").innerText = '';
 
-            // Validar que no esté vacío y que no exceda los 150 caracteres
+            // Validar que no esté vacío, tenga al menos 10 caracteres y no exceda los 150 caracteres
             if (banReason.length === 0) {
                 event.preventDefault();  // Evitar el envío del formulario
                 document.getElementById("banReasonError").innerText = 'La razón del baneo es obligatoria.';
-            } else if (banReason.length > 150) {
+            } else if (banReason.length < 10) {
                 event.preventDefault();  // Evitar el envío del formulario
-                document.getElementById("banReasonError").innerText = 'La razón del baneo no puede exceder los 150 caracteres.';
+                document.getElementById("banReasonError").innerText = 'La razón del baneo debe tener al menos 10 caracteres.';
+            } else if (banReason.length > 300) {
+                event.preventDefault();  // Evitar el envío del formulario
+                document.getElementById("banReasonError").innerText = 'La razón del baneo no puede exceder los 300 caracteres.';
             }
         });
     });
 </script>
+
 
 
 <!-- JAVASCRIPT BASE-->
