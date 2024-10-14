@@ -367,7 +367,7 @@
                                         Sin asignar
                                      </span>
                                 </p>
-                                <p><strong>Fecha estimada de entrega:</strong> <span th:text="${orden.fechaArribo}"></span></p>
+                                <p><strong>Fecha estimada de entrega:</strong> <span th:text="${#temporals.format(orden.fechaArribo , 'dd-MM-yyyy')}"></span></p>
                             </div>
                         </div>
 

@@ -1,9 +1,7 @@
 package com.app.tradogt.controller;
 
 import com.app.tradogt.dto.AgenteInfoZon;
-import com.app.tradogt.entity.Orden;
-import com.app.tradogt.entity.Producto;
-import com.app.tradogt.entity.ProductoEnZona;
+import com.app.tradogt.entity.*;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -13,7 +11,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import com.app.tradogt.repository.*;
-import com.app.tradogt.entity.Usuario;
 import org.springframework.ui.Model;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -91,7 +88,7 @@ public class AdminZonalController {
 
     @GetMapping("/reposicionProductos")
     public String showReposicionProductos(Model model) {
-
+        int idAdminZonal = getAuthenticatedUserId();
         List<ProductoEnZona> productos = productoEnZonaRepository.findAllByZonaIdzonaAndIsDeleted(zonaRepository.findById(1).get(), Byte.parseByte("0"));
         model.addAttribute("productos", productos);
         return "AdminZonal/tablaReposicionProductos-AdminZonal";
@@ -99,12 +96,34 @@ public class AdminZonalController {
 
     //Editar el estado de reposición
     @PostMapping("/editarEstadoRepo")
-    public String editarEstadoRepo(Producto producto) {
+    public String editarEstadoRepo(@RequestParam("productoId") int productoId,
+                                   @RequestParam("zonaId") int zonaId,
+                                   RedirectAttributes redirectAttributes) {
 
-        //Actualizar el estado
+        // Buscar ProductoEnZona usando productoId y zonaId
+        Optional<ProductoEnZona> productoEnZona = productoEnZonaRepository.findByIdAndZona(productoId, zonaId);
+
+        if (productoEnZona.isPresent()) {
+            ProductoEnZona producto = productoEnZona.get();
+
+            // Cambiar el estado dependiendo de la cantidad de stock
+            if (producto.getCantidad() < 25) {
+                producto.setEstadoRepo((byte) 2);  // Cambia a 'En espera de reposición'
+            } else {
+                producto.setEstadoRepo((byte) 0);  // Cambia a 'Stock adecuado'
+            }
+
+            // Guardar los cambios
+            productoEnZonaRepository.save(producto);
+            redirectAttributes.addFlashAttribute("mensaje", "El estado del producto ha sido actualizado.");
+        } else {
+            redirectAttributes.addFlashAttribute("error", "Producto no encontrado.");
+        }
 
         return "redirect:/adminzonal/reposicionProductos";
     }
+
+
 
     @GetMapping("/faq")
     public String showFaq() {
