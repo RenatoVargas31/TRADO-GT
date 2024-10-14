@@ -56,31 +56,36 @@
                                     </div>
 
                                     <div class="p-2 mt-2">
-                                        <form method="post" th:action="@{/crearCuenta}">
+                                        <form method="post" th:action="@{/crearCuenta}" th:object="${usuario}">
                                             <div class="auth-form-group-custom mb-2">
                                                 <i class="ri-passport-line auti-custom-input-icon"></i>
                                                 <label for="dni" class="fw-semibold">DNI</label>
-                                                <input type="text" class="form-control" id="dni" name="dni" placeholder="Ingresar DNI" required>
+                                                <input type="text" class="form-control" id="dni" th:field="*{dni}" placeholder="Ingresar DNI" required>
+                                                <div th:if="${#fields.hasErrors('dni')}" th:errors="*{dni}" class="text-danger"></div>
                                             </div>
                                             <div class="auth-form-group-custom mb-2">
                                                 <i class="ri-user-2-line auti-custom-input-icon"></i>
                                                 <label for="nombre" class="fw-semibold">Nombres</label>
-                                                <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Ingresar nombres" required>
+                                                <input type="text" class="form-control" id="nombre" th:field="*{nombre}" placeholder="Ingresar nombres" required>
+                                                <div th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}" class="text-danger"></div>
                                             </div>
                                             <div class="auth-form-group-custom mb-2">
                                                 <i class="ri-user-2-line auti-custom-input-icon"></i>
                                                 <label for="apellido" class="fw-semibold">Apellidos</label>
-                                                <input type="text" class="form-control" id="apellido" name="apellido" placeholder="Ingresar apellidos" required>
+                                                <input type="text" class="form-control" id="apellido" th:field="*{apellido}" placeholder="Ingresar apellidos" required>
+                                                <div th:if="${#fields.hasErrors('apellido')}" th:errors="*{apellido}" class="text-danger"></div>
                                             </div>
                                             <div class="auth-form-group-custom mb-2">
                                                 <i class="ri-mail-line auti-custom-input-icon"></i>
                                                 <label for="correo">Correo electrónico</label>
-                                                <input type="email" class="form-control" id="correo" name="correo" placeholder="Ingrese su correo" required>
+                                                <input type="email" class="form-control" id="correo" th:field="*{correo}" placeholder="Ingrese su correo" required>
+                                                <div th:if="${#fields.hasErrors('correo')}" th:errors="*{correo}" class="text-danger"></div>
                                             </div>
                                             <div class="auth-form-group-custom mb-2">
                                                 <i class="ri-community-line auti-custom-input-icon"></i>
                                                 <label for="direccion" class="fw-semibold">Dirección</label>
-                                                <input type="text" class="form-control" id="direccion" name="direccion" placeholder="Ingresar dirección" required>
+                                                <input type="text" class="form-control" id="direccion" th:field="*{direccion}" placeholder="Ingresar dirección" required>
+                                                <div th:if="${#fields.hasErrors('direccion')}" th:errors="*{direccion}" class="text-danger"></div>
                                             </div>
                                             <div class="auth-form-group-custom mb-2">
                                                 <i class="ri-map-2-line auti-custom-input-icon"></i>
