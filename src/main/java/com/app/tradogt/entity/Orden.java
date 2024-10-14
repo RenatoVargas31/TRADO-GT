@@ -32,7 +32,6 @@ public class Orden {
     @Column(name = "fechaCreacion", nullable = false)
     private LocalDate fechaCreacion;
 
-    @NotNull
     @Column(name = "fechaArribo", nullable = false)
     private LocalDate fechaArribo;
 
@@ -77,15 +76,12 @@ public class Orden {
     @Column(name = "fechaEnProceso", nullable = false)
     private LocalDate fechaEnProceso;
 
-    @NotNull
     @Column(name = "fechaEnAduanas", nullable = false)
     private LocalDate fechaEnAduanas;
 
-    @NotNull
     @Column(name = "fechaEnRuta", nullable = false)
     private LocalDate fechaEnRuta;
 
-    @NotNull
     @Column(name = "fechaRecibido", nullable = false)
     private LocalDate fechaRecibido;
 

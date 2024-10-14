@@ -67,7 +67,8 @@
                                                 <select class="form-select" name="productoId" required>
                                                     <option value="" disabled selected>Seleccione un producto</option>
                                                     <th:block th:each="producto : ${productosRecibidos}">
-                                                        <option th:value="${producto.id}" th:text="${producto.nombre}"></option>
+                                                        <option th:value="${producto.id}" th:text="${producto.nombre}"
+                                                                th:selected="${producto.id == productoSeleccionadoId}"></option>
                                                     </th:block>
                                                 </select>
                                                 <small class="form-text text-muted">Seleccione el producto del cual desea dejar una reseña.</small>

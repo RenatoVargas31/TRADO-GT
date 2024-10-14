@@ -63,6 +63,22 @@ public class SuperAdminController {
         model.addAttribute("passwordChangeDto", new PasswordChangeDto());
         return "SuperAdmin/perfil-SAdmin";
     }
+    @GetMapping("/editarPerfilForm")
+    public String viewEditarPerfil(Model model) {
+
+        return "SuperAdmin/perfilEdit-SAdmin";
+    }
+    @PostMapping("/editarPerfil")
+    public String viewEditarPerfil(Usuario usuario, Model model) {
+        // Actualizar el usuario en la base de datos
+        Usuario usuarioActual = (Usuario) model.getAttribute("usuarioAutenticado");
+        assert usuarioActual != null;
+        usuarioActual.setTelefono(usuario.getTelefono());
+        usuarioActual.setDireccion(usuario.getDireccion());
+        //Guardar
+        usuarioRepository.save(usuarioActual);
+        return "redirect:/superadmin/perfil";
+    }
 
     @PostMapping("/subirFoto")
     public String viewSubirFoto(@RequestParam("foto") MultipartFile file, Model model) throws IOException {
@@ -89,6 +105,11 @@ public class SuperAdminController {
 
         // Redirigir al perfil
         return "redirect:/superadmin/perfil";
+    }
+    @GetMapping("/changePassForm")
+    public String viewChangePassForm(Model model) {
+        model.addAttribute("passwordChangeDto", new PasswordChangeDto());
+        return "SuperAdmin/changePass-SAdmin";
     }
 
     @PostMapping("/changePass")

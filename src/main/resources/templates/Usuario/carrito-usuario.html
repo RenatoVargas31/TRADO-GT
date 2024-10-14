@@ -92,28 +92,32 @@
 
                                                     <!-- Guardar la cantidad de producto -->
                                                     <td>
-                                                        <div style="width: 120px;"  class="product-cart-touchspin">
-                                                            <button type="button"
-                                                                    th:onclick="'disminuir(\'cantidad-' + ${iterStat.index + 1} + '\', \'precio-' + ${iterStat.index + 1} + '\', \'total-' + ${iterStat.index + 1} + '\')'">
-                                                                -
-                                                            </button>
-                                                            <label th:for="'cantidad-'+${iterStat.index + 1}"></label><input class="w-25" th:id="'cantidad-'+${iterStat.index + 1}" type="text" th:value="${producto.cantidad}" readonly>
-                                                            <button type="button"
-                                                                    th:onclick="'incrementar(\'cantidad-' + ${iterStat.index + 1} + '\', \'precio-' + ${iterStat.index + 1} + '\', \'total-' + ${iterStat.index + 1} + '\')'">
-                                                                +
-                                                            </button>
-
+                                                        <div style="width: 120px;" class="product-cart-touchspin">
+                                                            <button type="button" th:onclick="'disminuir(\'cantidad-' + ${iterStat.index + 1} + '\', \'precio-' + ${iterStat.index + 1} + '\', \'total-' + ${iterStat.index + 1} + '\')'">-</button>
+                                                            <label th:for="'cantidad-'+${iterStat.index + 1}"></label>
+                                                            <input class="w-25" th:id="'cantidad-'+${iterStat.index + 1}" type="text" th:value="${producto.cantidad}" readonly>
+                                                            <button type="button" th:onclick="'incrementar(\'cantidad-' + ${iterStat.index + 1} + '\', \'precio-' + ${iterStat.index + 1} + '\', \'total-' + ${iterStat.index + 1} + '\')'">+</button>
                                                         </div>
                                                     </td>
+
                                                     <td th:id="'total-'+ ${iterStat.index + 1}"  th:text="'S/. ' + (${producto.productoEnZona.productoIdproducto.precio} * ${producto.cantidad})"></td>
                                                     <script>
                                                         let totales = []; // Array para almacenar los totales
                                                         let subtotal =0;
                                                         let total =0;
+                                                        let cantidades=[];
                                                         document.addEventListener("DOMContentLoaded", function() {
                                                             // Ejecutar al cargar la página para calcular los valores iniciales
+                                                            inicializarCantidades();
                                                             inicializarTotales();
+
                                                         });
+                                                        function inicializarCantidades() {
+                                                            const inputs = document.querySelectorAll('input[id^="cantidad-"]');
+                                                            inputs.forEach((input, index) => {
+                                                                cantidades[index] = parseInt(input.value) || 0; // Rellena el array con valores iniciales
+                                                            });
+                                                        }
                                                         function inicializarTotales() {
                                                             // Iterar sobre los productos y calcular el total de cada uno
                                                             let productos = document.querySelectorAll("[id^=cantidad-]"); // Asumiendo que los IDs de las cantidades siguen el formato "cantidad-{id}"
@@ -146,22 +150,43 @@
                                                         });
 
                                                         function incrementar(cantidadId, precioId, totalId) {
-                                                            let cantidadInput = document.getElementById(cantidadId);
-                                                            let cantidadActual = parseInt(cantidadInput.value);
-                                                            cantidadActual += 1;
-                                                            cantidadInput.value = cantidadActual;
-                                                            let total = actualizarTotal(cantidadId, precioId, totalId);
-                                                            totales[totalId] = total;
-                                                            actualizarSubTotal();
-                                                        }
-                                                        function disminuir(cantidadId, precioId, totalId) {
-                                                            let cantidadInput = document.getElementById(cantidadId);
-                                                            let cantidadActual = parseInt(cantidadInput.value);
-                                                            if (cantidadActual > 1) {
-                                                                cantidadActual -= 1;
-                                                                cantidadInput.value = cantidadActual;
+                                                            let cantidadInput = document.getElementById(cantidadId); // Obtiene el input de cantidad
+                                                            let cantidadActual = parseInt(cantidadInput.value); // Convierte el valor del input a un número entero
+
+                                                            // Verifica si cantidadActual es un número
+                                                            if (!isNaN(cantidadActual)) {
+                                                                cantidadActual += 1; // Incrementa la cantidad
+                                                                cantidadInput.value = cantidadActual; // Actualiza el valor en el input
+
+                                                                // Almacena la cantidad en la lista
+                                                                cantidades[parseInt(cantidadId.split('-')[1]) - 1] = cantidadActual;
+
+                                                                // Calcula el nuevo total y actualiza la lista de totales
                                                                 let total = actualizarTotal(cantidadId, precioId, totalId);
-                                                                totales[totalId] = total;
+                                                                totales[totalId] = total; // Almacena el total en la lista
+
+                                                                // Actualiza el subtotal
+                                                                actualizarSubTotal();
+                                                            }
+                                                        }
+
+                                                        function disminuir(cantidadId, precioId, totalId) {
+                                                            let cantidadInput = document.getElementById(cantidadId); // Obtiene el input de cantidad
+                                                            let cantidadActual = parseInt(cantidadInput.value); // Convierte el valor del input a un número entero
+
+                                                            // Verifica si cantidadActual es un número y mayor que 1
+                                                            if (!isNaN(cantidadActual) && cantidadActual > 1) {
+                                                                cantidadActual -= 1; // Disminuye la cantidad
+                                                                cantidadInput.value = cantidadActual; // Actualiza el valor en el input
+
+                                                                // Almacena la cantidad en la lista
+                                                                cantidades[parseInt(cantidadId.split('-')[1]) - 1] = cantidadActual;
+
+                                                                // Calcula el nuevo total y actualiza la lista de totales
+                                                                let total = actualizarTotal(cantidadId, precioId, totalId);
+                                                                totales[totalId] = total; // Almacena el total en la lista
+
+                                                                // Actualiza el subtotal
                                                                 actualizarSubTotal();
                                                             }
                                                         }
@@ -169,7 +194,7 @@
                                                             let cantidad = parseInt(document.getElementById(cantidadId).value);
                                                             let precio = parseFloat(document.getElementById(precioId).textContent.replace('S/. ', ''));
                                                             let nuevoTotal = cantidad * precio;
-                                                            document.getElementById("input-cantidad").value = cantidad;
+                                                            document.getElementById("input-cantidad").value = cantidades;
                                                             // Imprimir valores para verificar
                                                             console.log("Nuevo cantidad: ", cantidad);
                                                             document.getElementById(totalId).innerText = `S/. ${nuevoTotal.toFixed(2)}`;

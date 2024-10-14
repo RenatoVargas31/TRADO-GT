@@ -365,22 +365,6 @@ public class UsuarioFinalController {
 
         return "Usuario/trackingOrdEdit";
     }
-    //Guardar los cambios
-    @PostMapping("/guardarCambiosOrden")
-    public String saveCambiosOrden(RedirectAttributes attr, @ModelAttribute("orden") Orden orden) {
-        // Buscar la orden
-        Optional<Orden> ordenExistente = ordenRepository.findById(orden.getId());
-        if(ordenExistente.isPresent()) {
-            Orden ordenActaulizada = ordenExistente.get();
-            ordenActaulizada.setLugarEntrega(orden.getLugarEntrega());
-            ordenRepository.save(ordenActaulizada);
-            attr.addFlashAttribute("saveEdit", "La orden ha sido actualiza correctamente.");
-        }else{
-            attr.addFlashAttribute("saveEditError", "La orden ha sido no existe");
-        }
-        return "redirect:/usuario/misPedidos";
-    }
-
 
     //Asignación de un Agente
     @PostMapping("/asignarAgente")
@@ -409,8 +393,37 @@ public class UsuarioFinalController {
         return "redirect:/usuario/misPedidos";
     }
 
+    //Actualizar la dirreción de entrega
+    @PostMapping("/updateDelivery")
+    public String updateDireccion(@RequestParam("idOrden") int idOrden,
+                                  @RequestParam("idUsuario") int idUsuario,
+                                  @RequestParam("direccion") String direccionEntrega,
+                                  RedirectAttributes redirectAttributes){
 
-    @PostMapping("/updateDireccion")
+        //Buscamos la orden por id
+        Optional<Orden> orden = ordenRepository.findById(idOrden);
+        String code = orden.get().getCodigo();
+
+        System.out.println("-----------");
+        System.out.println("codigo: " + code);
+
+
+        if(orden.isPresent()) {
+            Orden ord = orden.get();
+            ord.setLugarEntrega(direccionEntrega);
+            ordenRepository.save(ord);
+            // Agregar mensaje de éxito al flash attributes
+            redirectAttributes.addFlashAttribute("saveEdit", "La dirección de entrega ha sido modificada con éxito.");
+        }else {
+            // Si no se encuentra el usuario
+            redirectAttributes.addFlashAttribute("saveEditError", "La orden no fue encontrada. Inténtelo de nuevo más tarde");
+        }
+
+        return "redirect:/usuario/misPedidos";
+    }
+
+
+    @PostMapping("/updateDireccion") //perfil
     public String updateDireccion(@RequestParam("direccion") String direccion, Model model) {
         // Aquí debes obtener el usuario actual, por ejemplo, desde la sesión o un parámetro
 
@@ -578,7 +591,8 @@ public class UsuarioFinalController {
    @PostMapping("/actualizarCantidad") //Aquí se debe guardar una lista o array de las cantidades de cada producto.
     public String actualizarCantidad (
             @RequestParam("total") BigDecimal total,
-            @RequestParam("cantidad") int cantidad) {
+            @RequestParam("cantidad") List<Integer> cantidad) {
+        System.out.println(cantidad);
 
         int id = getAuthenticatedUserId();
         Usuario usuario = usuarioRepository.findById(id).get();
@@ -587,8 +601,12 @@ public class UsuarioFinalController {
         micarrito.setCostoTotal(total);
         carritoRepository.save(micarrito);
         List<ProductoEnCarrito> misproductos = productoEnCarritoRepository.findBycarritoIdcarrito(micarrito);
-        misproductos.get(0).setCantidad(cantidad);
-        productoEnCarritoRepository.save(misproductos.get(0));
+           for (int i = 0; i < misproductos.size(); i++) {
+               // Actualiza la cantidad del producto
+               misproductos.get(i).setCantidad(cantidad.get(i));
+               // Guarda el producto actualizado en el repositorio
+               productoEnCarritoRepository.save(misproductos.get(i));
+           }
 
         //Obtener la zona del usuario
         Zona zone = usuario.getZonaIdzona();
@@ -851,13 +869,20 @@ public class UsuarioFinalController {
     }
 
     @GetMapping("/nuevaReseña")
-    public String nuevaResenha(Model model){
-        int id = getAuthenticatedUserId();
+    public String nuevaResenha(@RequestParam(value = "productoId", required = false) Integer productoId, Model model){
+        int userId = getAuthenticatedUserId();
 
         // Obtenemos los productos que el usuario ha recibido
-        List<Producto> productosRecibidos = productosRepository.findProductosRecibidos(id);
+        List<Producto> productosRecibidos = productosRepository.findProductosRecibidos(userId);
+
         // Añadimos la lista de productos al modelo
         model.addAttribute("productosRecibidos", productosRecibidos);
+
+        // Si se pasa un productoId, lo agregamos al modelo para seleccionar el producto automáticamente
+        if (productoId != null) {
+            model.addAttribute("productoSeleccionadoId", productoId);
+        }
+
         model.addAttribute("resena", new Resena()); // Agregamos un objeto vacío para el formulario
 
         return "Usuario/nuevaReseña-usuario";
