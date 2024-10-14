@@ -869,13 +869,20 @@ public class UsuarioFinalController {
     }
 
     @GetMapping("/nuevaReseña")
-    public String nuevaResenha(Model model){
-        int id = getAuthenticatedUserId();
+    public String nuevaResenha(@RequestParam(value = "productoId", required = false) Integer productoId, Model model){
+        int userId = getAuthenticatedUserId();
 
         // Obtenemos los productos que el usuario ha recibido
-        List<Producto> productosRecibidos = productosRepository.findProductosRecibidos(id);
+        List<Producto> productosRecibidos = productosRepository.findProductosRecibidos(userId);
+
         // Añadimos la lista de productos al modelo
         model.addAttribute("productosRecibidos", productosRecibidos);
+
+        // Si se pasa un productoId, lo agregamos al modelo para seleccionar el producto automáticamente
+        if (productoId != null) {
+            model.addAttribute("productoSeleccionadoId", productoId);
+        }
+
         model.addAttribute("resena", new Resena()); // Agregamos un objeto vacío para el formulario
 
         return "Usuario/nuevaReseña-usuario";
