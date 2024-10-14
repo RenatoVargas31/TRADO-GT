@@ -111,6 +111,10 @@
                       <button class="btn btn-danger btn-sm waves-effect waves-light" th:data-bs-target="'#deleteProductModal-' + ${order.idOrden}" data-bs-toggle="modal" title="Eliminar" th:if="${order.estadoPedido == 'EN VALIDACION'}">
                         <i class="ri-indeterminate-circle-fill"></i>
                       </button>
+                      <!-- Botón deshabilitado por estética-->
+                      <button class="btn btn-secondary btn-sm waves-effect waves-light" title="Eliminar" th:if="${order.estadoPedido != 'EN VALIDACION'}">
+                        <i class="ri-indeterminate-circle-fill"></i>
+                      </button>
                     </td>
                     <!-- Modal dinámico de confirmación para cada orden -->
                     <div class="modal fade" th:id="'deleteProductModal-' + ${order.idOrden}" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
