@@ -67,10 +67,28 @@ public class Orden {
     @JoinColumn(name = "Usuario_idUsuario")
     private Usuario usuarioIdusuario;
 
+    @NotNull
     @Column(name = "LugarEntrega")
     private String lugarEntrega;
 
+    @NotNull
     @Column(name = "fechaValidacion", nullable = false)
     private LocalDate fechaValidacion;
+
+    @NotNull
+    @Column(name = "fechaEnProceso", nullable = false)
+    private LocalDate fechaEnProceso;
+
+    @NotNull
+    @Column(name = "fechaEnAduanas", nullable = false)
+    private LocalDate fechaEnAduanas;
+
+    @NotNull
+    @Column(name = "fechaEnRuta", nullable = false)
+    private LocalDate fechaEnRuta;
+
+    @NotNull
+    @Column(name = "fechaRecibido", nullable = false)
+    private LocalDate fechaRecibido;
 
 }
