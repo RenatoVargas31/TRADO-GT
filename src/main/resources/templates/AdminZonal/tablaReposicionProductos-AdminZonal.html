@@ -83,11 +83,11 @@
                                         <td th:text="${producto.productoIdproducto.subcategoriaIdsubcategoria.categoriaIdcategoria.nombre}"></td>
                                         <td th:text="${producto.cantidad}"></td>
                                         <td>
-        <span class="badge fs-6" th:switch="${producto.estadoRepo}">
-            <span th:case="0" class="bg-success">Stock adecuado</span>
-            <span th:case="1" class="bg-danger">Stock insuficiente</span>
-            <span th:case="2" class="bg-warning">A espera de reposición</span>
-        </span>
+                                            <span class="badge fs-6" th:switch="${producto.estadoRepo}">
+                                                <span th:case="0" class="bg-success">Stock adecuado</span>
+                                                <span th:case="1" class="bg-danger">Stock insuficiente</span>
+                                                <span th:case="2" class="bg-warning">A espera de reposición</span>
+                                            </span>
                                         </td>
                                         <td>
                                             <!-- Estado 0: Stock adecuado -->

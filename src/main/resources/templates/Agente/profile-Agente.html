@@ -147,7 +147,7 @@
                       </div>
                       <div class="mb-3 col-md-6">
                         <label for="birthday" class="form-label">Fecha de Nacimiento</label>
-                        <p class="form-control-plaintext" id="birthday" th:text="${usuario.fechaNacimiento}"></p>
+                        <p class="form-control-plaintext" id="birthday" th:text="${#temporals.format(usuario.fechaNacimiento , 'dd-MM-yyyy')}"></p>
                       </div>
                     </div>
                     <div class="mt-2">

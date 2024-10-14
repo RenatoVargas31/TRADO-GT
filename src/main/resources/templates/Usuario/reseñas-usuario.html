@@ -127,7 +127,7 @@
                                                         </div>
                                                         <div class="provider-info d-flex flex-column align-items-center justify-content-center">
                                                             <span class="provider-name" style="font-size: 12px;">Creado por <strong th:text="${resena.usuarioIdusuario.nombre} + ', ' + ${resena.usuarioIdusuario.apellido}" ></strong></span>
-                                                            <span style="font-size: 12px;" th:text="${resena.fechaCreacion}">11 de Octubre de 2024</span>
+                                                            <span style="font-size: 12px;" th:text="${#temporals.format(resena.fechaCreacion , 'dd-MM-yyyy')}">11 de Octubre de 2024</span>
                                                         </div>
                                                     </a>
                                                 </div>

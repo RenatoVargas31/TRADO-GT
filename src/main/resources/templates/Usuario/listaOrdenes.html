@@ -97,7 +97,7 @@
                                     <tr th:each="orden : ${listaOrdenes}">
                                         <td th:text="${orden.codigoOrden}"></td>
                                         <td th:text="'S/.' + ${orden.costoTotal}"></td>
-                                        <td th:text="${orden.fechaCreacion}"></td>
+                                        <td th:text="${#temporals.format(orden.fechaCreacion , 'dd-MM-yyyy')}"></td>
                                         <td th:text="${orden.estadoOrden}"></td>
                                         <td th:text="${orden.agente}" ></td>
                                         <td>

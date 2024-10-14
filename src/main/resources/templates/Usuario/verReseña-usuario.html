@@ -92,8 +92,8 @@
                                     <div class="col-md-12  mt-2">
                                         <div class="d-flex ">
                                             <p class="mt-2 card-title-desc me-2" style="font-size: 12px;">
-                                                <span>Publicado en </span>
-                                                <span th:text="${resena.fechaCreacion}">Fecha de publicación</span>
+                                                <span>Publicado el </span>
+                                                <span th:text="${#temporals.format(resena.fechaCreacion , 'dd-MM-yyyy')}">Fecha de publicación</span>
                                                 <span> por </span>
                                             </p>
                                         </div>

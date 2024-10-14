@@ -89,7 +89,7 @@
                                             <p><strong>Lugar de entrega: </strong> <span   th:text="${orden.lugarEntrega}"></span></p>
                                         </div>
                                         <div class="col">
-                                            <p><strong>Fecha de creación: </strong> <span   th:text="${orden.fechaCreacion}"></span></p>
+                                            <p><strong>Fecha de creación: </strong> <span   th:text="${#temporals.format(orden.fechaCreacion , 'dd-MM-yyyy')}"></span></p>
                                             <p><strong>Agente asignado: </strong>
                                                 <span th:if="${orden.agentcompraIdusuario != null}" th:text="${orden.agentcompraIdusuario.nombre} + ' ' + ${orden.agentcompraIdusuario.apellido}"></span>
                                                 <span th:if="${orden.agentcompraIdusuario == null}">Sin asignar</span>
