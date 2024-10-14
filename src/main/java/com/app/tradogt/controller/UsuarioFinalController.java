@@ -355,6 +355,22 @@ public class UsuarioFinalController {
 
         return "Usuario/trackingOrdEdit";
     }
+    //Guardar los cambios
+    @PostMapping("/guardarCambiosOrden")
+    public String saveCambiosOrden(RedirectAttributes attr, @ModelAttribute("orden") Orden orden) {
+        // Buscar la orden
+        Optional<Orden> ordenExistente = ordenRepository.findById(orden.getId());
+        if(ordenExistente.isPresent()) {
+            Orden ordenActaulizada = ordenExistente.get();
+            ordenActaulizada.setLugarEntrega(orden.getLugarEntrega());
+            ordenRepository.save(ordenActaulizada);
+            attr.addFlashAttribute("saveEdit", "La orden ha sido actualiza correctamente.");
+        }else{
+            attr.addFlashAttribute("saveEditError", "La orden ha sido no existe");
+        }
+        return "redirect:/usuario/misPedidos";
+    }
+
 
     //Asignación de un Agente
     @PostMapping("/asignarAgente")

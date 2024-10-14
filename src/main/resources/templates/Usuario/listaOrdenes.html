@@ -73,6 +73,9 @@
                                 <h4 class="card-title">Lista de Pedidos</h4> <p class="card-title-desc"> En esta sección, podrás ver la lista de pedidos que has realizado como usuario.
                                 Aquí encontrarás información sobre el estado de cada uno de tus pedidos, así como el agente asignado que te asistirá.
                                 Además, tendrás la opción de eliminar un pedido si este aún no ha sido procesado. </p>
+
+                                <div th:if="${saveEdit != null}" class="alert alert-success" th:text="${saveEdit}"></div>
+                                <div th:if="${saveEditError != null}" class="alert alert-danger" th:text="${saveEditError}"></div>
                                 <div th:if="${msjAgente != null}" class="alert alert-success" th:text="${msjAgente}"></div>
                                 <div th:if="${mensaje != null}" class="alert alert-success" th:text="${mensaje}"></div>
                                 <div th:if="${msg != null}" class="alert alert-success" th:text="${msg}"></div>
@@ -101,10 +104,10 @@
                                             <a th:href="@{'/usuario/tracking?id=' + ${orden.codigoOrden}}" class="btn btn-primary btn-sm waves-effect waves-light" title="Ver"><i class="ri-eye-fill"></i></a>
 
                                             <!-- Si la orden está en 'CREADO' o 'EN VALIDACION' -->
-                                            <a th:href="@{'/usuario/editOrden?id=' + ${orden.codigoOrden}}" class="btn btn-success btn-sm waves-effect waves-light" title="Editar" th:if="${ orden.estadoOrden == 'EN VALIDACION' || orden.estadoOrden == 'CREADO' }">
+                                            <a th:href="@{'/usuario/editOrden?id=' + ${orden.codigoOrden}}" class="btn btn-success btn-sm waves-effect waves-light" title="Editar" th:if="${ orden.estadoOrden == 'CREADO' &&  orden.agente == 'No asignado' }">
                                                 <i class="ri-pencil-fill"></i>
                                             </a>
-                                            <a href="/usuario/editOrden" class="btn btn-secondary btn-sm waves-effect waves-light disabled" title="No editable" th:unless="${ orden.estadoOrden == 'EN VALIDACION' || orden.estadoOrden == 'CREADO' }">
+                                            <a href="/usuario/editOrden" class="btn btn-secondary btn-sm waves-effect waves-light disabled" title="No editable" th:unless="${ orden.estadoOrden == 'CREADO' }">
                                                 <i class="ri-pencil-fill"></i>
                                             </a>
 

@@ -69,23 +69,29 @@
           <div class="col-lg-12 col-md-12 col-sm-12">
             <div class="col-12">
               <div class="card mb-4">
-                <div class="card-header bg-light d-flex justify-content-between align-items-center">
-                  <!-- Título Principal -->
-                  <h5 >Orden de compra</h5>
+                <div class="card-header bg-light d-flex justify-content-between align-items-center"><h5>Información del comprador y la Orden de compra</h5>
                 </div>
                 <div class="row card-body">
                   <div class="col-md-6 col-sm-12">
-                    <h5>Datos personales</h5>
-                    <p><strong>Nombre de comprador: </strong><span  th:text="${usuario.nombre} + ' ' + ${usuario.apellido}"></span></p>
-                    <p><strong>Número DNI: </strong> <span  th:text="${usuario.dni}"></span></p>
-                    <label class="form-label">Lugar de entrega</label>
-                    <input th:field="*{orden.lugarEntrega}" type="text" class="form-control">
+                    <p><strong>Nombre de comprador: </strong><span   th:text="${usuario.nombre} + ' ' + ${usuario.apellido}"></span></p>
+                    <p><strong>Número DNI: </strong> <span   th:text="${usuario.dni}"></span></p>
+                    <p><strong>Teléfono: </strong> <span   th:text="${usuario.telefono}"></span></p>
+                    <form id="updateOrderForm" th:action="@{/usuario/guardarCambiosOrden}" method="post">
+                      <label class="form-label">Lugar de entrega: </label>
+                      <!-- Este campo es editable y está correctamente enlazado con el objeto orden -->
+                      <input th:field="*{orden.lugarEntrega}" type="text" class="form-control" />
+                      <!--Campo oculto -->
+                      <input type="hidden" th:field="*{orden.id}">
+                    </form>
                   </div>
 
                   <div class="col-md-6 col-sm-12">
-                    <h5>Fecha y Número de Orden</h5>
-                    <p><strong>Fecha: </strong> <span  th:text="${orden.fechaCreacion}"></span></p>
-                    <p><strong>No. de orden: </strong> <span  th:text="${orden.codigo}"></span></p>
+                    <p><strong>Fecha de creación: </strong> <span   th:text="${orden.fechaCreacion}"></span></p>
+                    <p><strong>Agente asignado: </strong>
+                      <span th:if="${orden.agentcompraIdusuario != null}" th:text="${orden.agentcompraIdusuario.nombre} + ' ' + ${orden.agentcompraIdusuario.apellido}"></span>
+                      <span th:if="${orden.agentcompraIdusuario == null}">Sin asignar</span>
+                    </p>
+                    <p><strong>Número de orden: </strong> <span name="codigo"   th:text="${orden.codigo}"></span></p>
                     <p><strong>Estado: </strong> <span  class="text-info" th:text="${orden.estadoordenIdestadoorden.nombre}"></span></p>
                   </div>
                 </div>
@@ -127,7 +133,6 @@
                       <th>Cantidad</th>
                       <th>Nombre del Producto</th>
                       <th>Costo unitario</th>
-                      <th  >Acción</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -136,7 +141,7 @@
                       <td th:text="${producto.cantidad}"></td>
                       <td th:text="${producto.productoEnZona.productoIdproducto.nombre}"></td>
                       <td  th:text="'S/ ' + ${producto.productoEnZona.productoIdproducto.precio}"></td>
-                      <td >
+                    <!--  <td >
                         <button type="button" class="btn btn-danger btn-sm waves-effect waves-light" data-bs-toggle="modal" th:data-bs-target="'#deleteProductModal' + ${producto.productoEnZona.productoIdproducto.codigo}" title="Eliminar">
                           <i class="ri-delete-bin-fill"></i>
                         </button>
@@ -152,15 +157,15 @@
                               </div>
                               <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                <form th:action="@{/usuario/deleteProduct}" method="post">
+                                <form  method="post">
                                   <input type="hidden" th:name="codigo" th:value="${producto.productoEnZona.productoIdproducto.codigo}"/>
-                                  <button type="submit" class="btn btn-danger">Eliminar</button>
+                                  <button type="button" data-bs-target="#refundModal" data-bs-toggle="modal" data-bs-dismiss="modal"  class="btn btn-danger">Eliminar</button>
                                 </form>
                               </div>
                             </div>
                           </div>
                         </div>
-                      </td>
+                      </td> -->
                     </tr>
                     </tbody>
 
@@ -201,11 +206,17 @@
                         </div>
                         <div class="modal-footer">
                           <button class="btn btn-secondary" data-bs-dismiss="modal">No</button>
-                          <button class="btn btn-success" data-bs-target="#refundModal" data-bs-toggle="modal" data-bs-dismiss="modal">Sí</button>
+                          <button type="button" id="saveButton" class="btn btn-success">Sí</button>
                         </div>
                       </div>
                     </div>
                   </div>
+
+                  <script>
+                    document.getElementById("saveButton").addEventListener("click",function (){
+                      document.getElementById("updateOrderForm").submit();
+                    });
+                  </script>
 
 
 
