@@ -159,13 +159,18 @@
 
                       <div class="d-inline-flex">
                         <div class="text-muted me-2" style="font-size: 14px;">
-                        <span class="mdi mdi-star text-warning"></span>
-                        <span class="mdi mdi-star text-warning"></span>
-                        <span class="mdi mdi-star text-warning"></span>
-                        <span class="mdi mdi-star text-warning"></span>
-                        <span class="mdi mdi-star"></span>
-                      </div>
-                        <div class="text-muted" style="font-size: 14px;">4.1 ( 132 )</div>
+        <span th:each="i : ${#numbers.sequence(1, 5)}"
+              th:classappend="${i <= rating ? 'mdi mdi-star text-warning' :
+                               (i - 1 < rating && rating < i ? 'mdi mdi-star-half text-warning' :
+                               'mdi mdi-star-outline text-warning')}">
+        </span>
+                        </div>
+
+
+                        <div class="text-muted" style="font-size: 14px;">
+                          <span th:text="${rating}"></span>
+                          (<span th:text="${conteoRating}"></span> reseñas)
+                        </div>
                       </div>
                       <span class="product-ribbon badge bg-warning " th:text="${product.codigo}"></span><br>
                       <h5 class="mt-2" style="font-size: 24px;">
@@ -348,15 +353,7 @@
                             <h5 class="font-size-15">
                               <a th:text="${producto.nombre}" class="text-reset">Product Name</a>
                             </h5>
-                            <div class="d-inline-flex">
-                              <div class="text-muted me-2" style="font-size: 12px;">
-                                <span class="mdi mdi-star text-warning"></span>
-                                <span class="mdi mdi-star text-warning"></span>
-                                <span class="mdi mdi-star text-warning"></span>
-                                <span class="mdi mdi-star text-warning"></span>
-                                <span class="mdi mdi-star"></span>
-                              </div>
-                            </div>
+
                             <h5 class="mt-2" style="font-size: 14px;">
                               S/ <span th:text="${producto.precio}">100</span>
                               <span style="font-size: 12px; color: #888;">por cada 10 unidades</span>
