@@ -583,9 +583,9 @@ public class SuperAdminController {
         //Los unicos atributos que no deben tener valor son los siguientes: ram, almacenamiento, resolucion, ancho, alto y profundidad
         Boolean guardaRopa = ((producto.getSubcategoriaIdsubcategoria().getCategoriaIdcategoria().getId() == 1 || (producto.getSubcategoriaIdsubcategoria().getCategoriaIdcategoria().getId() == 2) && producto.getRam().isEmpty() && producto.getAlmacenamiento().isEmpty() && producto.getResolucion().isEmpty() && producto.getAncho().isEmpty() && producto.getAlto().isEmpty() && producto.getProfundidad().isEmpty()));
         //Para muebles deben estar vacíos los campos de talla, material, resolucion, ram y almacenamiento
-        Boolean guardaMuebles = (producto.getSubcategoriaIdsubcategoria().getCategoriaIdcategoria().getId() == 4 && producto.getTalla().isEmpty() && producto.getMaterial().isEmpty() && producto.getResolucion().isEmpty() && producto.getRam().isEmpty() && producto.getAlmacenamiento().isEmpty());
+        Boolean guardaMuebles = (producto.getSubcategoriaIdsubcategoria().getCategoriaIdcategoria().getId() == 4 && producto.getTalla().isEmpty() && producto.getResolucion().isEmpty() && producto.getRam().isEmpty() && producto.getAlmacenamiento().isEmpty());
         //Para tecnología deben estar vacíos los siguientes atributos: talla y material
-        Boolean guardaTecnologia = (producto.getSubcategoriaIdsubcategoria().getCategoriaIdcategoria().getId() == 5 && producto.getTalla().isEmpty() && producto.getMaterial().isEmpty());
+        Boolean guardaTecnologia = (producto.getSubcategoriaIdsubcategoria().getCategoriaIdcategoria().getId() == 5 && producto.getTalla().isEmpty());
         System.out.println(formProducto.getProducto());
         System.out.println(formProducto.getProductoEnZonaNorte());
         System.out.println(guardaTecnologia);
