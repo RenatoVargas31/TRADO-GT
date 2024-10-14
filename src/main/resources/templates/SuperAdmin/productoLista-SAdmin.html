@@ -53,14 +53,23 @@
                                 <div class="page-title-right">
                                     <ol class="breadcrumb m-0">
                                         <li class="breadcrumb-item"><a href="javascript: void(0);">Inventario</a></li>
-                                        <li class="breadcrumb-item active">Gestión de Productos/li>
+                                        <li class="breadcrumb-item active">Gestión de Productos</li>
                                     </ol>
                                 </div>
 
                             </div>
                         </div>
                     </div>
+                    <!--Alert para recibir el errorMessage color rojo o successMessage color verde del controller-->
+                    <!-- Mostrar mensaje de éxito -->
+                    <div th:if="${successMessage}" class="alert alert-success" role="alert">
+                        <span th:text="${successMessage}"></span>
+                    </div>
 
+                    <!-- Mostrar mensaje de error -->
+                    <div th:if="${errorMessage}" class="alert alert-danger" role="alert">
+                        <span th:text="${errorMessage}"></span>
+                    </div>
                     <div class="row">
                         <div class="col-12">
                             <div class="card">
@@ -74,7 +83,7 @@
                                             <th colspan="3" class="text-center">Zona Sur</th>
                                             <th colspan="3" class="text-center">Zona Este</th>
                                             <th colspan="3" class="text-center">Zona Oeste</th>
-                                            <th rowspan="2" class="text-center">Acciones</th>
+                                            <th rowspan="2" class="text-center vertical-align-middle">Acciones</th>
                                         </tr>
                                         <tr>
                                             <th class="text-center">Stock</th>
@@ -115,9 +124,30 @@
                                                 <i th:classappend="${productoZonaCantidad[producto.id.longValue()]?.get(4)?.get('estadoRepo') == 1} ? 'fas fa-exclamation-circle text-warning' : 'fas fa-check-circle text-success'"></i>
                                             </td>
                                             <td class="text-center">
-                                                <a th:href="@{'/superadmin/productoEditar/' + ${producto.id}}" class="btn btn-success btn-sm waves-effect waves-light" title="Editar"><i class="ri-pencil-fill"></i></a>
-                                                <button type="button" class="btn btn-danger btn-sm waves-effect waves-light" title="Eliminar" data-bs-toggle="modal" data-bs-target="#deleteConfirmModal"><i class="ri-delete-bin-fill"></i></button>
+                                                <form th:action="@{/superadmin/productoEditarForm}" method="post" style="display:inline;">
+                                                    <input type="hidden" name="id" th:value="${producto.id}" />
+                                                    <button type="submit" class="btn btn-success btn-sm waves-effect waves-light" title="Editar"><i class="ri-pencil-fill"></i></button>
+                                                </form>
+                                                <button type="button" class="btn btn-danger btn-sm waves-effect waves-light" title="Eliminar" data-bs-toggle="modal" th:data-bs-target="'#deleteConfirmModal'+ ${producto.id}"><i class="ri-delete-bin-fill"></i></button>
                                             </td>
+                                            <!-- Modal de Confirmación de Eliminación -->
+                                            <div class="modal fade" th:id="'deleteConfirmModal'+ ${producto.id}" tabindex="-1" aria-labelledby="'deleteConfirmModal'+ ${producto.id} +'Label" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" th:id="'deleteConfirmModal'+ ${producto.id} +'Label'">Confirmar Eliminación</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            ¿Estás seguro de que deseas eliminar este Producto?
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                                            <a th:href="@{/superadmin/productoBorrar(id=${producto.id})}" class="btn btn-danger">Eliminar</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </tr>
                                         </tbody>
                                     </table>
@@ -302,24 +332,7 @@
 
     <!-- Datatable init js -->
     <script th:src="@{../js/pages/datatables.init.js}"></script>
-        <!-- Modal de Confirmación de Eliminación -->
-        <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="deleteConfirmModalLabel">Confirmar Eliminación</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        ¿Estás seguro de que deseas eliminar este Producto?
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="button" class="btn btn-danger">Eliminar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+
     </body>
 
 </html>

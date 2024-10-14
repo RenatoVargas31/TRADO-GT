@@ -35,6 +35,10 @@ import java.util.stream.Collectors;
 @Controller
 @RequestMapping("/usuario")
 public class UsuarioFinalController {
+
+    private Optional<Usuario> authenticatedUser;
+    private int zonaId;
+
     public static class RandomCodeGenerator {
 
         private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -102,6 +106,18 @@ public class UsuarioFinalController {
         // Buscar el usuario (agente) en la base de datos usando el correo
         Usuario usuario = usuarioRepository.findByCorreo(correoUsuario);  // Método para buscar usuario por correo
         return usuario.getId(); // Retornar el ID del agente autenticado
+    }
+
+    @ModelAttribute
+    public void setAuthenticatedUser() {
+        int userId = getAuthenticatedUserId(); // Obtén el ID del usuario autenticado
+        Optional<Usuario> authenticatedUser = usuarioRepository.findById(userId);
+
+        // Verifica si el usuario está presente y asigna el zonaId
+        authenticatedUser.ifPresent(user -> {
+            this.authenticatedUser = authenticatedUser; // Asigna el usuario autenticado
+            this.zonaId = user.getDistritoIddistrito().getZonaIdzona().getId(); // Asigna al campo de clase
+        });
     }
 
     @GetMapping("/inicio")
@@ -339,6 +355,22 @@ public class UsuarioFinalController {
 
         return "Usuario/trackingOrdEdit";
     }
+    //Guardar los cambios
+    @PostMapping("/guardarCambiosOrden")
+    public String saveCambiosOrden(RedirectAttributes attr, @ModelAttribute("orden") Orden orden) {
+        // Buscar la orden
+        Optional<Orden> ordenExistente = ordenRepository.findById(orden.getId());
+        if(ordenExistente.isPresent()) {
+            Orden ordenActaulizada = ordenExistente.get();
+            ordenActaulizada.setLugarEntrega(orden.getLugarEntrega());
+            ordenRepository.save(ordenActaulizada);
+            attr.addFlashAttribute("saveEdit", "La orden ha sido actualiza correctamente.");
+        }else{
+            attr.addFlashAttribute("saveEditError", "La orden ha sido no existe");
+        }
+        return "redirect:/usuario/misPedidos";
+    }
+
 
     //Asignación de un Agente
     @PostMapping("/asignarAgente")
@@ -347,6 +379,7 @@ public class UsuarioFinalController {
         Optional<Orden> orden = ordenRepository.findByCodigo(code);
         //Listar agentes de compra
         List<Usuario> listaAgente = usuarioRepository.findAllByRolIdrolIdAndIsActivated(3, (byte) 1);
+        Optional<EstadoOrden> newEstado = estadoOrdenRepository.findById(2);
         Usuario agente = null;
         if (orden.isPresent()) {
             Orden ord = orden.get();
@@ -354,6 +387,11 @@ public class UsuarioFinalController {
             int index = random.nextInt(listaAgente.size());
             agente = listaAgente.get(index);
             ord.setAgentcompraIdusuario(agente);
+            //Cuando se le asigna un agente --> el estado cambia a En validación
+            ord.setEstadoordenIdestadoorden(newEstado.get());
+            //Se guarda la fecha del cambio de estado
+            ord.setFechaValidacion(LocalDate.now());
+            System.out.println("fecha de validacion: " + ord.getFechaValidacion());
             ordenRepository.save(ord);
             attr.addFlashAttribute("msjAgente", "Se le ha asignado el agente " + agente.getNombre() + " " + agente.getApellido() + " en la orden " + code);
             return "redirect:/usuario/misPedidos";
@@ -396,24 +434,28 @@ public class UsuarioFinalController {
         }
         Optional<Producto> productoOpt = productosRepository.findById(id);
 
+
+
         if (productoOpt.isPresent()) {
             Producto producto = productoOpt.get();
             // Si el producto existe, agregarlo al modelo
             model.addAttribute("product",producto);
+            model.addAttribute("rating", resenaRepository.findRating(id));
+            model.addAttribute("conteoRating", resenaRepository.countResena(id));
             model.addAttribute("currentId",id);
 
             switch(producto.getSubcategoriaIdsubcategoria().getCategoriaIdcategoria().getId()) {
                 case 1:
-                    model.addAttribute("productList", productosRepository.findProductRopaMujer());
+                    model.addAttribute("productList", productosRepository.findProductRopaMujer(zonaId));
                     break;
                 case 2:
-                    model.addAttribute("productList", productosRepository.findProductRopaHombre());
+                    model.addAttribute("productList", productosRepository.findProductRopaHombre(zonaId));
                     break;
                 case 3:
-                    model.addAttribute("productList", productosRepository.findProductElectronico());
+                    model.addAttribute("productList", productosRepository.findProductElectronico(zonaId));
                     break;
                 case 4:
-                    model.addAttribute("productList", productosRepository.findProductMuebles());
+                    model.addAttribute("productList", productosRepository.findProductMuebles(zonaId));
                     break;
                 default:
                     model.addAttribute("productList", productosRepository.findAll());
@@ -522,7 +564,7 @@ public class UsuarioFinalController {
 
         return "Usuario/carrito-usuario";
     }
-   @PostMapping("/actualizarCantidad")
+   @PostMapping("/actualizarCantidad") //Aquí se debe guardar una lista o array de las cantidades de cada producto.
     public String actualizarCantidad (
             @RequestParam("total") BigDecimal total,
             @RequestParam("cantidad") int cantidad) {
@@ -542,19 +584,8 @@ public class UsuarioFinalController {
         //obtener el id del producto
         int idproduct = micarrito.getId();
 
-        //listar los productos en zona
-        //Optional<ProductoEnZona> almacen = productoEnZonaRepository.findByProductoIdproductoAndZonaIdzona(, zone);
-        /*int totalProducto = almacen.get().getCantidad();
-        int newTotal = totalProducto - cantidad;
-        if (newTotal >= 25) {
-            almacen.get().setEstadoRepo((byte) 0);
-            almacen.get().setCantidad(newTotal);
+        //CORRREGIRRRRRRRRRRRRR AQUIIIIIIIIII
 
-        }else {
-            almacen.get().setEstadoRepo((byte) 1);
-            almacen.get().setCantidad(newTotal);
-        }
-        productoEnZonaRepository.save(almacen.get());*/
 
         return "redirect:/usuario/checkout-info";
     }
@@ -835,7 +866,7 @@ public class UsuarioFinalController {
     }
     @GetMapping("/categoriaMujer")
     public String showMujerCategoria(Model model) {
-        model.addAttribute("productList", productosRepository.findProductRopaMujer());
+        model.addAttribute("productList", productosRepository.findProductRopaMujer(zonaId));
         model.addAttribute("tallasList", productosRepository.findDistinctTallas(1));
         model.addAttribute("marcaList", productosRepository.findDistinctMarca(1));
 
@@ -845,7 +876,7 @@ public class UsuarioFinalController {
     }
     @GetMapping("/categoriaHombre")
     public String showHombreCategoria(Model model) {
-        model.addAttribute("productList", productosRepository.findProductRopaHombre());
+        model.addAttribute("productList", productosRepository.findProductRopaHombre(zonaId));
         model.addAttribute("tallasList", productosRepository.findDistinctTallas(2));
         model.addAttribute("coloresList", productosRepository.findDistinctColores(2));
         model.addAttribute("marcaList", productosRepository.findDistinctMarca(2));
@@ -854,7 +885,7 @@ public class UsuarioFinalController {
     }
     @GetMapping("/categoriaTecnologia")
     public String showTecnologiaCategoria(Model model) {
-        model.addAttribute("productList", productosRepository.findProductElectronico());
+        model.addAttribute("productList", productosRepository.findProductElectronico(zonaId));
         model.addAttribute("almacenamientoList", productosRepository.findDistinctAlmacenamiento(3));
         model.addAttribute("ramList", productosRepository.findDistinctRam(3));
         model.addAttribute("marcaList", productosRepository.findDistinctMarca(3));
@@ -863,7 +894,7 @@ public class UsuarioFinalController {
     }
     @GetMapping("/categoriaMuebles")
     public String showMuebleCategoria(Model model) {
-        model.addAttribute("productList", productosRepository.findProductMuebles());
+        model.addAttribute("productList", productosRepository.findProductMuebles(zonaId));
         model.addAttribute("materialesList", productosRepository.findDistinctMaterials(4));
         model.addAttribute("marcaList", productosRepository.findDistinctMarca(4));
         model.addAttribute("categoriasList",subCategoriaRepository.findSubcategorias(4));
@@ -876,7 +907,7 @@ public class UsuarioFinalController {
                                             @RequestParam(value = "marca", required = false) List<String> marca,
                                             @RequestParam(value = "precioMin", required = false) Double precioMin,
                                             @RequestParam(value = "precioMax", required = false) Double precioMax) {
-        model.addAttribute("productList", productosRepository.findProductMueblesFilter(categoria, material, marca, precioMin, precioMax));
+        model.addAttribute("productList", productosRepository.findProductMueblesFilter(zonaId,categoria, material, marca, precioMin, precioMax));
         model.addAttribute("materialesList", productosRepository.findDistinctMaterials(4));
         model.addAttribute("categoriasList",subCategoriaRepository.findSubcategorias(4));
         model.addAttribute("marcaList", productosRepository.findDistinctMarca(4));
@@ -891,7 +922,7 @@ public class UsuarioFinalController {
                                             @RequestParam(value = "marca", required = false) List<String> marca,
                                             @RequestParam(value = "precioMin", required = false) Double precioMin,
                                             @RequestParam(value = "precioMax", required = false) Double precioMax) {
-        model.addAttribute("productList", productosRepository.findProductHombresFilter(categoria, material,marca,color, precioMin, precioMax));
+        model.addAttribute("productList", productosRepository.findProductHombresFilter(zonaId,categoria, material,marca,color, precioMin, precioMax));
         model.addAttribute("tallasList", productosRepository.findDistinctTallas(2));
         model.addAttribute("coloresList", productosRepository.findDistinctColores(2));
         model.addAttribute("categoriasList",subCategoriaRepository.findSubcategorias(2));
@@ -909,7 +940,7 @@ public class UsuarioFinalController {
                                            @RequestParam(value = "marca", required = false) List<String> marca,
                                            @RequestParam(value = "precioMin", required = false) Double precioMin,
                                            @RequestParam(value = "precioMax", required = false) Double precioMax) {
-        model.addAttribute("productList", productosRepository.findProductMujerFilter(categoria, talla,marca, color,precioMin, precioMax));
+        model.addAttribute("productList", productosRepository.findProductMujerFilter(zonaId,categoria, talla,marca, color,precioMin, precioMax));
         model.addAttribute("tallasList", productosRepository.findDistinctTallas(1));
         model.addAttribute("coloresList", productosRepository.findDistinctColores(1));
         model.addAttribute("marcaList", productosRepository.findDistinctMarca(1));
@@ -917,6 +948,7 @@ public class UsuarioFinalController {
 
         return "Usuario/CategoriaMujer-usuario";
     }
+
     @GetMapping("/categoriaTecnologiaFilter")
     public String showTecnologiaCategoriaFilter(Model model,
                                                 @RequestParam(value = "categoria", required = false) List<Integer> categoria,
@@ -925,7 +957,7 @@ public class UsuarioFinalController {
                                                 @RequestParam(value = "marca", required = false) List<String> marca,
                                                 @RequestParam(value = "precioMin", required = false) Double precioMin,
                                                 @RequestParam(value = "precioMax", required = false) Double precioMax) {
-        model.addAttribute("productList", productosRepository.findProductElectroFilter(categoria, almacenamiento,ram,marca,        precioMin, precioMax));
+        model.addAttribute("productList", productosRepository.findProductElectroFilter(zonaId,categoria, almacenamiento,ram,marca,        precioMin, precioMax));
         model.addAttribute("almacenamientoList", productosRepository.findDistinctAlmacenamiento(3));
         model.addAttribute("ramList", productosRepository.findDistinctRam(3));
         model.addAttribute("categoriasList",subCategoriaRepository.findSubcategorias(3));
@@ -938,7 +970,7 @@ public class UsuarioFinalController {
 
 
                                             @RequestParam(value = "query", required = false) String query) {
-        model.addAttribute("productList", productosRepository.findProductQuery(query,2));
+        model.addAttribute("productList", productosRepository.findProductQuery(zonaId,query,2));
         model.addAttribute("tallasList", productosRepository.findDistinctTallas(2));
         model.addAttribute("coloresList", productosRepository.findDistinctColores(2));
         model.addAttribute("categoriasList",subCategoriaRepository.findSubcategorias(2));
@@ -948,7 +980,7 @@ public class UsuarioFinalController {
     @GetMapping("/categoriaMujerSearch")
     public String showMujerCategoriaBuscar(Model model,
                                             @RequestParam(value = "query", required = false) String query) {
-        model.addAttribute("productList", productosRepository.findProductQuery(query,1));
+        model.addAttribute("productList", productosRepository.findProductQuery(zonaId,query,1));
         model.addAttribute("tallasList", productosRepository.findDistinctTallas(1));
         model.addAttribute("coloresList", productosRepository.findDistinctColores(1));
         model.addAttribute("categoriasList",subCategoriaRepository.findSubcategorias(1));
@@ -960,7 +992,7 @@ public class UsuarioFinalController {
 
 
                                             @RequestParam(value = "query", required = false) String query) {
-        model.addAttribute("productList", productosRepository.findProductQuery(query,3));
+        model.addAttribute("productList", productosRepository.findProductQuery(zonaId,query,3));
         model.addAttribute("almacenamientoList", productosRepository.findDistinctAlmacenamiento(3));
         model.addAttribute("ramList", productosRepository.findDistinctRam(3));
         model.addAttribute("categoriasList",subCategoriaRepository.findSubcategorias(3));
@@ -972,7 +1004,7 @@ public class UsuarioFinalController {
 
 
                                             @RequestParam(value = "query", required = false) String query) {
-        model.addAttribute("productList", productosRepository.findProductQuery(query,4));
+        model.addAttribute("productList", productosRepository.findProductQuery(zonaId,query,4));
         model.addAttribute("materialesList", productosRepository.findDistinctMaterials(4));
         model.addAttribute("categoriasList",subCategoriaRepository.findSubcategorias(4));
         model.addAttribute("marcaList", productosRepository.findDistinctMarca(4));
@@ -1026,7 +1058,7 @@ public class UsuarioFinalController {
                                    @RequestParam("codigoCVV") String codigoCVV,
                                    @RequestParam("monto") BigDecimal monto,
                                    @RequestParam("LugarEntrega") String LugarEntrega,
-                                   Model model,  RedirectAttributes attr){
+                                   Model model,  RedirectAttributes attr) {
 
         System.out.println("-------------------");
         System.out.println("Nombre" + nombre);
@@ -1057,8 +1089,24 @@ public class UsuarioFinalController {
         pago.setAutenticacionIdautenticacion(facturacion);
         System.out.println("Pago antes de guardar: " + pago.toString());
         List<Pago> listaPago = pagoRepository.findAll();
-        pago.setId(listaPago.size() +1);
+        pago.setId(listaPago.size() + 1);
         pagoRepository.save(pago);
+
+        //Reducir la cantidad en la tienda por los productos ya pagado
+        //listar los productos en zona
+        //List<ProductoEnZona> almacen = productoEnZonaRepository.findByProductoIdproductoAndZonaIdzona(, zone);
+        /*int totalProducto = almacen.get().getCantidad();
+        int newTotal = totalProducto - cantidad;
+        if (newTotal >= 25) {
+            almacen.get().setEstadoRepo((byte) 0);
+            almacen.get().setCantidad(newTotal);
+
+        }else {
+            almacen.get().setEstadoRepo((byte) 1);
+            almacen.get().setCantidad(newTotal);
+        }
+        productoEnZonaRepository.save(almacen.get());*/
+
         //Se genera una nueva orden
         Orden orden = new Orden();
         List<EstadoOrden> listaEstadoOrden = estadoOrdenRepository.findAll();
@@ -1083,17 +1131,12 @@ public class UsuarioFinalController {
             orden.setUsuarioIdusuario(myuser);
             orden.setCarritoIdcarrito(carrito);
             orden.setLugarEntrega(LugarEntrega);
-
         }
         // Guardar la orden
         ordenRepository.save(orden);
         Integer idOrden = orden.getId();
         attr.addFlashAttribute("exito", "Se ha generado correctamente la orden de compra!");
         model.addAttribute("orden", orden);
-
-
-
-
         if (carrito != null) {
             carrito.setIsDelete((byte) 1);
             carritoRepository.save(carrito);

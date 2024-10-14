@@ -1,9 +1,11 @@
 package com.app.tradogt.controller;
 
+import com.app.tradogt.dto.PasswordChangeDto;
 import com.app.tradogt.entity.*;
 import com.app.tradogt.helpers.PasswordGenerator;
 import com.app.tradogt.helpers.ProductCodeGenerator;
 import com.app.tradogt.repository.*;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -12,12 +14,15 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,6 +43,9 @@ public class SuperAdminController {
     final SubCategoriaRepository subCategoriaRepository;
     final CategoriaRepository categoriaRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     public SuperAdminController(ProveedorRepository proveedorRepository, UsuarioRepository usuarioRepository, ZonaRepository zonaRepository, RolRepository rolRepository, DistritoRepository distritoRepository, ProductosRepository productosRepository, ProductoEnZonaRepository productoEnZonaRepository, SubCategoriaRepository subCategoriaRepository, CategoriaRepository categoriaRepository) {
         this.proveedorRepository = proveedorRepository;
         this.usuarioRepository = usuarioRepository;
@@ -50,7 +58,74 @@ public class SuperAdminController {
         this.categoriaRepository = categoriaRepository;
     }
     //</editor-fold>
+    @GetMapping("/perfil")
+    public String viewPerfil(Model model) {
+        model.addAttribute("passwordChangeDto", new PasswordChangeDto());
+        return "SuperAdmin/perfil-SAdmin";
+    }
 
+    @PostMapping("/subirFoto")
+    public String viewSubirFoto(@RequestParam("foto") MultipartFile file, Model model) throws IOException {
+        System.out.println("Entré al controler");
+
+        // Ruta dinámica donde se guardarán las imágenes (fuera de static)
+        String uploadDir = "uploads/fotosUsuarios/";
+
+        // Guardar el archivo en la ruta definida
+        byte[] bytes = file.getBytes();
+        Path path = Paths.get(uploadDir + file.getOriginalFilename());
+        Files.write(path, bytes);
+        System.out.println("Guardé la foto en: " + path);
+
+        // Obtener el usuario autenticado
+        Usuario usuario = (Usuario) model.getAttribute("usuarioAutenticado");
+        assert usuario != null;
+
+        // Actualizar el nombre de la foto en la base de datos
+        usuario.setFoto(file.getOriginalFilename());
+        System.out.println("Seteé la foto como: " + file.getOriginalFilename());
+        usuarioRepository.save(usuario);
+        System.out.println("Guardé el usuario");
+
+        // Redirigir al perfil
+        return "redirect:/superadmin/perfil";
+    }
+
+    @PostMapping("/changePass")
+    public String viewChangePass(@Valid PasswordChangeDto passwordChangeDto,
+                                 BindingResult result,
+                                 Authentication authentication,
+                                 RedirectAttributes redirectAttributes,
+                                 Model model) {
+        // Validación de errores
+        if (result.hasErrors()) {
+            model.addAttribute("errors", result.getAllErrors());
+            return "SuperAdmin/changePass-SAdmin";  // Retorna a la vista con los errores
+        }
+
+        // Obtener el usuario autenticado desde el sistema de seguridad
+        Usuario usuario = usuarioRepository.findByCorreo(authentication.getName());
+
+        // Verificar si la contraseña actual ingresada coincide con la almacenada
+        if (!passwordEncoder.matches(passwordChangeDto.getCurrentPassword(), usuario.getContrasena())) {
+            model.addAttribute("error", "La contraseña actual es incorrecta.");
+            return "SuperAdmin/changePass-SAdmin";  // Retorna a la vista con el mensaje de error
+        }
+
+        // Verificar si las contraseñas nuevas coinciden
+        if (!passwordChangeDto.getNewPassword().equals(passwordChangeDto.getConfirmNewPassword())) {
+            model.addAttribute("error", "Las contraseñas nuevas no coinciden.");
+            return "SuperAdmin/changePass-SAdmin";  // Retorna a la vista con el mensaje de error
+        }
+
+        // Actualizar la contraseña del usuario
+        usuario.setContrasena(passwordEncoder.encode(passwordChangeDto.getNewPassword()));
+        usuarioRepository.save(usuario);  // Guardar los cambios en la base de datos
+
+        // Agregar mensaje de éxito a los flash attributes
+        redirectAttributes.addFlashAttribute("exito", "Contraseña cambiada con éxito.");
+        return "redirect:/superadmin/perfil";  // Redirige a la página del perfil
+    }
     //<editor-fold desc="CRUD Menu (R - falta)">
     @GetMapping("/inicio")
     public String viewInicio(Model model) {
@@ -429,10 +504,6 @@ public class SuperAdminController {
 
         return "redirect:/superadmin/productoNuevoForm";
     }
-    @GetMapping("/productoEditar")
-    public String viewProductoEditar() {
-        return "SuperAdmin/productoEditar-SAdmin";
-    }
     @GetMapping("/productoLista")
     public String viewProductoLista(Model model) {
         List<Producto> productos = productosRepository.findAllByIsDeleted((byte) 0);
@@ -459,10 +530,14 @@ public class SuperAdminController {
         return "SuperAdmin/productoLista-SAdmin";
     }
     @PostMapping("/productoEditarForm")
-    public String viewProductoEditarForm(Model model, Integer idProducto, ProductoEnZonaId productoEnZonaIdNorte, ProductoEnZonaId productoEnZonaIdSur, ProductoEnZonaId productoEnZonaIdEste, ProductoEnZonaId productoEnZonaIdOeste) {
+    public String viewProductoEditarForm(Model model, Integer id) {
         //Buscar producto por id
-        Producto producto = productosRepository.findById(idProducto).get();
-        //Buscar producto en las zonas
+        ProductoEnZonaId productoEnZonaIdNorte = new ProductoEnZonaId(id,1);
+        ProductoEnZonaId productoEnZonaIdSur = new ProductoEnZonaId(id,2);
+        ProductoEnZonaId productoEnZonaIdEste = new ProductoEnZonaId(id,3);
+        ProductoEnZonaId productoEnZonaIdOeste = new ProductoEnZonaId(id,4);
+        //Buscar producto y producto en zona por id
+        Producto producto = productosRepository.findById(id).get();
         ProductoEnZona productoEnZonaNorte = productoEnZonaRepository.findById(productoEnZonaIdNorte).get();
         ProductoEnZona productoEnZonaSur = productoEnZonaRepository.findById(productoEnZonaIdSur).get();
         ProductoEnZona productoEnZonaEste = productoEnZonaRepository.findById(productoEnZonaIdEste).get();
@@ -481,6 +556,27 @@ public class SuperAdminController {
         //Enviar Proveedores
         model.addAttribute("proveedores", proveedorRepository.findAll());
         return "SuperAdmin/productoEditar-SAdmin";
+    }
+    @GetMapping("/productoEditar")
+    public String viewProductoEditar(FormProducto formProducto) {
+        //Actualizar producto
+        Producto productoEdit = productosRepository.findById(formProducto.getProducto().getId()).get();
+        //Determinar los nuevos valores
+        productosRepository.save(productoEdit);
+        //Actualizar producto en zona
+        ProductoEnZona productoEnZonaNorteEdit = productoEnZonaRepository.findById(formProducto.getProductoEnZonaNorte().getId()).get();
+        //Determinar los nuevos valores
+        productoEnZonaRepository.save(productoEnZonaNorteEdit);
+        ProductoEnZona productoEnZonaSurEdit = productoEnZonaRepository.findById(formProducto.getProductoEnZonaSur().getId()).get();
+        //Determinar los nuevos valores
+        productoEnZonaRepository.save(productoEnZonaSurEdit);
+        ProductoEnZona productoEnZonaEsteEdit = productoEnZonaRepository.findById(formProducto.getProductoEnZonaEste().getId()).get();
+        //Determinar los nuevos valores
+        productoEnZonaRepository.save(productoEnZonaEsteEdit);
+        ProductoEnZona productoEnZonaOesteEdit = productoEnZonaRepository.findById(formProducto.getProductoEnZonaOeste().getId()).get();
+        //Determinar los nuevos valores
+        productoEnZonaRepository.save(productoEnZonaOesteEdit);
+        return "redirect:/superadmin/productoLista";
     }
     @GetMapping("/productoBorrar")
     public String viewProductoBorrar(Integer id,RedirectAttributes redirectAttributes) {

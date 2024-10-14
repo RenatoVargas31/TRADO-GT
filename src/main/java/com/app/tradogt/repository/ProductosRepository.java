@@ -56,15 +56,19 @@ public interface ProductosRepository extends JpaRepository<Producto, Integer> {
 
 
     @Query("SELECT p FROM Producto p " +
-            "JOIN p.subcategoriaIdsubcategoria s " + // Suponiendo que hay una relación mapeada
-            "JOIN s.categoriaIdcategoria c " +    // Suponiendo que hay una relación mapeada
-            "WHERE c.id = 1")
-    List<Producto> findProductRopaMujer();
+            "JOIN p.subcategoriaIdsubcategoria s " +  // Suponiendo que hay una relación mapeada
+            "JOIN s.categoriaIdcategoria c " +        // Suponiendo que hay una relación mapeada
+            "JOIN ProductoEnZona d ON p.id = d.productoIdproducto.id " + // Realizamos el JOIN con ProductoEnZona
+            "WHERE c.id = 1 AND d.zonaIdzona.id = :zona AND d.cantidad > 25") // Filtrar por categoría, zona y cantidad
+    List<Producto> findProductRopaMujer(@Param("zona") int zona);
+
 
     @Query("SELECT p FROM Producto p " +
-            "JOIN p.subcategoriaIdsubcategoria s " + // Suponiendo que hay una relación mapeada
-            "JOIN s.categoriaIdcategoria c " +    // Suponiendo que hay una relación mapeada
-            "WHERE c.id = 2") List<Producto> findProductRopaHombre();
+            "JOIN p.subcategoriaIdsubcategoria s " +  // Suponiendo que hay una relación mapeada
+            "JOIN s.categoriaIdcategoria c " +        // Suponiendo que hay una relación mapeada
+            "JOIN ProductoEnZona d ON p.id = d.productoIdproducto.id " + // Realizamos el JOIN con ProductoEnZona
+            "WHERE c.id = 2 AND d.zonaIdzona.id = :zona AND d.cantidad > 25") // Filtrar por categoría, zona y cantidad
+    List<Producto> findProductRopaHombre(@Param("zona") int zona);
 
     @Query("SELECT DISTINCT p.material FROM Producto p " +
             "JOIN p.subcategoriaIdsubcategoria s " +
@@ -106,49 +110,57 @@ public interface ProductosRepository extends JpaRepository<Producto, Integer> {
 
 
     @Query("SELECT p FROM Producto p " +
-            "JOIN p.subcategoriaIdsubcategoria s " + // Suponiendo que hay una relación mapeada
-            "JOIN s.categoriaIdcategoria c " +    // Suponiendo que hay una relación mapeada
-            "WHERE c.id = 3")
-    List<Producto> findProductElectronico();
+            "JOIN p.subcategoriaIdsubcategoria s " +  // Suponiendo que hay una relación mapeada
+            "JOIN s.categoriaIdcategoria c " +        // Suponiendo que hay una relación mapeada
+            "JOIN ProductoEnZona d ON p.id = d.productoIdproducto.id " + // Realizamos el JOIN con ProductoEnZona
+            "WHERE c.id = 3 AND d.zonaIdzona.id = :zona AND d.cantidad > 25") // Filtrar por categoría, zona y cantidad
+    List<Producto> findProductElectronico(@Param("zona") int zona);
 
 
 
     @Query("SELECT p FROM Producto p " +
-            "JOIN p.subcategoriaIdsubcategoria s " + // Suponiendo que hay una relación mapeada
-            "JOIN s.categoriaIdcategoria c " +    // Suponiendo que hay una relación mapeada
-            "WHERE c.id = 4")
-    List<Producto> findProductMuebles();
+            "JOIN p.subcategoriaIdsubcategoria s " +  // Suponiendo que hay una relación mapeada
+            "JOIN s.categoriaIdcategoria c " +        // Suponiendo que hay una relación mapeada
+            "JOIN ProductoEnZona d ON p.id = d.productoIdproducto.id " + // Realizamos el JOIN con ProductoEnZona
+            "WHERE c.id = 4 AND d.zonaIdzona.id = :zona AND d.cantidad > 25") // Filtrar por categoría, zona y cantidad
+    List<Producto> findProductMuebles(@Param("zona") int zona);
 
     @Query("SELECT p FROM Producto p " +
-            "WHERE p IN (SELECT p2 FROM Producto p2 " +
+            "JOIN ProductoEnZona d ON p.id = d.productoIdproducto.id " +
+            "WHERE d.zonaIdzona.id = :zona AND d.cantidad > 25 " +  // Filtrar por zona y cantidad
+            "AND p IN (SELECT p2 FROM Producto p2 " +
             "JOIN p2.subcategoriaIdsubcategoria s " +
             "JOIN s.categoriaIdcategoria c " +
             "WHERE c.id = 4) " +  // Solo productos que pertenecen a la categoría 4
             "AND (:categoria IS NULL OR p.subcategoriaIdsubcategoria.id IN :categoria) " +
-            "AND (:material IS NULL OR LOWER(p.material) IN :material)"+
-            "AND (:marca IS NULL OR LOWER(p.marca) IN :marca)"+
+            "AND (:material IS NULL OR LOWER(p.material) IN :material) " +
+            "AND (:marca IS NULL OR LOWER(p.marca) IN :marca) " +
             "AND (:precioMin IS NULL OR p.precio >= :precioMin) " +
             "AND (:precioMax IS NULL OR p.precio <= :precioMax)")
     List<Producto> findProductMueblesFilter(
-            @Param("categoria") List<Integer> categoria, // Cambia a List<Integer>
+            @Param("zona") int zona, // Asegúrate de incluir el parámetro de zona
+            @Param("categoria") List<Integer> categoria,
             @Param("material") List<String> material,
             @Param("marca") List<String> marca,
             @Param("precioMin") Double precioMin,
             @Param("precioMax") Double precioMax);
 
+
     @Query("SELECT p FROM Producto p " +
-            "WHERE p IN (SELECT p2 FROM Producto p2 " +
-            "JOIN p2.subcategoriaIdsubcategoria s " +
+            "JOIN ProductoEnZona d ON p.id = d.productoIdproducto.id " +
+            "JOIN p.subcategoriaIdsubcategoria s " + // Cambia p2 a p
             "JOIN s.categoriaIdcategoria c " +
-            "WHERE c.id = 1) " +  // Solo productos que pertenecen a la categoría Mujer
+            "WHERE d.zonaIdzona.id = :zona AND d.cantidad > 25 " +
+            "AND c.id = 1 " +  // Solo productos que pertenecen a la categoría Mujer
             "AND (:categoria IS NULL OR p.subcategoriaIdsubcategoria.id IN :categoria) " +
-            "AND (:talla IS NULL OR LOWER(p.talla) IN :talla)"+
-            "AND (:marca IS NULL OR LOWER(p.marca) IN :marca)"+
-            "AND (:color IS NULL OR LOWER(p.color) IN :color)"+
+            "AND (:talla IS NULL OR LOWER(p.talla) IN :talla) " +
+            "AND (:marca IS NULL OR LOWER(p.marca) IN :marca) " +
+            "AND (:color IS NULL OR LOWER(p.color) IN :color) " +
             "AND (:precioMin IS NULL OR p.precio >= :precioMin) " +
             "AND (:precioMax IS NULL OR p.precio <= :precioMax)")
     List<Producto> findProductMujerFilter(
-            @Param("categoria") List<Integer> categoria, // Cambia a List<Integer>
+            @Param("zona") int zona, // Agrega el parámetro de zona
+            @Param("categoria") List<Integer> categoria,
             @Param("talla") List<String> talla,
             @Param("marca") List<String> marca,
             @Param("color") List<String> color,
@@ -156,38 +168,45 @@ public interface ProductosRepository extends JpaRepository<Producto, Integer> {
             @Param("precioMax") Double precioMax);
 
     @Query("SELECT p FROM Producto p " +
-            "WHERE p IN (SELECT p2 FROM Producto p2 " +
+            "JOIN ProductoEnZona d ON p.id = d.productoIdproducto.id " +
+            "WHERE d.zonaIdzona.id = :zona AND d.cantidad > 25 " +  // Filtrar por el parámetro :zona y cantidad mayor a 25
+            "AND p IN (SELECT p2 FROM Producto p2 " +
             "JOIN p2.subcategoriaIdsubcategoria s " +
             "JOIN s.categoriaIdcategoria c " +
-            "WHERE c.id = 2) " +  // Solo productos que pertenecen a la categoría 4
+            "WHERE c.id = 2) " +  // Cambiar 2 a la categoría deseada si es necesario
             "AND (:categoria IS NULL OR p.subcategoriaIdsubcategoria.id IN :categoria) " +
-            "AND (:talla IS NULL OR LOWER(p.talla) IN :talla)"+
-            "AND (:marca IS NULL OR LOWER(p.marca) IN :marca)"+
-            "AND (:color IS NULL OR LOWER(p.color) IN :color)"+
-
+            "AND (:talla IS NULL OR LOWER(p.talla) IN :talla) " +
+            "AND (:marca IS NULL OR LOWER(p.marca) IN :marca) " +
+            "AND (:color IS NULL OR LOWER(p.color) IN :color) " +
             "AND (:precioMin IS NULL OR p.precio >= :precioMin) " +
             "AND (:precioMax IS NULL OR p.precio <= :precioMax)")
     List<Producto> findProductHombresFilter(
-            @Param("categoria") List<Integer> categoria, // Cambia a List<Integer>
+            @Param("zona") int zona,
+            @Param("categoria") List<Integer> categoria,
             @Param("talla") List<String> talla,
             @Param("marca") List<String> marca,
             @Param("color") List<String> color,
             @Param("precioMin") Double precioMin,
             @Param("precioMax") Double precioMax);
 
+
+
     @Query("SELECT p FROM Producto p " +
-            "WHERE p IN (SELECT p2 FROM Producto p2 " +
+            "JOIN ProductoEnZona d ON p.id = d.productoIdproducto.id " +
+            "WHERE d.zonaIdzona.id = :zona AND d.cantidad > 25 " +
+            "AND p IN (SELECT p2 FROM Producto p2 " +
             "JOIN p2.subcategoriaIdsubcategoria s " +
             "JOIN s.categoriaIdcategoria c " +
-            "WHERE c.id = 3) " +  // Solo productos que pertenecen a la categoría 4
+            "WHERE c.id = 3) " +  // Solo productos que pertenecen a la categoría 3
             "AND (:categoria IS NULL OR p.subcategoriaIdsubcategoria.id IN :categoria) " +
-            "AND (:almacenamiento IS NULL OR LOWER(p.almacenamiento) IN :almacenamiento)"+
-            "AND (:ram IS NULL OR LOWER(p.ram) IN :ram)"+
-            "AND (:marca IS NULL OR LOWER(p.marca) IN :marca)"+
+            "AND (:almacenamiento IS NULL OR LOWER(p.almacenamiento) IN :almacenamiento) " +
+            "AND (:ram IS NULL OR LOWER(p.ram) IN :ram) " +
+            "AND (:marca IS NULL OR LOWER(p.marca) IN :marca) " +
             "AND (:precioMin IS NULL OR p.precio >= :precioMin) " +
             "AND (:precioMax IS NULL OR p.precio <= :precioMax)")
     List<Producto> findProductElectroFilter(
-            @Param("categoria") List<Integer> categoria, // Cambia a List<Integer>
+            @Param("zona") int zona,  // Agrega el parámetro de zona
+            @Param("categoria") List<Integer> categoria,
             @Param("almacenamiento") List<String> almacenamiento,
             @Param("ram") List<String> ram,
             @Param("marca") List<String> marca,
@@ -195,15 +214,22 @@ public interface ProductosRepository extends JpaRepository<Producto, Integer> {
             @Param("precioMax") Double precioMax);
 
 
-    @Query("SELECT p FROM Producto p WHERE " +
-            "(LOWER(p.nombre) LIKE LOWER(CONCAT('%', :query, '%')) " +
+
+    @Query("SELECT p FROM Producto p " +
+            "JOIN ProductoEnZona d ON p.id = d.productoIdproducto.id " + // Realizamos el JOIN con ProductoEnZona
+            "WHERE (LOWER(p.nombre) LIKE LOWER(CONCAT('%', :query, '%')) " +
             "OR LOWER(p.proveedorIdproveedor.nombre) LIKE LOWER(CONCAT('%', :query, '%')) " +
             "OR LOWER(p.codigo) LIKE LOWER(CONCAT('%', :query, '%'))) " +
+            "AND d.zonaIdzona.id = :zona " + // Filtrar por zonaId
             "AND p IN (SELECT p2 FROM Producto p2 " +
             "JOIN p2.subcategoriaIdsubcategoria s " +
             "JOIN s.categoriaIdcategoria c " +
             "WHERE c.id = :tipo)")
-    List<Producto> findProductQuery(@Param("query") String query, @Param("tipo") int tipo);
+    List<Producto> findProductQuery(@Param("zona") int zona,
+                                    @Param("query") String query,
+                                    @Param("tipo") int tipo
+                                    );
+
 
     List<Producto> findAllByIsDeleted(Byte isDeleted);
 
