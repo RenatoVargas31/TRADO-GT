@@ -591,7 +591,8 @@ public class UsuarioFinalController {
    @PostMapping("/actualizarCantidad") //Aquí se debe guardar una lista o array de las cantidades de cada producto.
     public String actualizarCantidad (
             @RequestParam("total") BigDecimal total,
-            @RequestParam("cantidad") int cantidad) {
+            @RequestParam("cantidad") List<Integer> cantidad) {
+        System.out.println(cantidad);
 
         int id = getAuthenticatedUserId();
         Usuario usuario = usuarioRepository.findById(id).get();
@@ -600,8 +601,12 @@ public class UsuarioFinalController {
         micarrito.setCostoTotal(total);
         carritoRepository.save(micarrito);
         List<ProductoEnCarrito> misproductos = productoEnCarritoRepository.findBycarritoIdcarrito(micarrito);
-        misproductos.get(0).setCantidad(cantidad);
-        productoEnCarritoRepository.save(misproductos.get(0));
+           for (int i = 0; i < misproductos.size(); i++) {
+               // Actualiza la cantidad del producto
+               misproductos.get(i).setCantidad(cantidad.get(i));
+               // Guarda el producto actualizado en el repositorio
+               productoEnCarritoRepository.save(misproductos.get(i));
+           }
 
         //Obtener la zona del usuario
         Zona zone = usuario.getZonaIdzona();
