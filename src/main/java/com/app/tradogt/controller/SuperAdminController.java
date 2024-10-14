@@ -15,12 +15,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -60,6 +62,26 @@ public class SuperAdminController {
     public String viewPerfil(Model model) {
         model.addAttribute("passwordChangeDto", new PasswordChangeDto());
         return "SuperAdmin/perfil-SAdmin";
+    }
+    @PostMapping("/subirFoto")
+    public String viewSubirFoto(@RequestParam("foto") MultipartFile file, Model model) throws IOException {
+        System.out.println("Entré al controler");
+        // Ruta donde se guardarán las imágenes (ajusta según tu estructura)
+        String uploadDir = "src/main/resources/static/images/users/";
+
+        // Guardar el archivo en la ruta definida
+        byte[] bytes = file.getBytes();
+        Path path = Paths.get(uploadDir + file.getOriginalFilename());
+        Files.write(path, bytes);
+        System.out.println("Guardé la foto");
+        Usuario usuario = (Usuario) model.getAttribute("usuarioAutenticado");
+        assert usuario != null;
+        usuario.setFoto(file.getOriginalFilename());
+        System.out.println("Seteé la foto");
+        usuarioRepository.save(usuario);
+        System.out.println("Guardé el usuario");
+
+        return "redirect:/superadmin/perfil";
     }
 
     @PostMapping("/changePass")
