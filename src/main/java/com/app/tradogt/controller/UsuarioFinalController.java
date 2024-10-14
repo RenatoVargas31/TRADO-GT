@@ -125,9 +125,16 @@ public class UsuarioFinalController {
     }
 
     @GetMapping("/inicio")
-    public String inicio() {
+    public String inicio(Model model) {
 
         //Listar los pedidos recientes
+        int userId = getAuthenticatedUserId();  // Obtener el ID del usuario autenticado
+
+        // Obtener los pedidos recientes del usuario con el ID especificado
+        List<Object[]> listaPedidos = ordenRepository.obtenerPedidosPorUsuario(userId);
+
+        // Pasar la lista de pedidos al modelo para usarla en la vista
+        model.addAttribute("listaPedidos", listaPedidos);
 
 
 

@@ -530,54 +530,23 @@
                                                 <th>Acción</th>
                                             </tr>
                                             </thead>
-
                                             <tbody>
-                                            <tr>
-                                                <td>#NZ1579</td>
-                                                <td>Crocs de Tiburon</td>
-                                                <td>S/. 25</td>
-                                                <td>30</td>
-                                                <td>01/09/2023</td>
-                                                <td>Creado</td>
-                                                <td> -- </td>
+                                            <tr th:each="pedido : ${listaPedidos}">
+                                                <td th:text="${pedido[0]}">#NZ1579</td> <!-- Código de la orden -->
+                                                <td th:text="${pedido[1]}">Crocs de Tiburon</td> <!-- Nombre del producto -->
+                                                <td th:text="'S/ ' + ${pedido[2]}">S/. 25</td> <!-- Precio del producto -->
+                                                <td th:text="${pedido[3]}">30</td> <!-- Cantidad -->
+                                                <td th:text="${pedido[4]}">01/09/2023</td> <!-- Fecha de creación -->
+                                                <td th:text="${pedido[5]}">Creado</td> <!-- Estado de la orden -->
+                                                <td th:text="${pedido[6]}"> -- </td> <!-- Nombre del agente de compra (si existe) -->
                                                 <td>
-                                                    <a  href="/usuario/tracking" class="btn btn-outline-secondary btn-sm edit" title="Ver" >
+                                                    <a th:href="@{/usuario/tracking(id=${pedido[0]})}" class="btn btn-outline-secondary btn-sm edit" title="Ver">
                                                         <i class="fas fa-eye"></i>
                                                     </a>
                                                 </td>
                                             </tr>
-                                            <tr>
-                                                <td>#NZ1346</td>
-                                                <td>Bomber Jacket</td>
-                                                <td>S/. 45</td>
-                                                <td>30</td>
-                                                <td>01/09/2023</td>
-                                                <td>Creado</td>
-                                                <td>Anna Ramirez</td>
-                                                <td>
-                                                    <a  href="/usuario/tracking" class="btn btn-outline-secondary btn-sm edit" title="Ver" >
-                                                        <i class="fas fa-eye"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>#NZ1579</td>
-                                                <td>Crocs de Tiburon</td>
-                                                <td>S/. 25</td>
-                                                <td>30</td>
-                                                <td>01/09/2023</td>
-                                                <td>Creado</td>
-                                                <td> -- </td>
-                                                <td>
-                                                    <a  href="/usuario/tracking" class="btn btn-outline-secondary btn-sm edit" title="Ver" >
-                                                        <i class="fas fa-eye"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-
                                             </tbody>
                                         </table>
-                                    </div>
                                 </div>
                             </div>
                         </div>

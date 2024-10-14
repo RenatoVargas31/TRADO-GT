@@ -14,6 +14,32 @@ import java.util.Optional;
 @Repository
 public interface OrdenRepository extends JpaRepository<Orden, Integer> {
 
+    @Query(value = """
+            SELECT o.codigo,
+                   p.nombre AS nombreProducto,
+                   c.costoTotal,
+                   pec.cantidad,
+                   o.fechaCreacion,
+                   eo.nombre AS estadoOrden,
+                   (SELECT CONCAT(ag.nombre, ' ', ag.apellido)
+                    FROM Usuario AS ag
+                    WHERE ag.idUsuario = o.agentCompra_idUsuario) AS nombreAgenteCompra
+            FROM Usuario AS u
+            INNER JOIN Carrito AS c ON u.idUsuario = c.Usuario_idUsuario
+            INNER JOIN Orden AS o ON o.Carrito_idCarrito = c.idCarrito
+            INNER JOIN EstadoOrden AS eo ON eo.idEstadoOrden = o.estadoOrden_idEstadoOrden
+            INNER JOIN ProductoEnCarrito AS pec ON pec.Carrito_idCarrito = c.idCarrito
+            INNER JOIN Producto AS p ON p.idProducto = pec.ProductoEnZona_producto_idProducto
+            WHERE u.idUsuario = :userId 
+                AND eo.idEstadoOrden != 7
+            GROUP BY u.nombre, u.apellido, p.nombre, o.idOrden
+            """, nativeQuery = true)
+    List<Object[]> obtenerPedidosPorUsuario(@Param("userId") int userId);
+
+
+
+
+
     //Órdenes totales (no eliminadas)
     @Query(value = """
         SELECT
