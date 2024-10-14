@@ -79,97 +79,95 @@
 
                                     <tbody>
                                     <tr th:each="producto : ${productos}">
-                                        <td th:text="${producto.productoIdproducto.nombre}"> </td>
+                                        <td th:text="${producto.productoIdproducto.nombre}"></td>
                                         <td th:text="${producto.productoIdproducto.subcategoriaIdsubcategoria.categoriaIdcategoria.nombre}"></td>
                                         <td th:text="${producto.cantidad}"></td>
                                         <td>
-                                            <span class="badge fs-6"
-                                                  th:switch="${producto.estadoRepo}">
-                                                <span th:case="0" class="bg-success">Stock adecuado</span>
-                                                <span th:case="1" class="bg-danger">Stock insuficiente</span>
-                                                <span th:case="2" class="bg-warning">A espera de solicitud de reposición</span>
-                                            </span>
+        <span class="badge fs-6" th:switch="${producto.estadoRepo}">
+            <span th:case="0" class="bg-success">Stock adecuado</span>
+            <span th:case="1" class="bg-danger">Stock insuficiente</span>
+            <span th:case="2" class="bg-warning">A espera de reposición</span>
+        </span>
                                         </td>
                                         <td>
-                                            <a class="btn btn-success btn-sm edit" title="Reponer" data-bs-toggle="modal" data-bs-target="#adequateStockModal"
-                                               th:if="${producto.estadoRepo} == 0">
+                                            <!-- Estado 0: Stock adecuado -->
+                                            <a class="btn btn-success btn-sm edit" title="Reponer" data-bs-toggle="modal"
+                                               th:data-bs-target="'#adequateStockModal-' + ${producto.productoIdproducto.id}" th:if="${producto.estadoRepo == 0}">
                                                 <i class="fas fa-people-carry"></i>
                                             </a>
-                                            <a class="btn btn-success btn-sm edit" title="Reponer" data-bs-toggle="modal" data-bs-target="#confirmReplenishmentModal"
-                                               th:if="${producto.estadoRepo} == 1">
-                                                <i class="fas fa-people-carry"></i>
-                                            </a>
-                                            <a class="btn btn-success btn-sm edit" title="Reponer" data-bs-toggle="modal" data-bs-target="#inProgressModal"
-                                               th:if="${producto.estadoRepo} == 2">
-                                                <i class="fas fa-people-carry"></i>
-                                            </a>
-                                            <!--Start modal-->
-                                            <!-- Modal para confirmar la reposición de un producto -->
-                                            <div class="modal fade" id="confirmReplenishmentModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="confirmReplenishmentModalLabel" aria-hidden="true">
-                                                <div class="modal-dialog" role="document">
-                                                    <form>
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title" id="confirmReplenishmentModalLabel">Confirmar Reposición</h5>
-                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                <p class="text-responsive">¿Estás seguro de que deseas reponer este producto?</p>
-                                                                <p>Esta acción no se puede deshacer.</p>
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-danger waves-effect" data-bs-dismiss="modal">Cancelar</button>
-                                                                <button type="submit" class="btn btn-success waves-effect waves-light" id="confirmReplenishment">Confirmar</button>
-                                                            </div>
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                            <!--End Modal-->
-                                            <!--Start Modal-->
 
-                                            <!-- Modal de Reposición en curso -->
-                                            <div class="modal fade" id="inProgressModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="inProgressModalLabel" aria-hidden="true">
-                                                <div class="modal-dialog" role="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title" id="inProgressModalLabel">Reposición en curso</h5>
-                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            <p>La reposición de este producto ya está en curso.</p>
-                                                            <p>Por favor, espera a que el proceso finalice antes de intentar otra acción.</p>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-danger waves-effect" data-bs-dismiss="modal">Cerrar</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!--End Modal-->
+                                            <!-- Estado 1: Stock insuficiente -->
+                                            <a class="btn btn-warning btn-sm edit" title="Reponer" data-bs-toggle="modal"
+                                               th:data-bs-target="'#confirmReplenishmentModal-' + ${producto.productoIdproducto.id}" th:if="${producto.estadoRepo == 1}">
+                                                <i class="fas fa-people-carry"></i>
+                                            </a>
 
-                                            <!--Start Modal-->
-                                            <!-- Modal de Stock Adecuado -->
-                                            <div class="modal fade" id="adequateStockModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="adequateStockModalLabel" aria-hidden="true">
-                                                <div class="modal-dialog" role="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title" id="adequateStockModalLabel">Stock Adecuado</h5>
-                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            <p>El stock de este producto es adecuado. </p>
-                                                            <p>No es necesario realizar una reposición en este momento.</p>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-danger waves-effect" data-bs-dismiss="modal">Cerrar</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!--End Modal-->
+                                            <!-- Estado 2: Espera de reposición -->
+                                            <a class="btn btn-info btn-sm edit" title="Reposición en curso" data-bs-toggle="modal"
+                                               th:data-bs-target="'#inProgressModal-' + ${producto.productoIdproducto.id}" th:if="${producto.estadoRepo == 2}">
+                                                <i class="fas fa-people-carry"></i>
+                                            </a>
                                         </td>
+
+                                        <!-- Modal para Stock adecuado (Estado 0) -->
+                                        <div class="modal fade" th:id="'adequateStockModal-' + ${producto.productoIdproducto.id}" data-bs-backdrop="static" tabindex="-1" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title">Stock Adecuado</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <p>El stock de este producto es adecuado. No es necesario realizar una reposición en este momento.</p>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Modal para confirmar reposición (Estado 1) -->
+                                        <div class="modal fade" th:id="'confirmReplenishmentModal-' + ${producto.productoIdproducto.id}" data-bs-backdrop="static" tabindex="-1" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title">Confirmar Reposición</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <p>¿Estás seguro de que deseas solicitar la reposición de este producto?</p>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <form th:action="@{/adminzonal/editarEstadoRepo}" method="post">
+                                                            <input type="hidden" name="productoId" th:value="${producto.productoIdproducto.id}" />
+                                                            <input type="hidden" name="zonaId" th:value="${producto.zonaIdzona.id}" />
+                                                            <button type="submit" class="btn btn-success">Confirmar</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Modal para reposición en curso (Estado 2) -->
+                                        <div class="modal fade" th:id="'inProgressModal-' + ${producto.productoIdproducto.id}" data-bs-backdrop="static" tabindex="-1" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title">Reposición en Curso</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <p>La reposición de este producto ya está en curso. Por favor, espera a que se complete antes de realizar otra acción.</p>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </tr>
+
                                     </tbody>
                                 </table>
                             </div>
