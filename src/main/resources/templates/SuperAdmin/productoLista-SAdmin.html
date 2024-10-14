@@ -106,22 +106,22 @@
                                             <td class="text-center" th:text="${productoZonaCantidad[producto.id.longValue()]?.get(1)?.get('cantidad')} + ' uni.'">Zona Norte</td>
                                             <td class="text-center" th:text="'S/.' + ${productoZonaCantidad[producto.id.longValue()]?.get(1)?.get('costoEnvio')}">Zona Norte</td>
                                             <td class="text-center">
-                                                <i th:classappend="${productoZonaCantidad[producto.id.longValue()]?.get(1)?.get('estadoRepo') == 1} ? 'fas fa-exclamation-circle text-warning' : 'fas fa-check-circle text-success'"></i>
+                                                <i th:classappend="${productoZonaCantidad[producto.id.longValue()]?.get(1)?.get('estadoRepo') == 2} ? 'fas fa-exclamation-circle text-warning' : 'fas fa-check-circle text-success'"></i>
                                             </td>
                                             <td class="text-center" th:text="${productoZonaCantidad[producto.id.longValue()]?.get(2)?.get('cantidad')} + ' uni.'">Zona Sur</td>
                                             <td class="text-center" th:text="'S/.' + ${productoZonaCantidad[producto.id.longValue()]?.get(2)?.get('costoEnvio')}">Zona Sur</td>
                                             <td class="text-center">
-                                                <i th:classappend="${productoZonaCantidad[producto.id.longValue()]?.get(2)?.get('estadoRepo') == 1} ? 'fas fa-exclamation-circle text-warning' : 'fas fa-check-circle text-success'"></i>
+                                                <i th:classappend="${productoZonaCantidad[producto.id.longValue()]?.get(2)?.get('estadoRepo') == 2} ? 'fas fa-exclamation-circle text-warning' : 'fas fa-check-circle text-success'"></i>
                                             </td>
                                             <td class="text-center" th:text="${productoZonaCantidad[producto.id.longValue()]?.get(3)?.get('cantidad')} + ' uni.'">Zona Este</td>
                                             <td class="text-center" th:text="'S/.' + ${productoZonaCantidad[producto.id.longValue()]?.get(3)?.get('costoEnvio')}">Zona Este</td>
                                             <td class="text-center">
-                                                <i th:classappend="${productoZonaCantidad[producto.id.longValue()]?.get(3)?.get('estadoRepo') == 1} ? 'fas fa-exclamation-circle text-warning' : 'fas fa-check-circle text-success'"></i>
+                                                <i th:classappend="${productoZonaCantidad[producto.id.longValue()]?.get(3)?.get('estadoRepo') == 2} ? 'fas fa-exclamation-circle text-warning' : 'fas fa-check-circle text-success'"></i>
                                             </td>
                                             <td class="text-center" th:text="${productoZonaCantidad[producto.id.longValue()]?.get(4)?.get('cantidad')} + ' uni.'">Zona Oeste</td>
                                             <td class="text-center" th:text="'S/.' + ${productoZonaCantidad[producto.id.longValue()]?.get(4)?.get('costoEnvio')}">Zona Oeste</td>
                                             <td class="text-center">
-                                                <i th:classappend="${productoZonaCantidad[producto.id.longValue()]?.get(4)?.get('estadoRepo') == 1} ? 'fas fa-exclamation-circle text-warning' : 'fas fa-check-circle text-success'"></i>
+                                                <i th:classappend="${productoZonaCantidad[producto.id.longValue()]?.get(4)?.get('estadoRepo') == 2} ? 'fas fa-exclamation-circle text-warning' : 'fas fa-check-circle text-success'"></i>
                                             </td>
                                             <td class="text-center">
                                                 <form th:action="@{/superadmin/productoEditarForm}" method="post" style="display:inline;">
