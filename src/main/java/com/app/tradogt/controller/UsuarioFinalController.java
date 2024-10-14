@@ -2,8 +2,10 @@ package com.app.tradogt.controller;
 
 
 import com.app.tradogt.dto.OrdenCompraUserDto;
+import com.app.tradogt.dto.PasswordChangeDto;
 import com.app.tradogt.entity.*;
 import com.app.tradogt.services.StorageService;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import org.hibernate.query.Order;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -56,6 +59,9 @@ public class UsuarioFinalController {
 
     @Autowired
     private StorageService storageService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
 
     final ProductosRepository productosRepository;
@@ -468,6 +474,7 @@ public class UsuarioFinalController {
             return "redirect:/usuario/inicio"; // Podrías crear una página de error personalizada
         }
     }
+
     //Seleción de producto al carrito
    @PostMapping("/selecionarProducto")
     public String selecionarProducto(@RequestParam("productoId") int productoId,
@@ -762,8 +769,48 @@ public class UsuarioFinalController {
 
 
     @GetMapping("/contraseña")
-    public  String showpassword(){
+    public  String showpassword(Model model){
+        model.addAttribute("passwordChangeDto", new PasswordChangeDto());
         return "Usuario/password-usuario";
+    }
+
+    //Guardar cambios
+    @PostMapping("cambiarContraseña")
+    public String cambiarContra(@Valid PasswordChangeDto passwordChangeDto,
+                                BindingResult result,
+                                Authentication authentication,
+                                RedirectAttributes redirectAttributes,
+                                Model model){
+
+        //Validacion de errores
+        if(result.hasErrors()){
+            model.addAttribute("errors", result.getAllErrors());
+            return "Usuario/password-usuario";
+        }
+
+        //Obtener el usuario autenticado desde el sistema de seguridad
+        Usuario usuario = usuarioRepository.findByCorreo(authentication.getName());
+
+        //Vereficar si la contraseña actual ingresada coincide con la almacenada
+        if(!passwordEncoder.matches(passwordChangeDto.getCurrentPassword(), usuario.getContrasena())){
+            model.addAttribute("error", "La contraseña actual es incorrecta.");
+            return "Usuario/password-usuario";
+        }
+
+        // Verificar si las contraseñas nuevas coinciden
+        if (!passwordChangeDto.getNewPassword().equals(passwordChangeDto.getConfirmNewPassword())) {
+            model.addAttribute("error", "Las contraseñas nuevas no coinciden.");
+            return "Usuario/password-usuario";
+        }
+
+        // Actualizar la contraseña del usuario
+        usuario.setContrasena(passwordEncoder.encode(passwordChangeDto.getNewPassword()));
+        usuarioRepository.save(usuario);
+
+        // Agregar mensaje de éxito a los flash attributes
+        redirectAttributes.addFlashAttribute("exito", "Contraseña cambiada con éxito.");
+
+        return "redirect:/usuario/inicio";
     }
 
 
