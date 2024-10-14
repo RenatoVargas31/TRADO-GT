@@ -63,24 +63,31 @@ public class SuperAdminController {
         model.addAttribute("passwordChangeDto", new PasswordChangeDto());
         return "SuperAdmin/perfil-SAdmin";
     }
+
     @PostMapping("/subirFoto")
     public String viewSubirFoto(@RequestParam("foto") MultipartFile file, Model model) throws IOException {
         System.out.println("Entré al controler");
-        // Ruta donde se guardarán las imágenes (ajusta según tu estructura)
-        String uploadDir = "src/main/resources/static/images/users/";
+
+        // Ruta dinámica donde se guardarán las imágenes (fuera de static)
+        String uploadDir = "uploads/fotosUsuarios/";
 
         // Guardar el archivo en la ruta definida
         byte[] bytes = file.getBytes();
         Path path = Paths.get(uploadDir + file.getOriginalFilename());
         Files.write(path, bytes);
-        System.out.println("Guardé la foto");
+        System.out.println("Guardé la foto en: " + path);
+
+        // Obtener el usuario autenticado
         Usuario usuario = (Usuario) model.getAttribute("usuarioAutenticado");
         assert usuario != null;
+
+        // Actualizar el nombre de la foto en la base de datos
         usuario.setFoto(file.getOriginalFilename());
-        System.out.println("Seteé la foto");
+        System.out.println("Seteé la foto como: " + file.getOriginalFilename());
         usuarioRepository.save(usuario);
         System.out.println("Guardé el usuario");
 
+        // Redirigir al perfil
         return "redirect:/superadmin/perfil";
     }
 
