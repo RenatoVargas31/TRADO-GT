@@ -45,8 +45,8 @@
 
                             <div class="page-title-right">
                                 <ol class="breadcrumb m-0">
-                                    <li class="breadcrumb-item active">Home</li>
-                                    <li class="breadcrumb-item"><a href="javascript: void(0);">Arrival Date</a></li>
+                                    <li class="breadcrumb-item active">ÓRDENES</li>
+                                    <li class="breadcrumb-item">Fechas de arribo</li>
                                 </ol>
                             </div>
 
@@ -60,8 +60,8 @@
                             <div class="card-body">
 
                                 <h4 class="card-title">Gestionar fechas de arribo</h4>
-                                <p class="card-title-desc">Esta vista muestra una lista de productos con detalles clave como el
-                                    ID, el nombre del producto, la fecha de compra y la fecha de arribo. En la columna
+                                <p class="card-title-desc">Esta vista muestra una lista de órdenes con detalles clave como el
+                                    código, la fecha de compra y la fecha de arribo. En la columna
                                     de "Acciones", puedes encontrar el botón de editar para cada producto. El botón "Editar" te
                                     permite modificar la fecha de arribo del producto. Esperamos realices un labor eficaz,
                                     confiamos en ustedes.
@@ -73,6 +73,7 @@
                                         <th>ID</th>
                                         <th>Fecha de compra</th>
                                         <th>Fecha de arribo</th>
+                                        <th>Estado</th>
                                         <th>Editar</th>
                                     </tr>
                                     </thead>
@@ -81,20 +82,19 @@
                                     <tbody>
                                     <tr th:each="order : ${ordenesConFechas}">
                                         <td th:text="${order.codigo}"></td>
-                                        <td th:text="${order.fechaCreacion}"></td>
-                                        <td th:text="${order.fechaArribo}" class="fecha-arribo"></td>
+                                        <td th:text="${#temporals.format(order.fechaCreacion, 'dd-MM-yyyy')}"></td>
+                                        <td th:text="${#temporals.format(order.fechaArribo, 'dd-MM-yyyy')}" class="fecha-arribo"></td>
+                                        <td th:text="${order.estadoordenIdestadoorden.nombre}"></td>
                                         <td>
                                             <a class="btn btn-info btn-sm waves-effect waves-light edit-btn"
                                                title="Edit"
                                                data-bs-toggle="modal"
                                                data-bs-target="#staticBackdrop"
-                                               data-fecha-arribo="${order.fechaArribo}"
-                                               data-codigo="${order.codigo}">
+                                               th:data-fecha-arribo="${#temporals.format(order.fechaArribo, 'yyyy-MM-dd')}"
+                                               th:data-codigo="${order.codigo}">
                                                 <i class="ri-pencil-fill"></i>
                                             </a>
                                         </td>
-                                        <!-- Falta -->
-
                                     </tr>
                                     </tbody>
                                 </table>
@@ -104,7 +104,6 @@
                     </div> <!-- end col -->
                 </div> <!-- end row -->
                 <!--Start Modal-->
-                <!-- Modal para editar la fecha de arribo del producto -->
                 <!-- Modal para editar la fecha de arribo del producto -->
                 <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="editArrivalDateModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
@@ -126,6 +125,7 @@
                                     <button type="submit" class="btn btn-primary waves-effect waves-light">Guardar</button>
                                 </div>
                             </form>
+
                         </div>
                     </div>
                 </div>
@@ -163,22 +163,15 @@
 <!-- End JAVASCRIPT BASE-->
 
 <script>
-    // Esperar a que el documento esté listo
     document.addEventListener("DOMContentLoaded", function() {
-        // Seleccionar todos los botones de editar
         var editButtons = document.querySelectorAll('.edit-btn');
 
-        // Agregar evento de clic a cada botón
         editButtons.forEach(function(button) {
             button.addEventListener('click', function() {
-                // Obtener la fecha de arribo de la fila seleccionada
-                var fechaArribo = button.getAttribute('data-fecha-arribo');
-                var codigo = button.getAttribute('data-codigo'); // Obtener el código (ID) de la orden
+                var fechaArribo = this.getAttribute('data-fecha-arribo');
+                var codigo = this.getAttribute('data-codigo');
 
-                // Asignar la fecha al campo de texto del modal
                 document.getElementById('arrivalDate').value = fechaArribo;
-
-                // Asignar el código (ID) al campo oculto del formulario
                 document.getElementById('orderId').value = codigo;
             });
         });

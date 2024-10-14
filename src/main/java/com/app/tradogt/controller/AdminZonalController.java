@@ -4,6 +4,7 @@ import com.app.tradogt.dto.AgenteInfoZon;
 import com.app.tradogt.entity.Orden;
 import com.app.tradogt.entity.Producto;
 import com.app.tradogt.entity.ProductoEnZona;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -216,15 +217,30 @@ public class AdminZonalController {
     }
 
     @PostMapping("/editarFecha")
-    public String actualizarFechaArribo(@RequestParam("orderId") String orderId,
-                                        @RequestParam("fechaArribo") LocalDate fechaArribo) {
-        // Lógica para actualizar la fecha de arribo en la base de datos
-        Orden orden = ordenRepository.findByCodigo(orderId).get();
-        orden.setFechaArribo(fechaArribo);
-        ordenRepository.save(orden);
+    public String editarFechaArribo(@RequestParam("orderId") String orderId,
+                                    @RequestParam("fechaArribo") LocalDate fechaArribo,
+                                    RedirectAttributes redirectAttributes) {
 
-        return "redirect:/adminzonal/fechasArribo";  // Redirigir a la vista deseada
+        // Buscamos la orden por su ID
+        Optional<Orden> optionalOrden = ordenRepository.findByCodigo(orderId);
+
+        if (optionalOrden.isPresent()) {
+            Orden orden = optionalOrden.get();
+            // Actualizamos la fecha de arribo
+            orden.setFechaArribo(fechaArribo);
+            ordenRepository.save(orden);
+
+            // Añadir mensaje de éxito
+            redirectAttributes.addFlashAttribute("mensaje", "La fecha de arribo se ha actualizado correctamente.");
+        } else {
+            // Si no se encuentra la orden
+            redirectAttributes.addFlashAttribute("error", "No se pudo encontrar la orden con el ID proporcionado.");
+        }
+
+        // Redirigir a la página de fechas de arribo
+        return "redirect:/adminzonal/fechasArribo";
     }
+
 
 
 
