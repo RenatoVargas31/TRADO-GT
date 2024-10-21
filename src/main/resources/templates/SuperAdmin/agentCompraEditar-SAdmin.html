@@ -54,7 +54,7 @@
                                 <div class="card">
                                     <div class="card-body" style="padding: 30px">
                                         <h4 class="card-title fw-bold">Datos de registro:</h4>
-                                        <form class="needs-validation" th:object="${usuario}" action="/superadmin/agentCompraEditar" method="post" novalidate>
+                                        <form class="needs-validation" th:object="${usuario}" th:action="@{/superadmin/agentCompraEditar}" method="post" novalidate>
                                             <input type="hidden" th:field="*{id}" />
                                             <div class="row">
                                                 <div class="col-md-6">

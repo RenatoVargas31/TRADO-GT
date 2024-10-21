@@ -59,29 +59,29 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="card">
+                                <h5 class="card-header fw-semibold text-center mb-4">Administradores Zonales Registrados</h5>
                                 <div class="card-body">
-                                    <h4 class="card-title mb-4">Administradores Zonales Registrados</h4>
                                     <table id="datatable-admzonal-inicio" class="table table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                         <thead>
                                         <tr>
-                                            <th>Nombres</th>
-                                            <th>Apellidos</th>
-                                            <th>DNI</th>
-                                            <th>Teléfono</th>
-                                            <th>Correo Electrónico</th>
-                                            <th>Zona</th>
-                                            <th>Estado</th>
+                                            <th class="text-center">Nombres</th>
+                                            <th class="text-center">Apellidos</th>
+                                            <th class="text-center">DNI</th>
+                                            <th class="text-center">Teléfono</th>
+                                            <th class="text-center">Correo</th>
+                                            <th class="text-center">Zona</th>
+                                            <th class="text-center">Estado</th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         <tr th:each="administrador : ${administradores}">
-                                            <td th:text="${administrador.nombre}">Nombres</td>
-                                            <td th:text="${administrador.apellido}">Apellidos</td>
-                                            <td th:text="${administrador.dni}">DNI</td>
-                                            <td th:text="${administrador.telefono}">Teléfono</td>
-                                            <td th:text="${administrador.correo}">Correo Electrónico</td>
-                                            <td th:text="${administrador.zonaIdzona.nombre}">Zona</td>
-                                            <td>
+                                            <td class="text-center" th:text="${administrador.nombre}">Nombres</td>
+                                            <td class="text-center" th:text="${administrador.apellido}">Apellidos</td>
+                                            <td class="text-center" th:text="${administrador.dni}">DNI</td>
+                                            <td class="text-center" th:text="${administrador.telefono}">Teléfono</td>
+                                            <td class="text-center" th:text="${administrador.correo}">Correo</td>
+                                            <td class="text-center" th:text="${administrador.zonaIdzona.nombre}">Zona</td>
+                                            <td class="text-center">
                                                 <div th:classappend="${administrador.isActivated == 1} ? 'badge bg-success-subtle text-success font-size-14' : 'badge bg-danger-subtle text-danger font-size-14'">
                                                     <span th:text="${administrador.isActivated == 1} ? 'Activo' : 'Inactivo'">Estado</span>
                                                 </div>
@@ -97,32 +97,32 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="card">
+                                <h5 class="card-header fw-semibold text-center mb-4">Agentes de Compra Registrados</h5>
                                 <div class="card-body">
 
-                                    <h4 class="card-title mb-4">Agentes de Compra Registrados</h4>
                                     <table id="datatable-agentcompra-inicio" class="table table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                         <thead>
                                         <tr>
-                                            <th>Nombres</th>
-                                            <th>Apellidos</th>
-                                            <th>RUC</th>
-                                            <th>Código de despachador</th>
-                                            <th>Razón Social</th>
-                                            <th>Distrito</th>
-                                            <th>Zona</th>
-                                            <th>Estado</th>
+                                            <th class="text-center">Nombres</th>
+                                            <th class="text-center">Apellidos</th>
+                                            <th class="text-center">RUC</th>
+                                            <th class="text-center">Código de despachador</th>
+                                            <th class="text-center">Razón Social</th>
+                                            <th class="text-center">Distrito</th>
+                                            <th class="text-center">Zona</th>
+                                            <th class="text-center">Estado</th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         <tr th:each="agente : ${agentes}">
-                                            <td th:text="${agente.nombre}">Nombres</td>
-                                            <td th:text="${agente.apellido}">Apellidos</td>
-                                            <td th:text="${agente.ruc}">RUC</td>
-                                            <td th:text="${agente.codigoDespachador}">Código de despachador</td>
-                                            <td th:text="${agente.razonSocial}">Razón Social</td>
-                                            <td th:text="${agente.distritoIddistrito.nombre}">Distrito</td>
-                                            <td th:text="${agente.distritoIddistrito.zonaIdzona.nombre}">Zona</td>
-                                            <td>
+                                            <td class="text-center" th:text="${agente.nombre}">Nombres</td>
+                                            <td class="text-center" th:text="${agente.apellido}">Apellidos</td>
+                                            <td class="text-center" th:text="${agente.ruc}">RUC</td>
+                                            <td class="text-center" th:text="${agente.codigoDespachador}">Código de despachador</td>
+                                            <td class="text-center" th:text="${agente.razonSocial}">Razón Social</td>
+                                            <td class="text-center" th:text="${agente.distritoIddistrito.nombre}">Distrito</td>
+                                            <td class="text-center" th:text="${agente.distritoIddistrito.zonaIdzona.nombre}">Zona</td>
+                                            <td class="text-center">
                                                 <div th:classappend="${agente.isActivated == 1} ? 'badge bg-success-subtle text-success font-size-14' : 'badge bg-danger-subtle text-danger font-size-14'">
                                                     <span th:text="${agente.isActivated == 1} ? 'Activo' : 'Inactivo'">Estado</span>
                                                 </div>
@@ -138,31 +138,30 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="card">
+                                <h5 class="card-header fw-semibold text-center mb-4">Importadores Registrados</h5>
                                 <div class="card-body">
-
-                                    <h4 class="card-title mb-4">Importadores Registrados</h4>
 
                                     <table id="datatable-importador-inicio" class="table table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                         <thead>
                                         <tr>
-                                            <th>Nombres</th>
-                                            <th>Apellidos</th>
-                                            <th>DNI</th>
-                                            <th>Correo Electrónico</th>
-                                            <th>Dirección</th>
-                                            <th>Distrito</th>
-                                            <th>Estado</th>
+                                            <th class="text-center">Nombres</th>
+                                            <th class="text-center">Apellidos</th>
+                                            <th class="text-center">DNI</th>
+                                            <th class="text-center">Correo</th>
+                                            <th class="text-center">Dirección</th>
+                                            <th class="text-center">Distrito</th>
+                                            <th class="text-center">Estado</th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         <tr th:each="importador : ${importadores}">
-                                            <td th:text="${importador.nombre}">Nombres</td>
-                                            <td th:text="${importador.apellido}">Apellidos</td>
-                                            <td th:text="${importador.dni}">DNI</td>
-                                            <td th:text="${importador.correo}">Correo Electrónico</td>
-                                            <td th:text="${importador.direccion}">Dirección</td>
-                                            <td th:text="${importador.distritoIddistrito.nombre}">Distrito</td>
-                                            <td>
+                                            <td class="text-center" th:text="${importador.nombre}">Nombres</td>
+                                            <td class="text-center" th:text="${importador.apellido}">Apellidos</td>
+                                            <td class="text-center" th:text="${importador.dni}">DNI</td>
+                                            <td class="text-center" th:text="${importador.correo}">Correo</td>
+                                            <td class="text-center" th:text="${importador.direccion}">Dirección</td>
+                                            <td class="text-center" th:text="${importador.distritoIddistrito.nombre}">Distrito</td>
+                                            <td class="text-center">
                                                 <div th:classappend="${importador.isActivated == 1} ? 'badge bg-success-subtle text-success font-size-14' : 'badge bg-danger-subtle text-danger font-size-14'">
                                                     <span th:text="${importador.isActivated == 1} ? 'Activo' : 'Inactivo'">Estado</span>
                                                 </div>

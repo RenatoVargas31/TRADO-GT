@@ -88,7 +88,6 @@ public class Usuario {
     private String razonSocial;
 
     @Size(max = 45)
-    @NotBlank(message = "La dirección es obligatoria")
     @Size(max = 45, message = "La dirección no puede tener más de 45 caracteres")
     @Column(name = "direccion", length = 45)
     private String direccion;

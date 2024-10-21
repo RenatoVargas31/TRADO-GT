@@ -32,7 +32,6 @@
     <div class="main-content">
         <div class="page-content">
             <div class="container-fluid">
-
                 <div class="row">
                     <div th:if="${exito}" class="alert alert-success alert-dismissible fade show" role="alert">
                         <span th:text="${exito}"></span>
@@ -50,86 +49,76 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="container-xxl flex-grow-1 container-p-y">
                     <hr class="opacity-0">
                     <div class="row">
                         <!-- Bloque de Información de Perfil -->
-                        <div class="col-md-3">
+                        <div class="col-md-3 mb-4">
                             <div class="card mb-4 h-100">
-                                <h5 class="card-header">Foto de perfil</h5>
-                                <div class="user-profile-header d-flex flex-column align-items-center mt-5 mb-4 px-4">
+                                <h5 class="card-header text-white" style="background-color: #0b0b5a;">Foto de perfil</h5>
+                                <div class="user-profile-header d-flex flex-column align-items-center mt-3 mb-3 px-4">
                                     <hr class="opacity-0">
                                     <div class="flex-shrink-0">
-                                        <img th:src="@{'/uploads/fotosUsuarios/' + ${usuarioAutenticado.foto}}" alt="user image" class="d-block rounded-circle" style="width: 150px; height: 150px; object-fit: cover;">
+                                        <img th:src="@{'/uploads/fotosUsuarios/' + ${usuarioAutenticado.foto}}" alt="user image" class="d-block rounded-circle" style="border: 5px solid #0b0b5a; width: 150px; height: 150px; object-fit: cover;">
                                     </div>
-                                    <p class="text-muted mb-0 mt-2" th:text="${usuarioAutenticado.nombre} + ' ' + ${usuarioAutenticado.apellido}">Kevin Doe</p>
-                                    <p class="text-muted mb-0" th:text="${usuarioAutenticado.rolIdrol.nombre}"></p>
-                                    <p class="text-muted mb-0" th:text="${usuarioAutenticado.correo}"></p>
-
+                                    <h5 class="mt-3 mb-1" th:text="${usuarioAutenticado.nombre} + ' ' + ${usuarioAutenticado.apellido}">Kevin Doe</h5>
+                                    <p class="text-muted mb-1" th:text="${usuarioAutenticado.rolIdrol.nombre}"></p>
+                                    <hr>
+                                    <p class="text-muted mb-1 " th:text="${usuarioAutenticado.telefono}"></p>
+                                    <p class="text-muted mb-1 " th:text="${usuarioAutenticado.direccion}"></p>
                                 </div>
                             </div>
                         </div>
-
-
-
-
-
-
-
                         <!-- Bloque de Detalles de Perfil -->
-                        <div class="col-md-9">
-                            <div class="card mb-4 pb-1 h-100">
-                                <h5 class="card-header">Información personal</h5>
-
-                                <div class="card-body mt-4 ">
-                                    <form  enctype="multipart/form-data">
+                        <div class="col-md-9 mb-4">
+                            <div class="card mb-4 h-100">
+                                <h5 class="card-header text-white" style="background-color: #0b0b5a;">Información personal</h5>
+                                <div class="card-body mt-4">
+                                    <form enctype="multipart/form-data">
                                         <input type="hidden" name="action" value="updateProfile1">
                                         <input type="hidden" name="resetPhoto" id="resetPhoto" value="false">
-
-                                        <div class="row ms-5">
-                                            <div class="mb-3 col-md-6">
+                                        <div class="row g-3">
+                                            <div class="col-md-6">
                                                 <label for="firstName" class="form-label">Nombres</label>
-                                                <p class="form-control-plaintext" id="firstName" th:text="${usuarioAutenticado.nombre}">Kevin</p>
+                                                <input type="text" class="form-control" id="firstName" th:value="${usuarioAutenticado.nombre}" readonly>
                                             </div>
-                                            <div class="mb-3 col-md-6">
+                                            <div class="col-md-6">
                                                 <label for="lastName" class="form-label">Apellidos</label>
-                                                <p class="form-control-plaintext" id="lastName" th:text="${usuarioAutenticado.apellido}">Doe</p>
+                                                <input type="text" class="form-control" id="lastName" th:value="${usuarioAutenticado.apellido}" readonly>
                                             </div>
-                                            <div class="mb-3 col-md-6">
-                                                <label for="email" class="form-label" >Correo Electrónico</label>
-                                                <p class="form-control-plaintext" id="email"  th:text="${usuarioAutenticado.correo}"></p>
+                                            <div class="col-md-6">
+                                                <label for="email" class="form-label">Correo Electrónico</label>
+                                                <input type="email" class="form-control" id="email" th:value="${usuarioAutenticado.correo}" readonly>
                                             </div>
-                                            <div class="mb-3 col-md-6">
-                                                <label for="phoneNumber" class="form-label" >Teléfono</label>
-                                                <p class="form-control-plaintext" id="phoneNumber" th:text="${usuarioAutenticado.telefono}"></p>
+                                            <div class="col-md-6">
+                                                <label for="phoneNumber" class="form-label">Teléfono</label>
+                                                <input type="tel" class="form-control" id="phoneNumber" th:value="${usuarioAutenticado.telefono}" readonly>
                                             </div>
-                                            <div class="mb-3 col-md-6">
+                                            <div class="col-md-6">
                                                 <label for="direccion" class="form-label">Dirección</label>
-                                                <p class="form-control-plaintext" id="direccion" th:text="${usuarioAutenticado.direccion}"></p>
+                                                <input type="text" class="form-control" id="direccion" th:value="${usuarioAutenticado.direccion}" readonly>
                                             </div>
-                                            <div class="mb-3 col-md-6">
+                                            <div class="col-md-6">
                                                 <label for="birthday" class="form-label">Fecha de Nacimiento</label>
-                                                <p class="form-control-plaintext" id="birthday" th:text="${usuarioAutenticado.fechaNacimiento}"></p>
+                                                <input type="date" class="form-control" id="birthday" th:value="${usuarioAutenticado.fechaNacimiento}" readonly>
                                             </div>
                                         </div>
-                                        <div class="mt-2 d-flex">
-                                            <a href="/superadmin/editarPerfilForm" type="submit" class="btn btn-success me-5 ms-auto" tabindex="0">Editar</a>
+                                        <div class="mt-3 d-flex justify-content-end">
+                                            <a href="/superadmin/editarPerfilForm" class="btn btn-success" tabindex="0">Editar</a>
                                         </div>
                                     </form>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-
                 </div>
-
                 <!-- Mensajes de éxito y error -->
                 <div id="error-message" class="alert alert-danger" style="display: none;" role="alert"></div>
                 <div id="success-message" class="alert alert-success" style="display: none;" role="alert"></div>
                 <!-- / Content -->
             </div>
+
+
         </div>
 
     </div>
@@ -148,8 +137,6 @@
             </div>
         </div>
     </footer>
-</div>
-<!-- end main content-->
 </div>
 <!-- END layout-wrapper -->
 

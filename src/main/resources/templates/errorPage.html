@@ -19,7 +19,7 @@
                 <div class="text-center">
                     <div class="mb-4">
 
-                            <img src="/images/trado-transparent.png" alt="" height="130" class="auth-logo logo-dark mx-auto">
+                            <img src="/images/trado-transparent.png" alt="" height="110" class="auth-logo logo-dark mx-auto">
 
                     </div>
 
@@ -34,7 +34,7 @@
                     <!--Recibir el errorMessage y separar por '. '-->
                     <!--/*@thymesVar id="errorMessage" type="java.lang.String"*/-->
 
-                    <h3 class="mt-4" th:text="${#strings.arraySplit(errorMessage, '||')[0]}">Site is Under Maintenance</h3>
+                    <h3 class="mt-3" th:text="${#strings.arraySplit(errorMessage, '||')[0]}">Site is Under Maintenance</h3>
                     <p th:text="${#strings.arraySplit(errorMessage, '||')[1]}"></p>
                     <!--
                     <div class="row">
