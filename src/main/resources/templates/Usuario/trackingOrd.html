@@ -588,6 +588,62 @@
     }
 </script>
 
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var currentState = document.getElementById("currentState");
+        if (currentState) {
+            currentState.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    });
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var currentState = document.getElementById("currentState");
+        var currentIcon = document.getElementById("currentIcon");
+
+        if (currentState && currentIcon) {
+            // Desplazar la vista hacia el estado actual
+            currentState.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+            // Detectar cuando el elemento es visible en la pantalla (scroll terminado)
+            var observer = new IntersectionObserver(function(entries) {
+                // Si el estado actual está visible en el viewport
+                if (entries[0].isIntersecting === true) {
+                    // Aplicar efecto de escalado al icono
+                    currentIcon.style.transition = "transform 0.5s ease"; // Transición suave
+                    currentIcon.style.transform = "scale(1.5)"; // Escalado al 150%
+
+                    // Volver al tamaño normal después de un tiempo
+                    setTimeout(function() {
+                        currentIcon.style.transform = "scale(1)"; // Escalar de vuelta al tamaño original
+                    }, 1000); // Duración de 1000ms (1 segundo)
+
+                    // Una vez que se ejecuta la animación, dejamos de observar
+                    observer.disconnect();
+                }
+            }, { threshold: 0.5 }); // El threshold indica que el 50% del elemento debe estar visible
+
+            // Iniciar la observación del estado actual
+            observer.observe(currentState);
+        }
+    });
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Buscar la barra de progreso
+        var progressBar = document.querySelector('.progress-bar');
+
+        // Obtener el valor del ancho actual de la barra
+        var progressWidth = progressBar.style.width;
+
+        // Si la barra está al 100%
+        if (progressWidth === '100%') {
+            // Eliminar las clases que hacen que la barra sea animada
+            progressBar.classList.remove('progress-bar-striped', 'progress-bar-animated');
+        }
+    });
+</script>
+
 
 
 <!-- Required datatable js -->
