@@ -127,7 +127,11 @@
                     </div>
                 </div>
             </div>
-
+            <div th:if="${session.impersonation}" class="mt-3">
+                <form th:action="@{/superadmin/exit}" method="post">
+                    <button type="submit" class="btn btn-danger">Volver</button>
+                </form>
+            </div>
             <!-- User dropdown -->
             <div class="dropdown d-inline-block user-dropdown">
                 <button type="button" class="btn header-item waves-effect" id="page-header-user-dropdown"

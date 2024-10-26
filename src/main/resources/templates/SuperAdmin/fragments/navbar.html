@@ -136,7 +136,7 @@
                     <img class="rounded-circle header-profile-user" th:src="'/uploads/fotosUsuarios/' + ${usuarioAutenticado.foto}"
                          alt="Header Avatar">
 
-                    <span class="d-none d-xl-inline-block ms-1" th:text="${usuarioAutenticado.nombre}+' '+${usuarioAutenticado.apellido}" ></span>
+                    <span class="d-none d-xl-inline-block ms-1" th:text="${session.usuarioAutenticado.nombre}+' '+${session.usuarioAutenticado.apellido}" ></span>
                     <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
                 </button>
                 <div class="dropdown-menu dropdown-menu-end">

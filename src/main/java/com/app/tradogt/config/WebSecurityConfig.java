@@ -1,5 +1,7 @@
 package com.app.tradogt.config;
 
+import com.app.tradogt.repository.UsuarioRepository;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -12,6 +14,7 @@ import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.switchuser.SwitchUserFilter;
 import org.springframework.security.web.savedrequest.DefaultSavedRequest;
 
 import javax.sql.DataSource;
@@ -35,13 +38,6 @@ public class WebSecurityConfig {
     @Bean
     public UserDetailsManager users(DataSource dataSource) {
         CustomUserDetailsManager user = new CustomUserDetailsManager(dataSource);
-        user.setUsersByUsernameQuery("SELECT correo, contrasena, isActivated, nombre, apellido, codigoDespachador FROM Usuario WHERE correo = ? OR codigoDespachador = ?");
-        user.setAuthoritiesByUsernameQuery(
-                "SELECT U.correo, R.nombre " +
-                        "FROM Usuario U " +
-                        "INNER JOIN Rol R ON U.rol_idRol = R.idRol " +
-                        "WHERE (U.correo = ? OR U.codigoDespachador = ?) AND U.isActivated = 1"
-        );
         return user;
     }
 
@@ -56,10 +52,37 @@ public class WebSecurityConfig {
     public AuthenticationManager authenticationManagerBean(AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
     }
-
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http, CustomAuthenticationFilter customAuthenticationFilter) throws Exception {
+    public SwitchUserFilter switchUserFilter() {
+        // Create a new instance of CustomSwitchUserFilter constructor con parámetros
+        SwitchUserFilter filter = new SwitchUserFilter();
+        filter.setUserDetailsService(users(dataSource));
+        filter.setSwitchUserUrl("/superadmin/impersonate");
+        filter.setExitUserUrl("/superadmin/exit");
+        filter.setSuccessHandler((request, response, authentication) -> {
+            HttpSession session = request.getSession();
+            session.setAttribute("usuarioAutenticado", users(dataSource).loadUserByUsername(authentication.getName()));
+            session.setAttribute("impersonation", true);
+
+            String rol = "";
+            for (GrantedAuthority role : authentication.getAuthorities()) {
+                rol = role.getAuthority();
+                break;
+            }
+            switch (rol) {
+                case "SuperAdmin" -> response.sendRedirect("inicio");
+                case "Administrador Zonal" -> response.sendRedirect("adminzonal/dashboard");
+                case "Agente de Compra" -> response.sendRedirect("agente/inicio");
+                case "Usuario Final" -> response.sendRedirect("usuario/inicio");
+                default -> response.sendRedirect("/default");
+            }
+        });
+        return filter;
+    }
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http, CustomAuthenticationFilter customAuthenticationFilter, UsuarioRepository usuarioRepository) throws Exception {
         http
+                .addFilterBefore(switchUserFilter(), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(customAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers("/css/**", "/js/**", "/images/**", "/fonts/**", "/libs/**").permitAll()
@@ -79,6 +102,9 @@ public class WebSecurityConfig {
                         .successHandler((request, response, authentication) -> {
                             DefaultSavedRequest defaultSavedRequest =
                                     (DefaultSavedRequest) request.getSession().getAttribute("SPRING_SECURITY_SAVED_REQUEST");
+
+                            HttpSession session = request.getSession();
+                            session.setAttribute("usuarioAutenticado", usuarioRepository.findByCorreo(authentication.getName()));
 
                             if (defaultSavedRequest != null) {
                                 String targetURL = defaultSavedRequest.getRedirectUrl();
@@ -103,9 +129,9 @@ public class WebSecurityConfig {
                         .deleteCookies("JSESSIONID")
                         .invalidateHttpSession(true)
                         .permitAll()
+
                 )
                 .exceptionHandling((exceptions) -> exceptions.accessDeniedHandler(customAccessDeniedHandler));
-
         return http.build();
     }
 }

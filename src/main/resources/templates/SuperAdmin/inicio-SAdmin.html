@@ -71,6 +71,7 @@
                                             <th class="text-center">Correo</th>
                                             <th class="text-center">Zona</th>
                                             <th class="text-center">Estado</th>
+                                            <th class="text-center">Sesión</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -86,6 +87,32 @@
                                                     <span th:text="${administrador.isActivated == 1} ? 'Activo' : 'Inactivo'">Estado</span>
                                                 </div>
                                             </td>
+                                            <td class="text-center">
+                                                <button type="button" class="btn btn-info btn-sm waves-effect waves-light" title="Iniciar Sesión" data-bs-toggle="modal" th:data-bs-target="'#impersonateConfirmModalZonal-' + ${administrador.id}">
+                                                    <i class="ri-login-circle-fill"></i>
+                                                </button>
+                                            </td>
+                                            <!-- Modal de Confirmación de Impersonación -->
+                                            <div class="modal fade" th:id="'impersonateConfirmModalZonal-'+ ${administrador.id}" tabindex="-1" aria-labelledby="impersonateConfirmModalZonalLabel" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="impersonateConfirmModalZonalLabel">Confirmar Impersonación</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            ¿Estás seguro de iniciar sesión como <strong th:text="${administrador.nombre} + ' ' + ${administrador.apellido}"></strong>?
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                                            <form th:action="@{/superadmin/impersonate}" method="post">
+                                                                <input type="hidden" name="username" th:value="${administrador.correo}" />
+                                                                <button type="submit" class="btn btn-info">Continuar</button>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </tr>
                                         </tbody>
                                     </table>
@@ -111,6 +138,7 @@
                                             <th class="text-center">Distrito</th>
                                             <th class="text-center">Zona</th>
                                             <th class="text-center">Estado</th>
+                                            <th class="text-center">Sesión</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -127,6 +155,32 @@
                                                     <span th:text="${agente.isActivated == 1} ? 'Activo' : 'Inactivo'">Estado</span>
                                                 </div>
                                             </td>
+                                            <td class="text-center">
+                                                <button type="button" class="btn btn-info btn-sm waves-effect waves-light" title="Iniciar Sesión" data-bs-toggle="modal" th:data-bs-target="'#impersonateConfirmModalAgente-' + ${agente.id}">
+                                                    <i class="ri-login-circle-fill"></i>
+                                                </button>
+                                            </td>
+                                            <!-- Modal de Confirmación de Impersonación -->
+                                            <div class="modal fade" th:id="'impersonateConfirmModalAgente-'+ ${agente.id}" tabindex="-1" aria-labelledby="impersonateConfirmModalAgenteLabel" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="impersonateConfirmModalAgenteLabel">Confirmar Impersonación</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            ¿Estás seguro de iniciar sesión como <strong th:text="${agente.nombre} + ' ' + ${agente.apellido}"></strong>?
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                                            <form th:action="@{/superadmin/impersonate}" method="post">
+                                                                <input type="hidden" name="username" th:value="${agente.correo}" />
+                                                                <button type="submit" class="btn btn-info">Continuar</button>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </tr>
                                         </tbody>
                                     </table>
@@ -151,6 +205,7 @@
                                             <th class="text-center">Dirección</th>
                                             <th class="text-center">Distrito</th>
                                             <th class="text-center">Estado</th>
+                                            <th class="text-center">Sesión</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -166,6 +221,32 @@
                                                     <span th:text="${importador.isActivated == 1} ? 'Activo' : 'Inactivo'">Estado</span>
                                                 </div>
                                             </td>
+                                            <td class="text-center">
+                                                <button type="button" class="btn btn-info btn-sm waves-effect waves-light" title="Iniciar Sesión" data-bs-toggle="modal" th:data-bs-target="'#impersonateConfirmModalImportador-' + ${importador.id}">
+                                                    <i class="ri-login-circle-fill"></i>
+                                                </button>
+                                            </td>
+                                            <!-- Modal de Confirmación de Impersonación -->
+                                            <div class="modal fade" th:id="'impersonateConfirmModalImportador-'+ ${importador.id}" tabindex="-1" aria-labelledby="impersonateConfirmModalImportadorLabel" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="impersonateConfirmModalImportadorLabel">Confirmar Impersonación</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            ¿Estás seguro de iniciar sesión como <strong th:text="${importador.nombre} + ' ' + ${importador.apellido}"></strong>?
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                                            <form th:action="@{/superadmin/impersonate}" method="post">
+                                                                <input type="hidden" name="username" th:value="${importador.correo}" />
+                                                                <button type="submit" class="btn btn-info">Continuar</button>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </tr>
                                         </tbody>
                                     </table>
