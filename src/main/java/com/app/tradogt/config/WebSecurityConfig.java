@@ -36,9 +36,12 @@ public class WebSecurityConfig {
     }
 
     @Bean
-    public UserDetailsManager users(DataSource dataSource) {
-        CustomUserDetailsManager user = new CustomUserDetailsManager(dataSource);
-        return user;
+    public UserDetailsManager usersLogin(DataSource dataSource) {
+        return new CustomUserDetailsManager(dataSource);
+    }
+    @Bean
+    public UserDetailsManager userSwitch(DataSource dataSource) {
+        return new SwitchUserDetailsManager(dataSource);
     }
 
     @Bean
@@ -56,12 +59,12 @@ public class WebSecurityConfig {
     public SwitchUserFilter switchUserFilter() {
         // Create a new instance of CustomSwitchUserFilter constructor con parámetros
         SwitchUserFilter filter = new SwitchUserFilter();
-        filter.setUserDetailsService(users(dataSource));
+        filter.setUserDetailsService(userSwitch(dataSource));
         filter.setSwitchUserUrl("/superadmin/impersonate");
         filter.setExitUserUrl("/superadmin/exit");
         filter.setSuccessHandler((request, response, authentication) -> {
             HttpSession session = request.getSession();
-            session.setAttribute("usuarioAutenticado", users(dataSource).loadUserByUsername(authentication.getName()));
+            session.setAttribute("usuarioAutenticado", userSwitch(dataSource).loadUserByUsername(authentication.getName()));
             session.setAttribute("impersonation", true);
 
             String rol = "";
@@ -82,6 +85,7 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http, CustomAuthenticationFilter customAuthenticationFilter, UsuarioRepository usuarioRepository) throws Exception {
         http
+                .userDetailsService(usersLogin(dataSource))
                 .addFilterBefore(switchUserFilter(), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(customAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests((requests) -> requests
@@ -134,4 +138,5 @@ public class WebSecurityConfig {
                 .exceptionHandling((exceptions) -> exceptions.accessDeniedHandler(customAccessDeniedHandler));
         return http.build();
     }
+
 }
