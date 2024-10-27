@@ -29,6 +29,7 @@ import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -400,6 +401,12 @@ public class AgenteComprasController {
             EstadoOrden estadoOrden = estadoOrdenRepository.findById(3).get();
             // Cambiamos el estado de la orden a estado 3 (En proceso)
             orden.setEstadoordenIdestadoorden(estadoOrden);
+            //Guardamos la fecha
+            orden.setFechaEnProceso(LocalDate.now());
+            orden.setFechaArribo(LocalDate.now().plusDays(3));
+            orden.setFechaEnAduanas(LocalDate.now().plusDays(6));
+            orden.setFechaEnRuta(LocalDate.now().plusDays(9));
+            orden.setFechaRecibido(LocalDate.now().plusDays(12));
             // Guardar los cambios en la base de datos
             ordenRepository.save(orden);
             // Agregar un mensaje flash para la confirmación
@@ -455,6 +462,8 @@ public class AgenteComprasController {
             orden.setEstadoordenIdestadoorden(estadoOrden);
             // Asignamos el id del agente que toma la orden
             orden.setAgentcompraIdusuario(agente);
+            //Guardamos la fecha de validación
+            orden.setFechaValidacion(LocalDate.now());
             // Guardar los cambios en la base de datos
             ordenRepository.save(orden);
 

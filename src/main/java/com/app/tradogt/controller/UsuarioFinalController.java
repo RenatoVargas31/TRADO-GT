@@ -7,11 +7,13 @@ import com.app.tradogt.entity.*;
 import com.app.tradogt.services.StorageService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -35,10 +37,11 @@ import java.util.stream.Collectors;
 @RequestMapping("/usuario")
 public class UsuarioFinalController {
 
+
+
     private Optional<Usuario> authenticatedUser;
     private int zonaId;
-   // @Autowired
-    //private MinValidatorForCharSequence minValidatorForCharSequence;
+
 
     public static class RandomCodeGenerator {
 
@@ -94,6 +97,40 @@ public class UsuarioFinalController {
         this.estadoOrdenRepository = estadoOrdenRepository;
     }
 
+    //Actualiza los estados de las ordenes
+    public void updateOrderStatus() {
+        //Obtener la fecha actual
+        LocalDate today = LocalDate.now();
+
+        Optional<EstadoOrden> estadoactual = estadoOrdenRepository.findById(3);
+        Optional<EstadoOrden> arriboAlPais = estadoOrdenRepository.findById(4);
+        Optional<EstadoOrden> aduanas = estadoOrdenRepository.findById(5);
+        Optional<EstadoOrden> ruta = estadoOrdenRepository.findById(6);
+        Optional<EstadoOrden> recibido = estadoOrdenRepository.findById(7);
+
+        List<Orden> ordensInProcess = ordenRepository.findByEstadoordenIdestadoorden(estadoactual);
+
+        for (Orden orden : ordensInProcess) {
+            System.out.println("Orden ID: " + orden.getId());
+
+            // Cambiar el estado de acuerdo a la fecha actual
+            if (orden.getFechaArribo() != null && orden.getFechaArribo().isEqual(today)) {
+                orden.setEstadoordenIdestadoorden(arriboAlPais.get());
+            } else if (orden.getFechaEnAduanas() != null && orden.getFechaEnAduanas().isEqual(today)) {
+                orden.setEstadoordenIdestadoorden(aduanas.get());
+            } else if (orden.getFechaEnRuta() != null && orden.getFechaEnRuta().isEqual(today)) {
+                orden.setEstadoordenIdestadoorden(ruta.get());
+            } else if (orden.getFechaRecibido() != null && orden.getFechaRecibido().isEqual(today)) {
+                orden.setEstadoordenIdestadoorden(recibido.get());
+            }else{
+                orden.setEstadoordenIdestadoorden(orden.getEstadoordenIdestadoorden());
+            }
+
+            // Guardar la orden actualizada
+            ordenRepository.save(orden);
+        }
+    }
+
     //Metodo auxiliar para obtener el id del usuario
     private int getAuthenticatedUserId() {
         // Obtener el usuario autenticado
@@ -126,6 +163,7 @@ public class UsuarioFinalController {
 
     @GetMapping("/inicio")
     public String inicio(Model model) {
+        updateOrderStatus();
 
         //Listar los pedidos recientes
         int userId = getAuthenticatedUserId();  // Obtener el ID del usuario autenticado
@@ -291,11 +329,6 @@ public class UsuarioFinalController {
         return "redirect:/usuario/perfil";
     }
 
-    @GetMapping("/editarOrdenes")
-    public String formularioPedido() {
-        return "Usuario/formOrdenes";
-    }
-
     @GetMapping("/tracking")
     public String tracking(@RequestParam("id")String code, Model model) {
 
@@ -328,6 +361,9 @@ public class UsuarioFinalController {
 
         }else {
             System.out.println("Orden no encontrada"); }
+
+        //Aqui haré el cambio de estado por fecha
+
 
         return "Usuario/trackingOrd";
     }
@@ -568,7 +604,7 @@ public class UsuarioFinalController {
     }
 
     @GetMapping("/carrito")
-    public String showCarrito( Model model) {
+    public String showCarrito( Model model, RedirectAttributes attr) {
 
         //Usuario
         int user = getAuthenticatedUserId();
@@ -578,10 +614,12 @@ public class UsuarioFinalController {
         Carrito miCarrito = carritoRepository.findByusuarioIdusuarioAndIsDelete(usuario, (byte) 0);
         if (miCarrito != null) {
             List<ProductoEnCarrito> misProductos = productoEnCarritoRepository.findBycarritoIdcarrito( miCarrito);
+            model.addAttribute("carrito", misProductos);
+
+
             if(misProductos.isEmpty()) {
-                model.addAttribute("mensaje", "El carrito se encuentra vacío");
+                model.addAttribute("mensaje", "El carrito se encuentra vacío.");
             }else {
-                model.addAttribute("carrito", misProductos);
 
                 ProductoEnCarrito item = misProductos.get(0);
                 BigDecimal costoEnvio = item.getProductoEnZona().getCostoEnvio();
@@ -590,7 +628,6 @@ public class UsuarioFinalController {
 
         }else {
             model.addAttribute("mensaje", "El carrito se encuentra vacío");
-            return "Usuario/carrito-usuario";
         }
 
         return "Usuario/carrito-usuario";
