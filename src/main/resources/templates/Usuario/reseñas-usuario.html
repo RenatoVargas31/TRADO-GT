@@ -98,14 +98,16 @@
 
 
                                         <div class="row g-0 mt-5">
-                                            <div id="no-results-message" style="display:none; text-align: center; color: #000000; font-size: 18px; margin-top: 20px;">
-                                                Reseña no encontrada
+                                            <!-- Mensaje cuando no hay reseñas -->
+                                            <div th:if="${resenas.isEmpty()}" style="text-align: center; color: #000000; font-size: 18px; margin-top: 20px;">
+                                                <p >Reseña no encontrada</p>
                                             </div>
+
                                             <div th:each="resena : ${resenas}" class="col-xl-3 col-sm-6">
                                                 <div class="card product-box">
                                                     <a th:href="@{/usuario/verReseña/{id}(id=${resena.id})}" class="text-decoration-none">
-                                                        <div class="product-img">
-                                                            <img th:src="@{'/uploads/reseñasUsuarios/' + ${resena.foto}}" alt="Imagen de la reseña" class="img-fluid mx-auto d-block">
+                                                       <div class="product-img">
+                                                            <img th:src="@{../images/flor.jpeg}" alt="Imagen de la reseña" class="img-fluid mx-auto d-block">
                                                         </div>
                                                         <div class="text-center p-3">
                                                             <p class="font-size-12 mb-1" th:text="${resena.productoIdproducto.subcategoriaIdsubcategoria.categoriaIdcategoria.nombre} + ', ' + ${resena.productoIdproducto.subcategoriaIdsubcategoria.nombre} ">Categoría, Subcategoría</p>
@@ -118,15 +120,15 @@
                                                                     <span class="mdi mdi-star text-warning" th:if="${resena.calificacion >= 4}"></span>
                                                                     <span class="mdi mdi-star text-warning" th:if="${resena.calificacion >= 5}"></span>
                                                                 </div>
-                                                                <div class="text-muted" style="font-size: 12px;" th:text="${resena.calificacion + '.0'}"></div>
+                                                                <div class="text-muted" style="font-size: 12px;" th:text="${resena.calificacion}"></div>
                                                             </div>
                                                             <span class="product-ribbon badge bg-warning" th:text="${resena.productoIdproducto.codigo}">NK128</span><br>
                                                             <div class="provider-info d-flex align-items-center justify-content-center">
-                                                                <span class="provider-name" th:text="${resena.productoIdproducto.proveedorIdproveedor.nombre} + ',' + ${resena.productoIdproducto.proveedorIdproveedor.apellido}" style="font-size: 12px;"></span>
+                                                                <span class="provider-name" th:text="${resena.productoIdproducto.proveedorIdproveedor.nombre} + ' ' + ${resena.productoIdproducto.proveedorIdproveedor.apellido}" style="font-size: 12px;"></span>
                                                             </div>
                                                         </div>
                                                         <div class="provider-info d-flex flex-column align-items-center justify-content-center">
-                                                            <span class="provider-name" style="font-size: 12px;">Creado por <strong th:text="${resena.usuarioIdusuario.nombre} + ', ' + ${resena.usuarioIdusuario.apellido}" ></strong></span>
+                                                            <span class="provider-name" style="font-size: 12px;">Creado por <strong th:text="${resena.usuarioIdusuario.nombre} + ' ' + ${resena.usuarioIdusuario.apellido}" ></strong></span>
                                                             <span style="font-size: 12px;" th:text="${#temporals.format(resena.fechaCreacion , 'dd-MM-yyyy')}">11 de Octubre de 2024</span>
                                                         </div>
                                                     </a>

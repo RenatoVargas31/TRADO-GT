@@ -703,12 +703,23 @@ public class UsuarioFinalController {
         List<Resena> resenas = resenaRepository
                 .findByUsuarioIdusuarioIsAcceptedAndUsuarioIdusuarioIsPostulatedAndUsuarioIdusuarioIsActivated(1, 0, 1);
 
-        model.addAttribute("resenas", resenas);
+        List<Resena> listaResena = resenaRepository.findAll();
 
         // Si no hay reseñas, puedes mostrar un mensaje
-        if (resenas.isEmpty()) {
-            model.addAttribute("noResultsMessage", "Reseña no encontrada");
+        if (listaResena.isEmpty()) {
+            model.addAttribute("resenas", listaResena);
+        }else {
+            model.addAttribute("resenas", listaResena);
+            System.out.println("Lista de reseñas:");
+            for (Resena resena : listaResena) {
+                System.out.println("Reseña ID: " + resena.getId());
+                System.out.println("Producto: " + resena.getProductoIdproducto().getNombre());
+                System.out.println("Calificación: " + resena.getCalificacion());
+                System.out.println("Fecha de creación: " + resena.getFechaCreacion());
+                System.out.println("-----------------------------");
+            }
         }
+
         return "Usuario/reseñas-usuario";
     }
 

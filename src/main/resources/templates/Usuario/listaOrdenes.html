@@ -85,10 +85,11 @@
                                     <thead>
                                     <tr>
                                         <th>Código</th>
-                                        <th>Precio</th>
+                                        <th>Monto Total</th>
                                         <th>Fecha de creación</th>
-                                        <th>Estado</th>
-                                        <th>Agente</th>
+                                        <th>Estado de Orden</th>
+                                        <th>Agente de Compra</th>
+                                        <th>Calificación</th>
                                         <th>Acción</th>
                                     </tr>
                                     </thead>
@@ -101,6 +102,9 @@
                                         <td th:text="${#temporals.format(orden.fechaCreacion , 'dd-MM-yyyy')}"></td>
                                         <td th:text="${orden.estadoOrden}"></td>
                                         <td th:text="${orden.agente}" ></td>
+                                        <td th:if="${orden.valoracion == 0}">No hay calificación</td>
+                                        <td th:if="${orden.valoracion != 0}" th:text="${orden.valoracion} + ' estrellas'"></td>
+
                                         <td>
                                             <a th:href="@{'/usuario/tracking?id=' + ${orden.codigoOrden}}" class="btn btn-primary btn-sm waves-effect waves-light" title="Ver"><i class="ri-eye-fill"></i></a>
 
@@ -156,11 +160,11 @@
                                                             <div class="modal-body">
                                                                 <p>Califica el rendimiento de tu agente de compra: <strong th:text="${orden.agente}"></strong></p>
                                                                 <div class="rating">
-                                                                    <input type="radio" name="valoracionAgente" th:id="'rating5-' + ${orden.codigoOrden}" value="5"><label th:for="'rating5-' + ${orden.codigoOrden}">5 ☆</label>
-                                                                    <input type="radio" name="valoracionAgente" th:id="'rating4-' + ${orden.codigoOrden}" value="4"><label th:for="'rating4-' + ${orden.codigoOrden}">4 ☆</label>
-                                                                    <input type="radio" name="valoracionAgente" th:id="'rating3-' + ${orden.codigoOrden}" value="3"><label th:for="'rating3-' + ${orden.codigoOrden}">3 ☆</label>
-                                                                    <input type="radio" name="valoracionAgente" th:id="'rating2-' + ${orden.codigoOrden}" value="2"><label th:for="'rating2-' + ${orden.codigoOrden}">2 ☆</label>
                                                                     <input type="radio" name="valoracionAgente" th:id="'rating1-' + ${orden.codigoOrden}" value="1"><label th:for="'rating1-' + ${orden.codigoOrden}">1 ☆</label>
+                                                                    <input type="radio" name="valoracionAgente" th:id="'rating2-' + ${orden.codigoOrden}" value="2"><label th:for="'rating2-' + ${orden.codigoOrden}">2 ☆</label>
+                                                                    <input type="radio" name="valoracionAgente" th:id="'rating3-' + ${orden.codigoOrden}" value="3"><label th:for="'rating3-' + ${orden.codigoOrden}">3 ☆</label>
+                                                                    <input type="radio" name="valoracionAgente" th:id="'rating4-' + ${orden.codigoOrden}" value="4"><label th:for="'rating4-' + ${orden.codigoOrden}">4 ☆</label>
+                                                                    <input type="radio" name="valoracionAgente" th:id="'rating5-' + ${orden.codigoOrden}" value="5"><label th:for="'rating5-' + ${orden.codigoOrden}">5 ☆</label>
                                                                 </div>
                                                                 <input type="hidden" name="ordenCodigo" th:value="${orden.codigoOrden}" />
                                                             </div>
