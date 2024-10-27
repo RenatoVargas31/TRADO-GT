@@ -169,7 +169,7 @@ public class SuperAdminController {
         redirectAttributes.addFlashAttribute("exito", "Contraseña cambiada con éxito.");
         return "redirect:/superadmin/perfil";  // Redirige a la página del perfil
     }
-    //<editor-fold desc="CRUD Menu (R - falta)">
+    //<editor-fold desc="CRUD Menu">
     @GetMapping("/inicio")
     public String viewInicio(Model model) {
         //Listar usuarios que tenga id rol 2 (Administrador Zonal) y isAccepted 1

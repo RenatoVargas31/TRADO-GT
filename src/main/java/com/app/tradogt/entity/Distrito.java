@@ -5,10 +5,12 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
+import java.io.Serializable;
+
 @Data
 @Entity
 @Table(name = "Distrito")
-public class Distrito {
+public class Distrito implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idDistrito", nullable = false)
