@@ -68,34 +68,39 @@
 
                                 <h4 class="card-title mb-4">Stock de productos</h4>
                                 <div>
-                                    <div id="column_chart_Stock" class="apex-charts" dir="ltr"></div>
+                                    <div id="bar_chart1_top10_3" class="apex-charts" dir="ltr"></div>
                                 </div>
                             </div>
 
                             <div class="card-body border-top text-center">
                                 <div class="row">
                                     <div class="col-sm-4">
-                                        <div class="d-inline-flex">
-                                            <h5 class="me-2">42 unidades</h5>
-                                        </div>
-                                        <p class="text-muted text-truncate mb-0">Stock Total</p>
-                                    </div>
-
-                                    <div class="col-sm-4">
                                         <div class="mt-4 mt-sm-0">
-                                            <p class="mb-2 text-muted text-truncate"><i class="mdi mdi-circle text-primary font-size-10 me-1"></i> Producto con Menor Stock :</p>
+                                            <p class="mb-2 text-muted text-truncate"><i class="mdi mdi-circle text-info font-size-10 me-1"></i> Stock Total :</p>
                                             <div class="d-inline-flex">
-                                                <h5 class="mb-0 me-2">Producto G</h5>
-                                                <p class="mb-0">1 unidad</p>
+                                                <h5 class="mb-0" th:text="${stockTotal}"></h5>
                                             </div>
                                         </div>
                                     </div>
 
                                     <div class="col-sm-4">
                                         <div class="mt-4 mt-sm-0">
+                                            <p class="mb-2 text-muted text-truncate"><i class="mdi mdi-circle text-danger font-size-10 me-1"></i> Producto con Menor Stock:</p>
+                                            <div class="d-inline-flex">
+                                                <h5 class="mb-0" th:text="${productoStockMenor.nombre}"></h5>
+                                                <br>
+                                                <p class="mb-0" th:text="${productoStockMenor.stock} + ' unidades'"></p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <div class="col-sm-4">
+                                        <div class="mt-4 mt-sm-0">
                                             <p class="mb-2 text-muted text-truncate"><i class="mdi mdi-circle text-success font-size-10 me-1"></i> Stock Promedio :</p>
                                             <div class="d-inline-flex">
-                                                <h5 class="mb-0">3.5 unidades</h5>
+                                                <h5 class="mb-0" th:text="${stockPromedio}"></h5>
                                             </div>
                                         </div>
                                     </div>
@@ -111,7 +116,7 @@
                                 <div class="d-flex">
                                     <div class="flex-1 overflow-hidden">
                                         <p class="text-truncate font-size-14 mb-2">N° Usuarios Activos</p>
-                                        <h4 class="mb-0">1452</h4>
+                                        <h4 class="mb-0" th:text="${active}"></h4>
                                     </div>
                                     <div class="text-success ms-auto">
                                         <i class="ri-emotion-fill font-size-24"></i>
@@ -133,7 +138,7 @@
                                 <div class="d-flex">
                                     <div class="flex-1 overflow-hidden">
                                         <p class="text-truncate font-size-14 mb-2">N° Usuarios Inactivos</p>
-                                        <h4 class="mb-0">645</h4>
+                                        <h4 class="mb-0" th:text="${inactive}"></h4>
                                     </div>
                                     <div class="text-danger ms-auto">
                                         <i class="ri-emotion-unhappy-fill font-size-24"></i>
@@ -154,7 +159,7 @@
                                 <div class="d-flex">
                                     <div class="flex-1 overflow-hidden">
                                         <p class="text-truncate font-size-14 mb-2">N° Usuarios Registrados</p>
-                                        <h4 class="mb-0">2097</h4>
+                                        <h4 class="mb-0" th:text="${usuariosTotal}"></h4>
                                     </div>
                                     <div class="text-primary ms-auto">
                                         <i class="ri-team-fill font-size-24"></i>
@@ -183,7 +188,7 @@
                             <div class="card-body">
                                 <h4 class="card-title mb-4">Top 10 productos más importados en la zona</h4>
 
-                                <div id="bar_chart1_top10" class="apex-charts" dir="ltr"></div>
+                                <div id="bar_chart1_top10_2" class="apex-charts" dir="ltr"></div>
                             </div>
                         </div><!--end card-->
                     </div>
@@ -192,7 +197,7 @@
                             <div class="card-body">
                                 <h4 class="card-title mb-4">Top 10 importadores</h4>
 
-                                <div id="bar_chart2_top10" class="apex-charts" dir="ltr"></div>
+                                <div id="bar_chart2_top10_2" class="apex-charts" dir="ltr"></div>
                             </div>
                         </div><!--end card-->
                     </div>
@@ -201,7 +206,7 @@
                             <div class="card-body">
                                 <h4 class="card-title mb-4">Usuarios Inactivos/Activos</h4>
 
-                                <div id="pie_chart_AdminZonal" class="apex-charts" dir="ltr"></div>
+                                <div id="pie_chart_AdminZonal_2" class="apex-charts" dir="ltr"></div>
                             </div>
                         </div><!--end card-->
                     </div>

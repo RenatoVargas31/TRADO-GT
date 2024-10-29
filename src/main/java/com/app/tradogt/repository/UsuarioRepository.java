@@ -219,4 +219,19 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
 
     boolean existsByDni(String dni);
     boolean existsByCorreo(String correo);
+    @Query("SELECT (SUM(CASE WHEN u.isActivated = 1 THEN 1 ELSE 0 END) * 100.0) / COUNT(u) FROM Usuario u")
+    double porcentajeUsuariosActivos();
+
+    @Query("SELECT COUNT(u) FROM Usuario u WHERE u.isActivated = 1")
+    int countUsuariosActivos();
+
+    @Query("SELECT COUNT(u) FROM Usuario u WHERE u.isActivated = 0")
+    int countUsuariosInactivos();
+
+    @Query("SELECT COUNT(u) FROM Usuario u ")
+    int countUsuarios();
+
+
 }
+
+

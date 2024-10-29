@@ -1,7 +1,10 @@
 package com.app.tradogt.controller;
 
 import com.app.tradogt.dto.AgenteInfoZon;
+import com.app.tradogt.dto.ImportacionesporImportador;
 import com.app.tradogt.entity.*;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -25,8 +28,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Controller
@@ -66,6 +72,20 @@ public class AdminZonalController {
         Usuario usuario = usuarioRepository.findByCorreo(correoUsuario);
         return usuario.getId();
     }
+    private Usuario getAuthenticatedUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Object principal = authentication.getPrincipal();
+        String correoUsuario;
+
+        if (principal instanceof UserDetails) {
+            correoUsuario = ((UserDetails) principal).getUsername();
+        } else {
+            correoUsuario = principal.toString();
+        }
+
+        Usuario usuario = usuarioRepository.findByCorreo(correoUsuario);
+        return usuario;
+    }
 
     @GetMapping("/vacio")
     public String home() {
@@ -73,7 +93,14 @@ public class AdminZonalController {
     }
 
     @GetMapping("/dashboard")
-    public String showDashboard() {
+    public String showDashboard(Model model) {
+        int zonaId = getAuthenticatedUser().getZonaIdzona().getId();
+        model.addAttribute("active", usuarioRepository.countUsuariosActivos());
+        model.addAttribute("inactive", usuarioRepository.countUsuariosInactivos());
+        model.addAttribute("usuariosTotal", usuarioRepository.countUsuarios());
+        model.addAttribute("stockTotal", productoEnZonaRepository.countStockTotal(zonaId));
+        model.addAttribute("stockPromedio", productoEnZonaRepository.stockPorProducto(zonaId));
+        model.addAttribute("productoStockMenor", productoEnZonaRepository.productStockMenor(zonaId));
         return "AdminZonal/dashboard-AdminZonal";
     }
 
@@ -259,6 +286,78 @@ public class AdminZonalController {
         // Redirigir a la página de fechas de arribo
         return "redirect:/adminzonal/fechasArribo";
     }
+
+    @GetMapping("/api/productos")
+    @ResponseBody
+    public List<Map<String, Object>> getProductosPorZona() {
+        int zonaId = getAuthenticatedUser().getZonaIdzona().getId();
+        List<ProductoEnZona> productos = productoEnZonaRepository.findStockBajoZona(zonaId);
+
+        // Convertir la lista de productos en una lista de mapas
+        return productos.stream()
+                .map(productoEnZona -> {
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("nombre", productoEnZona.getProductoIdproducto().getNombre()); // Asegúrate de que este método exista
+                    map.put("stock", productoEnZona.getCantidad()); // Asegúrate de que este método exista
+                    return map;
+                })
+                .collect(Collectors.toList());
+    }
+    @GetMapping("/api/top10")
+    @ResponseBody
+    public List<Map<String, Object>> getTop10() {
+        int zonaId = getAuthenticatedUser().getZonaIdzona().getId();
+        Pageable pageable = PageRequest.of(0, 10);
+        List<ProductoEnZona> productos = productoEnZonaRepository.findTop10Products(zonaId, pageable);
+
+        // Convertir la lista de productos en una lista de mapas
+        return productos.stream()
+                .map(productoEnZona -> {
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("nombre", productoEnZona.getProductoIdproducto().getNombre()); // Asegúrate de que este método exista
+                    map.put("stock", productoEnZona.getCantidad()); // Asegúrate de que este método exista
+                    return map;
+                })
+                .collect(Collectors.toList());
+    }
+    @GetMapping("/api/top10Importadores")
+    @ResponseBody
+    public List<Map<String, Object>> getTop10Importadores() {
+        // Obtener el ID de la zona del usuario autenticado
+        int zonaId = getAuthenticatedUser().getZonaIdzona().getId();
+
+        // Crear objeto Pageable para la paginación
+        Pageable pageable = PageRequest.of(0, 10);
+
+        // Recuperar la lista de importadores usando el repositorio
+        List<ImportacionesporImportador> importadores = productoEnZonaRepository.findTop10Importadores(zonaId, pageable);
+
+        // Convertir la lista de importadores en una lista de mapas
+        return importadores.stream()
+                .map(importador -> {
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("nombre", importador.getTienda()); // Asegúrate de que este método exista
+                    map.put("stock", importador.getSumaCantidades()); // Asegúrate de que este método exista
+                    return map;
+                })
+                .collect(Collectors.toList());
+    }
+    @GetMapping("/api/countUsuarios")
+    @ResponseBody
+    public Map<String, Object> getCountUsuarios() {
+        // Obtener el porcentaje de usuarios activos
+        double porcentajeActivos = usuarioRepository.porcentajeUsuariosActivos();
+
+        // Crear el mapa de respuesta con los porcentajes
+        Map<String, Object> response = new HashMap<>();
+        response.put("active", porcentajeActivos); // Porcentaje de usuarios activos
+        response.put("inactive", 100 - porcentajeActivos); // Porcentaje de usuarios inactivos
+
+        return response;
+    }
+
+
+
 
 
 
