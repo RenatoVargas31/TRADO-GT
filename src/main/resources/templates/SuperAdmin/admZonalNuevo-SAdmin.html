@@ -64,7 +64,7 @@
                                                 <div class="col-md-6">
                                                     <div class="mb-3">
                                                         <label for="nombreUsuario" class="form-label">Nombres</label>
-                                                        <input type="text" class="form-control" id="nombreUsuario" name="nombre" placeholder="Ingrese sus nombres"  required>
+                                                        <input type="text" class="form-control bg-light" id="nombreUsuario" name="nombre" placeholder="Ingrese sus nombres"  required readonly>
                                                         <div class="valid-feedback">
                                                             Looks good!
                                                         </div>
@@ -73,8 +73,8 @@
                                                 <div class="col-md-6">
                                                     <div class="mb-3">
                                                         <label for="apellidoUsuario" class="form-label">Apellidos</label>
-                                                        <input type="text" class="form-control" id="apellidoUsuario" name="apellido"
-                                                               placeholder="Ingrese sus apellidos"  required>
+                                                        <input type="text" class="form-control bg-light" id="apellidoUsuario" name="apellido"
+                                                               placeholder="Ingrese sus apellidos"  required readonly>
                                                         <div class="valid-feedback">
                                                             Looks good!
                                                         </div>
@@ -90,6 +90,7 @@
                                                         <div class="valid-feedback">
                                                             Looks good!
                                                         </div>
+                                                        <div id="dni-error" class="text-danger" style="display:none;"></div> <!-- Div para el mensaje de error -->
                                                     </div>
                                                 </div>
                                                 <div class="col-md-4">
@@ -166,6 +167,64 @@
         <!-- JAVASCRIPT BASE-->
         <span th:replace="~{Common/jsBase :: js_Base}"></span>
         <!-- End JAVASCRIPT BASE-->
+    <script>
+        $(document).ready(function() {
+            let isRequestInProgress = false; // Bandera para evitar múltiples solicitudes
+            let hasInteracted = false; // Bandera para saber si el usuario ya interactuó con el campo
+            const dniLength = 8; // Longitud esperada del DNI
+            let debounceTimeout;
+
+            $('#dniUsuario').on('input', function() {
+                const dni = $(this).val();
+
+                // Marcar que el usuario ha interactuado con el campo
+                hasInteracted = true;
+
+                // Limpiar el timeout del debounce si el usuario sigue escribiendo
+                clearTimeout(debounceTimeout);
+
+                // Validar que el DNI tenga la longitud correcta, la solicitud no esté en progreso y el usuario haya interactuado
+                if (dni.length === dniLength && !isRequestInProgress && hasInteracted) {
+                    // Configurar un debounce de 500 ms para evitar solicitudes inmediatas
+                    debounceTimeout = setTimeout(function() {
+                        isRequestInProgress = true; // Indicar que la solicitud está en progreso
+
+                        $.ajax({
+                            url: '/api/consultarDni',
+                            type: 'GET',
+                            data: { dni: dni },
+                            success: function(data) {
+                                console.log("Datos recibidos:", data); // Verificar los datos en la consola
+                                if (data.message === "DNI no válido") {
+                                    // Mostrar el mensaje de error en la interfaz
+                                    $('#dni-error').text(data.message).show(); // Mostrar el mensaje de error
+                                    $('#nombreUsuario').val(''); // Limpiar campos en caso de error
+                                    $('#apellidoUsuario').val('');
+                                } else {
+                                    $('#dni-error').hide(); // Ocultar el mensaje de error si la respuesta es válida
+                                    $('#nombreUsuario').val(data.nombres); // Completa el campo de nombre
+                                    $('#apellidoUsuario').val(data.apellidoPaterno + " " + data.apellidoMaterno); // Completa el campo de apellido
+                                }
+                            },
+                            error: function() {
+                                $('#dni-error').text('No se pudo encontrar el DNI.').show(); // Mostrar error en caso de fallo
+                            },
+                            complete: function() {
+                                isRequestInProgress = false; // Restablecer la bandera cuando la solicitud termina
+                            }
+                        });
+                    }, 500); // Tiempo de espera en milisegundos para el debounce
+                } else {
+                    $('#dni-error').hide(); // Ocultar el mensaje de error si el DNI no tiene la longitud correcta
+                }
+            });
+
+            // Si el usuario recarga la página, resetear `hasInteracted` a false
+            $(window).on("load", function() {
+                hasInteracted = false;
+            });
+        });
+    </script>
     </body>
 
 </html>
