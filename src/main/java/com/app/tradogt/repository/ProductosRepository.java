@@ -1,5 +1,6 @@
 package com.app.tradogt.repository;
 
+import com.app.tradogt.dto.ProductoMasVendidoDto;
 import com.app.tradogt.entity.Categoria;
 import com.app.tradogt.entity.Producto;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -241,5 +242,12 @@ public interface ProductosRepository extends JpaRepository<Producto, Integer> {
             + "WHERE o.estadoordenIdestadoorden.id = 7 AND c.usuarioIdusuario.id = :usuarioId")
     List<Producto> findProductosRecibidos(@Param("usuarioId") Integer usuarioId);
 
+    @Query("SELECT new com.app.tradogt.dto.ProductoMasVendidoDto(p.nombre, SUM(pc.cantidad)) FROM Producto p "
+            + "JOIN ProductoEnCarrito pc ON p.id= pc.productoEnZona.productoIdproducto.id "
+            + "JOIN Orden o ON pc.carritoIdcarrito.id = o.carritoIdcarrito.id "
+            + "GROUP BY p.nombre "
+            + "ORDER BY SUM(pc.cantidad) DESC "
+            + "LIMIT 5")
+    List<ProductoMasVendidoDto> getProductosMasVendidos();
 
 }

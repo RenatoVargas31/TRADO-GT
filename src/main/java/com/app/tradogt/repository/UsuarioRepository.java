@@ -1,6 +1,7 @@
 package com.app.tradogt.repository;
 
 import com.app.tradogt.dto.AgenteInfoZon;
+import com.app.tradogt.dto.UsuarioMesDto;
 import com.app.tradogt.entity.Usuario;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.Modifying;
@@ -27,7 +28,9 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
 
     Optional<Usuario> findById(Integer id);
 
-
+    //Buscar usuarios con fecha de registro en el año y hasta el mes actual
+    @Query("SELECT new com.app.tradogt.dto.UsuarioMesDto(u.fechaRegistro,u.isActivated) FROM Usuario u WHERE YEAR(u.fechaRegistro) = YEAR(CURRENT_DATE) AND MONTH(u.fechaRegistro) <= MONTH(CURRENT_DATE)")
+    List<UsuarioMesDto> getUsuariosRegistrados();
 
     /*
     @Query(value = "SELECT u.id, u.nombre, u.apellido, p.nombre , c.nombre , eoi.nombre, pzo.cantidad ,a.nombre, a.apellido " +

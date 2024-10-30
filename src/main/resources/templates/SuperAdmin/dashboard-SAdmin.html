@@ -62,9 +62,9 @@
                             <div class="col-xl-8">
                                 <div class="card">
                                     <div class="card-body">
-                                        <h4 class="card-title mb-4">Usuaarios || AdmZonal / AgenCompra / Importadores</h4>
+                                        <h4 class="card-title mb-4">Estado Mensual de Usuario</h4>
                                         <div>
-                                            <div id="line-column-chart" class="apex-charts" dir="ltr"></div>
+                                            <div id="UsuariosMensual" class="apex-charts" dir="ltr"></div>
                                         </div>
                                     </div>
 
@@ -169,7 +169,7 @@
                                     <div class="card-body">
                                         <h4 class="card-title mb-4">Cantidad de órdenes || Estádo de seguimiento</h4>
 
-                                        <div id="line_chart_datalabel" class="apex-charts" dir="ltr"></div>
+                                        <div id="OrdenEstado" class="apex-charts" dir="ltr"></div>
                                     </div>
                                 </div><!--end card-->
                             </div>
@@ -179,7 +179,7 @@
                                     <div class="card-body">
                                         <h4 class="card-title mb-4">Productos || Mayor venta</h4>
 
-                                        <div id="bar_chart" class="apex-charts" dir="ltr"></div>
+                                        <div id="ProductosMasVendidos" class="apex-charts" dir="ltr"></div>
                                     </div>
                                 </div><!--end card-->
                             </div>
@@ -323,7 +323,7 @@
         <script th:src="@{../libs/datatables.net-responsive/js/dataTables.responsive.min.js}"></script>
         <script th:src="@{../libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js}"></script>
     
-        <script th:src="@{../js/pages/dashboard.init.js}"></script>
+        <script th:src="@{../js/pages/dashboardSuperAdmin.js}"></script>
     </body>
 
 </html>

@@ -2,6 +2,7 @@ package com.app.tradogt.controller;
 
 import com.app.tradogt.config.WebSecurityConfig;
 import com.app.tradogt.dto.PasswordChangeDto;
+import com.app.tradogt.dto.UsuarioMesDto;
 import com.app.tradogt.entity.*;
 import com.app.tradogt.helpers.PasswordGenerator;
 import com.app.tradogt.helpers.ProductCodeGenerator;
@@ -30,16 +31,14 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/superadmin")
 @SessionAttributes("superAdminAuth")
 public class SuperAdminController {
 
-    @Autowired
-    private WebSecurityConfig webSecurityConfig;
     //<editor-fold desc="Repositories">
-    final DataSource dataSource;
     final ProveedorRepository proveedorRepository;
     final UsuarioRepository usuarioRepository;
     final ZonaRepository zonaRepository;
@@ -54,7 +53,6 @@ public class SuperAdminController {
     private PasswordEncoder passwordEncoder;
 
     public SuperAdminController(DataSource dataSource, ProveedorRepository proveedorRepository, UsuarioRepository usuarioRepository, ZonaRepository zonaRepository, RolRepository rolRepository, DistritoRepository distritoRepository, ProductosRepository productosRepository, ProductoEnZonaRepository productoEnZonaRepository, SubCategoriaRepository subCategoriaRepository, CategoriaRepository categoriaRepository) {
-        this.dataSource = dataSource;
         this.proveedorRepository = proveedorRepository;
         this.usuarioRepository = usuarioRepository;
         this.zonaRepository = zonaRepository;

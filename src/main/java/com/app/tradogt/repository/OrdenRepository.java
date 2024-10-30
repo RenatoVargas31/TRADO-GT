@@ -1,5 +1,7 @@
 package com.app.tradogt.repository;
 
+import com.app.tradogt.dto.OrdenCompraAgtDto;
+import com.app.tradogt.dto.OrdenEstadoDto;
 import com.app.tradogt.entity.EstadoOrden;
 import com.app.tradogt.entity.Orden;
 import com.app.tradogt.entity.Usuario;
@@ -8,7 +10,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -296,6 +297,9 @@ SELECT
     List<Orden> findAllByAgentcompraIdusuario(Usuario usuario);
 
     List<Orden> findAllByUsuarioIdusuario(Usuario idUsuario);
+
+    @Query("SELECT new com.app.tradogt.dto.OrdenEstadoDto(o.fechaCreacion, o.fechaValidacion, o.fechaEnProceso, o.fechaArribo, o.fechaEnAduanas, o.fechaEnRuta, o.fechaRecibido) FROM Orden o WHERE YEAR(o.fechaCreacion) = YEAR(CURRENT_DATE ) AND MONTH(o.fechaCreacion) <= MONTH(CURRENT_DATE )")
+    List<OrdenEstadoDto> getOrdenEstado();
 
     //Listar las ordenes por fecha y estado
     List<Orden> findByEstadoordenIdestadoorden( Optional<EstadoOrden> estadoordenIdestadoorden);
