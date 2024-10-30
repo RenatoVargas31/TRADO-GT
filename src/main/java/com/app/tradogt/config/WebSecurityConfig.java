@@ -75,7 +75,7 @@ public class WebSecurityConfig {
             switch (rol) {
                 case "SuperAdmin" -> response.sendRedirect("inicio");
                 case "Administrador Zonal" -> response.sendRedirect("adminzonal/dashboard");
-                case "Agente de Compra" -> response.sendRedirect("agente/inicio");
+                case "Agente de Compra" -> response.sendRedirect("agente/allOrders");
                 case "Usuario Final" -> response.sendRedirect("usuario/inicio");
                 default -> response.sendRedirect("/default");
             }
@@ -91,8 +91,8 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers("/css/**", "/js/**", "/images/**", "/fonts/**", "/libs/**").permitAll()
                         .requestMatchers("/loginForm", "/processLogin", "/crearCuenta").permitAll()
-                        .requestMatchers("/superadmin", "/superadmin/**","/api/consultarDni").hasAnyAuthority("SuperAdmin")
-                        .requestMatchers("/adminzonal", "/adminzonal/**","/api/consultarDni").hasAnyAuthority("Administrador Zonal")
+                        .requestMatchers("/superadmin", "/superadmin/**").hasAnyAuthority("SuperAdmin")
+                        .requestMatchers("/adminzonal", "/adminzonal/**").hasAnyAuthority("Administrador Zonal")
                         .requestMatchers("/agente", "/agente/**").hasAnyAuthority("Agente de Compra")
                         .requestMatchers("/usuario", "/usuario/**").hasAnyAuthority("Usuario Final")
                         .requestMatchers("/loginForm", "/crearCuenta","/api/consultarDni").anonymous()
@@ -122,7 +122,7 @@ public class WebSecurityConfig {
                                 switch (rol) {
                                     case "SuperAdmin" -> response.sendRedirect("superadmin/inicio");
                                     case "Administrador Zonal" -> response.sendRedirect("adminzonal/dashboard");
-                                    case "Agente de Compra" -> response.sendRedirect("agente/inicio");
+                                    case "Agente de Compra" -> response.sendRedirect("agente/allOrders");
                                     case "Usuario Final" -> response.sendRedirect("usuario/inicio");
                                 }
                             }
