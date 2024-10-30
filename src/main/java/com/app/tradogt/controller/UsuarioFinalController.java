@@ -681,13 +681,6 @@ public class UsuarioFinalController {
         }else {
             model.addAttribute("resenas", listaResena);
             System.out.println("Lista de reseñas:");
-            for (Resena resena : listaResena) {
-                System.out.println("Reseña ID: " + resena.getId());
-                System.out.println("Producto: " + resena.getProductoIdproducto().getNombre());
-                System.out.println("Calificación: " + resena.getCalificacion());
-                System.out.println("Fecha de creación: " + resena.getFechaCreacion());
-                System.out.println("-----------------------------");
-            }
         }
 
         return "Usuario/reseñas-usuario";
