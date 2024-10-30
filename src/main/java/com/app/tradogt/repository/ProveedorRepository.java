@@ -1,6 +1,6 @@
 package com.app.tradogt.repository;
 
-import com.app.tradogt.dto.ProveedorInfoAgtDto;
+import com.app.tradogt.dto.ProveedorValDto;
 import com.app.tradogt.entity.Proveedor;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -65,4 +65,18 @@ public interface ProveedorRepository extends JpaRepository<Proveedor, Integer> {
     @Query("SELECT p FROM Proveedor p WHERE p.isDeleted = 1")
     List<Proveedor> getProveedorBaneado();
 
+    @Query("SELECT new com.app.tradogt.dto.ProveedorValDto(CONCAT(prove.nombre, ' ', prove.apellido), prove.tienda, AVG(rese.calificacion)) FROM Proveedor prove "
+            + "JOIN Producto produc ON prove.id = produc.proveedorIdproveedor.id "
+            + "JOIN Resena rese ON produc.id = rese.productoIdproducto.id "
+            + "GROUP BY prove.nombre "
+            + "ORDER BY AVG(rese.calificacion) DESC "
+            + "LIMIT 5")
+    List<ProveedorValDto> getProveedorMayorValoracion();
+    @Query("SELECT new com.app.tradogt.dto.ProveedorValDto(CONCAT(prove.nombre, ' ', prove.apellido), prove.tienda, AVG(rese.calificacion)) FROM Proveedor prove "
+            + "JOIN Producto produc ON prove.id = produc.proveedorIdproveedor.id "
+            + "JOIN Resena rese ON produc.id = rese.productoIdproducto.id "
+            + "GROUP BY prove.nombre "
+            + "ORDER BY AVG(rese.calificacion) ASC "
+            + "LIMIT 5")
+    List<ProveedorValDto> getProveedorMenorValoracion();
 }

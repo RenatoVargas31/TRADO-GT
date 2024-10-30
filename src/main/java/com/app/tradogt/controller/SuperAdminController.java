@@ -1,21 +1,14 @@
 package com.app.tradogt.controller;
 
-import com.app.tradogt.config.WebSecurityConfig;
 import com.app.tradogt.dto.PasswordChangeDto;
-import com.app.tradogt.dto.UsuarioMesDto;
+import com.app.tradogt.dto.ProveedorValDto;
 import com.app.tradogt.entity.*;
 import com.app.tradogt.helpers.PasswordGenerator;
 import com.app.tradogt.helpers.ProductCodeGenerator;
 import com.app.tradogt.repository.*;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -31,7 +24,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/superadmin")
@@ -188,10 +180,14 @@ public class SuperAdminController {
         List<Usuario> AgenteCompra = usuarioRepository.getUsuariosByRol(3);
         List<Usuario> UsuariosBaneados = usuarioRepository.getUsuariosInactivos();
         List<Proveedor> ProveedoresBaneados = proveedorRepository.getProveedorBaneado();
+        List<ProveedorValDto> proveedorMayorVal = proveedorRepository.getProveedorMayorValoracion();
+        List<ProveedorValDto> proveedorMenorVal = proveedorRepository.getProveedorMenorValoracion();
         //Enviar a la vista
         model.addAttribute("AgenteCompra", AgenteCompra);
         model.addAttribute("UsuariosBaneados", UsuariosBaneados);
         model.addAttribute("ProveedoresBaneados", ProveedoresBaneados);
+        model.addAttribute("proveedorMayorVal", proveedorMayorVal);
+        model.addAttribute("proveedorMenorVal", proveedorMenorVal);
         return "SuperAdmin/dashboard-SAdmin";
     }
     //</editor-fold>

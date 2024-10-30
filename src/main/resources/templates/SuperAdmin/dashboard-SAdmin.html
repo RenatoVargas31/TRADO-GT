@@ -62,7 +62,7 @@
                             <div class="col-xl-8">
                                 <div class="card">
                                     <div class="card-body">
-                                        <h4 class="card-title mb-4">Estado Mensual de Usuario</h4>
+                                        <h4 class="card-title mb-4">Usuarios || Estado de actividad</h4>
                                         <div>
                                             <div id="UsuariosMensual" class="apex-charts" dir="ltr"></div>
                                         </div>
@@ -194,42 +194,16 @@
                                             <table class="table table-centered datatable dt-responsive nowrap" data-bs-page-length="5" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                                 <thead class="table-light">
                                                 <tr>
-                                                    <th>#</th>
                                                     <th>Proveedor</th>
                                                     <th>Tienda</th>
                                                     <th>Valoración</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                <tr>
-                                                    <td>1</td>
-                                                    <td>Proveedor A</td>
-                                                    <td>Tienda A</td>
-                                                    <td>4.9⭐</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>2</td>
-                                                    <td>Proveedor B</td>
-                                                    <td>Tienda B</td>
-                                                    <td>4.9⭐</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>3</td>
-                                                    <td>Proveedor C</td>
-                                                    <td>Tienda C</td>
-                                                    <td>4.8⭐</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>4</td>
-                                                    <td>Proveedor D</td>
-                                                    <td>Tienda D</td>
-                                                    <td>4.8⭐</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>5</td>
-                                                    <td>Proveedor E</td>
-                                                    <td>Tienda E</td>
-                                                    <td>4.7⭐</td>
+                                                <tr th:each="proveedor : ${proveedorMayorVal}">
+                                                    <td th:text="${proveedor.nombreCompleto}">Nombre Completo</td>
+                                                    <td th:text="${proveedor.tienda}">Tienda</td>
+                                                    <td th:text="${proveedor.valoracion}+'⭐'">Valoracion</td>
                                                 </tr>
                                                 </tbody>
                                             </table>
@@ -245,42 +219,16 @@
                                             <table class="table table-centered datatable dt-responsive nowrap" data-bs-page-length="5" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                                 <thead class="table-light">
                                                 <tr>
-                                                    <th>#</th>
                                                     <th>Proveedor</th>
                                                     <th>Tienda</th>
                                                     <th>Valoración</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                <tr>
-                                                    <td>1</td>
-                                                    <td>Proveedor A</td>
-                                                    <td>Tienda A</td>
-                                                    <td>1.8⭐</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>2</td>
-                                                    <td>Proveedor B</td>
-                                                    <td>Tienda B</td>
-                                                    <td>1.9⭐</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>3</td>
-                                                    <td>Proveedor C</td>
-                                                    <td>Tienda C</td>
-                                                    <td>1.9⭐</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>4</td>
-                                                    <td>Proveedor D</td>
-                                                    <td>Tienda D</td>
-                                                    <td>2.0⭐</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>5</td>
-                                                    <td>Proveedor E</td>
-                                                    <td>Tienda E</td>
-                                                    <td>2.1⭐</td>
+                                                <tr th:each="proveedor : ${proveedorMenorVal}">
+                                                    <td th:text="${proveedor.nombreCompleto}">Nombre Completo</td>
+                                                    <td th:text="${proveedor.tienda}">Tienda</td>
+                                                    <td th:text="${proveedor.valoracion}+'⭐'">Valoracion</td>
                                                 </tr>
                                                 </tbody>
                                             </table>
