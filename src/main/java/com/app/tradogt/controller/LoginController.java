@@ -1,12 +1,8 @@
 package com.app.tradogt.controller;
 
 import com.app.tradogt.daos.DniDao;
-import com.app.tradogt.entity.Distrito;
-import com.app.tradogt.entity.Rol;
-import com.app.tradogt.entity.Usuario;
-import com.app.tradogt.repository.DistritoRepository;
-import com.app.tradogt.repository.RolRepository;
-import com.app.tradogt.repository.UsuarioRepository;
+import com.app.tradogt.entity.*;
+import com.app.tradogt.repository.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -25,6 +21,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,11 +39,55 @@ public class LoginController {
 
     @Autowired
     private DniDao dniDao;
+    final EstadoOrdenRepository estadoOrdenRepository;
+    final OrdenRepository ordenRepository;
+
+    public LoginController(EstadoOrdenRepository estadoOrdenRepository, OrdenRepository ordenRepository) {
+        this.estadoOrdenRepository = estadoOrdenRepository;
+        this.ordenRepository = ordenRepository;
+    }
+
+    //Actualiza los estados de las ordenes
+    public void updateOrderStatus() {
+        //Obtener la fecha actual
+        LocalDate today = LocalDate.now();
+
+        Optional<EstadoOrden> estadoactual = estadoOrdenRepository.findById(3);
+        Optional<EstadoOrden> arriboAlPais = estadoOrdenRepository.findById(4);
+        Optional<EstadoOrden> aduanas = estadoOrdenRepository.findById(5);
+        Optional<EstadoOrden> ruta = estadoOrdenRepository.findById(6);
+        Optional<EstadoOrden> recibido = estadoOrdenRepository.findById(7);
+
+        List<Orden> ordensInProcess = ordenRepository.findByEstadoordenIdestadoorden(estadoactual);
+
+        for (Orden orden : ordensInProcess) {
+            System.out.println("Orden ID: " + orden.getId());
+
+            // Cambiar el estado de acuerdo a la fecha actual
+            if (orden.getFechaArribo() != null && orden.getFechaArribo().isEqual(today)) {
+                orden.setEstadoordenIdestadoorden(arriboAlPais.get());
+            } else if (orden.getFechaEnAduanas() != null && orden.getFechaEnAduanas().isEqual(today)) {
+                orden.setEstadoordenIdestadoorden(aduanas.get());
+            } else if (orden.getFechaEnRuta() != null && orden.getFechaEnRuta().isEqual(today)) {
+                orden.setEstadoordenIdestadoorden(ruta.get());
+            } else if (orden.getFechaRecibido() != null && orden.getFechaRecibido().isEqual(today)) {
+                orden.setEstadoordenIdestadoorden(recibido.get());
+            }else{
+                orden.setEstadoordenIdestadoorden(orden.getEstadoordenIdestadoorden());
+            }
+
+            // Guardar la orden actualizada
+            ordenRepository.save(orden);
+        }
+    }
 
     @GetMapping("/loginForm")
     public String loginForm(HttpServletRequest request, HttpServletResponse response, Model model,
                             @RequestParam(value = "error", required = false) String error) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        //Actualiza los estados de los pedidos
+        updateOrderStatus();
 
         // Verificar si el usuario ya está autenticado
         if (auth != null && auth.isAuthenticated() && !(auth instanceof AnonymousAuthenticationToken)) {

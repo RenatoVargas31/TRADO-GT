@@ -13,12 +13,30 @@
             max-height: 300px; /* Ajusta la altura máxima */
             object-fit: cover; /* Mantiene las proporciones de la imagen */
         }
-        /* Estilos para el chatbot */
+
+
+        .banner-title {
+            font-size: 3em; /* Tamaño de letra grande para el título */
+            font-weight: bold;
+            color: #333; /* Color del título */
+        }
+
+        .banner-subtitle {
+            font-size: 1.5em; /* Tamaño de letra más grande para el subtítulo */
+            color: #666; /* Color del subtítulo */
+        }
+
+        .card {
+            border: none; /* Sin borde en la tarjeta */
+            background: none; /* Fondo transparente */
+        }
+
+        /* Estilos para el contenedor del chatbot */
         .chatbot-container {
             position: fixed;
             bottom: 0;
             right: 20px;
-            width: 300px;
+            width: 500px;
             height: 400px;
             background-color: #fff;
             border: 1px solid #ddd;
@@ -27,11 +45,11 @@
             flex-direction: column;
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
         }
-        .small-img {
-            width: 25px; /* Ajusta el ancho según tus necesidades */
-            height: 25px; /* Ajusta la altura según tus necesidades */
-        }
 
+        .small-img {
+            width: 25px;
+            height: 25px;
+        }
 
         .chatbot-header {
             background-color: #220135;
@@ -105,7 +123,6 @@
             cursor: pointer;
         }
 
-        /* Estilo para cerrar el chatbot */
         #chatbot-close-btn {
             background: none;
             border: none;
@@ -113,22 +130,6 @@
             color: white;
             cursor: pointer;
         }
-        .banner-title {
-            font-size: 3em; /* Tamaño de letra grande para el título */
-            font-weight: bold;
-            color: #333; /* Color del título */
-        }
-
-        .banner-subtitle {
-            font-size: 1.5em; /* Tamaño de letra más grande para el subtítulo */
-            color: #666; /* Color del subtítulo */
-        }
-
-        .card {
-            border: none; /* Sin borde en la tarjeta */
-            background: none; /* Fondo transparente */
-        }
-
 
 
     </style>}
@@ -571,39 +572,27 @@
             </footer>
         </div>
         <!-- end main content-->
-    </div>
-    <!-- END layout-wrapper -->
+        <!-- Chatbot -->
+        <div id="chatbot-container" class="chatbot-container">
+            <div class="chatbot-header">
+                <h5 style="color: white" class="justify-content-center">Tradito</h5>
+                <button id="chatbot-close-btn">&times;</button>
+            </div>
 
-<!-- Chatbot -->
-<div id="chatbot-container" class="chatbot-container">
-    <div class="chatbot-header">
-        <h2 style="color: white" class="justify-content-center">TradeBot</h2>
-        <button id="chatbot-close-btn">&times;</button>
-    </div>
-    <div class="chatbox" id="chatbox">
-        <!-- Mensaje del bot con imagen al lado izquierdo -->
-        <div class="bot-message d-flex align-items-center">
-            <img class="rounded-circle avatar-sm img-fluid small-img me-2" alt="200x200" th:src="@{../images/robot-entrega-3d-funcionamiento_23-2151150169.jpg}" style="width: 40px; height: 40px;">
-            <p>¡Hola! ¿En qué puedo ayudarte?</p>
+           <!-- <iframe src='https://webchat.botframework.com/embed/TRADO-bot?s=vBA9LTncK4E.xtJE6xeFxR3axt9ZuouclDvAOHsxn3MCbA73cOl-LWQ' style='width: 100%; height: 100%; border: none;'></iframe> -->
+            <iframe src='https://webchat.botframework.com/embed/tradito-bot2?s=uk1vH9Jy5cI.ABqEVevj8LGk-uecYJm11nv2FAUuWmCLwCeF35JLICw'  style='width: 100%; height: 100%; border: none;'></iframe>
         </div>
-    </div>
-    <div class="chat-input-container">
-        <input type="text" id="chat-input" placeholder="Escribe un mensaje...">
-        <button id="chat-send-btn">Enviar</button>
-    </div>
-</div>
 
-<!-- Botón para abrir el chatbot con imagen de icono -->
-<div id="chatbot-toggle" class="chatbot-toggle">
-    <button id="chatbot-open-btn" class="btn btn-primary">
-        ChatBot
-    </button>
-</div>
+        <!-- Botón para abrir el chatbot con imagen de icono -->
+        <div id="chatbot-toggle" class="chatbot-toggle">
+            <button id="chatbot-open-btn" class="btn btn-primary">ChatBot</button>
+        </div>
 
 
 
 
-    <!-- JAVASCRIPT BASE-->
+
+            <!-- JAVASCRIPT BASE-->
     <span th:replace="~{Common/jsBase :: js_Base}"></span>
     <!-- End JAVASCRIPT BASE-->
 <script>
@@ -627,42 +616,19 @@
         }
     });
 
-    function sendMessage() {
-        const userInput = document.getElementById('chat-input').value;
-        if (userInput.trim() !== "") {
-            const chatbox = document.getElementById('chatbox');
+    // Abre el chatbot
+    document.getElementById("chatbot-open-btn").onclick = function() {
+        document.getElementById("chatbot-container").style.display = "flex";
+        document.getElementById("chatbot-toggle").style.display = "none";
+    };
 
-            // Agregar mensaje del usuario
-            const userMessage = document.createElement('div');
-            userMessage.classList.add('user-message');
-            userMessage.innerHTML = `<p>${userInput}</p>`;
-            chatbox.appendChild(userMessage);
+    // Cierra el chatbot
+    document.getElementById("chatbot-close-btn").onclick = function() {
+        document.getElementById("chatbot-container").style.display = "none";
+        document.getElementById("chatbot-toggle").style.display = "block";
+    };
 
-            // Respuesta del bot
-            setTimeout(() => {
-                const botMessage = document.createElement('div');
-                botMessage.classList.add('bot-message');
-                botMessage.innerHTML = `<p>${getBotResponse(userInput)}</p>`;
-                chatbox.appendChild(botMessage);
-                chatbox.scrollTop = chatbox.scrollHeight;
-            }, 1000);
 
-            // Limpiar el input
-            document.getElementById('chat-input').value = '';
-            chatbox.scrollTop = chatbox.scrollHeight;
-        }
-    }
-
-    function getBotResponse(input) {
-        // Aquí puedes personalizar las respuestas del chatbot
-        if (input.toLowerCase().includes("hola")) {
-            return "¡Hola! ¿Cómo puedo ayudarte hoy?";
-        } else if (input.toLowerCase().includes("adios")) {
-            return "¡Adiós! Que tengas un buen día.";
-        } else {
-            return "Lo siento, no entiendo esa pregunta.";
-        }
-    }
 
 </script>
 

@@ -97,39 +97,7 @@ public class UsuarioFinalController {
         this.estadoOrdenRepository = estadoOrdenRepository;
     }
 
-    //Actualiza los estados de las ordenes
-    public void updateOrderStatus() {
-        //Obtener la fecha actual
-        LocalDate today = LocalDate.now();
 
-        Optional<EstadoOrden> estadoactual = estadoOrdenRepository.findById(3);
-        Optional<EstadoOrden> arriboAlPais = estadoOrdenRepository.findById(4);
-        Optional<EstadoOrden> aduanas = estadoOrdenRepository.findById(5);
-        Optional<EstadoOrden> ruta = estadoOrdenRepository.findById(6);
-        Optional<EstadoOrden> recibido = estadoOrdenRepository.findById(7);
-
-        List<Orden> ordensInProcess = ordenRepository.findByEstadoordenIdestadoorden(estadoactual);
-
-        for (Orden orden : ordensInProcess) {
-            System.out.println("Orden ID: " + orden.getId());
-
-            // Cambiar el estado de acuerdo a la fecha actual
-            if (orden.getFechaArribo() != null && orden.getFechaArribo().isEqual(today)) {
-                orden.setEstadoordenIdestadoorden(arriboAlPais.get());
-            } else if (orden.getFechaEnAduanas() != null && orden.getFechaEnAduanas().isEqual(today)) {
-                orden.setEstadoordenIdestadoorden(aduanas.get());
-            } else if (orden.getFechaEnRuta() != null && orden.getFechaEnRuta().isEqual(today)) {
-                orden.setEstadoordenIdestadoorden(ruta.get());
-            } else if (orden.getFechaRecibido() != null && orden.getFechaRecibido().isEqual(today)) {
-                orden.setEstadoordenIdestadoorden(recibido.get());
-            }else{
-                orden.setEstadoordenIdestadoorden(orden.getEstadoordenIdestadoorden());
-            }
-
-            // Guardar la orden actualizada
-            ordenRepository.save(orden);
-        }
-    }
 
     //Metodo auxiliar para obtener el id del usuario
     private int getAuthenticatedUserId() {
@@ -163,7 +131,7 @@ public class UsuarioFinalController {
 
     @GetMapping("/inicio")
     public String inicio(Model model) {
-        updateOrderStatus();
+        //updateOrderStatus();
 
         //Listar los pedidos recientes
         int userId = getAuthenticatedUserId();  // Obtener el ID del usuario autenticado
@@ -612,8 +580,9 @@ public class UsuarioFinalController {
         model.addAttribute("usuario", usuario);
 
         Carrito miCarrito = carritoRepository.findByusuarioIdusuarioAndIsDelete(usuario, (byte) 0);
+        List<ProductoEnCarrito> misProductos = productoEnCarritoRepository.findBycarritoIdcarrito( miCarrito);
+
         if (miCarrito != null) {
-            List<ProductoEnCarrito> misProductos = productoEnCarritoRepository.findBycarritoIdcarrito( miCarrito);
             model.addAttribute("carrito", misProductos);
 
 
@@ -627,6 +596,7 @@ public class UsuarioFinalController {
             }
 
         }else {
+            model.addAttribute("carrito", misProductos);
             model.addAttribute("mensaje", "El carrito se encuentra vacío");
         }
 
