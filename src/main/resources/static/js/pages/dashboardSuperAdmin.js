@@ -4,6 +4,15 @@ document.addEventListener("DOMContentLoaded", function() {
         url: '/superAdmin/UsuariosMes',
         method: 'GET',
         success: function(data) {
+            // Calcular la suma de los elementos de cada lista
+            const sumaRegistrados = data.usuariosRegistradosPorMes.reduce((a, b) => a + b, 0);
+            const sumaActivos = data.usuariosActivosPorMes.reduce((a, b) => a + b, 0);
+            const sumaInactivos = data.usuariosInactivosPorMes.reduce((a, b) => a + b, 0);
+
+            // Actualizar el contenido de los elementos HTML con las sumas calculadas
+            document.getElementById('registrados').textContent = sumaRegistrados;
+            document.getElementById('activos').textContent = sumaActivos;
+            document.getElementById('inactivos').textContent = sumaInactivos;
             // Ocultar el indicador de carga
             //document.getElementById("loadingIndicator").style.display = "none";
             console.log("Datos recibidos:", data);
@@ -43,6 +52,7 @@ document.addEventListener("DOMContentLoaded", function() {
             console.error("Error al cargar los datos:", error);
         }
     });
+
     // Seguimiento de Órdenes
     $.ajax({
         url: '/superAdmin/OrdenEstado',

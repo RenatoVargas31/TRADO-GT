@@ -184,7 +184,14 @@ public class SuperAdminController {
     }
 
     @GetMapping("/dashboard")
-    public String viewDashboard() {
+    public String viewDashboard(Model model) {
+        List<Usuario> AgenteCompra = usuarioRepository.getUsuariosByRol(3);
+        List<Usuario> UsuariosBaneados = usuarioRepository.getUsuariosInactivos();
+        List<Proveedor> ProveedoresBaneados = proveedorRepository.getProveedorBaneado();
+        //Enviar a la vista
+        model.addAttribute("AgenteCompra", AgenteCompra);
+        model.addAttribute("UsuariosBaneados", UsuariosBaneados);
+        model.addAttribute("ProveedoresBaneados", ProveedoresBaneados);
         return "SuperAdmin/dashboard-SAdmin";
     }
     //</editor-fold>

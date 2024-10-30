@@ -62,5 +62,7 @@ public interface ProveedorRepository extends JpaRepository<Proveedor, Integer> {
         -- Filtro por el ID de la orden
     """, nativeQuery = true)
     List<Object[]> findProveedorByOrderId(Integer idOrden);
+    @Query("SELECT p FROM Proveedor p WHERE p.isDeleted = 1")
+    List<Proveedor> getProveedorBaneado();
 
 }

@@ -32,6 +32,12 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
     @Query("SELECT new com.app.tradogt.dto.UsuarioMesDto(u.fechaRegistro,u.isActivated) FROM Usuario u WHERE YEAR(u.fechaRegistro) = YEAR(CURRENT_DATE) AND MONTH(u.fechaRegistro) <= MONTH(CURRENT_DATE)")
     List<UsuarioMesDto> getUsuariosRegistrados();
 
+    @Query("SELECT u FROM Usuario u WHERE u.rolIdrol.id = :rol AND u.isActivated = 1")
+    List<Usuario> getUsuariosByRol(@Param("rol") Integer rol);
+
+    @Query("SELECT u FROM Usuario u WHERE u.isActivated = 0")
+    List<Usuario> getUsuariosInactivos();
+
     /*
     @Query(value = "SELECT u.id, u.nombre, u.apellido, p.nombre , c.nombre , eoi.nombre, pzo.cantidad ,a.nombre, a.apellido " +
             "FROM Usuario u " +

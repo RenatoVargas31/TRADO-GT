@@ -74,7 +74,7 @@
                                                 <div class="mt-4 mt-sm-0">
                                                     <p class="mb-2 text-muted text-truncate"><i class="mdi mdi-circle text-primary font-size-10 me-1"></i> Registrados:</p>
                                                     <div class="d-inline-flex">
-                                                        <h5 class="mb-0 me-2">646</h5>
+                                                        <h5 id="registrados" class="mb-0 me-2"></h5>
                                                     </div>
                                                 </div>
                                             </div>
@@ -83,7 +83,7 @@
                                                 <div class="mt-4 mt-sm-0">
                                                     <p class="mb-2 text-muted text-truncate"><i class="mdi mdi-circle text-success font-size-10 me-1"></i> Activos:</p>
                                                     <div class="d-inline-flex">
-                                                        <h5 class="mb-0 me-2">312</h5>
+                                                        <h5 id="activos" class="mb-0 me-2"></h5>
                                                     </div>
                                                 </div>
                                             </div>
@@ -91,7 +91,7 @@
                                                 <div class="mt-4 mt-sm-0">
                                                     <p class="mb-2 text-muted text-truncate"><i class="mdi mdi-circle text-warning font-size-10 me-1"></i> Inactivos:</p>
                                                     <div class="d-inline-flex">
-                                                        <h5 class="mb-0">334</h5>
+                                                        <h5 id="inactivos" class="mb-0"></h5>
                                                     </div>
                                                 </div>
                                             </div>
@@ -107,7 +107,7 @@
                                         <div class="d-flex">
                                             <div class="flex-1 overflow-hidden">
                                                 <p class="text-truncate font-size-14 mb-2">N° Agentes</p>
-                                                <h4 class="mb-0">200</h4>
+                                                <h4 class="mb-0" th:text="${AgenteCompra.size()}"></h4>
                                             </div>
                                             <div class="text-primary ms-auto">
                                                 <i class=" ri-shopping-bag-3-line font-size-24"></i>
@@ -127,7 +127,7 @@
                                         <div class="d-flex">
                                             <div class="flex-1 overflow-hidden">
                                                 <p class="text-truncate font-size-14 mb-2">N° Usuarios Baneados</p>
-                                                <h4 class="mb-0">50</h4>
+                                                <h4 class="mb-0" th:text="${UsuariosBaneados.size()}"></h4>
                                             </div>
                                             <div class="text-primary ms-auto">
                                                 <i class=" ri-user-unfollow-line font-size-24"></i>
@@ -146,7 +146,7 @@
                                         <div class="d-flex">
                                             <div class="flex-1 overflow-hidden">
                                                 <p class="text-truncate font-size-14 mb-2">N° Proveedores Baneados</p>
-                                                <h4 class="mb-0">60</h4>
+                                                <h4 class="mb-0" th:text="${ProveedoresBaneados.size()}"></h4>
                                             </div>
                                             <div class="text-primary ms-auto">
                                                 <i class="ri-store-2-line font-size-24"></i>
