@@ -95,7 +95,7 @@ public class WebSecurityConfig {
                         .requestMatchers("/adminzonal", "/adminzonal/**").hasAnyAuthority("Administrador Zonal")
                         .requestMatchers("/agente", "/agente/**").hasAnyAuthority("Agente de Compra")
                         .requestMatchers("/usuario", "/usuario/**").hasAnyAuthority("Usuario Final")
-                        .requestMatchers("/loginForm", "/crearCuenta").anonymous()
+                        .requestMatchers("/loginForm", "/crearCuenta","/api/consultarDni").anonymous()
                         .anyRequest().authenticated()
                 )
                 .formLogin((form) -> form

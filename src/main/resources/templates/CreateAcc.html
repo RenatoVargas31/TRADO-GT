@@ -61,18 +61,19 @@
                                                 <i class="ri-passport-line auti-custom-input-icon"></i>
                                                 <label for="dni" class="fw-semibold">DNI</label>
                                                 <input type="text" class="form-control" id="dni" th:field="*{dni}" placeholder="Ingresar DNI" required>
+                                                <div id="dni-error" class="text-danger" style="display:none;"></div> <!-- Div para el mensaje de error -->
                                                 <div th:if="${#fields.hasErrors('dni')}" th:errors="*{dni}" class="text-danger"></div>
                                             </div>
                                             <div class="auth-form-group-custom mb-2">
                                                 <i class="ri-user-2-line auti-custom-input-icon"></i>
                                                 <label for="nombre" class="fw-semibold">Nombres</label>
-                                                <input type="text" class="form-control" id="nombre" th:field="*{nombre}" placeholder="Ingresar nombres" required>
+                                                <input type="text" class="form-control bg-light" id="nombre" th:field="*{nombre}" placeholder="Ingresar nombres" required readonly>
                                                 <div th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}" class="text-danger"></div>
                                             </div>
                                             <div class="auth-form-group-custom mb-2">
                                                 <i class="ri-user-2-line auti-custom-input-icon"></i>
                                                 <label for="apellido" class="fw-semibold">Apellidos</label>
-                                                <input type="text" class="form-control" id="apellido" th:field="*{apellido}" placeholder="Ingresar apellidos" required>
+                                                <input type="text" class="form-control bg-light" id="apellido" th:field="*{apellido}" placeholder="Ingresar apellidos" required readonly>
                                                 <div th:if="${#fields.hasErrors('apellido')}" th:errors="*{apellido}" class="text-danger"></div>
                                             </div>
                                             <div class="auth-form-group-custom mb-2">
@@ -119,5 +120,73 @@
         </div>
     </div>
 </div>
+<!-- JavaScript Base -->
+<span th:replace="~{Common/jsBase :: js_Base}"></span>
+<!-- Fin JavaScript Base -->
+<!-- Script para la consulta AJAX -->
+<!-- Script para la consulta AJAX -->
+<script>
+    $(document).ready(function() {
+        let isRequestInProgress = false; // Bandera para evitar múltiples solicitudes
+        let hasInteracted = false; // Bandera para saber si el usuario ya interactuó con el campo
+        const dniLength = 8; // Longitud esperada del DNI
+        let debounceTimeout;
+
+        $('#dni').on('input', function() {
+            const dni = $(this).val();
+
+            // Marcar que el usuario ha interactuado con el campo
+            hasInteracted = true;
+
+            // Limpiar el timeout del debounce si el usuario sigue escribiendo
+            clearTimeout(debounceTimeout);
+
+            // Validar que el DNI tenga la longitud correcta, la solicitud no esté en progreso y el usuario haya interactuado
+            if (dni.length === dniLength && !isRequestInProgress && hasInteracted) {
+                // Configurar un debounce de 500 ms para evitar solicitudes inmediatas
+                debounceTimeout = setTimeout(function() {
+                    isRequestInProgress = true; // Indicar que la solicitud está en progreso
+
+                    $.ajax({
+                        url: '/api/consultarDni',
+                        type: 'GET',
+                        data: { dni: dni },
+                        success: function(data) {
+                            console.log("Datos recibidos:", data); // Verificar los datos en la consola
+                            if (data.message === "DNI no válido") {
+                                // Mostrar el mensaje de error en la interfaz
+                                $('#dni-error').text(data.message).show(); // Mostrar el mensaje de error
+                                $('#nombre').val(''); // Limpiar campos en caso de error
+                                $('#apellido').val('');
+                            } else {
+                                $('#dni-error').hide(); // Ocultar el mensaje de error si la respuesta es válida
+                                $('#nombre').val(data.nombres); // Completa el campo de nombre
+                                $('#apellido').val(data.apellidoPaterno + " " + data.apellidoMaterno); // Completa el campo de apellido
+                            }
+                        },
+                        error: function() {
+                            $('#dni-error').text('No se pudo encontrar el DNI.').show(); // Mostrar error en caso de fallo
+                        },
+                        complete: function() {
+                            isRequestInProgress = false; // Restablecer la bandera cuando la solicitud termina
+                        }
+                    });
+                }, 500); // Tiempo de espera en milisegundos para el debounce
+            } else {
+                $('#dni-error').hide(); // Ocultar el mensaje de error si el DNI no tiene la longitud correcta
+            }
+        });
+
+        // Si el usuario recarga la página, resetear `hasInteracted` a false
+        $(window).on("load", function() {
+            hasInteracted = false;
+        });
+    });
+</script>
+
+
+
+
+
 </body>
 </html>

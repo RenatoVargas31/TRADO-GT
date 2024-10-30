@@ -1,5 +1,6 @@
 package com.app.tradogt.controller;
 
+import com.app.tradogt.daos.DniDao;
 import com.app.tradogt.entity.Distrito;
 import com.app.tradogt.entity.Rol;
 import com.app.tradogt.entity.Usuario;
@@ -39,6 +40,9 @@ public class LoginController {
     @Autowired
     private RolRepository rolRepository;
 
+    @Autowired
+    private DniDao dniDao;
+
     @GetMapping("/loginForm")
     public String loginForm(HttpServletRequest request, HttpServletResponse response, Model model,
                             @RequestParam(value = "error", required = false) String error) {
@@ -76,6 +80,7 @@ public class LoginController {
         model.addAttribute("distritos", distritoRepository.findAll());
         return "CreateAcc";
     }
+
 
     @PostMapping("/crearCuenta")
     public String registrarUsuario(@Valid @ModelAttribute Usuario usuario,
