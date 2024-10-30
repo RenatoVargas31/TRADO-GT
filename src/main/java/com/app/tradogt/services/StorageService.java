@@ -12,7 +12,7 @@ import java.nio.file.StandardCopyOption;
 @Service
 public class StorageService {
 
-    private final String directorioUploads = "C:/Users/Sergio/Desktop/CHAMBEAR/TRADO-GT/uploads/reseñasUsuarios/";
+    private final String directorioUploads = "./uploads/resenasUsuarios/";
 
     public String guardarArchivo(MultipartFile file, String nuevoNombre) throws IOException {
         if (file.isEmpty()) {
