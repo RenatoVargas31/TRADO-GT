@@ -92,7 +92,7 @@ public class WebSecurityConfig {
                         .requestMatchers("/css/**", "/js/**", "/images/**", "/fonts/**", "/libs/**").permitAll()
                         .requestMatchers("/loginForm", "/processLogin", "/crearCuenta").permitAll()
                         .requestMatchers("/superadmin", "/superadmin/**").hasAnyAuthority("SuperAdmin")
-                        .requestMatchers("/adminzonal", "/adminzonal/**").hasAnyAuthority("Administrador Zonal")
+                        .requestMatchers("/adminzonal", "/adminzonal/**","/api/secureConsultarDni").hasAnyAuthority("Administrador Zonal")
                         .requestMatchers("/agente", "/agente/**").hasAnyAuthority("Agente de Compra")
                         .requestMatchers("/usuario", "/usuario/**").hasAnyAuthority("Usuario Final")
                         .requestMatchers("/loginForm", "/crearCuenta","/api/consultarDni").anonymous()

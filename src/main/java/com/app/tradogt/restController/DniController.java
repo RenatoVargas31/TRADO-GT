@@ -15,4 +15,9 @@ public class DniController {
     public ApiDniRestDto consultarDni(@RequestParam String dni) {
         return dniDao.buscarDatosPorDni(dni);
     }
+    // Este endpoint permite el acceso solo a usuarios autenticados con roles específicos
+    @GetMapping("/api/secureConsultarDni")
+    public ApiDniRestDto consultarDniParaUsuarios(@RequestParam String dni) {
+        return dniDao.buscarDatosPorDni(dni);
+    }
 }
