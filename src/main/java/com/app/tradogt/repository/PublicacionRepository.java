@@ -14,7 +14,6 @@ public interface PublicacionRepository extends JpaRepository<Publicacion, Intege
             "INNER JOIN Usuario u ON p.Usuario_idUsuario = u.idUsuario " +
             "WHERE u.rol_idRol = 4 " +
             "AND u.isAccepted = 1 " +
-            "AND u.isPostulated = 0 " +
             "AND u.isActivated = 1", nativeQuery = true)
     List<Object[]> findPublicacionesUsuariosNoBaneados();
 }

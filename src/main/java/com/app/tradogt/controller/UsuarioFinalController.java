@@ -701,7 +701,7 @@ public class UsuarioFinalController {
     @GetMapping("/reseñas")
     public String showResenhas(Model model) {
         List<Resena> resenas = resenaRepository
-                .findByUsuarioIdusuarioIsAcceptedAndUsuarioIdusuarioIsPostulatedAndUsuarioIdusuarioIsActivated(1, 0, 1);
+                .findByUsuarioIdusuarioIsAcceptedAndUsuarioIdusuarioIsPostulatedAndUsuarioIdusuarioIsActivated(1, 1, 1);
 
         List<Resena> listaResena = resenaRepository.findAll();
 
