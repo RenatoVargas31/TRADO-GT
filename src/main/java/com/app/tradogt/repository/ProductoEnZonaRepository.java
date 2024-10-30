@@ -29,8 +29,9 @@ public interface ProductoEnZonaRepository extends JpaRepository<ProductoEnZona, 
     @Query("SELECT p FROM ProductoEnZona p WHERE p.productoIdproducto.id = :productoId AND p.zonaIdzona.id = :zonaId")
     Optional<ProductoEnZona> findByIdAndZona(@Param("productoId") int productoId, @Param("zonaId") int zona);
 
-    @Query("SELECT p FROM ProductoEnZona p WHERE p.zonaIdzona.id = :idZona ")
+    @Query("SELECT p FROM ProductoEnZona p WHERE p.zonaIdzona.id = :idZona ORDER BY p.cantidad ASC")
     List<ProductoEnZona> findStockBajoZona(@Param("idZona") int idZona);
+
 
     @Query("SELECT p FROM ProductoEnZona p WHERE p.zonaIdzona.id = :idZona ORDER BY p.cantidad DESC")
     List<ProductoEnZona> findTop10Products(@Param("idZona") int idZona, Pageable pageable);
