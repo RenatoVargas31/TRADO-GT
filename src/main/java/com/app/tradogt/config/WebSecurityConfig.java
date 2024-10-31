@@ -1,5 +1,9 @@
 package com.app.tradogt.config;
 
+import com.app.tradogt.entity.EstadoOrden;
+import com.app.tradogt.entity.Orden;
+import com.app.tradogt.repository.EstadoOrdenRepository;
+import com.app.tradogt.repository.OrdenRepository;
 import com.app.tradogt.repository.UsuarioRepository;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.context.annotation.Bean;
@@ -18,16 +22,23 @@ import org.springframework.security.web.authentication.switchuser.SwitchUserFilt
 import org.springframework.security.web.savedrequest.DefaultSavedRequest;
 
 import javax.sql.DataSource;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
 
 @Configuration
 public class WebSecurityConfig {
 
     final DataSource dataSource;
     final CustomAccessDeniedHandler customAccessDeniedHandler;
+    final EstadoOrdenRepository estadoOrdenRepository;
+    final OrdenRepository ordenRepository;
 
-    public WebSecurityConfig(DataSource dataSource, CustomAccessDeniedHandler customAccessDeniedHandler) {
+    public WebSecurityConfig(DataSource dataSource, CustomAccessDeniedHandler customAccessDeniedHandler, EstadoOrdenRepository estadoOrdenRepository, OrdenRepository ordenRepository) {
         this.dataSource = dataSource;
         this.customAccessDeniedHandler = customAccessDeniedHandler;
+        this.estadoOrdenRepository = estadoOrdenRepository;
+        this.ordenRepository = ordenRepository;
     }
 
     @Bean
@@ -75,12 +86,51 @@ public class WebSecurityConfig {
             switch (rol) {
                 case "SuperAdmin" -> response.sendRedirect("inicio");
                 case "Administrador Zonal" -> response.sendRedirect("adminzonal/dashboard");
-                case "Agente de Compra" -> response.sendRedirect("agente/allOrders");
-                case "Usuario Final" -> response.sendRedirect("usuario/inicio");
+                case "Agente de Compra" -> {
+                    updateOrderStatus();
+                    response.sendRedirect("agente/allOrders");
+                }
+                case "Usuario Final" -> {
+                    updateOrderStatus();
+                    response.sendRedirect("usuario/inicio");
+                }
                 default -> response.sendRedirect("/default");
             }
         });
         return filter;
+    }
+
+    public void updateOrderStatus() {
+        //Obtener la fecha actual
+        LocalDate today = LocalDate.now();
+
+        Optional<EstadoOrden> estadoactual = estadoOrdenRepository.findById(3);
+        Optional<EstadoOrden> arriboAlPais = estadoOrdenRepository.findById(4);
+        Optional<EstadoOrden> aduanas = estadoOrdenRepository.findById(5);
+        Optional<EstadoOrden> ruta = estadoOrdenRepository.findById(6);
+        Optional<EstadoOrden> recibido = estadoOrdenRepository.findById(7);
+
+        List<Orden> ordensInProcess = ordenRepository.findByEstadoordenIdestadoorden(estadoactual);
+
+        for (Orden orden : ordensInProcess) {
+            System.out.println("Orden ID: " + orden.getId());
+
+            // Cambiar el estado de acuerdo a la fecha actual
+            if (orden.getFechaArribo() != null && orden.getFechaArribo().isEqual(today)) {
+                orden.setEstadoordenIdestadoorden(arriboAlPais.get());
+            } else if (orden.getFechaEnAduanas() != null && orden.getFechaEnAduanas().isEqual(today)) {
+                orden.setEstadoordenIdestadoorden(aduanas.get());
+            } else if (orden.getFechaEnRuta() != null && orden.getFechaEnRuta().isEqual(today)) {
+                orden.setEstadoordenIdestadoorden(ruta.get());
+            } else if (orden.getFechaRecibido() != null && orden.getFechaRecibido().isEqual(today)) {
+                orden.setEstadoordenIdestadoorden(recibido.get());
+            }else{
+                orden.setEstadoordenIdestadoorden(orden.getEstadoordenIdestadoorden());
+            }
+
+            // Guardar la orden actualizada
+            ordenRepository.save(orden);
+        }
     }
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http, CustomAuthenticationFilter customAuthenticationFilter, UsuarioRepository usuarioRepository) throws Exception {
@@ -91,12 +141,11 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers("/css/**", "/js/**", "/images/**", "/fonts/**", "/libs/**").permitAll()
                         .requestMatchers("/loginForm", "/processLogin", "/crearCuenta").permitAll()
-                        .requestMatchers("/superadmin", "/superadmin/**").hasAnyAuthority("SuperAdmin")
-                        .requestMatchers("/adminzonal", "/adminzonal/**").hasAnyAuthority("Administrador Zonal")
+                        .requestMatchers("/superadmin", "/superadmin/**","/api/consultarDni").hasAnyAuthority("SuperAdmin")
+                        .requestMatchers("/adminzonal", "/adminzonal/**","/api/consultarDni").hasAnyAuthority("Administrador Zonal")
                         .requestMatchers("/agente", "/agente/**").hasAnyAuthority("Agente de Compra")
                         .requestMatchers("/usuario", "/usuario/**").hasAnyAuthority("Usuario Final")
-                        .requestMatchers("/api/consultarDni").permitAll()
-                        .requestMatchers("/loginForm", "/crearCuenta").anonymous()
+                        .requestMatchers("/loginForm", "/crearCuenta","/api/consultarDni").anonymous()
                         .anyRequest().authenticated()
                 )
                 .formLogin((form) -> form
@@ -123,8 +172,14 @@ public class WebSecurityConfig {
                                 switch (rol) {
                                     case "SuperAdmin" -> response.sendRedirect("superadmin/inicio");
                                     case "Administrador Zonal" -> response.sendRedirect("adminzonal/dashboard");
-                                    case "Agente de Compra" -> response.sendRedirect("agente/allOrders");
-                                    case "Usuario Final" -> response.sendRedirect("usuario/inicio");
+                                    case "Agente de Compra" -> {
+                                        updateOrderStatus();
+                                        response.sendRedirect("agente/allOrders");
+                                    }
+                                    case "Usuario Final" -> {
+                                        updateOrderStatus();
+                                        response.sendRedirect("usuario/inicio");
+                                    }
                                 }
                             }
                         })

@@ -47,47 +47,10 @@ public class LoginController {
         this.ordenRepository = ordenRepository;
     }
 
-    //Actualiza los estados de las ordenes
-    public void updateOrderStatus() {
-        //Obtener la fecha actual
-        LocalDate today = LocalDate.now();
-
-        Optional<EstadoOrden> estadoactual = estadoOrdenRepository.findById(3);
-        Optional<EstadoOrden> arriboAlPais = estadoOrdenRepository.findById(4);
-        Optional<EstadoOrden> aduanas = estadoOrdenRepository.findById(5);
-        Optional<EstadoOrden> ruta = estadoOrdenRepository.findById(6);
-        Optional<EstadoOrden> recibido = estadoOrdenRepository.findById(7);
-
-        List<Orden> ordensInProcess = ordenRepository.findByEstadoordenIdestadoorden(estadoactual);
-
-        for (Orden orden : ordensInProcess) {
-            System.out.println("Orden ID: " + orden.getId());
-
-            // Cambiar el estado de acuerdo a la fecha actual
-            if (orden.getFechaArribo() != null && orden.getFechaArribo().isEqual(today)) {
-                orden.setEstadoordenIdestadoorden(arriboAlPais.get());
-            } else if (orden.getFechaEnAduanas() != null && orden.getFechaEnAduanas().isEqual(today)) {
-                orden.setEstadoordenIdestadoorden(aduanas.get());
-            } else if (orden.getFechaEnRuta() != null && orden.getFechaEnRuta().isEqual(today)) {
-                orden.setEstadoordenIdestadoorden(ruta.get());
-            } else if (orden.getFechaRecibido() != null && orden.getFechaRecibido().isEqual(today)) {
-                orden.setEstadoordenIdestadoorden(recibido.get());
-            }else{
-                orden.setEstadoordenIdestadoorden(orden.getEstadoordenIdestadoorden());
-            }
-
-            // Guardar la orden actualizada
-            ordenRepository.save(orden);
-        }
-    }
-
     @GetMapping("/loginForm")
     public String loginForm(HttpServletRequest request, HttpServletResponse response, Model model,
                             @RequestParam(value = "error", required = false) String error) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
-        //Actualiza los estados de los pedidos
-        updateOrderStatus();
 
         // Verificar si el usuario ya está autenticado
         if (auth != null && auth.isAuthenticated() && !(auth instanceof AnonymousAuthenticationToken)) {
