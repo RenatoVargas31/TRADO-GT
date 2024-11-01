@@ -30,12 +30,14 @@ import java.util.Optional;
 public class WebSecurityConfig {
 
     final DataSource dataSource;
+    final UsuarioRepository usuarioRepository;
     final CustomAccessDeniedHandler customAccessDeniedHandler;
     final EstadoOrdenRepository estadoOrdenRepository;
     final OrdenRepository ordenRepository;
 
-    public WebSecurityConfig(DataSource dataSource, CustomAccessDeniedHandler customAccessDeniedHandler, EstadoOrdenRepository estadoOrdenRepository, OrdenRepository ordenRepository) {
+    public WebSecurityConfig(DataSource dataSource, UsuarioRepository usuarioRepository, CustomAccessDeniedHandler customAccessDeniedHandler, EstadoOrdenRepository estadoOrdenRepository, OrdenRepository ordenRepository) {
         this.dataSource = dataSource;
+        this.usuarioRepository = usuarioRepository;
         this.customAccessDeniedHandler = customAccessDeniedHandler;
         this.estadoOrdenRepository = estadoOrdenRepository;
         this.ordenRepository = ordenRepository;
@@ -75,7 +77,7 @@ public class WebSecurityConfig {
         filter.setExitUserUrl("/superadmin/exit");
         filter.setSuccessHandler((request, response, authentication) -> {
             HttpSession session = request.getSession();
-            session.setAttribute("usuarioAutenticado", userSwitch(dataSource).loadUserByUsername(authentication.getName()));
+            session.setAttribute("usuarioAutenticado",usuarioRepository.findByCorreo(authentication.getName()));
             session.setAttribute("impersonation", true);
 
             String rol = "";

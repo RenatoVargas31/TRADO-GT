@@ -37,13 +37,13 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                            <h6 class="mb-sm-0">Creación de una nueva reseña </h6>
+                            <h6 class="mb-sm-0">Creación de una nueva resena </h6>
 
                             <div class="page-title-right">
                                 <ol class="breadcrumb m-0">
                                     <li class="breadcrumb-item active">Inicio</li>
                                     <li class="breadcrumb-item active">Foro</li>
-                                    <li class="breadcrumb-item active">Reseña</li>
+                                    <li class="breadcrumb-item active">resena</li>
                                     <li class="breadcrumb-item"><a href="javascript: void(0);">Nuevo</a></li>
                                 </ol>
                             </div>
@@ -71,7 +71,7 @@
                                                                 th:selected="${producto.id == productoSeleccionadoId}"></option>
                                                     </th:block>
                                                 </select>
-                                                <small class="form-text text-muted">Seleccione el producto del cual desea dejar una reseña.</small>
+                                                <small class="form-text text-muted">Seleccione el producto del cual desea dejar una resena.</small>
                                             </div>
 
                                             <div class="mb-3 col-md-12">
@@ -89,7 +89,7 @@
                                             </div>
 
                                             <div class="mb-3 col-md-12">
-                                                <label class="form-label fw-bolder fs-5">Ingrese el cuerpo de la reseña</label>
+                                                <label class="form-label fw-bolder fs-5">Ingrese el cuerpo de la resena</label>
                                                 <textarea class="form-control" name="cuerpo" rows="5" placeholder="Ingrese el cuerpo de la publicación aquí" required></textarea>
                                                 <small class="form-text text-muted">Ingrese un máximo de 1000 caracteres.</small>
                                                 <small class="form-text text-muted">Complete este formulario para compartir su experiencia con la comunidad.</small>
@@ -140,7 +140,7 @@
 
                                     <div class="row">
                                         <div class="col-md-12 d-flex justify-content-end">
-                                            <a th:href="@{/usuario/reseñas}" class="btn btn-danger btn-sm waves-effect waves-light me-2" title="Cancelar">Cancelar</a>
+                                            <a th:href="@{/usuario/resenas}" class="btn btn-danger btn-sm waves-effect waves-light me-2" title="Cancelar">Cancelar</a>
                                             <button type="submit" class="btn btn-primary btn-sm waves-effect waves-light" title="Guardar">Publicar</button>
                                         </div>
                                     </div>

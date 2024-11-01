@@ -9,7 +9,7 @@
 
 <head><script th:src="@{/libs/bootstrap-rating/bootstrap-rating.js}"></script>
     <meta charset="utf-8" />
-    <title>Reseñas</title>
+    <title>resenas</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- CSS BASE -->
     <div th:replace="~{Common/cssBase :: css_Base}"></div>
@@ -54,13 +54,13 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                                <h4 class="mb-sm-0">Reseñas</h4>
+                                <h4 class="mb-sm-0">resenas</h4>
 
                                 <div class="page-title-right">
                                     <ol class="breadcrumb m-0">
                                         <li class="breadcrumb-item active">Inicio</li>
                                         <li class="breadcrumb-item active">Foro</li>
-                                        <li class="breadcrumb-item"><a href="javascript: void(0);">Reseña</a></li>
+                                        <li class="breadcrumb-item"><a href="javascript: void(0);">resena</a></li>
 
                                     </ol>
                                 </div>
@@ -75,8 +75,8 @@
                             <div class="card">
                                 <div class="card-body">
                                     <div>
-                                        <p class="card-title-desc">En esta sección podrás explorar las opiniones y reseñas de productos realizadas por usuarios de diversas zonas. Aquí encontrarás valoraciones detalladas que te ayudarán a tomar decisiones informadas sobre tus compras.
-                                            Además, tendrás la opción de dejar tus propios comentarios, crear nuevas reseñas y buscar productos específicos por nombre, código o nombre del proveedor.
+                                        <p class="card-title-desc">En esta sección podrás explorar las opiniones y resenas de productos realizadas por usuarios de diversas zonas. Aquí encontrarás valoraciones detalladas que te ayudarán a tomar decisiones informadas sobre tus compras.
+                                            Además, tendrás la opción de dejar tus propios comentarios, crear nuevas resenas y buscar productos específicos por nombre, código o nombre del proveedor.
                                             Disfruta de una comunidad activa y encuentra toda la información que necesitas para tu próxima compra. ¡Comparte tus experiencias y ayuda a otros usuarios!</p>
                                         <hr>
                                         <div class="row">
@@ -91,23 +91,23 @@
                                                     <button id="clear-btn" class="btn btn-primary waves-effect waves-light">Limpiar</button>
                                                 </div>
                                                 <div class="form-inline">
-                                                    <a th:href="@{/usuario/nuevaReseña}" type="button" class="btn btn-primary waves-effect waves-light">Nueva Reseña</a>
+                                                    <a th:href="@{/usuario/nuevaresena}" type="button" class="btn btn-primary waves-effect waves-light">Nueva resena</a>
                                                 </div>
                                             </div>
                                         </div>
 
 
                                         <div class="row g-0 mt-5">
-                                            <!-- Mensaje cuando no hay reseñas -->
+                                            <!-- Mensaje cuando no hay resenas -->
                                             <div th:if="${resenas.isEmpty()}" style="text-align: center; color: #000000; font-size: 18px; margin-top: 20px;">
-                                                <p >Reseña no encontrada</p>
+                                                <p >resena no encontrada</p>
                                             </div>
 
                                             <div th:each="resena : ${resenas}" class="col-xl-3 col-sm-6">
                                                 <div class="card product-box">
-                                                    <a th:href="@{/usuario/verReseña/{id}(id=${resena.id})}" class="text-decoration-none">
+                                                    <a th:href="@{/usuario/verresena/{id}(id=${resena.id})}" class="text-decoration-none">
                                                        <div class="product-img">
-                                                            <img th:src="@{'/uploads/resenasUsuarios/' + ${resena.foto}}" alt="Imagen de la reseña" class="img-fluid mx-auto d-block">
+                                                            <img th:src="@{'/uploads/resenasUsuarios/' + ${resena.foto}}" alt="Imagen de la resena" class="img-fluid mx-auto d-block">
                                                         </div>
                                                         <div class="text-center p-3">
                                                             <p class="font-size-12 mb-1" th:text="${resena.productoIdproducto.subcategoriaIdsubcategoria.categoriaIdcategoria.nombre} + ', ' + ${resena.productoIdproducto.subcategoriaIdsubcategoria.nombre} ">Categoría, Subcategoría</p>
@@ -189,14 +189,14 @@
 
                                                          <li class="nav-item mb-3">
                                                              <a href="#" class="btn btn-link d-flex align-items-center text-primary" data-bs-toggle="modal" data-bs-target="#exampleModalCenter2">
-                                                                 <i class="bi bi-chat-right-text font-size-20 me-2"></i>  <span class="mx-2">Agregar nueva reseña</span>
+                                                                 <i class="bi bi-chat-right-text font-size-20 me-2"></i>  <span class="mx-2">Agregar nueva resena</span>
                                                              </a>
                                                          </li>
                                                          <div class="modal fade" id="exampleModalCenter2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                                              <div class="modal-dialog modal-lg">
                                                                  <div class="modal-content">
                                                                      <div class="modal-header">
-                                                                         <h5 class="modal-title" id="exampleModalCenterTitle2">Agregar nueva reseña</h5>
+                                                                         <h5 class="modal-title" id="exampleModalCenterTitle2">Agregar nueva resena</h5>
                                                                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                                      </div>
                                                                      <form id="consultaForm2">
@@ -351,7 +351,7 @@
                                                  <a href="/usuario/foro">
                                                      <div class="d-flex">
                                                          <div class="flex-1 overflow-hidden">
-                                                             <h5 class="text-truncate font-size-14 mb-4">Reseñas de productos</h5>
+                                                             <h5 class="text-truncate font-size-14 mb-4">resenas de productos</h5>
                                                              <hr>
                                                              <div class="mb-3">
                                                                  <span class="mdi mdi-circle-outline text-info"></span> Ropa
@@ -729,7 +729,7 @@
                     const totalPagesElement = document.getElementById('total-pages');
                     const searchInput = document.getElementById('search-input');
                     const clearBtn = document.getElementById('clear-btn');
-                    const noResultsMessage = document.getElementById('no-results-message'); // Elemento para mostrar el mensaje de "Reseña no encontrada"
+                    const noResultsMessage = document.getElementById('no-results-message'); // Elemento para mostrar el mensaje de "resena no encontrada"
 
                     totalPagesElement.textContent = totalPages; // Mostrar el total de páginas
 
@@ -772,7 +772,7 @@
                             }
                         });
 
-                        // Mostrar o ocultar el mensaje de "Reseña no encontrada"
+                        // Mostrar o ocultar el mensaje de "resena no encontrada"
                         if (filteredCount === 0) {
                             noResultsMessage.style.display = 'block'; // Mostrar el mensaje
                         } else {

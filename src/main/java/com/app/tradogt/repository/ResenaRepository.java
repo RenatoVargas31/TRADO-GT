@@ -15,7 +15,7 @@ import java.util.List;
 public interface ResenaRepository extends JpaRepository<Resena, Integer> {
     List<Resena> findAll();
 
-    // Filtrar reseñas de usuarios que no están baneados
+    // Filtrar resenas de usuarios que no están baneados
     List<Resena> findByUsuarioIdusuarioIsAcceptedAndUsuarioIdusuarioIsPostulatedAndUsuarioIdusuarioIsActivated(
             int isAccepted, int isPostulated, int isActivated);
 

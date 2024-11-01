@@ -668,22 +668,22 @@ public class UsuarioFinalController {
         return "redirect:/usuario/carrito";
     }
 
-    @GetMapping("/reseñas")
+    @GetMapping("/resenas")
     public String showResenhas(Model model) {
         List<Resena> resenas = resenaRepository
                 .findByUsuarioIdusuarioIsAcceptedAndUsuarioIdusuarioIsPostulatedAndUsuarioIdusuarioIsActivated(1, 1, 1);
 
         List<Resena> listaResena = resenaRepository.findAll();
 
-        // Si no hay reseñas, puedes mostrar un mensaje
+        // Si no hay resenas, puedes mostrar un mensaje
         if (listaResena.isEmpty()) {
             model.addAttribute("resenas", listaResena);
         }else {
             model.addAttribute("resenas", listaResena);
-            System.out.println("Lista de reseñas:");
+            System.out.println("Lista de resenas:");
         }
 
-        return "Usuario/reseñas-usuario";
+        return "Usuario/resenas-usuario";
     }
 
 
@@ -744,21 +744,21 @@ public class UsuarioFinalController {
         return "Usuario/viewProblema";
     }
 
-    @GetMapping("/verReseña/{id}")
+    @GetMapping("/verresena/{id}")
     public String showDetalleResena(@PathVariable("id") Integer id, Model model) {
-        // Buscar la reseña por id
+        // Buscar la resena por id
         Resena resena = resenaRepository.findById(id).orElse(null);
 
-        // Si la reseña no se encuentra, puedes redirigir a una página de error o similar
+        // Si la resena no se encuentra, puedes redirigir a una página de error o similar
         if (resena == null) {
             return "redirect:/error";  // Página de error personalizada
         }
 
-        // Pasar la reseña al modelo para que esté disponible en la vista
+        // Pasar la resena al modelo para que esté disponible en la vista
         model.addAttribute("resena", resena);
 
         // Nombre de la vista Thymeleaf
-        return "Usuario/verReseña-usuario";
+        return "Usuario/verresena-usuario";
     }
 
     @GetMapping("/solicitud")
@@ -886,7 +886,7 @@ public class UsuarioFinalController {
         return "redirect:/usuario/comunidad";
     }
 
-    @GetMapping("/nuevaReseña")
+    @GetMapping("/nuevaresena")
     public String nuevaResenha(@RequestParam(value = "productoId", required = false) Integer productoId, Model model){
         int userId = getAuthenticatedUserId();
 
@@ -903,7 +903,7 @@ public class UsuarioFinalController {
 
         model.addAttribute("resena", new Resena()); // Agregamos un objeto vacío para el formulario
 
-        return "Usuario/nuevaReseña-usuario";
+        return "Usuario/nuevaresena-usuario";
     }
 
     @PostMapping("/guardarResenha")
@@ -928,11 +928,11 @@ public class UsuarioFinalController {
         resena.setFechaCreacion(LocalDate.now());
         resena.setFueRapido(fueRapido);
 
-        // Guardar la reseña sin imagen para obtener el ID
+        // Guardar la resena sin imagen para obtener el ID
         resena.setFoto("default.jpg");  // Colocamos un valor temporal por defecto
         resenaRepository.save(resena);
 
-        // Ahora que la reseña tiene un ID, podemos guardar la imagen
+        // Ahora que la resena tiene un ID, podemos guardar la imagen
         if (!foto.isEmpty()) {
             try {
                 // Simplemente usar el ID como nombre de archivo sin preocuparse por la extensión
@@ -941,7 +941,7 @@ public class UsuarioFinalController {
                 // Guardar el archivo
                 storageService.guardarArchivo(foto, nombreArchivo);
 
-                // Actualizar la reseña con el nombre del archivo de la foto
+                // Actualizar la resena con el nombre del archivo de la foto
                 resena.setFoto(nombreArchivo + ".jpg"); // Aquí puedes ajustar la extensión si es necesario
                 resenaRepository.save(resena);  // Actualizar con el nombre de la foto
             } catch (IOException e) {
