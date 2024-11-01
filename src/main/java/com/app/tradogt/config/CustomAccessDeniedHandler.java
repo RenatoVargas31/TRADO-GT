@@ -27,7 +27,7 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
                         response.sendRedirect("/adminzonal/dashboard");
                         return;
                     case "Agente de Compra":
-                        response.sendRedirect("/agente/inicio");
+                        response.sendRedirect("/agente/allOrders");
                         return;
                     case "Usuario Final":
                         response.sendRedirect("/usuario/inicio");

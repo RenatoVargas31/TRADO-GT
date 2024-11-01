@@ -46,6 +46,36 @@ public class LoginController {
         this.estadoOrdenRepository = estadoOrdenRepository;
         this.ordenRepository = ordenRepository;
     }
+    @GetMapping("/")
+    public String white(HttpServletRequest request, HttpServletResponse response, Model model,
+                        @RequestParam(value = "error", required = false) String error) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        // Verificar si el usuario ya está autenticado
+        if (auth != null && auth.isAuthenticated() && !(auth instanceof AnonymousAuthenticationToken)) {
+            String rol = "";
+            for (GrantedAuthority role : auth.getAuthorities()) {
+                rol = role.getAuthority();
+                break;
+            }
+            try {
+                switch (rol) {
+                    case "SuperAdmin" -> response.sendRedirect("/superadmin/inicio");
+                    case "Administrador Zonal" -> response.sendRedirect("/adminzonal/dashboard");
+                    case "Agente de Compra" -> response.sendRedirect("/agente/allOrders");
+                    default -> response.sendRedirect("/usuario/inicio");
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        // Verificar si hubo un error de credenciales
+        if (error != null) {
+            model.addAttribute("error", "Credenciales incorrectas. Por favor, inténtalo de nuevo.");
+        }
+        return "loguin";
+    }
 
     @GetMapping("/loginForm")
     public String loginForm(HttpServletRequest request, HttpServletResponse response, Model model,
@@ -63,7 +93,7 @@ public class LoginController {
                 switch (rol) {
                     case "SuperAdmin" -> response.sendRedirect("/superadmin/inicio");
                     case "Administrador Zonal" -> response.sendRedirect("/adminzonal/dashboard");
-                    case "Agente de Compra" -> response.sendRedirect("/agente/inicio");
+                    case "Agente de Compra" -> response.sendRedirect("/agente/allOrders");
                     default -> response.sendRedirect("/usuario/inicio");
                 }
             } catch (IOException e) {
