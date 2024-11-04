@@ -71,6 +71,12 @@
                                 <p class="text-muted">Inicie sesión para estar más cerca de nuestros productos y promociones</p>
                             </div>
                             <div class="p-2 mt-5">
+
+                                <!-- Mensaje de éxito si el registro fue exitoso -->
+                                <div th:if="${success}" class="alert alert-success text-center" role="alert">
+                                    <p th:text="${success}"></p>
+                                </div>
+
                                 <!-- Formulario de inicio de sesión -->
                                 <form th:action="@{/processLogin}" method="post">
 

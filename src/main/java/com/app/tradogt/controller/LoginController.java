@@ -3,14 +3,20 @@ package com.app.tradogt.controller;
 import com.app.tradogt.daos.DniDao;
 import com.app.tradogt.entity.*;
 import com.app.tradogt.repository.*;
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,6 +35,9 @@ import java.util.Optional;
 public class LoginController {
 
     @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
     private UsuarioRepository usuarioRepository;
 
     @Autowired
@@ -36,6 +45,13 @@ public class LoginController {
 
     @Autowired
     private RolRepository rolRepository;
+
+    //Para el envío de correos
+    @Value("${spring.mail.username}")
+    private String sender;
+    @Autowired
+    private JavaMailSender mailSender;
+
 
     @Autowired
     private DniDao dniDao;
@@ -122,12 +138,21 @@ public class LoginController {
                                    @RequestParam("distrito") String distritoNombre,
                                    RedirectAttributes redirectAttributes,
                                    Model model) {
+
+        
+        // Validar que las contraseñas coincidan
+        if (!usuario.getContrasena().equals(usuario.getConfirmarContrasena())) {
+            result.rejectValue("confirmarContrasena", "error.usuario", "Las contraseñas no coinciden.");
+            return "CreateAcc";
+        }
+
         // Volver a cargar la lista de distritos
         List<Distrito> distritos = distritoRepository.findAll();
         model.addAttribute("distritos", distritos);
 
         // Verificar si el distrito existe
         Optional<Distrito> distritoOpt = distritoRepository.findByNombre(distritoNombre);
+
         if (distritoOpt.isEmpty()) {
             result.rejectValue("distritoIddistrito", "error.usuario", "El distrito ingresado no es valido.");
             return "CreateAcc"; // Volver al formulario si el distrito no es válido
@@ -170,15 +195,45 @@ public class LoginController {
             result.rejectValue("general", "error.usuario", "Ningún campo debe estar vacío o contener solo espacios.");
             return "CreateAcc";
         }
+
         // Si hay errores, recargar el formulario con la lista de distritos
         if (result.hasErrors()) {
             return "CreateAcc";
         }
 
+        // Cifrar la contraseña antes de guardar
+        usuario.setContrasena(passwordEncoder.encode(usuario.getContrasena()));
+
+        //Cambiar campo isActived a 1
+        usuario.setIsActivated((byte) 1);
         // Guardar el usuario en la base de datos
         usuario.setDistritoIddistrito(distritoOpt.get());
+
         usuarioRepository.save(usuario);
+
         redirectAttributes.addFlashAttribute("success", "Usuario registrado con éxito.");
-        return "CreateAcc-confirm";
+        // Enviar el correo de bienvenida
+        String mensajeBienvenida = "¡Hola " + usuario.getNombre() + "!\n\n" +
+                "Gracias por registrarte en Trado. Ahora puedes iniciar sesión en nuestra plataforma para explorar todas nuestras ofertas y productos.\n\n" +
+                "Saludos,\nEquipo de Trado";
+
+        sendMessage(usuario.getCorreo(), mensajeBienvenida);
+        return "redirect:/loginForm";
+    }
+
+    public void sendMessage (String email, String messageEmail){
+
+        try {
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true);
+            helper.setSubject("¡Bienvenido a Trado!");
+            helper.setTo(email);
+            helper.setText(messageEmail, true); // El segundo parámetro `true` permite HTML en el mensaje si es necesario
+            helper.setFrom(sender);
+            mailSender.send(message);
+        } catch (MessagingException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Error al enviar el correo de bienvenida", e);
+        }
     }
 }

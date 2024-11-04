@@ -83,6 +83,12 @@
                                                 <div th:if="${#fields.hasErrors('correo')}" th:errors="*{correo}" class="text-danger"></div>
                                             </div>
                                             <div class="auth-form-group-custom mb-2">
+                                                <i class="ri-mail-line auti-custom-input-icon"></i>
+                                                <label for="telefono">Teléfono</label>
+                                                <input type="number" class="form-control" id="telefono" th:field="*{telefono}" placeholder="Ingrese su teléfono" required>
+                                                <div th:if="${#fields.hasErrors('telefono')}" th:errors="*{telefono}" class="text-danger"></div>
+                                            </div>
+                                            <div class="auth-form-group-custom mb-2">
                                                 <i class="ri-community-line auti-custom-input-icon"></i>
                                                 <label for="direccion" class="fw-semibold">Dirección</label>
                                                 <input type="text" class="form-control" id="direccion" th:field="*{direccion}" placeholder="Ingresar dirección" required>
@@ -97,6 +103,18 @@
                                                             th:text="${distrito.nombre}">
                                                     </option>
                                                 </select>
+                                            </div>
+                                            <div class="auth-form-group-custom mb-2">
+                                                <i class="ri-community-line auti-custom-input-icon"></i>
+                                                <label for="contrasena" class="fw-semibold">Contraseña</label>
+                                                <input type="password" class="form-control" id="contrasena" th:field="*{contrasena}" placeholder="Ingresar contraseña" required>
+                                                <div th:if="${#fields.hasErrors('contrasena')}" th:errors="*{contrasena}" class="text-danger"></div>
+                                            </div>
+                                            <div class="auth-form-group-custom mb-2">
+                                                <i class="ri-lock-line auti-custom-input-icon"></i>
+                                                <label for="confirmarContrasena" class="fw-semibold">Confirmar contraseña</label>
+                                                <input type="password" class="form-control" id="confirmarContrasena" th:field="*{confirmarContrasena}" placeholder="Confirmar contraseña" required>
+                                                <div th:if="${#fields.hasErrors('confirmarContrasena')}" th:errors="*{confirmarContrasena}" class="text-danger"></div>
                                             </div>
                                             <input type="hidden" name="rolIdrol" value="4">
                                             <div class="mt-4 text-center">

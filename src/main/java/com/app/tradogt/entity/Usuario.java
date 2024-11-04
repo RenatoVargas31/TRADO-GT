@@ -84,6 +84,9 @@ public class Usuario implements Serializable{
     @Column(name = "contrasena", length = 80)
     private String contrasena;
 
+    @Transient
+    private String confirmarContrasena;
+
     @Size(max = 10)
     @Column(name = "ruc", length = 10)
     private String ruc;
