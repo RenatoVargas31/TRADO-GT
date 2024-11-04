@@ -218,7 +218,7 @@ public class LoginController {
                 "Saludos,\nEquipo de Trado";
 
         sendMessage(usuario.getCorreo(), mensajeBienvenida);
-        return "redirect:/loginForm";
+        return "redirect:/CreateAcc-confirm";
     }
 
     public void sendMessage (String email, String messageEmail){

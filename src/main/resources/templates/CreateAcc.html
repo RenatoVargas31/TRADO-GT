@@ -35,6 +35,9 @@
                 z-index: -1; /* Para que no se superponga sobre el contenido */
             }
         }
+        .margen{
+            margin-top: 550px;
+        }
     </style>
 </head>
 <body class="auth-body-bg">
@@ -47,12 +50,14 @@
                         <div class="row justify-content-center">
                             <div class="col-lg-9">
                                 <div>
+                                    <div class="margen">
                                     <div class="text-center">
                                         <div class="auth-logo-container">
                                             <img src="/images/trado-dark.png" alt="" height="40" class="auth-logo logo-dark mx-auto">
                                         </div>
                                         <h4 class="font-size-18 mt-2">¡Bienvenido a Trado!</h4>
                                         <p class="text-muted">Registro de Nuevo Usuario</p>
+                                    </div>
                                     </div>
 
                                     <div class="p-2 mt-2">
@@ -103,6 +108,14 @@
                                                             th:text="${distrito.nombre}">
                                                     </option>
                                                 </select>
+                                            </div>
+                                            <div>
+                                                <ul class="text-muted mb-2 mt-2 mx-3">
+                                                    <li>La longitud mínima de la contraseña es de 8 caracteres y máxima de 16 caracteres</li>
+                                                    <li>Debe contener al menos 1 número</li>
+                                                    <li>Debe contener al menos 2 caracteres especiales</li>
+                                                    <li>Debe contener al menos 1 letra mayúscula y minúscula</li>
+                                                </ul>
                                             </div>
                                             <div class="auth-form-group-custom mb-2">
                                                 <i class="ri-community-line auti-custom-input-icon"></i>
