@@ -143,11 +143,12 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers("/css/**", "/js/**", "/images/**", "/fonts/**", "/libs/**").permitAll()
                         .requestMatchers("/loginForm", "/processLogin", "/crearCuenta").permitAll()
-                        .requestMatchers("/superadmin", "/superadmin/**","/api/consultarDni").hasAnyAuthority("SuperAdmin")
-                        .requestMatchers("/adminzonal", "/adminzonal/**","/api/consultarDni").hasAnyAuthority("Administrador Zonal")
+                        .requestMatchers("/superadmin", "/superadmin/**").hasAnyAuthority("SuperAdmin")
+                        .requestMatchers("/adminzonal", "/adminzonal/**").hasAnyAuthority("Administrador Zonal")
                         .requestMatchers("/agente", "/agente/**").hasAnyAuthority("Agente de Compra")
                         .requestMatchers("/usuario", "/usuario/**").hasAnyAuthority("Usuario Final")
-                        .requestMatchers("/loginForm", "/crearCuenta","/api/consultarDni").anonymous()
+                        .requestMatchers("/loginForm", "/crearCuenta").anonymous()
+                        .requestMatchers("/api/consultarDni").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin((form) -> form

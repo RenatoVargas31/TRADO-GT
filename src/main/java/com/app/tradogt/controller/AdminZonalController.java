@@ -2,13 +2,17 @@ package com.app.tradogt.controller;
 
 import com.app.tradogt.dto.AgenteInfoZon;
 import com.app.tradogt.dto.ImportacionesporImportador;
+import com.app.tradogt.dto.PasswordChangeDto;
 import com.app.tradogt.entity.*;
+import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -57,6 +61,9 @@ public class AdminZonalController {
         this.rolRepository = rolRepository;
         this.zonaRepository = zonaRepository;
     }
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     private int getAuthenticatedUserId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -209,7 +216,47 @@ public class AdminZonalController {
     }
 
     @GetMapping("/contraseña")
-    public String showPassword() { return "AdminZonal/password"; }
+    public String showPassword(Model model) {
+        model.addAttribute("passwordChangeDto", new PasswordChangeDto());
+        return "AdminZonal/password";
+    }
+
+    @PostMapping("/cambiarContrasena")
+    public String cambiarContrasena(@Valid PasswordChangeDto passwordChangeDto,
+                                    BindingResult result,
+                                    Authentication authentication,
+                                    RedirectAttributes redirectAttributes,
+                                    Model model) {
+
+        // Validación de errores
+        if (result.hasErrors()) {
+            model.addAttribute("errors", result.getAllErrors());
+            return "AdminZonal/password";  // Retorna a la vista con los errores
+        }
+
+        // Obtener el usuario autenticado desde el sistema de seguridad
+        Usuario usuario = usuarioRepository.findByCorreo(authentication.getName());
+
+        // Verificar si la contraseña actual ingresada coincide con la almacenada
+        if (!passwordEncoder.matches(passwordChangeDto.getCurrentPassword(), usuario.getContrasena())) {
+            model.addAttribute("error", "La contraseña actual es incorrecta.");
+            return "AdminZonal/password";  // Retorna a la vista con el mensaje de error
+        }
+
+        // Verificar si las contraseñas nuevas coinciden
+        if (!passwordChangeDto.getNewPassword().equals(passwordChangeDto.getConfirmNewPassword())) {
+            model.addAttribute("error", "Las contraseñas nuevas no coinciden.");
+            return "AdminZonal/password";  // Retorna a la vista con el mensaje de error
+        }
+
+        // Actualizar la contraseña del usuario
+        usuario.setContrasena(passwordEncoder.encode(passwordChangeDto.getNewPassword()));
+        usuarioRepository.save(usuario);  // Guardar los cambios en la base de datos
+
+        // Agregar mensaje de éxito a los flash attributes
+        redirectAttributes.addFlashAttribute("exito", "Contraseña cambiada con éxito.");
+        return "redirect:/adminzonal/perfil";  // Redirige a la página del perfil
+    }
 
     @GetMapping("/gestionAgente")
     public String showGestionAgente(Model model) {
