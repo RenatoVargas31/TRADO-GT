@@ -6,6 +6,7 @@ import com.app.tradogt.entity.EstadoOrden;
 import com.app.tradogt.entity.Orden;
 import com.app.tradogt.entity.Usuario;
 import com.app.tradogt.repository.*;
+import com.app.tradogt.services.NotificationCorreoService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -36,6 +37,9 @@ import java.util.stream.Collectors;
 @Controller
 @RequestMapping("/agente")
 public class AgenteComprasController {
+
+    @Autowired
+    private NotificationCorreoService notificationCorreoService;
 
     final UsuarioRepository usuarioRepository;
     final OrdenRepository ordenRepository;
@@ -119,6 +123,9 @@ public class AgenteComprasController {
 
         // Agregar mensaje de éxito a los flash attributes
         redirectAttributes.addFlashAttribute("exito", "Contraseña cambiada con éxito.");
+
+        notificationCorreoService.enviarCorreoCambioContraseña(usuario.getCorreo(),usuario.getNombre());
+
         return "redirect:/agente/perfil";  // Redirige a la página del perfil
     }
 

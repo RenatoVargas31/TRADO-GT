@@ -4,6 +4,7 @@ package com.app.tradogt.controller;
 import com.app.tradogt.dto.OrdenCompraUserDto;
 import com.app.tradogt.dto.PasswordChangeDto;
 import com.app.tradogt.entity.*;
+import com.app.tradogt.services.NotificationCorreoService;
 import com.app.tradogt.services.StorageService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,6 +64,9 @@ public class UsuarioFinalController {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private NotificationCorreoService notificationCorreoService;
 
 
     final ProductosRepository productosRepository;
@@ -850,6 +854,7 @@ public class UsuarioFinalController {
         // Agregar mensaje de éxito a los flash attributes
         redirectAttributes.addFlashAttribute("exito", "Contraseña cambiada con éxito.");
 
+        notificationCorreoService.enviarCorreoCambioContraseña(usuario.getCorreo(),usuario.getNombre());
         return "redirect:/usuario/inicio";
     }
 

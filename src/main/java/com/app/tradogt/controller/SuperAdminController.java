@@ -6,6 +6,7 @@ import com.app.tradogt.entity.*;
 import com.app.tradogt.helpers.PasswordGenerator;
 import com.app.tradogt.helpers.ProductCodeGenerator;
 import com.app.tradogt.repository.*;
+import com.app.tradogt.services.NotificationCorreoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -40,6 +41,9 @@ public class SuperAdminController {
     final ProductoEnZonaRepository productoEnZonaRepository;
     final SubCategoriaRepository subCategoriaRepository;
     final CategoriaRepository categoriaRepository;
+
+    @Autowired
+    private NotificationCorreoService notificationCorreoService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -157,6 +161,9 @@ public class SuperAdminController {
 
         // Agregar mensaje de éxito a los flash attributes
         redirectAttributes.addFlashAttribute("exito", "Contraseña cambiada con éxito.");
+
+        notificationCorreoService.enviarCorreoCambioContraseña(usuario.getCorreo(), usuario.getNombre());
+
         return "redirect:/superadmin/perfil";  // Redirige a la página del perfil
     }
     //<editor-fold desc="CRUD Menu">

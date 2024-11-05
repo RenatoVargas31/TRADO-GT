@@ -4,6 +4,7 @@ import com.app.tradogt.dto.AgenteInfoZon;
 import com.app.tradogt.dto.ImportacionesporImportador;
 import com.app.tradogt.dto.PasswordChangeDto;
 import com.app.tradogt.entity.*;
+import com.app.tradogt.services.NotificationCorreoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -61,6 +62,9 @@ public class AdminZonalController {
         this.rolRepository = rolRepository;
         this.zonaRepository = zonaRepository;
     }
+
+    @Autowired
+    private NotificationCorreoService notificationCorreoService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -255,6 +259,9 @@ public class AdminZonalController {
 
         // Agregar mensaje de éxito a los flash attributes
         redirectAttributes.addFlashAttribute("exito", "Contraseña cambiada con éxito.");
+
+        notificationCorreoService.enviarCorreoCambioContraseña(usuario.getCorreo(),usuario.getNombre());
+
         return "redirect:/adminzonal/perfil";  // Redirige a la página del perfil
     }
 
