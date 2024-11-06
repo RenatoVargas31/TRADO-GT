@@ -60,6 +60,7 @@
                             <span th:text="${mensaje}"></span>
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
+                        <div id="notification-list"></div>
                         <div class="card">
                             <div class="card-body">
 
@@ -133,6 +134,17 @@
 <!-- JAVASCRIPT BASE-->
 <span th:replace="~{Common/jsBase :: js_Base}"></span>
 <!-- End JAVASCRIPT BASE-->
+
+<!--JAVASCRIPT NOTIFICACIONES-->
+<span th:replace="~{Agente/fragments/notificaciones-scripts :: js_Notificaciones}"></span>
+<!-- End JAVASCRIPT NOTIFICACIONES-->
+
+<script th:inline="javascript">
+    var userId = /*[[${usuarioAutenticado.id}]]*/ 'default';
+    console.log(userId);
+</script>
+
+
 
 <!-- Required datatable js -->
 <script th:src="@{../libs/datatables.net/js/jquery.dataTables.min.js}"></script>

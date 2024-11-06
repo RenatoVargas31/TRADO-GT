@@ -2,25 +2,39 @@ package com.app.tradogt.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.Data;
+
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @Entity
 @Table(name = "Notificacion")
 public class Notificacion {
     @Id
-    @Column(name = "idNotificacion", nullable = false)
-    private Integer id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "idNoti", nullable = false)
+    private Integer idNoti;
 
     @NotNull
     @ManyToOne
-    @JoinColumn(name = "usuario_idUsuario", nullable = false)
-    private Usuario usuarioIdusuario;
+    @JoinColumn(name = "idUsuarioNoti", nullable = false)
+    private Usuario usuario;
 
-    @Size(max = 45)
     @NotNull
-    @Column(name = "contenido", nullable = false, length = 45)
+    @ManyToOne
+    @JoinColumn(name = "idOrdenNoti", nullable = false)
+    private Orden orden;
+
+    @NotNull
+    @Column(name = "mensaje", nullable = false)
     private String contenido;
+
+    @Column(name = "leida")
+    private Boolean leido;
+
+    @Column(name = "fecha_creacion")
+    private LocalDateTime fechaCreacion;
 
 }

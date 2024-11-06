@@ -1,12 +1,11 @@
 package com.app.tradogt.controller;
 
 import com.app.tradogt.dto.*;
-import com.app.tradogt.entity.Distrito;
-import com.app.tradogt.entity.EstadoOrden;
-import com.app.tradogt.entity.Orden;
-import com.app.tradogt.entity.Usuario;
+import com.app.tradogt.entity.*;
 import com.app.tradogt.repository.*;
 import com.app.tradogt.services.NotificationCorreoService;
+import com.app.tradogt.services.NotificationService;
+import com.pusher.rest.Pusher;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -18,10 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -37,6 +33,9 @@ import java.util.stream.Collectors;
 @Controller
 @RequestMapping("/agente")
 public class AgenteComprasController {
+
+    @Autowired
+    private NotificationService notificationService;
 
     @Autowired
     private NotificationCorreoService notificationCorreoService;
@@ -76,6 +75,13 @@ public class AgenteComprasController {
         // Buscar el usuario (agente) en la base de datos usando el correo
         Usuario usuario = usuarioRepository.findByCorreo(correoUsuario);  // Método para buscar usuario por correo
         return usuario.getId(); // Retornar el ID del agente autenticado
+    }
+
+    @GetMapping("/notificaciones")
+    @ResponseBody
+    public List<Notificacion> obtenerNotificaciones(@RequestParam("usuarioId") int usuarioId) {
+        Usuario usuario = usuarioRepository.findById(usuarioId).get();
+        return notificationService.getUnreadNotifications(usuario);
     }
 
     @GetMapping("/inicio")
@@ -222,6 +228,7 @@ public class AgenteComprasController {
                 ))
                 .collect(Collectors.toList());
         model.addAttribute("listaOrdenes", listaOrdenes);
+        model.addAttribute("idAgente",idAgente);
         return "Agente/procesoOrdersTable-Agente";
     }
     @GetMapping("/solveOrders")
@@ -411,10 +418,10 @@ public class AgenteComprasController {
          }
 
     }
-    // Método para eliminar la orden (cambio lógico de isDeleted)
     @PostMapping("/changeToEnProceso")
     public String changeStateInProcess(@RequestParam("idOrden") int idOrden, RedirectAttributes redirectAttributes) {
-
+        int idAgente = getAuthenticatedUserId();
+        Optional<Usuario> optionalUsuario = usuarioRepository.findById(idAgente);
         // Buscamos la orden por ID
         Optional<Orden> optionalOrden = ordenRepository.findById(idOrden);
 
@@ -431,8 +438,19 @@ public class AgenteComprasController {
             orden.setFechaRecibido(LocalDate.now().plusDays(12));
             // Guardar los cambios en la base de datos
             ordenRepository.save(orden);
+
+            // Crear y enviar la notificación
+            if (optionalUsuario.isPresent()) {
+                Usuario usuario = optionalUsuario.get();
+                String mensaje = "La orden #" + orden.getCodigo() + " ha cambiado su estado a 'En proceso'.";
+                notificationService.createNotification(mensaje, usuario, orden);
+            }
+
             // Agregar un mensaje flash para la confirmación
             redirectAttributes.addFlashAttribute("mensaje", "La orden ha sido validada con éxito.");
+
+
+
         }else{
             // Si no se encuentra la orden
             redirectAttributes.addFlashAttribute("error", "La orden no se encontró.");
@@ -659,6 +677,26 @@ public class AgenteComprasController {
     //PREGUNTAS FRECUENTES
     @GetMapping("/faq")
     public String showFaq() {
+        // ID de usuario de prueba (reemplaza esto con el ID del usuario autenticado si tienes uno disponible)
+        int userId = 4; // Por ejemplo, un ID fijo para pruebas
+
+        // Busca al usuario en la base de datos usando el ID
+        Optional<Usuario> optionalUsuario = usuarioRepository.findById(userId);
+        if (optionalUsuario.isPresent()) {
+            Usuario usuario = optionalUsuario.get();
+
+            // Crea una orden de prueba, si necesitas una referencia a la orden (o usa un objeto de prueba)
+            Optional<Orden> optionalOrden = ordenRepository.findById(1); // ID de orden de prueba
+            Orden orden = optionalOrden.orElse(null);
+
+            if (orden != null) {
+                // Mensaje de prueba para la notificación
+                String mensaje = "Esta es una notificación de prueba al visitar la página FAQ.";
+
+                // Enviar la notificación de prueba
+                notificationService.createNotification(mensaje, usuario, orden);
+            }
+        }
         return "Agente/faq-Agente";
     }
 
