@@ -169,27 +169,44 @@ public class AdminZonalController {
     }
 
     @PostMapping("/subirFoto")
-    public String viewSubirFoto(@RequestParam("foto") MultipartFile file, Model model) throws IOException {
-        System.out.println("Entré al controler");
+    public String viewSubirFoto(@RequestParam("foto") MultipartFile file, Model model, RedirectAttributes redirectAttributes) {
+        if (file.isEmpty()) {
+            redirectAttributes.addFlashAttribute("message", "Por favor, selecciona una foto");
+            return "redirect:/adminzonal/perfil";
+        }
 
-        // Ruta dinámica donde se guardarán las imágenes (fuera de static)
-        String uploadDir = "uploads/fotosUsuarios/";
+        try {
+            // Ruta dinámica donde se guardarán las imágenes (fuera de static)
+            String uploadDir = "uploads/fotosUsuarios/";
 
-        // Guardar el archivo en la ruta definida
-        byte[] bytes = file.getBytes();
-        Path path = Paths.get(uploadDir + file.getOriginalFilename());
-        Files.write(path, bytes);
-        System.out.println("Guardé la foto en: " + path);
+            // Crear el directorio si no existe
+            Path uploadPath = Paths.get(uploadDir);
+            if (!Files.exists(uploadPath)) {
+                Files.createDirectories(uploadPath);
+            }
 
-        // Obtener el usuario autenticado desde el modelo
-        Usuario usuario = (Usuario) model.getAttribute("usuarioAutenticado");
-        assert usuario != null;
+            // Guardar el archivo en la ruta definida
+            byte[] bytes = file.getBytes();
+            Path path = uploadPath.resolve(file.getOriginalFilename());
+            Files.write(path, bytes);
 
-        // Actualizar el nombre de la foto en la base de datos
-        usuario.setFoto(file.getOriginalFilename());
-        System.out.println("Seteé la foto como: " + file.getOriginalFilename());
-        usuarioRepository.save(usuario);
-        System.out.println("Guardé el usuario");
+            // Obtener el usuario autenticado desde el modelo
+            Usuario usuario = (Usuario) model.getAttribute("usuarioAutenticado");
+            if (usuario == null) {
+                redirectAttributes.addFlashAttribute("message", "Usuario no autenticado.");
+                return "redirect:/adminzonal/perfil";
+            }
+
+            // Actualizar el nombre de la foto en la base de datos
+            usuario.setFoto(file.getOriginalFilename());
+            usuarioRepository.save(usuario);
+
+            redirectAttributes.addFlashAttribute("message", "Carga satisfactoria '" + file.getOriginalFilename() + "'");
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            redirectAttributes.addFlashAttribute("message", "Error al cargar '" + file.getOriginalFilename() + "'");
+        }
 
         // Redirigir al perfil
         return "redirect:/adminzonal/perfil";
