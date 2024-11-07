@@ -206,6 +206,7 @@ public class LoginController {
 
         //Cambiar campo isActived a 1
         usuario.setIsActivated((byte) 1);
+        usuario.setIsAccepted((byte) 1);
         // Guardar el usuario en la base de datos
         usuario.setDistritoIddistrito(distritoOpt.get());
 
@@ -218,7 +219,7 @@ public class LoginController {
                 "Saludos,\nEquipo de Trado";
 
         sendMessage(usuario.getCorreo(), mensajeBienvenida);
-        return "redirect:/CreateAcc-confirm";
+        return "redirect:/loginForm";
     }
 
     public void sendMessage(String email, String messageEmail) {
