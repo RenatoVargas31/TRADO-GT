@@ -1125,7 +1125,7 @@ public class UsuarioFinalController {
         return "Usuario/CategoriaMuebles-usuario";
     }
     @GetMapping("/checkout-info")
-    public String showcheckout(Model model) {
+    public String showcheckout(Model model, RedirectAttributes Attr) {
 
         int user = getAuthenticatedUserId();
         Usuario myuser = usuarioRepository.findByIdUsuario(user);
@@ -1140,7 +1140,7 @@ public class UsuarioFinalController {
         if (miCarrito != null) {
             List<ProductoEnCarrito> misProductos = productoEnCarritoRepository.findBycarritoIdcarrito( miCarrito);
             if(misProductos.isEmpty()) {
-                model.addAttribute("mensaje", "El carrito se encuentra vacío");
+                Attr.addAttribute("mensajeCarritoEmpty", "El carrito se encuentra vacío");
             }else {
                 model.addAttribute("carrito", misProductos);
 
@@ -1150,7 +1150,7 @@ public class UsuarioFinalController {
             }
 
         }else {
-            model.addAttribute("mensaje", "El carrito se encuentra vacío");
+            Attr.addAttribute("mensajeCarritoEmpty", "El carrito se encuentra vacío");
             return "Usuario/carrito-usuario";
         }
         return "Usuario/billing-info-usuario";
@@ -1174,8 +1174,6 @@ public class UsuarioFinalController {
                                    @RequestParam("LugarEntrega") String LugarEntrega,
                                    Model model,  RedirectAttributes attr) {
 
-        System.out.println("-------------------");
-        System.out.println("Nombre" + nombre);
 
         Autenticacion facturacion = new Autenticacion();
         facturacion.setNombre(nombre);
@@ -1201,7 +1199,6 @@ public class UsuarioFinalController {
         pago.setFechaTarjeta(fechaTarjeta);
         pago.setFecha(LocalDate.now());
         pago.setAutenticacionIdautenticacion(facturacion);
-        System.out.println("Pago antes de guardar: " + pago.toString());
         List<Pago> listaPago = pagoRepository.findAll();
         pago.setId(listaPago.size() + 1);
         pagoRepository.save(pago);
@@ -1210,8 +1207,6 @@ public class UsuarioFinalController {
         //Busco mi carrito actual
         Carrito miCarrito = carritoRepository.findByusuarioIdusuarioAndIsDelete(myuser, (byte) 0);
 
-        System.out.println("------------");
-        System.out.println("carr: " + miCarrito.getIsDelete());
         List<ProductoEnCarrito> misProductos = productoEnCarritoRepository.findBycarritoIdcarrito(miCarrito);//la cantidad de cada producto está aqui
 
         int salvavida = 0;
@@ -1221,8 +1216,6 @@ public class UsuarioFinalController {
             //No debería estar aquí
             attr.addFlashAttribute("error", "No hay productos en el carrito.");
         }else {
-            System.out.println("-----------------");
-            System.out.println("Aqui estoy");
             for(ProductoEnCarrito item : misProductos) {
 
                 //Creamos un ProductoEnZonaId
@@ -1239,14 +1232,9 @@ public class UsuarioFinalController {
                     return "redirect:/usuario/carrito";
                 }
 
-
-                System.out.println("-------");
-                System.out.println("ID producto: " + item.getProductoEnZona().getProductoIdproducto().getId());
-
                 //Obtengo el total de stock en tienda
                 int Stock = tienda.get().getCantidad();
                 int cantidadSelecionada = item.getCantidad();
-                System.out.println("cantidad :" + cantidadSelecionada);
 
                 int newTotal = Stock - cantidadSelecionada;
                 salvavida = newTotal;
@@ -1259,7 +1247,6 @@ public class UsuarioFinalController {
                     System.out.println("Nuevo stock: " + newTotal);
                     tienda.get().setCantidad(newTotal);
                     productoEnZonaRepository.save(tienda.get());
-                    System.out.println("AYUDDDDDDDDDDDDDDDA");
                 }
 
             }
@@ -1299,7 +1286,7 @@ public class UsuarioFinalController {
             // Guardar la orden
             ordenRepository.save(orden);
             Integer idOrden = orden.getId();
-            attr.addFlashAttribute("exito", "Se ha generado correctamente la orden de compra!");
+            attr.addFlashAttribute("exito", "Se ha guardado de forma exitosa la orden " +orden.getCodigo() + " .");
             model.addAttribute("orden", orden);
             if (carrito != null) {
                 carrito.setIsDelete((byte) 1);
