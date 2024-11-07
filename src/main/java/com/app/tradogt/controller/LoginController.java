@@ -221,14 +221,50 @@ public class LoginController {
         return "redirect:/CreateAcc-confirm";
     }
 
-    public void sendMessage (String email, String messageEmail){
-
+    public void sendMessage(String email, String messageEmail) {
         try {
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
             helper.setSubject("¡Bienvenido a Trado!");
             helper.setTo(email);
-            helper.setText(messageEmail, true); // El segundo parámetro `true` permite HTML en el mensaje si es necesario
+
+            String htmlContent = "<!DOCTYPE html>" +
+                    "<html lang='es'>" +
+                    "<head>" +
+                    "    <meta charset='UTF-8'>" +
+                    "    <meta name='viewport' content='width=device-width, initial-scale=1.0'>" +
+                    "</head>" +
+                    "<body style='margin:0; padding:0; font-family: Arial, sans-serif; background-color: #f4f4f4;'>" +
+                    "    <table width='100%' border='0' cellspacing='0' cellpadding='0'>" +
+                    "        <tr>" +
+                    "            <td align='center' bgcolor='#800080' style='padding: 40px 0; color: #ffffff;'>" +
+                    "                <h1 style='margin: 0; font-size: 24px;'>¡Bienvenido a Trado!</h1>" +
+                    "                <p style='font-size: 16px;'>Nos alegra que te unas a nosotros</p>" +
+                    "            </td>" +
+                    "        </tr>" +
+                    "        <tr>" +
+                    "            <td align='center' style='padding: 20px;'>" +
+                    "                <table width='600' border='0' cellspacing='0' cellpadding='0' style='background-color: #ffffff; border-radius: 8px; padding: 40px;'>" +
+                    "                    <tr>" +
+                    "                        <td align='center' style='padding: 20px; color: #333333;'>" +
+                    "                            <h2 style='font-size: 20px; color: #800080;'>Empieza tu viaje con nosotros</h2>" +
+                    "                            <p style='font-size: 16px; line-height: 1.5;'>" + messageEmail + "</p>" + // Inserta el contenido aquí
+                    "                            <a href='#' style='display: inline-block; margin-top: 20px; padding: 12px 24px; background-color: #800080; color: #ffffff; text-decoration: none; border-radius: 5px; font-size: 16px;'>Iniciar Sesión</a>" +
+                    "                        </td>" +
+                    "                    </tr>" +
+                    "                </table>" +
+                    "            </td>" +
+                    "        </tr>" +
+                    "        <tr>" +
+                    "            <td align='center' style='padding: 20px; color: #888888; font-size: 12px;'>" +
+                    "                <p>&copy; 2024 Trado. Todos los derechos reservados.</p>" +
+                    "            </td>" +
+                    "        </tr>" +
+                    "    </table>" +
+                    "</body>" +
+                    "</html>";
+
+            helper.setText(htmlContent, true);
             helper.setFrom(sender);
             mailSender.send(message);
         } catch (MessagingException e) {
@@ -236,4 +272,6 @@ public class LoginController {
             throw new RuntimeException("Error al enviar el correo de bienvenida", e);
         }
     }
+
+
 }

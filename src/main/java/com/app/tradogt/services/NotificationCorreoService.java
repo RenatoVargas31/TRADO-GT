@@ -17,10 +17,41 @@ public class NotificationCorreoService {
     // Método para enviar correo de notificación al usuario
     public void enviarCorreoCambioContraseña(String destinatario, String nombreUsuario) {
         String asunto = "Cambio de Contraseña Exitoso";
-        String mensajeHtml = "<h1>Hola " + nombreUsuario + ",</h1>" +
-                "<p>Tu contraseña ha sido cambiada exitosamente.</p>" +
-                "<p>Si no solicitaste este cambio, por favor contacta a nuestro equipo de soporte de inmediato.</p>" +
-                "<br><p>Saludos,<br>El equipo de soporte</p>";
+        String mensajeHtml = "<!DOCTYPE html>" +
+                "<html lang='es'>" +
+                "<head>" +
+                "    <meta charset='UTF-8'>" +
+                "    <meta name='viewport' content='width=device-width, initial-scale=1.0'>" +
+                "</head>" +
+                "<body style='margin:0; padding:0; font-family: Arial, sans-serif; background-color: #f4f4f4;'>" +
+                "    <table width='100%' border='0' cellspacing='0' cellpadding='0'>" +
+                "        <tr>" +
+                "            <td align='center' style='padding: 40px 0; background-color: #800080; color: #ffffff;'>" +
+                "                <h1 style='margin: 0; font-size: 24px;'>Hola " + nombreUsuario + ",</h1>" +
+                "            </td>" +
+                "        </tr>" +
+                "        <tr>" +
+                "            <td align='center' style='padding: 20px;'>" +
+                "                <table width='600' border='0' cellspacing='0' cellpadding='0' style='background-color: #ffffff; border-radius: 8px; padding: 40px;'>" +
+                "                    <tr>" +
+                "                        <td align='center' style='padding: 20px; color: #333333;'>" +
+                "                            <p style='font-size: 16px; line-height: 1.5;'>Tu contraseña ha sido cambiada exitosamente.</p>" +
+                "                            <p style='font-size: 16px; line-height: 1.5; color: #b30000;'>Si no solicitaste este cambio, por favor contacta a nuestro equipo de soporte de inmediato.</p>" +
+                "                            <a href='mailto:serviciotecnico.trado@gmail.com' style='display: inline-block; margin-top: 20px; padding: 12px 24px; background-color: #800080; color: #ffffff; text-decoration: none; border-radius: 5px; font-size: 16px;'>Contactar Soporte</a>" +
+                "                        </td>" +
+                "                    </tr>" +
+                "                </table>" +
+                "            </td>" +
+                "        </tr>" +
+                "        <tr>" +
+                "            <td align='center' style='padding: 20px; color: #888888; font-size: 12px;'>" +
+                "                <p>Saludos,<br>El equipo de soporte</p>" +
+                "            </td>" +
+                "        </tr>" +
+                "    </table>" +
+                "</body>" +
+                "</html>";
+
 
         try {
             MimeMessage message = mailSender.createMimeMessage();
