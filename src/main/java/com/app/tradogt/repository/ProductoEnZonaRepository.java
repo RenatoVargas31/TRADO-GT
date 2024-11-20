@@ -55,10 +55,12 @@ public interface ProductoEnZonaRepository extends JpaRepository<ProductoEnZona, 
 
     @Query("SELECT new com.app.tradogt.dto.ProductoStock(p.nombre, pz.cantidad) "
             + "FROM ProductoEnZona pz "
-            + "JOIN pz.productoIdproducto p " // Realiza el JOIN con la entidad Producto
+            + "JOIN pz.productoIdproducto p "
             + "WHERE pz.zonaIdzona.id = :idZona AND pz.cantidad = "
-            + "(SELECT MIN(pz2.cantidad) FROM ProductoEnZona pz2 WHERE pz2.zonaIdzona.id = :idZona)")
-    ProductoStock productStockMenor(@Param("idZona") int idZona);
+            + "(SELECT MIN(pz2.cantidad) FROM ProductoEnZona pz2 WHERE pz2.zonaIdzona.id = :idZona) "
+            + "ORDER BY pz.id.productoIdproducto")
+    List<ProductoStock> productStockMenor(@Param("idZona") int idZona);
+
 
 
 

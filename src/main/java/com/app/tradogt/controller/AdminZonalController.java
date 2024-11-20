@@ -111,7 +111,8 @@ public class AdminZonalController {
         model.addAttribute("usuariosTotal", usuarioRepository.countUsuarios());
         model.addAttribute("stockTotal", productoEnZonaRepository.countStockTotal(zonaId));
         model.addAttribute("stockPromedio", productoEnZonaRepository.stockPorProducto(zonaId));
-        model.addAttribute("productoStockMenor", productoEnZonaRepository.productStockMenor(zonaId));
+        model.addAttribute("productoStockMenor", productoEnZonaRepository.productStockMenor(zonaId).get(0));
+        model.addAttribute("agentes", usuarioRepository.getAgentesbyZonal(zonaId));
         return "AdminZonal/dashboard-AdminZonal";
     }
 
