@@ -169,7 +169,7 @@
 
                         <div class="text-muted" style="font-size: 14px;">
                           <span th:text="${rating}"></span>
-                          (<span th:text="${conteoRating}"></span> resenas)
+                          (<span th:text="${conteoRating}"></span> reseñas)
                         </div>
                       </div>
                       <span class="product-ribbon badge bg-warning " th:text="${product.codigo}"></span><br>
@@ -224,39 +224,65 @@
                             <label for="cantidad" class="col-sm-3 col-form-label">Cantidad: </label>
                             <div class="col-sm-3">
                               <!-- Input de cantidad que puede modificar el usuario -->
-                              <input type="number" class="form-control" id="cantidad" name="cantidad" min="20" value="20" oninput="actualizarCantidad()">
+                              <input
+                                      type="number"
+                                      class="form-control"
+                                      id="cantidad"
+                                      name="cantidad"
+                                      min="20"
+                                      value="20"
+                                      oninput="actualizarCantidad()"
+                              />
+
+
                             </div>
                           </div>
 
                           <!-- Botones de acción -->
                           <div class="row text-start mt-3">
                             <div class="col-12">
-                              <form method="post" th:action="@{/usuario/selecionarProducto}">
+                              <form method="post" th:action="@{/usuario/selecionarProducto} " onsubmit="return validarCantidad()">
                                 <!-- Campo oculto para la cantidad -->
                                 <input type="hidden" id="cantidadOculta" name="cantidad">
                                 <!-- Campo oculto para el ID del producto -->
                                 <input type="hidden" name="productoId" th:value="${product.id}">
-                                <button type="submit" class="btn btn-primary btn-block waves-effect waves-light" onclick="actualizarCantidad()">Añadir al carrito</button>
-                              </form>
+                                <button type="submit" class="btn btn-primary btn-block waves-effect waves-light">Añadir al carrito</button>
+                                </form>
                             </div>
                           </div>
 
                           <script>
                             function actualizarCantidad() {
-                              // Copia el valor del input visible (cantidad) al input oculto
-                              var cantidad = document.getElementById("cantidad").value;
-                              if (cantidad === '') {
-                                cantidad = 20;
+                              // Obtiene el valor del input visible (cantidad)
+                              let cantidadInput = document.getElementById("cantidad");
+                              let cantidad = cantidadInput.value;
+
+                              // Verifica si el valor no es un número válido o es menor que 20
+                              if (!/^\d+$/.test(cantidad) ) {
+                                cantidadInput.value = ''; // Restaura el campo a vacío si es inválido
+                                return; // Sale de la función para evitar actualizar el campo oculto
                               }
 
-                              document.getElementById("cantidadOculta").value = cantidad;
-                              console.log("Cantidad actualizada:", cantidad);
-                            }
+                              // Copia el valor al input oculto
+                              document.getElementById("cantidadOculta").value = cantidadInput.value;
 
-                            // Inicializa el valor del campo oculto al cargar la página
-                            document.addEventListener('DOMContentLoaded', (event) => {
-                              actualizarCantidad();
-                            });
+                              console.log("Cantidad actualizada:", cantidadInput.value);
+                            }
+                            function validarCantidad() {
+                              let cantidadInput = document.getElementById("cantidad");
+                              let cantidad = cantidadInput.value;
+
+                              // Verifica si el valor es válido y mayor o igual a 20
+                              if (!/^\d+$/.test(cantidad) || parseInt(cantidad) < 20) {
+                                alert("Por favor, ingrese un número mayor o igual a 20.");
+                                cantidadInput.value = ''; // Borra el valor si no es válido
+                                return false; // Impide el envío del formulario
+                              }
+
+                              // Si es válido, actualiza el campo oculto
+                              document.getElementById("cantidadOculta").value = cantidadInput.value;
+                              return true; // Permite el envío del formulario
+                            }
                           </script>
 
 
