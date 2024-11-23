@@ -1,6 +1,7 @@
 package com.app.tradogt.controller;
 
 import com.app.tradogt.daos.DniDao;
+import com.app.tradogt.dto.PasswordRegisterDto;
 import com.app.tradogt.entity.*;
 import com.app.tradogt.repository.*;
 import jakarta.mail.MessagingException;
@@ -127,6 +128,7 @@ public class LoginController {
     @GetMapping("/crearCuenta")
     public String crearCuenta(Model model) {
         model.addAttribute("usuario", new Usuario());
+        model.addAttribute("passwordRegisterDto", new PasswordRegisterDto());
         model.addAttribute("distritos", distritoRepository.findAll());
         return "CreateAcc";
     }
@@ -135,14 +137,28 @@ public class LoginController {
     @PostMapping("/crearCuenta")
     public String registrarUsuario(@Valid @ModelAttribute Usuario usuario,
                                    BindingResult result,
+                                   @Valid @ModelAttribute PasswordRegisterDto passwordRegisterDto,
+                                   BindingResult passwordResult,
                                    @RequestParam("distrito") String distritoNombre,
                                    RedirectAttributes redirectAttributes,
                                    Model model) {
 
-        
+        /*
         // Validar que las contraseñas coincidan
         if (!usuario.getContrasena().equals(usuario.getConfirmarContrasena())) {
             result.rejectValue("confirmarContrasena", "error.usuario", "Las contraseñas no coinciden.");
+            return "CreateAcc";
+        }
+        */
+        if (passwordResult.hasErrors()) {
+
+            return "redirect:/crearCuenta";
+        }
+
+        // Validar que las contraseñas coincidan
+        if (!passwordRegisterDto.getContrasena().equals(passwordRegisterDto.getConfirmarContrasena())) {
+            passwordResult.rejectValue("confirmarContrasena", "error.passwordRegisterDto", "Las contraseñas no coinciden.");
+            model.addAttribute("distritos", distritoRepository.findAll());
             return "CreateAcc";
         }
 
@@ -155,36 +171,43 @@ public class LoginController {
 
         if (distritoOpt.isEmpty()) {
             result.rejectValue("distritoIddistrito", "error.usuario", "El distrito ingresado no es valido.");
+            model.addAttribute("distritos", distritoRepository.findAll());
             return "CreateAcc"; // Volver al formulario si el distrito no es válido
         }
 
         // Validate DNI
         if (!usuario.getDni().matches("\\d{8}")) {
             result.rejectValue("dni", "error.usuario", "El DNI debe ser un valor único de 8 dígitos.");
+            model.addAttribute("distritos", distritoRepository.findAll());
             return "CreateAcc";
         }
         if (usuarioRepository.existsByDni(usuario.getDni())) {
             result.rejectValue("dni", "error.usuario", "El DNI ya está registrado.");
+            model.addAttribute("distritos", distritoRepository.findAll());
             return "CreateAcc";
         }
 
         // Validate name and surname
         if (!usuario.getNombre().matches("[a-zA-Z\\s]+")) {
             result.rejectValue("nombre", "error.usuario", "El nombre no debe contener números.");
+            model.addAttribute("distritos", distritoRepository.findAll());
             return "CreateAcc";
         }
         if (!usuario.getApellido().matches("[a-zA-Z\\s]+")) {
             result.rejectValue("apellido", "error.usuario", "El apellido no debe contener números.");
+            model.addAttribute("distritos", distritoRepository.findAll());
             return "CreateAcc";
         }
 
         // Validate email
         if (!usuario.getCorreo().matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
             result.rejectValue("correo", "error.usuario", "El correo debe ser único y contener un @.");
+            model.addAttribute("distritos", distritoRepository.findAll());
             return "CreateAcc";
         }
         if (usuarioRepository.existsByCorreo(usuario.getCorreo())) {
             result.rejectValue("correo", "error.usuario", "El correo ya está registrado.");
+            model.addAttribute("distritos", distritoRepository.findAll());
             return "CreateAcc";
         }
 
@@ -193,16 +216,23 @@ public class LoginController {
                 usuario.getApellido().trim().isEmpty() || usuario.getCorreo().trim().isEmpty() ||
                 usuario.getDireccion().trim().isEmpty()) {
             result.rejectValue("general", "error.usuario", "Ningún campo debe estar vacío o contener solo espacios.");
+            model.addAttribute("distritos", distritoRepository.findAll());
             return "CreateAcc";
         }
 
         // Si hay errores, recargar el formulario con la lista de distritos
         if (result.hasErrors()) {
+            model.addAttribute("distritos", distritoRepository.findAll());
             return "CreateAcc";
         }
 
+        /*
         // Cifrar la contraseña antes de guardar
         usuario.setContrasena(passwordEncoder.encode(usuario.getContrasena()));
+        */
+
+        // Cifrar la contraseña antes de guardar
+        usuario.setContrasena(passwordEncoder.encode(passwordRegisterDto.getContrasena()));
 
         //Cambiar campo isActived a 1
         usuario.setIsActivated((byte) 1);
