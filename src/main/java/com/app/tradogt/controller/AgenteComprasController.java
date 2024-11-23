@@ -419,7 +419,9 @@ public class AgenteComprasController {
 
     }
     @PostMapping("/changeToEnProceso")
-    public String changeStateInProcess(@RequestParam("idOrden") int idOrden, RedirectAttributes redirectAttributes) {
+    public String changeStateInProcess(@RequestParam("idOrden") int idOrden,
+                                       @RequestParam("idUsuario") int idUsuario,
+                                       RedirectAttributes redirectAttributes) {
         int idAgente = getAuthenticatedUserId();
         Optional<Usuario> optionalUsuario = usuarioRepository.findById(idAgente);
         // Buscamos la orden por ID
@@ -457,7 +459,7 @@ public class AgenteComprasController {
         }
 
         // Redirigimos a la página de listado de órdenes después de eliminar
-        return "redirect:/agente/enProcesoOrders";
+        return "redirect:/agente/detailsOrder?idOrden=" + idOrden + "&idUsuario=" + idUsuario;
     }
 
     // Método para eliminar la orden (cambio lógico de isDeleted)
@@ -489,6 +491,7 @@ public class AgenteComprasController {
     public String takeOrder(
             @RequestParam("idOrden") int idOrden,
             @RequestParam("idAgente") int idAgente,
+            @RequestParam("idUsuario") int idUsuario,
             RedirectAttributes redirectAttributes) {
 
         // Buscamos la orden por su ID
@@ -515,7 +518,7 @@ public class AgenteComprasController {
         }
 
         // Redirigir a la página de usuarios baneados
-        return "redirect:/agente/pendingOrders";
+        return "redirect:/agente/detailsOrder?idOrden=" + idOrden + "&idUsuario=" + idUsuario;
     }
 
     //Cambiar la dirección de la orden
