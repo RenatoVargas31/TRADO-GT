@@ -386,7 +386,10 @@ $(document).ready(function () {
         lengthChange: !1,
         pageLength: 7,
         info: !1,
-        language: {paginate: {previous: "<i class='mdi mdi-chevron-left'>", next: "<i class='mdi mdi-chevron-right'>"}},
+        language: {paginate: {previous: "<i class='mdi mdi-chevron-left'>", next: "<i class='mdi mdi-chevron-right'>"},
+                   emptyTable: "Por el momento no tiene órdenes asignadas", // Mensaje personalizado
+                   zeroRecords: "No se encontraron coincidencias", // Mensaje al buscar sin resultados
+        },
         drawCallback: function () {
             $(".dataTables_paginate > .pagination").addClass("pagination-rounded")
         },
@@ -411,8 +414,12 @@ $(document).ready(function () {
             }
         ],
         columnDefs: [
+            { targets: 0, orderable: false }, // Desactiva la ordenación en la primera columna
+            { targets: -1, orderable: false },
             { targets: -1, searchable: false } // Deshabilitar búsqueda en la última columna
-        ]
+        ],
+        order: [[2, 'desc']], // Ordena por la tercera columna (índice 2) en orden descendente
+        ordering: true // Asegura que la ordenación esté habilitada
     });
     a.buttons().container().appendTo("#datatable-ordenesCompraAll_wrapper .col-md-6:eq(0)");
     $(".dataTables_length select").addClass("form-select form-select-sm");
@@ -423,7 +430,10 @@ $(document).ready(function () {
         lengthChange: !1,
         pageLength: 7,
         info: !1,
-        language: {paginate: {previous: "<i class='mdi mdi-chevron-left'>", next: "<i class='mdi mdi-chevron-right'>"}},
+        language: {paginate: {previous: "<i class='mdi mdi-chevron-left'>", next: "<i class='mdi mdi-chevron-right'>"},
+                   emptyTable: "Por el momento no hay órdenes sin asignar", // Mensaje personalizado
+                   zeroRecords: "No se encontraron coincidencias", // Mensaje al buscar sin resultados
+        },
         drawCallback: function () {
             $(".dataTables_paginate > .pagination").addClass("pagination-rounded")
         },
@@ -448,8 +458,11 @@ $(document).ready(function () {
             }
         ],
         columnDefs: [
-            { targets: -1, searchable: false } // Deshabilitar búsqueda en la última columna
-        ]
+            { targets: -1, searchable: false }, // Deshabilitar búsqueda en la última columna
+            { targets: -1, orderable: false },
+            { targets: 0, orderable: false }
+        ],
+        order: [[2, 'desc']] // Ordena por la tercera columna (índice 2) en orden descendente
     });
     a.buttons().container().appendTo("#datatable-ordenesCompraSinAsignar_wrapper .col-md-6:eq(0)");
     $(".dataTables_length select").addClass("form-select form-select-sm");
@@ -460,7 +473,10 @@ $(document).ready(function () {
         lengthChange: !1,
         pageLength: 7,
         info: !1,
-        language: {paginate: {previous: "<i class='mdi mdi-chevron-left'>", next: "<i class='mdi mdi-chevron-right'>"}},
+        language: {paginate: {previous: "<i class='mdi mdi-chevron-left'>", next: "<i class='mdi mdi-chevron-right'>"},
+                   emptyTable: "Por el momento no hay órdenes pendientes", // Mensaje personalizado
+                   zeroRecords: "No se encontraron coincidencias", // Mensaje al buscar sin resultados
+        },
         drawCallback: function () {
             $(".dataTables_paginate > .pagination").addClass("pagination-rounded")
         },
@@ -485,8 +501,11 @@ $(document).ready(function () {
             }
         ],
         columnDefs: [
-            { targets: -1, searchable: false } // Deshabilitar búsqueda en la última columna
-        ]
+            { targets: -1, searchable: false }, // Deshabilitar búsqueda en la última columna
+            { targets: -1, orderable: false },
+            { targets: 0, orderable: false }
+        ],
+        order: [[2, 'desc']] // Ordena por la tercera columna (índice 2) en orden descendente
     });
     a.buttons().container().appendTo("#datatable-ordenesCompraPendientes_wrapper .col-md-6:eq(0)");
     $(".dataTables_length select").addClass("form-select form-select-sm");
@@ -497,7 +516,10 @@ $(document).ready(function () {
         lengthChange: !1,
         pageLength: 7,
         info: !1,
-        language: {paginate: {previous: "<i class='mdi mdi-chevron-left'>", next: "<i class='mdi mdi-chevron-right'>"}},
+        language: {paginate: {previous: "<i class='mdi mdi-chevron-left'>", next: "<i class='mdi mdi-chevron-right'>"},
+                   emptyTable: "Por el momento no hay órdenes en proceso", // Mensaje personalizado
+                   zeroRecords: "No se encontraron coincidencias", // Mensaje al buscar sin resultados
+        },
         drawCallback: function () {
             $(".dataTables_paginate > .pagination").addClass("pagination-rounded")
         },
@@ -522,8 +544,11 @@ $(document).ready(function () {
             }
         ],
         columnDefs: [
-            { targets: -1, searchable: false } // Deshabilitar búsqueda en la última columna
-        ]
+            { targets: -1, searchable: false }, // Deshabilitar búsqueda en la última columna
+            { targets: -1, orderable: false },
+            { targets: 0, orderable: false }
+        ],
+        order: [[2, 'desc']] // Ordena por la tercera columna (índice 2) en orden descendente
     });
     a.buttons().container().appendTo("#datatable-ordenesCompraEnProceso_wrapper .col-md-6:eq(0)");
     $(".dataTables_length select").addClass("form-select form-select-sm");
@@ -534,7 +559,10 @@ $(document).ready(function () {
         lengthChange: !1,
         pageLength: 7,
         info: !1,
-        language: {paginate: {previous: "<i class='mdi mdi-chevron-left'>", next: "<i class='mdi mdi-chevron-right'>"}},
+        language: {paginate: {previous: "<i class='mdi mdi-chevron-left'>", next: "<i class='mdi mdi-chevron-right'>"},
+                   emptyTable: "Por el momento no hay órdenes resueltas", // Mensaje personalizado
+                   zeroRecords: "No se encontraron coincidencias", // Mensaje al buscar sin resultados
+        },
         drawCallback: function () {
             $(".dataTables_paginate > .pagination").addClass("pagination-rounded")
         },
@@ -559,8 +587,11 @@ $(document).ready(function () {
             }
         ],
         columnDefs: [
-            { targets: -1, searchable: false } // Deshabilitar búsqueda en la última columna
-        ]
+            { targets: -1, searchable: false }, // Deshabilitar búsqueda en la última columna
+            { targets: -1, orderable: false },
+            { targets: 0, orderable: false }
+        ],
+        order: [[2, 'desc']] // Ordena por la tercera columna (índice 2) en orden descendente
     });
     a.buttons().container().appendTo("#datatable-ordenesCompraResueltas_wrapper .col-md-6:eq(0)");
     $(".dataTables_length select").addClass("form-select form-select-sm");
@@ -571,7 +602,10 @@ $(document).ready(function () {
         lengthChange: !1,
         pageLength: 7,
         info: !1,
-        language: {paginate: {previous: "<i class='mdi mdi-chevron-left'>", next: "<i class='mdi mdi-chevron-right'>"}},
+        language: {paginate: {previous: "<i class='mdi mdi-chevron-left'>", next: "<i class='mdi mdi-chevron-right'>"},
+                   emptyTable: "No tienes usuarios asignados", // Mensaje personalizado
+                   zeroRecords: "No se encontraron coincidencias", // Mensaje al buscar sin resultados
+        },
         drawCallback: function () {
             $(".dataTables_paginate > .pagination").addClass("pagination-rounded")
         },
@@ -596,8 +630,12 @@ $(document).ready(function () {
             }
         ],
         columnDefs: [
-            { targets: -1, searchable: false } // Deshabilitar búsqueda en la última columna
-        ]
+            { targets: -1, searchable: false }, // Deshabilitar búsqueda en la última columna
+            { targets: -1, orderable: false },
+            { targets: 0, orderable: false },
+            { targets: 3, orderable: false }
+        ],
+        order: [[2, 'desc']] // Ordena por la tercera columna (índice 2) en orden descendente
     });
     a.buttons().container().appendTo("#datatable-usuariosTotales_wrapper .col-md-6:eq(0)");
     $(".dataTables_length select").addClass("form-select form-select-sm");
@@ -684,7 +722,10 @@ $(document).ready(function () {
         lengthChange: !1,
         pageLength: 3,
         info: !1,
-        language: {paginate: {previous: "<i class='mdi mdi-chevron-left'>", next: "<i class='mdi mdi-chevron-right'>"}},
+        language: {paginate: {previous: "<i class='mdi mdi-chevron-left'>", next: "<i class='mdi mdi-chevron-right'>"},
+                  emptyTable: "Este usuario no presenta órdenes en este momento", // Mensaje personalizado
+                  zeroRecords: "No se encontraron coincidencias", // Mensaje al buscar sin resultados
+        },
         drawCallback: function () {
             $(".dataTables_paginate > .pagination").addClass("pagination-rounded")
         },
@@ -709,8 +750,11 @@ $(document).ready(function () {
             }
         ],
         columnDefs: [
-            { targets: -1, searchable: false } // Deshabilitar búsqueda en la última columna
-        ]
+            { targets: -1, searchable: false }, // Deshabilitar búsqueda en la última columna
+            { targets: -1, orderable: false },
+            { targets: 0, orderable: false }
+        ],
+        order: [[1, 'desc']] // Ordena por la tercera columna (índice 2) en orden descendente
     });
     a.buttons().container().appendTo("#datatable-productoUsuario_wrapper .col-md-6:eq(0)");
     $(".dataTables_length select").addClass("form-select form-select-sm");

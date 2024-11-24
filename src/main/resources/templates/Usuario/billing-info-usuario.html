@@ -118,19 +118,27 @@
                                                 <div class="col-lg-6">
                                                     <div class="mb-4">
                                                         <label class="form-label" for="nombre">Nombre</label>
-                                                        <input type="text" class="form-control" name="nombre" id="nombre" placeholder="Ingresar nombre" required >
+                                                        <input type="text" class="form-control bg-light" name="nombre" id="nombre" placeholder="Ingresar nombre" readonly >
                                                         <!--<input type="text" class="form-control" id="billing-name" placeholder="Enter name"> -->
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-6">
                                                     <div class="mb-4">
                                                         <label class="form-label" for="apellido">Apellido</label>
-                                                        <input type="text" class="form-control" name="apellido" id="apellido" placeholder="Ingresar apellido"  required >
+                                                        <input type="text" class="form-control bg-light" name="apellido" id="apellido" placeholder="Ingresar apellido"  readonly >
                                                         <!--<input type="text" class="form-control" id="billing-fullname" placeholder="Enter name">-->
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="row mt-2">
+                                                <div class="col-lg-4 mt-2">
+                                                    <div class="mb-4">
+                                                        <label class="form-label" for="dni">Documento de identidad</label>
+                                                        <input type="text" class="form-control" name="dni" id="dni" placeholder="Ingresar dni"  required >
+                                                        <div id="dni-error" class="text-danger" style="display:none;"></div> <!-- Div para el mensaje de error -->
+                                                        <!-- <input type="text" class="form-control" id="billing-dni" placeholder="Enter Phone no.">-->
+                                                    </div>
+                                                </div>
                                                 <div class="col-lg-4 mt-2">
                                                     <div class="mb-4">
                                                         <label class="form-label" for="correo">Correo electrónico</label>
@@ -145,13 +153,7 @@
                                                         <!-- <input type="text" class="form-control" id="billing-phone" placeholder="Enter Phone no.">-->
                                                     </div>
                                                 </div>
-                                                <div class="col-lg-4 mt-2">
-                                                    <div class="mb-4">
-                                                        <label class="form-label" for="dni">Documento de identidad</label>
-                                                        <input type="text" class="form-control" name="dni" id="dni" placeholder="Ingresar dni"  required >
-                                                        <!-- <input type="text" class="form-control" id="billing-dni" placeholder="Enter Phone no.">-->
-                                                    </div>
-                                                </div>
+
                                             </div>
 
                                             <div class="row">
@@ -420,6 +422,65 @@
         // Limitar a 19 caracteres (16 números + 3 espacios)
         input.value = formattedValue.substring(0, 19);
     }
+</script>
+<!--Script para validar el dni (usando api)-->
+<script>
+    $(document).ready(function() {
+        let isRequestInProgress = false; // Bandera para evitar múltiples solicitudes
+        let hasInteracted = false; // Bandera para saber si el usuario ya interactuó con el campo
+        const dniLength = 8; // Longitud esperada del DNI
+        let debounceTimeout;
+
+        $('#dni').on('input', function() {
+            const dni = $(this).val();
+
+            // Marcar que el usuario ha interactuado con el campo
+            hasInteracted = true;
+
+            // Limpiar el timeout del debounce si el usuario sigue escribiendo
+            clearTimeout(debounceTimeout);
+
+            // Validar que el DNI tenga la longitud correcta, la solicitud no esté en progreso y el usuario haya interactuado
+            if (dni.length === dniLength && !isRequestInProgress && hasInteracted) {
+                // Configurar un debounce de 500 ms para evitar solicitudes inmediatas
+                debounceTimeout = setTimeout(function() {
+                    isRequestInProgress = true; // Indicar que la solicitud está en progreso
+
+                    $.ajax({
+                        url: '/api/consultarDni',
+                        type: 'GET',
+                        data: { dni: dni },
+                        success: function(data) {
+                            console.log("Datos recibidos:", data); // Verificar los datos en la consola
+                            if (data.message === "DNI no válido") {
+                                // Mostrar el mensaje de error en la interfaz
+                                $('#dni-error').text(data.message).show(); // Mostrar el mensaje de error
+                                $('#nombre').val(''); // Limpiar campos en caso de error
+                                $('#apellido').val('');
+                            } else {
+                                $('#dni-error').hide(); // Ocultar el mensaje de error si la respuesta es válida
+                                $('#nombre').val(data.nombres); // Completa el campo de nombre
+                                $('#apellido').val(data.apellidoPaterno + " " + data.apellidoMaterno); // Completa el campo de apellido
+                            }
+                        },
+                        error: function() {
+                            $('#dni-error').text('No se pudo encontrar el DNI.').show(); // Mostrar error en caso de fallo
+                        },
+                        complete: function() {
+                            isRequestInProgress = false; // Restablecer la bandera cuando la solicitud termina
+                        }
+                    });
+                }, 500); // Tiempo de espera en milisegundos para el debounce
+            } else {
+                $('#dni-error').hide(); // Ocultar el mensaje de error si el DNI no tiene la longitud correcta
+            }
+        });
+
+        // Si el usuario recarga la página, resetear `hasInteracted` a false
+        $(window).on("load", function() {
+            hasInteracted = false;
+        });
+    });
 </script>
 </body>
 
