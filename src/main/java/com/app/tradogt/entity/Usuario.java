@@ -87,11 +87,14 @@ public class Usuario implements Serializable{
     @Transient
     private String confirmarContrasena;
 
-    @Size(max = 10)
+    @Size(max = 10, min = 10, message = "El RUC debe contener 11 dígitos")
+    @NotBlank(message = "El RUC es obligatorio")
+    @Digits(integer = 10, fraction = 0, message = "El RUC debe ser un número válido")
     @Column(name = "ruc", length = 10)
     private String ruc;
 
-    @Size(max = 45)
+    @Size(max = 45, message = "La razón social no puede tener más de 45 caracteres")
+    @NotBlank(message = "La razón social es obligatoria")
     @Column(name = "razonSocial", length = 45)
     private String razonSocial;
 
@@ -114,7 +117,8 @@ public class Usuario implements Serializable{
     @Column(name = "isActivated", nullable = false)
     private Byte isActivated = 0;
 
-    @Size(max = 45)
+    @Size(max = 45, message = "El código de despachador no puede tener más de 45 caracteres")
+    @NotBlank(message = "El código de despachador es obligatorio")
     @Column(name = "codigoDespachador", length = 45)
     private String codigoDespachador;
 
