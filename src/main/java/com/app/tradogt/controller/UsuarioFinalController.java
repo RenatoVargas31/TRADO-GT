@@ -800,29 +800,55 @@ public class UsuarioFinalController {
 
     @PostMapping("/registro")
     public String procesarPostulacion(
-            @RequestParam("razonSocial") String razonSocial,
-            @RequestParam("ruc") String ruc,
-            @RequestParam("codigoDespachador") String codigoDespachador,
+            @Valid @ModelAttribute Usuario usuario,
+            BindingResult result,
             Model model) {
 
+        // Obtener el ID del usuario autenticado
         int id = getAuthenticatedUserId();
 
+        // Obtener el usuario de la base de datos
+        Usuario usuarioExistente = usuarioRepository.findById(id).orElseThrow();
 
-        // Obtener el usuario logueado de la base de datos
-        Usuario usuario = usuarioRepository.findById(id).orElseThrow();
+        // Validar si hay errores en los campos
+        if (result.hasErrors()) {
+            model.addAttribute("usuario", usuarioExistente); // Recargar datos del usuario en el formulario
+            return "Usuario/registroSolicitud"; // Retornar al formulario con mensajes de error
+        }
 
-        // Actualizar los campos editables
-        usuario.setRazonSocial(razonSocial);
-        usuario.setRuc(ruc);
-        usuario.setCodigoDespachador(codigoDespachador);
+        // Validar RUC (ejemplo: longitud y formato específico para tu región)
+        if (!usuario.getRuc().matches("\\d{10}")) {
+            result.rejectValue("ruc", "error.usuario", "El RUC debe contener exactamente 11 dígitos numéricos.");
+            model.addAttribute("usuario", usuarioExistente); // Recargar datos del usuario
+            return "Usuario/registroSolicitud";
+        }
+
+        // Validar Razón Social (no vacía, puede contener letras y números)
+        if (usuario.getRazonSocial().trim().isEmpty() || !usuario.getRazonSocial().matches("[a-zA-Z0-9\\s]+")) {
+            result.rejectValue("razonSocial", "error.usuario", "La razón social es inválida.");
+            model.addAttribute("usuario", usuarioExistente); // Recargar datos del usuario
+            return "Usuario/registroSolicitud";
+        }
+
+        // Validar Código de Despachador (puedes ajustar el regex según lo que necesites)
+        if (!usuario.getCodigoDespachador().matches("[A-Za-z0-9]+")) {
+            result.rejectValue("codigoDespachador", "error.usuario", "El código de despachador solo puede contener letras y números.");
+            model.addAttribute("usuario", usuarioExistente); // Recargar datos del usuario
+            return "Usuario/registroSolicitud";
+        }
+
+        // Actualizar los campos del usuario en la base de datos
+        usuarioExistente.setRazonSocial(usuario.getRazonSocial());
+        usuarioExistente.setRuc(usuario.getRuc());
+        usuarioExistente.setCodigoDespachador(usuario.getCodigoDespachador());
 
         // Cambiar el estado de postulación a '1'
-        usuario.setIsPostulated((byte) 1);
+        usuarioExistente.setIsPostulated((byte) 1);
 
         // Guardar los cambios en la base de datos
-        usuarioRepository.save(usuario);
+        usuarioRepository.save(usuarioExistente);
 
-        // Redirigir a la página de inicio
+        // Redirigir al inicio del usuario
         return "redirect:/usuario/inicio";
     }
 
