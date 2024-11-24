@@ -60,7 +60,7 @@
                                     <div class="card-body">
                                         <h4 class="card-title">Formulario de solicitud</h4>
                                         <p class="card-title-desc">Registra tu solicitud para que el administrador pueda revisarla</p>
-                                        <form id="registroForm" th:action="@{/usuario/registro}" method="post" class="needs-validation" novalidate>
+                                        <form id="registroForm" th:action="@{/usuario/registro}" th:object="${usuario}" method="post" class="needs-validation" novalidate>
                                             <div class="row">
                                                 <!-- Nombres -->
                                                 <div class="col-md-6">
@@ -118,7 +118,7 @@
                                                 <div class="col-md-4">
                                                     <div class="mb-3">
                                                         <label class="form-label">Razón Social</label>
-                                                        <input type="text" class="form-control" name="razonSocial" th:value="${usuario.razonSocial}" placeholder="Razón Social" required>
+                                                        <input type="text" class="form-control" th:field="*{razonSocial}" placeholder="Razón Social" required>
                                                     </div>
                                                 </div>
                                             </div>
@@ -136,7 +136,7 @@
                                                 <div class="col-md-4">
                                                     <div class="mb-3">
                                                         <label class="form-label">RUC</label>
-                                                        <input type="text" class="form-control" name="ruc" th:value="${usuario.ruc}" placeholder="RUC" required>
+                                                        <input type="text" class="form-control" th:field="*{ruc}" placeholder="RUC" required>
                                                     </div>
                                                 </div>
 
@@ -144,14 +144,15 @@
                                                 <div class="col-md-4">
                                                     <div class="mb-3">
                                                         <label class="form-label">Código de despachador de Aduanas</label>
-                                                        <input type="text" class="form-control" name="codigoDespachador" th:value="${usuario.codigoDespachador}" placeholder="Código" required>
+                                                        <input type="text" class="form-control" th:field="*{codigoDespachador}" placeholder="Código" required>
+
                                                     </div>
                                                 </div>
                                             </div>
 
                                             <!-- Botones de acción -->
                                             <div>
-                                                <button type="button" class="btn btn-primary" id="sa-registro">Registrar Solicitud</button>
+                                                <button type="submit" class="btn btn-primary">Registrar Solicitud</button>
                                                 <a href="/usuario/solicitud" class="btn btn-danger">Cancelar</a>
                                             </div>
                                         </form>
