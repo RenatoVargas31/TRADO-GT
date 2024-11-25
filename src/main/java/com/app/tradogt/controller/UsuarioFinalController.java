@@ -803,10 +803,10 @@ public class UsuarioFinalController {
             @RequestParam("razonSocial") String razonSocial,
             @RequestParam("ruc") String ruc,
             @RequestParam("codigoDespachador") String codigoDespachador,
+            RedirectAttributes redirectAttributes,
             Model model) {
 
         int id = getAuthenticatedUserId();
-
 
         // Obtener el usuario logueado de la base de datos
         Usuario usuario = usuarioRepository.findById(id).orElseThrow();
@@ -822,10 +822,12 @@ public class UsuarioFinalController {
         // Guardar los cambios en la base de datos
         usuarioRepository.save(usuario);
 
+        // Agregar un mensaje de éxito al Flash Attribute
+        redirectAttributes.addFlashAttribute("successMessage", "¡Solicitud registrada con éxito!");
+
         // Redirigir a la página de inicio
         return "redirect:/usuario/inicio";
     }
-
 
 
     @GetMapping("/contraseña")
