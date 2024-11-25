@@ -119,7 +119,7 @@
                                                     <div class="mb-3">
                                                         <label class="form-label">Razón Social</label>
                                                         <input type="text" class="form-control" th:field="*{razonSocial}" placeholder="Razón Social" required>
-
+                                                        <div th:if="${razonSocialError}" class="text-danger" th:text="${razonSocialError}"></div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -138,6 +138,7 @@
                                                     <div class="mb-3">
                                                         <label class="form-label">RUC</label>
                                                         <input type="text" class="form-control" th:field="*{ruc}" placeholder="RUC" required>
+                                                        <div th:if="${rucError}" class="text-danger" th:text="${rucError}"></div>
                                                     </div>
                                                 </div>
 
@@ -146,13 +147,14 @@
                                                     <div class="mb-3">
                                                         <label class="form-label">Código de despachador de Aduanas</label>
                                                         <input type="text" class="form-control" th:field="*{codigoDespachador}" placeholder="Código" required>
+                                                        <div th:if="${codigoDespachadorError}" class="text-danger" th:text="${codigoDespachadorError}"></div>
                                                     </div>
                                                 </div>
                                             </div>
 
                                             <!-- Botones de acción -->
                                             <div>
-                                                <button type="submit" class="btn btn-primary">Registrar Solicitud</button>
+                                                <button type="submit" class="btn btn-primary" id="sa-registro">Registrar Solicitud</button>
                                                 <a href="/usuario/solicitud" class="btn btn-danger">Cancelar</a>
                                             </div>
                                         </form>
