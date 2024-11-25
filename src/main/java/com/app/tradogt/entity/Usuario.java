@@ -70,7 +70,6 @@ public class Usuario implements Serializable{
 
     @Size(max = 9)
     @NotBlank(message = "El teléfono es obligatorio")
-    @Pattern(regexp ="^\\+?[0-9. ()-]{7,25}$", message = "El teléfono tiene un formato inválido")
     @Digits(integer = 9, fraction = 0)
     @Column(name = "telefono", length = 9)
     private String telefono;
