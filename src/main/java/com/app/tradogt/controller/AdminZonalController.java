@@ -1,8 +1,6 @@
 package com.app.tradogt.controller;
 
-import com.app.tradogt.dto.AgenteInfoZon;
-import com.app.tradogt.dto.ImportacionesporImportador;
-import com.app.tradogt.dto.PasswordChangeDto;
+import com.app.tradogt.dto.*;
 import com.app.tradogt.entity.*;
 import com.app.tradogt.services.NotificationCorreoService;
 import jakarta.validation.Valid;
@@ -29,14 +27,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -119,8 +115,23 @@ public class AdminZonalController {
     @GetMapping("/fechasArribo")
     public String showFechasArribo(Model model) {
 
-        //Añadir codigo
-        List<Orden> ordenesConFechas = ordenRepository.findAll();
+        int idZonaAdmin = getAuthenticatedUser().getZonaIdzona().getId();
+        List<Object[]> resultados = ordenRepository.getOrdersByZonaAdminZonal(idZonaAdmin);
+        // Mapear los resultados al DTO directamente en el controlador
+        List<OrdenCompraZonalDto> ordenesConFechas = resultados.stream()
+                .map(result -> new OrdenCompraZonalDto(
+                        (String) result[0],  // usuarioPropietario
+                        (Integer) result[1],  // idUsuario
+                        (Date) result[2],  // fechaCreacion
+                        (Date) result[3],  // fechaRecibido
+                        (BigDecimal) result[4],  // montoTotal
+                        (String) result[5],  // codigoOrden
+                        (Long) result[6],  //idAgenteCompra
+                        (String) result[7], //idEstadoPedido
+                        (Integer) result[8], //idOrden
+                        (String) result[9] //Nombre distrito
+                ))
+                .collect(Collectors.toList());
         model.addAttribute("ordenesConFechas", ordenesConFechas);
         return "AdminZonal/tablaFechaArribo-AdminZonal";
     }
@@ -345,7 +356,7 @@ public class AdminZonalController {
         if (optionalOrden.isPresent()) {
             Orden orden = optionalOrden.get();
             // Actualizamos la fecha de arribo
-            orden.setFechaArribo(fechaArribo);
+            orden.setFechaRecibido(fechaArribo);
             ordenRepository.save(orden);
 
             // Añadir mensaje de éxito

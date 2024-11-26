@@ -57,7 +57,9 @@
                     icon: "error"
                 })
             })
-        }), $("#sa-registro").click(function () {
+        }), $("#sa-registro").click(function (event) {
+            event.preventDefault(); // Prevenir el envío automático del formulario
+
             Swal.fire({
                 title: "¿Está seguro de postular como Agente?",
                 text: "Asegúrese de haber completado bien sus datos",

@@ -70,7 +70,6 @@ public class Usuario implements Serializable{
 
     @Size(max = 9)
     @NotBlank(message = "El teléfono es obligatorio")
-    @Pattern(regexp ="^\\+?[0-9. ()-]{7,25}$", message = "El teléfono tiene un formato inválido")
     @Digits(integer = 9, fraction = 0)
     @Column(name = "telefono", length = 9)
     private String telefono;
@@ -87,11 +86,15 @@ public class Usuario implements Serializable{
     @Transient
     private String confirmarContrasena;
 
-    @Size(max = 10)
+    @Size(max = 10, min = 10, message = "El RUC debe contener 10 dígitos")
+    @NotBlank(message = "El RUC es obligatorio")
+    @Pattern(regexp = "\\d{10}", message = "El RUC debe contener exactamente 10 dígitos.")
+    @Digits(integer = 10, fraction = 0, message = "El RUC debe ser un número válido")
     @Column(name = "ruc", length = 10)
     private String ruc;
 
-    @Size(max = 45)
+    @Size(max = 45, message = "La razón social no puede tener más de 45 caracteres")
+    @NotBlank(message = "La razón social es obligatoria")
     @Column(name = "razonSocial", length = 45)
     private String razonSocial;
 
@@ -114,7 +117,9 @@ public class Usuario implements Serializable{
     @Column(name = "isActivated", nullable = false)
     private Byte isActivated = 0;
 
-    @Size(max = 45)
+    @Size(max = 45, message = "El código de despachador no puede tener más de 45 caracteres")
+    @NotBlank(message = "El código de despachador es obligatorio")
+    @Pattern(regexp = "[A-Za-z0-9]+", message = "El código de despachador solo puede contener letras y números.")
     @Column(name = "codigoDespachador", length = 45)
     private String codigoDespachador;
 

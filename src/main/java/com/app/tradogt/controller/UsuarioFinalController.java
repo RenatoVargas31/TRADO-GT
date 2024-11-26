@@ -803,13 +803,40 @@ public class UsuarioFinalController {
             @RequestParam("razonSocial") String razonSocial,
             @RequestParam("ruc") String ruc,
             @RequestParam("codigoDespachador") String codigoDespachador,
+            RedirectAttributes redirectAttributes,
             Model model) {
 
         int id = getAuthenticatedUserId();
 
-
         // Obtener el usuario logueado de la base de datos
         Usuario usuario = usuarioRepository.findById(id).orElseThrow();
+
+        // Validaciones de los campos
+        boolean hasErrors = false;
+
+        // Validación de RUC
+        if (ruc == null || !ruc.matches("\\d{10}")) {
+            model.addAttribute("rucError", "El RUC debe contener exactamente 10 dígitos numéricos.");
+            hasErrors = true;
+        }
+
+        // Validación de Razón Social
+        if (razonSocial == null || razonSocial.trim().isEmpty() || !razonSocial.matches("[a-zA-Z0-9\\s]+")) {
+            model.addAttribute("razonSocialError", "La razón social es obligatoria y solo puede contener letras, números y espacios.");
+            hasErrors = true;
+        }
+
+        // Validación de Código de Despachador
+        if (codigoDespachador == null || !codigoDespachador.matches("[A-Za-z0-9]+")) {
+            model.addAttribute("codigoDespachadorError", "El código de despachador solo puede contener letras y números.");
+            hasErrors = true;
+        }
+
+        // Si hay errores, regresar al formulario con los mensajes
+        if (hasErrors) {
+            model.addAttribute("usuario", usuario);
+            return "Usuario/registroSolicitud"; // Vista del formulario
+        }
 
         // Actualizar los campos editables
         usuario.setRazonSocial(razonSocial);
@@ -821,6 +848,9 @@ public class UsuarioFinalController {
 
         // Guardar los cambios en la base de datos
         usuarioRepository.save(usuario);
+
+        // Agregar un mensaje de éxito al Flash Attribute
+        redirectAttributes.addFlashAttribute("successMessage", "¡Solicitud registrada con éxito!");
 
         // Redirigir a la página de inicio
         return "redirect:/usuario/inicio";

@@ -304,4 +304,44 @@ SELECT
     //Listar las ordenes por fecha y estado
     List<Orden> findByEstadoordenIdestadoorden( Optional<EstadoOrden> estadoordenIdestadoorden);
 
+    //Listado de órdenes para administrador zonal, dependiendo de la zona del administrador zonal verá las órdenes respectivas
+    @Query(value = """
+        SELECT
+                            CONCAT(u.nombre, ' ', u.apellido) AS usuarioPropietario,
+                            u.idUsuario AS idUsuarioPropietario,
+                            o.fechaCreacion,
+                            o.fechaRecibido,
+                            p.monto AS montoTotal,
+                            o.codigo AS codigoOrden,
+                            COALESCE(a.idUsuario, 0) AS idAgenteCompra,
+                            eo.nombre AS estadoPedido,
+                            o.idOrden AS idOrden,
+                            d.nombre AS nombreDistrito
+                        FROM
+                            Orden o
+                        JOIN
+                            Carrito c ON o.Carrito_idCarrito = c.idCarrito  -- Actualizado para relacionar Orden con Carrito
+                        JOIN
+                            Usuario u ON c.Usuario_idUsuario = u.idUsuario  -- Relación con el usuario propietario
+        				JOIN
+        					Distrito d ON u.distrito_idDistrito = d.idDistrito\s
+        				JOIN
+        					Zona z ON d.zona_idZona = z.idZona
+                        LEFT JOIN
+                            Pago p ON p.idPago = o.Pago_idPago  -- Relación con la tabla de pagos
+                        LEFT JOIN
+                            Usuario a ON a.idUsuario = o.agentCompra_idUsuario  -- Relación con el agente de compra
+                        LEFT JOIN
+                            EstadoOrden eo ON eo.idEstadoOrden = o.estadoOrden_idEstadoOrden  -- Relación con el estado de la orden
+                        WHERE
+                            o.isDeleted = 0  -- Solo mostrar órdenes no eliminadas
+                            AND z.idZona = ?1  -- Filtro para el agente de compra específico
+                            AND eo.nombre != 'RECIBIDO'
+                        GROUP BY
+                            o.idOrden  -- Agrupar por la orden para no repetir filas por producto
+                        ORDER BY
+                            o.fechaCreacion DESC;
+    """,nativeQuery = true)
+
+    List<Object[]> getOrdersByZonaAdminZonal(Integer idZona);
 }

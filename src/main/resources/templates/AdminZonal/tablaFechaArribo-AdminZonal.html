@@ -70,9 +70,11 @@
                                 <table id="datatable-fechaArribo" class="table table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                     <thead>
                                     <tr>
-                                        <th>ID</th>
+                                        <th>Codigo</th>
+                                        <th>Importador</th>
                                         <th>Fecha de compra</th>
                                         <th>Fecha de arribo</th>
+                                        <th>Distrito</th>
                                         <th>Estado</th>
                                         <th>Editar</th>
                                     </tr>
@@ -81,17 +83,19 @@
 
                                     <tbody>
                                     <tr th:each="order : ${ordenesConFechas}">
-                                        <td th:text="${order.codigo}"></td>
-                                        <td th:text="${#temporals.format(order.fechaCreacion, 'dd-MM-yyyy')}"></td>
-                                        <td th:text="${#temporals.format(order.fechaArribo, 'dd-MM-yyyy')}" class="fecha-arribo"></td>
-                                        <td th:text="${order.estadoordenIdestadoorden.nombre}"></td>
+                                        <td th:text="${order.codigoOrden}"></td>
+                                        <td th:text="${order.usuarioPropietario}"></td>
+                                        <td th:text="${#dates.format(order.fechaCreacion, 'dd-MM-yyyy')}"></td>
+                                        <td th:text="${#dates.format(order.fechaRecibido, 'dd-MM-yyyy')}" class="fecha-arribo"></td>
+                                        <td th:text="${order.nombreDistrito}"></td>
+                                        <td th:text="${order.estadoPedido}"></td>
                                         <td>
                                             <a class="btn btn-info btn-sm waves-effect waves-light edit-btn"
                                                title="Edit"
                                                data-bs-toggle="modal"
                                                data-bs-target="#staticBackdrop"
-                                               th:data-fecha-arribo="${#temporals.format(order.fechaArribo, 'yyyy-MM-dd')}"
-                                               th:data-codigo="${order.codigo}">
+                                               th:data-fecha-arribo="${order.fechaRecibido}"
+                                               th:data-codigo="${order.codigoOrden}">
                                                 <i class="ri-pencil-fill"></i>
                                             </a>
                                         </td>
