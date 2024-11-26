@@ -346,15 +346,21 @@ $(document).ready(function () {
     var a = $("#datatable-fechaArribo").DataTable({
         lengthChange: !1,
         pageLength: 7,
-        info: !1,
-        language: {paginate: {previous: "<i class='mdi mdi-chevron-left'>", next: "<i class='mdi mdi-chevron-right'>"}},
+        language: {paginate: {previous: "<i class='mdi mdi-chevron-left'>", next: "<i class='mdi mdi-chevron-right'>"},
+                              emptyTable: "Por el momento no existen órdenes en la zona", // Mensaje personalizado
+                              zeroRecords: "No se encontraron coincidencias", // Mensaje al buscar sin resultados
+                              info: "Mostrando _START_ a _END_ de _TOTAL_ órdenes",
+        },
         drawCallback: function () {
             $(".dataTables_paginate > .pagination").addClass("pagination-rounded")
         },
         buttons: ["csv", "excel", "pdf"],
         columnDefs: [
-            { targets: -1, searchable: false } // Deshabilitar búsqueda en la última columna
-        ]
+            { targets: -1, searchable: false }, // Deshabilitar búsqueda en la última columna
+            { targets: -1, orderable: false },
+            { targets: 0, orderable: false }
+        ],
+        order: [[2, 'desc']] // Ordena por la tercera columna (índice 2) en orden descendente
     });
     a.buttons().container().appendTo("#datatable-fechaArribo_wrapper .col-md-6:eq(0)");
     $(".dataTables_length select").addClass("form-select form-select-sm");

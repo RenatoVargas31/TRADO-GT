@@ -4,6 +4,7 @@ import com.app.tradogt.dto.*;
 import com.app.tradogt.entity.*;
 import com.app.tradogt.services.NotificationCorreoService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -346,9 +347,26 @@ public class AdminZonalController {
     }
 
     @PostMapping("/editarFecha")
-    public String editarFechaArribo(@RequestParam("orderId") String orderId,
-                                    @RequestParam("fechaArribo") LocalDate fechaArribo,
+    public String editarFechaArribo(@RequestParam("orderId") @NotNull(message = "El ID de la orden es obligatorio.") String orderId,
+                                    @RequestParam("fechaArribo") @NotNull(message = "La fecha de arribo es obligatoria.") LocalDate fechaArribo,
+                                    BindingResult bindingResult,
                                     RedirectAttributes redirectAttributes) {
+
+        // Validaciones automáticas (Hibernate Validator)
+        if (bindingResult.hasErrors()) {
+            StringBuilder errores = new StringBuilder();
+            bindingResult.getFieldErrors().forEach(error ->
+                    errores.append(error.getDefaultMessage()).append(". ")
+            );
+            redirectAttributes.addFlashAttribute("error", errores.toString());
+            return "redirect:/adminzonal/fechasArribo";
+        }
+
+        // Validación personalizada: la fecha no puede ser anterior a hoy
+        if (fechaArribo.isBefore(LocalDate.now())) {
+            redirectAttributes.addFlashAttribute("error", "La fecha de arribo no puede ser anterior al día actual.");
+            return "redirect:/adminzonal/fechasArribo";
+        }
 
         // Buscamos la orden por su ID
         Optional<Orden> optionalOrden = ordenRepository.findByCodigo(orderId);

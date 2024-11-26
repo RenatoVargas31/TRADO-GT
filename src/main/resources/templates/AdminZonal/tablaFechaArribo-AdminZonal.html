@@ -53,6 +53,13 @@
                         </div>
                     </div>
                 </div>
+                <div th:if="${error}" class="alert alert-danger" role="alert">
+                    <span th:text="${error}"></span>
+                </div>
+                <div th:if="${mensaje}" class="alert alert-success" role="alert">
+                    <span th:text="${mensaje}"></span>
+                </div>
+
                 <!-- end page title -->
                 <div class="row">
                     <div class="col-12">
@@ -85,8 +92,10 @@
                                     <tr th:each="order : ${ordenesConFechas}">
                                         <td th:text="${order.codigoOrden}"></td>
                                         <td th:text="${order.usuarioPropietario}"></td>
-                                        <td th:text="${#dates.format(order.fechaCreacion, 'dd-MM-yyyy')}"></td>
-                                        <td th:text="${#dates.format(order.fechaRecibido, 'dd-MM-yyyy')}" class="fecha-arribo"></td>
+                                        <td th:data-order="${order.fechaCreacion}"
+                                            th:text="${#dates.format(order.fechaCreacion, 'dd-MM-yyyy')}"></td>
+                                        <td th:data-order="${order.fechaRecibido}"
+                                            th:text="${#dates.format(order.fechaRecibido, 'dd-MM-yyyy')}" class="fecha-arribo"></td>
                                         <td th:text="${order.nombreDistrito}"></td>
                                         <td th:text="${order.estadoPedido}"></td>
                                         <td>
