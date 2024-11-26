@@ -963,7 +963,8 @@ public class UsuarioFinalController {
             @RequestParam("calificacion") Integer calificacion,
             @RequestParam("cuerpo") String cuerpo,
             @RequestParam("fueRapido") Byte fueRapido,
-            @RequestParam("foto") MultipartFile foto) {
+            @RequestParam("foto") MultipartFile foto,
+            RedirectAttributes redirectAttributes) {
 
         int id = getAuthenticatedUserId();
         Usuario usuario = usuarioRepository.findById(id).orElseThrow();
@@ -977,32 +978,46 @@ public class UsuarioFinalController {
         resena.setCuerpo(cuerpo);
         resena.setFechaCreacion(LocalDate.now());
         resena.setFueRapido(fueRapido);
+        resena.setFoto("default.jpg"); // Valor inicial predeterminado
+        resenaRepository.save(resena); // Guardar la reseña para obtener su ID
 
-        // Guardar la resena sin imagen para obtener el ID
-        resena.setFoto("default.jpg");  // Colocamos un valor temporal por defecto
-        resenaRepository.save(resena);
-
-        // Ahora que la resena tiene un ID, podemos guardar la imagen
+        // Si se sube una foto, guardarla en el servidor y actualizar la reseña
         if (!foto.isEmpty()) {
             try {
-                // Simplemente usar el ID como nombre de archivo sin preocuparse por la extensión
-                String nombreArchivo = String.format("%06d", resena.getId()); // Solo el ID como nombre de archivo
+                // Ruta dinámica para guardar las imágenes de las reseñas
+                String uploadDir = "uploads/resenasUsuarios/";
 
-                // Guardar el archivo
-                storageService.guardarArchivo(foto, nombreArchivo);
+                // Crear el directorio si no existe
+                Path uploadPath = Paths.get(uploadDir);
+                if (!Files.exists(uploadPath)) {
+                    Files.createDirectories(uploadPath);
+                }
 
-                // Actualizar la resena con el nombre del archivo de la foto
-                resena.setFoto(nombreArchivo + ".jpg"); // Aquí puedes ajustar la extensión si es necesario
-                resenaRepository.save(resena);  // Actualizar con el nombre de la foto
+                // Generar un nombre de archivo único basado en el ID de la reseña
+                String nombreArchivo = "resena_" + resena.getId() + "_" + System.currentTimeMillis() + ".jpg";
+
+                // Guardar el archivo en el sistema de archivos
+                Path path = uploadPath.resolve(nombreArchivo);
+                Files.write(path, foto.getBytes());
+
+                // Actualizar el campo `foto` de la reseña con el nombre del archivo
+                resena.setFoto(nombreArchivo);
+                resenaRepository.save(resena); // Guardar la actualización en la base de datos
+
+                // Mensaje de éxito
+                redirectAttributes.addFlashAttribute("message", "Reseña creada exitosamente con imagen.");
             } catch (IOException e) {
                 e.printStackTrace();
-                // Manejar error en guardar archivo
+                // Manejo de errores al guardar el archivo
+                redirectAttributes.addFlashAttribute("error", "Hubo un error al subir la imagen de la reseña.");
             }
+        } else {
+            redirectAttributes.addFlashAttribute("message", "Reseña creada sin imagen.");
         }
-
 
         return "redirect:/usuario/resenas";
     }
+
 
     private String getFileExtension(String fileName) {
         // Asegúrate de que devuelva solo la extensión correcta con el punto incluido
