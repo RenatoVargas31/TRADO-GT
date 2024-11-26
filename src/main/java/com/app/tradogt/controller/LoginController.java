@@ -154,9 +154,11 @@ public class LoginController {
             return "CreateAcc";
         }
         */
-        if (passwordResult.hasErrors()) {
-
-            return "redirect:/crearCuenta";
+        if (result.hasErrors() || passwordResult.hasErrors()) {
+            model.addAttribute("usuario", usuario);
+            model.addAttribute("passwordRegisterDto", passwordRegisterDto);
+            model.addAttribute("distritos", distritoRepository.findAll());
+            return "CreateAcc"; // Redirige a la página de creación de cuenta con los errores
         }
 
         // Validar que las contraseñas coincidan
