@@ -192,6 +192,27 @@
 
 </script>
 
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const arrivalDateInput = document.getElementById('arrivalDate');
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, '0');
+        const day = String(today.getDate()).padStart(2, '0');
+        const todayFormatted = `${year}-${month}-${day}`;
+
+        arrivalDateInput.setAttribute('min', todayFormatted);
+
+        arrivalDateInput.addEventListener('change', function() {
+            if (arrivalDateInput.value < todayFormatted) {
+                alert("No puedes seleccionar una fecha anterior a la actual.");
+                arrivalDateInput.value = todayFormatted;
+            }
+        });
+    });
+</script>
+
+
 
 
 <!-- Required datatable js -->

@@ -347,33 +347,35 @@ public class AdminZonalController {
     }
 
     @PostMapping("/editarFecha")
-    public String editarFechaArribo(@RequestParam("orderId") @NotNull(message = "El ID de la orden es obligatorio.") String orderId,
-                                    @RequestParam("fechaArribo") @NotNull(message = "La fecha de arribo es obligatoria.") LocalDate fechaArribo,
-                                    BindingResult bindingResult,
-                                    RedirectAttributes redirectAttributes) {
+    public String editarFechaArribo(
+            @RequestParam("orderId") String orderId,
+            @RequestParam("fechaArribo") LocalDate fechaArribo,
+            RedirectAttributes redirectAttributes) {
 
-        // Validaciones automáticas (Hibernate Validator)
-        if (bindingResult.hasErrors()) {
-            StringBuilder errores = new StringBuilder();
-            bindingResult.getFieldErrors().forEach(error ->
-                    errores.append(error.getDefaultMessage()).append(". ")
-            );
-            redirectAttributes.addFlashAttribute("error", errores.toString());
+        // Validación manual: Verificar si el ID de la orden es nulo o vacío
+        if (orderId == null || orderId.trim().isEmpty()) {
+            redirectAttributes.addFlashAttribute("error", "El ID de la orden es obligatorio.");
             return "redirect:/adminzonal/fechasArribo";
         }
 
-        // Validación personalizada: la fecha no puede ser anterior a hoy
+        // Validación manual: Verificar si la fecha de arribo es nula
+        if (fechaArribo == null) {
+            redirectAttributes.addFlashAttribute("error", "La fecha de arribo es obligatoria.");
+            return "redirect:/adminzonal/fechasArribo";
+        }
+
+        // Validación personalizada: La fecha de arribo no puede ser anterior al día actual
         if (fechaArribo.isBefore(LocalDate.now())) {
             redirectAttributes.addFlashAttribute("error", "La fecha de arribo no puede ser anterior al día actual.");
             return "redirect:/adminzonal/fechasArribo";
         }
 
-        // Buscamos la orden por su ID
+        // Buscar la orden por su ID
         Optional<Orden> optionalOrden = ordenRepository.findByCodigo(orderId);
 
         if (optionalOrden.isPresent()) {
             Orden orden = optionalOrden.get();
-            // Actualizamos la fecha de arribo
+            // Actualizar la fecha de arribo
             orden.setFechaRecibido(fechaArribo);
             ordenRepository.save(orden);
 
