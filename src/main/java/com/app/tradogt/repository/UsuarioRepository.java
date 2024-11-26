@@ -127,6 +127,8 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
     Usuario findByIdUsuario(Integer id);
 
     Usuario findByCorreo(String correoUsuario);
+
+
     //Borrado lógico por ID (isActive = 0)
     /*
     @Modifying

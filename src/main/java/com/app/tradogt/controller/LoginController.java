@@ -132,6 +132,10 @@ public class LoginController {
         model.addAttribute("distritos", distritoRepository.findAll());
         return "CreateAcc";
     }
+    @GetMapping("/recuperarPass")
+    public String viewPassRestore(){
+        return "SolicitarRestore";
+    }
 
 
     @PostMapping("/crearCuenta")

@@ -346,10 +346,20 @@ $(document).ready(function () {
     var a = $("#datatable-fechaArribo").DataTable({
         lengthChange: !1,
         pageLength: 7,
-        language: {paginate: {previous: "<i class='mdi mdi-chevron-left'>", next: "<i class='mdi mdi-chevron-right'>"},
-                              emptyTable: "Por el momento no existen órdenes en la zona", // Mensaje personalizado
-                              zeroRecords: "No se encontraron coincidencias", // Mensaje al buscar sin resultados
-                              info: "Mostrando _START_ a _END_ de _TOTAL_ órdenes",
+        language: {
+            paginate: {
+                previous: "<i class='mdi mdi-chevron-left'></i>",
+                next: "<i class='mdi mdi-chevron-right'></i>"
+            },
+            emptyTable: "No hay datos disponibles en la tabla",
+            zeroRecords: "No se encontraron coincidencias",
+            info: "Mostrando de _START_ a _END_ órdenes de un total de _TOTAL_ órdenes",
+            infoEmpty: "Mostrando de 0 a 0 órdenes de un total de 0 órdenes",
+            infoFiltered: "(filtrado de _MAX_ órdenes totales)",
+            lengthMenu: "Mostrar _MENU_ órdenes",
+            search: "Buscar:",
+            loadingRecords: "Cargando...",
+            processing: "Procesando..."
         },
         drawCallback: function () {
             $(".dataTables_paginate > .pagination").addClass("pagination-rounded")

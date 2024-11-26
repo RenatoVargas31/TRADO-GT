@@ -142,13 +142,14 @@ public class WebSecurityConfig {
                 .addFilterBefore(customAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers("/css/**", "/js/**", "/images/**", "/fonts/**", "/libs/**").permitAll()
-                        .requestMatchers("/loginForm", "/processLogin", "/crearCuenta").permitAll()
+                        .requestMatchers("/loginForm", "/processLogin", "/crearCuenta","/recuperarPass").permitAll()
                         .requestMatchers("/superadmin", "/superadmin/**").hasAnyAuthority("SuperAdmin")
                         .requestMatchers("/adminzonal", "/adminzonal/**").hasAnyAuthority("Administrador Zonal")
                         .requestMatchers("/agente", "/agente/**").hasAnyAuthority("Agente de Compra")
                         .requestMatchers("/usuario", "/usuario/**").hasAnyAuthority("Usuario Final")
                         .requestMatchers("/loginForm", "/crearCuenta").anonymous()
                         .requestMatchers("/api/consultarDni").permitAll()
+                        .requestMatchers("/auth/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin((form) -> form

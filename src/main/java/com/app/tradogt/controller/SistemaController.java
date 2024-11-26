@@ -10,7 +10,7 @@ public class SistemaController {
     @GetMapping("/loguin")
     public String viewloguin(){return "loguin";}
     @GetMapping("/PassRestore")
-    public String viewPassRestore(){return "ContraseñaRestore";}
+    public String viewPassRestore(){return "SolicitarRestore";}
     @GetMapping("/PassRestoreConfirm")
     public String viewPassRestoreConfirm(){return "ContraseñaRestore-confirm";}
     @GetMapping("/CreateAcc")
@@ -18,7 +18,7 @@ public class SistemaController {
     @GetMapping("/CreateAccConfirm")
     public String viewCreateAccConfirm(){return "CreateAcc-confirm";}
     @GetMapping("/RestablecerPass")
-    public String viewPass(){return "PassRestore";}
+    public String viewPass(){return "PassRestoreForm";}
     @GetMapping("/RestablecerPassConfirm")
     public String viewPassConfirm(){return "PassRestore-confirm";}
 
