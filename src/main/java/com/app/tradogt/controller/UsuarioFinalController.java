@@ -953,7 +953,7 @@ public class UsuarioFinalController {
 
         model.addAttribute("resena", new Resena()); // Agregamos un objeto vacío para el formulario
 
-        return "Usuario/nuevaresena-usuario";
+        return "Usuario/pruebaTemp";
     }
 
     @PostMapping("/guardarResenha")
@@ -1001,7 +1001,7 @@ public class UsuarioFinalController {
         }
 
 
-        return "redirect:/usuario/rese%C3%B1as";
+        return "redirect:/usuario/resenas";
     }
 
     private String getFileExtension(String fileName) {
