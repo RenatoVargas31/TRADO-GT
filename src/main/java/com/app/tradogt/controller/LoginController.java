@@ -147,6 +147,19 @@ public class LoginController {
         model.addAttribute("passwordResetToken", new PasswordResetToken());
         return "SolicitarRestore";
     }
+    @GetMapping("/verificarCode")
+    public String verificarCode(Model model){
+        return "verify-code";
+    }
+
+    @GetMapping("/reset-password-form")
+    public String showResetPasswordForm(@RequestParam String token, Model model) {
+
+        // Si el token es válido, mostrar el formulario
+        model.addAttribute("token", token);
+        return "PassRestoreForm"; // Redirigir a la vista del formulario de restablecimiento de contraseña
+    }
+
 
 
     @PostMapping("/crearCuenta")
@@ -297,8 +310,45 @@ public class LoginController {
             redirectAttributes.addFlashAttribute("error", "No se encontró una cuenta con ese correo electrónico.");
         }
 
-        return "redirect:/recuperarPass";
+        return "redirect:/verificarCode";
     }
+    @PostMapping("/verify-codE")
+    public String verifyCode(@RequestParam String verificationCode, Model model, RedirectAttributes redirectAttributes) {
+        try {
+            // Buscar el token por el código de verificación
+            Optional<PasswordResetToken> resetToken = tokenRepository.findByToken(verificationCode);
+
+            // Verificar que el token exista y que no haya expirado
+            if (resetToken == null) {
+                redirectAttributes.addFlashAttribute("error", "El código de verificación es inválido.");
+                return "redirect:/verificarCode"; // Redirigir si el código no es válido
+            }
+
+            if (resetToken.get().getExpirationDate().isBefore(Instant.now())) {
+                redirectAttributes.addFlashAttribute("error", "El código de verificación ha expirado.");
+                return "redirect:/verificarCode"; // Redirigir si el código ha expirado
+            }
+
+            // Si el código es válido, redirigir a la página para cambiar la contraseña
+            return "redirect:/reset-password-form?token=" + verificationCode;
+
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Ocurrió un error al verificar el código.");
+            return "redirect:/verificarCode"; // Redirigir si hay un error
+        }
+    }
+
+    /*
+    @PostMapping("/reset-password")
+    public String resetPassword(@RequestParam String token,
+                                @Valid @ModelAttribute PasswordRegisterDto passwordRegisterDto,
+                                BindingResult passwordResult,
+                                RedirectAttributes redirectAttributes) {
+
+
+    }
+
+     */
 
 
     public void sendMessage(String email, String messageEmail) {

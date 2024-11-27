@@ -43,31 +43,26 @@
                                         </div>
 
                                         <h4 class="font-size-18 mt-4">Restablecer Contraseña</h4>
-                                        <p class="text-muted">Ingresa tus datos para restablecer tu contraseña.</p>
                                     </div>
 
                                     <div class="p-2 mt-5">
-                                        <form id="resetPasswordForm">
-                                            <div class="auth-form-group-custom mb-4">
-                                                <i class="ri-user-line auti-custom-input-icon"></i>
-                                                <label for="username">Nombre de Usuario</label>
-                                                <input type="text" class="form-control" id="username" placeholder="Ingresar usuario" required>
-                                            </div>
+                                        <form th:action="@{/reset-password}" method="post">
+                                            <input type="hidden" name="token" th:value="${token}"/> <!-- Token recibido en el enlace -->
 
                                             <div class="auth-form-group-custom mb-4">
                                                 <i class="ri-lock-line auti-custom-input-icon"></i>
                                                 <label for="newPassword">Nueva Contraseña</label>
-                                                <input type="password" class="form-control" id="newPassword" placeholder="Ingresar nueva contraseña" required>
+                                                <input type="password" class="form-control" id="newPassword" name="newPassword" placeholder="Ingresar nueva contraseña" required>
                                             </div>
 
                                             <div class="auth-form-group-custom mb-4">
                                                 <i class="ri-lock-line auti-custom-input-icon"></i>
                                                 <label for="confirmPassword">Confirmar Contraseña</label>
-                                                <input type="password" class="form-control" id="confirmPassword" placeholder="Confirmar nueva contraseña" required>
+                                                <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Confirmar nueva contraseña" required>
                                             </div>
 
                                             <div class="mt-4 text-center">
-                                                <a href="/sistema/RestablecerPassConfirm" class="btn btn-primary w-md waves-effect waves-light" type="submit" >Restablecer</a>
+                                                <button class="btn btn-primary w-md waves-effect waves-light" type="submit" >Restablecer</button>
                                             </div>
                                         </form>
                                     </div>
@@ -88,10 +83,6 @@
 
 <!-- JAVASCRIPT BASE-->
 <span th:replace="~{Common/jsBase :: js_Base}"></span>
-<!-- Bootstrap JS and dependencies (necessary if not already included in js_Base) -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <!-- Custom Script -->
 <script>
     document.getElementById('finishButton').addEventListener('click', function() {

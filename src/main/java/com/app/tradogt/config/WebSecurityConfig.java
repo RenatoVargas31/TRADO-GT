@@ -142,7 +142,7 @@ public class WebSecurityConfig {
                 .addFilterBefore(customAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers("/css/**", "/js/**", "/images/**", "/fonts/**", "/libs/**").permitAll()
-                        .requestMatchers("/loginForm", "/processLogin", "/crearCuenta","/recuperarPass","request-password-reset").permitAll()
+                        .requestMatchers("/loginForm", "/processLogin", "/crearCuenta","/recuperarPass","/request-password-reset","/verificarCode","/verify-codE","/reset-password-form").permitAll()
                         .requestMatchers("/superadmin", "/superadmin/**").hasAnyAuthority("SuperAdmin")
                         .requestMatchers("/adminzonal", "/adminzonal/**").hasAnyAuthority("Administrador Zonal")
                         .requestMatchers("/agente", "/agente/**").hasAnyAuthority("Agente de Compra")
