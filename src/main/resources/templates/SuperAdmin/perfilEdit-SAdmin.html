@@ -62,8 +62,8 @@
                                     <hr class="opacity-0">
                                     <div class="flex-shrink-0">
                                         <img th:src="@{'/uploads/fotosUsuarios/' + ${usuarioAutenticado.foto}}" alt="user image"
-                                             src="/uploads/fotosUsuarios/default.jpg"
-                                             onerror="this.onerror=null;this.src='/uploads/fotosUsuarios/default.jpg';"
+                                             src="/images/default.jpg"
+                                             onerror="this.onerror=null;this.src='/images/default.jpg';"
                                              class="d-block rounded-circle" style="width: 150px; height: 150px; object-fit: cover;">
                                     </div>
                                     <p class="text-muted mb-0 mt-2" th:text="${usuarioAutenticado.nombre} + ' ' + ${usuarioAutenticado.apellido}">Kevin Doe</p>

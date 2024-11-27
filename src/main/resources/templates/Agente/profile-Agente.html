@@ -70,8 +70,8 @@
                         <div class="d-flex justify-content-center">
                           <img id="fotoUsuario" th:src="@{'/uploads/fotosUsuarios/' + ${usuarioAutenticado.foto}}"
                                alt="user image" class="d-block rounded-circle"
-                               src="/uploads/fotosUsuarios/default.jpg"
-                               onerror="this.onerror=null;this.src='/uploads/fotosUsuarios/default.jpg';"
+                               src="/images/default.jpg"
+                               onerror="this.onerror=null;this.src='/images/default.jpg';"
                                style="width: 150px; height: 150px; object-fit: cover;">
                         </div>
                         <p th:text="${usuarioAutenticado.nombre} + ' ' + ${usuarioAutenticado.apellido}"></p>
