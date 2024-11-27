@@ -66,7 +66,11 @@
                       <!-- Imagen actual del usuario que será reemplazada por la previsualización -->
                       <div class="text-center">
                         <div class="d-flex justify-content-center">
-                          <img id="fotoUsuario" th:src="@{'/uploads/fotosUsuarios/' + ${usuarioAutenticado.foto}}" alt="user image" class="d-block rounded-circle" style="width: 150px; height: 150px; object-fit: cover;">
+                          <img id="fotoUsuario" th:src="@{'/uploads/fotosUsuarios/' + ${usuarioAutenticado.foto}}"
+                               alt="user image" class="d-block rounded-circle"
+                               src="/uploads/fotosUsuarios/default.jpg"
+                               onerror="this.onerror=null;this.src='/uploads/fotosUsuarios/default.jpg';"
+                               style="width: 150px; height: 150px; object-fit: cover;">
                         </div>
                         <p th:text="${usuario.nombre} + ' ' + ${usuario.apellido}"></p>
                         <p th:text="${usuario.rolIdrol.nombre}"></p>

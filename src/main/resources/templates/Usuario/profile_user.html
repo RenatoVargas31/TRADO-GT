@@ -59,7 +59,12 @@
                                 <div class="card-body user-profile-header d-flex flex-column align-items-center mb-4">
                                     <div class="flex-shrink-0 mt-3 mb-3">
                                         <!-- Usar la ruta de la foto del usuario desde el modelo -->
-                                        <img th:src="@{'/uploads/fotosUsuarios/' + ${usuario.foto}}" alt="user image" class="d-block rounded-circle" style="width: 150px; height: 150px; object-fit: cover;"><br>
+                                        <img th:src="@{'/uploads/fotosUsuarios/' + ${usuario.foto}}"
+                                             src="/uploads/fotosUsuarios/default.jpg"
+                                             onerror="this.onerror=null;this.src='/uploads/fotosUsuarios/default.jpg';"
+                                             alt="user image" class="d-block rounded-circle"
+
+                                             style="width: 150px; height: 150px; object-fit: cover;"><br>
                                     </div>
                                     <p class="text-dark mb-0 mt-2" th:text="${usuario.nombre} + ' ' + ${usuario.apellido}" style="font-size: 20px;">Nombre del Usuario</p>
                                     <p class="text-muted mb-0" th:text="${usuario.rolIdrol.nombre}"></p><br>
