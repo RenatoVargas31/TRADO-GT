@@ -14,7 +14,7 @@
     <!-- End CSS BASE -->
     <style>
         .auth-logo-container {
-            margin-top: 100px; /* Espacio superior para evitar que se mueva el contenido cuando aparece el error */
+            margin-top: 50px; /* Espacio superior para evitar que se mueva el contenido cuando aparece el error */
             margin-bottom: 20px; /* Espacio inferior para evitar que se mueva el contenido cuando aparece el error */
         }
         /* Ensure the right image takes up the full height and width of its column */
@@ -30,92 +30,93 @@
                 position: fixed; /* Fija la imagen del lado derecho para evitar que se corte */
                 right: 0;
                 top: 0;
-                width: 66.66%; /* Dos tercios de la pantalla (ajustable) */
+                width: 55%; /* Dos tercios de la pantalla (ajustable) */
                 height: 100%; /* Toda la altura */
                 z-index: -1; /* Para que no se superponga sobre el contenido */
             }
         }
-        .margen{
-            margin-top: 550px;
-        }
     </style>
 </head>
 <body class="auth-body-bg">
-<div>
     <div class="container-fluid p-0">
         <div class="row g-0">
-            <div class="col-lg-4">
+            <div class="col-lg-5">
                 <div class="authentication-page-content p-4 d-flex align-items-center min-vh-100">
                     <div class="w-100">
                         <div class="row justify-content-center">
-                            <div class="col-lg-9">
-                                <div>
-                                    <div class="margen">
-                                    <div class="text-center">
-                                        <div class="auth-logo-container">
-                                            <img src="/images/trado-dark.png" alt="" height="40" class="auth-logo logo-dark mx-auto">
+                            <div class="col-lg-12">
+                                    <div class="mt-5 mb-2">
+                                        <div class="text-center">
+                                            <div class="auth-logo-container">
+                                                <img src="/images/trado-dark.png" alt="" height="40" class="auth-logo logo-dark mx-auto">
+                                            </div>
+                                            <h4 class="font-size-18 mt-2">¡Bienvenido a Trado!</h4>
+                                            <p class="text-muted">Crea tu cuenta y comienza a disfrutar de nuestros servicios</p>
                                         </div>
-                                        <h4 class="font-size-18 mt-2">¡Bienvenido a Trado!</h4>
-                                        <p class="text-muted">Registro de Nuevo Usuario</p>
-                                    </div>
                                     </div>
 
                                     <div class="p-2 mt-2">
                                         <form method="post" th:action="@{/crearCuenta}" th:object="${usuario}">
-                                            <div class="auth-form-group-custom mb-2">
+                                            <div class="auth-form-group-custom mb-2 ">
                                                 <i class="ri-passport-line auti-custom-input-icon"></i>
                                                 <label for="dni" class="fw-semibold">DNI</label>
                                                 <input type="text" class="form-control" id="dni" th:field="*{dni}" placeholder="Ingresar DNI" required>
                                                 <div id="dni-error" class="text-danger" style="display:none;"></div> <!-- Div para el mensaje de error -->
-                                                <div th:if="${#fields.hasErrors('dni')}" th:errors="*{dni}" class="text-danger"></div>
                                             </div>
-                                            <div class="auth-form-group-custom mb-2">
+                                            <div th:if="${#fields.hasErrors('dni')}" th:errors="*{dni}" class="text-danger"></div>
+
+                                            <div class="auth-form-group-custom mb-2 ">
                                                 <i class="ri-user-2-line auti-custom-input-icon"></i>
-                                                <label for="nombre" class="fw-semibold">Nombres</label>
+                                                <label for="nombre" class="fw-semibold">Nombre completo</label>
                                                 <input type="text" class="form-control bg-light" id="nombre" th:field="*{nombre}" placeholder="Ingresar nombres" required readonly>
-                                                <div th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}" class="text-danger"></div>
                                             </div>
-                                            <div class="auth-form-group-custom mb-2">
+                                            <div th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}" class="text-danger"></div>
+                                            <div class="auth-form-group-custom mb-2 ">
                                                 <i class="ri-user-2-line auti-custom-input-icon"></i>
                                                 <label for="apellido" class="fw-semibold">Apellidos</label>
                                                 <input type="text" class="form-control bg-light" id="apellido" th:field="*{apellido}" placeholder="Ingresar apellidos" required readonly>
-                                                <div th:if="${#fields.hasErrors('apellido')}" th:errors="*{apellido}" class="text-danger"></div>
                                             </div>
-                                            <div class="auth-form-group-custom mb-2">
-                                                <i class="ri-mail-line auti-custom-input-icon"></i>
-                                                <label for="correo">Correo electrónico</label>
-                                                <input type="email" class="form-control" id="correo" th:field="*{correo}" placeholder="Ingrese su correo" required>
-                                                <div th:if="${#fields.hasErrors('correo')}" th:errors="*{correo}" class="text-danger"></div>
+                                            <div th:if="${#fields.hasErrors('apellido')}" th:errors="*{apellido}" class="text-danger"></div>
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <div class="auth-form-group-custom mb-2 ">
+                                                        <i class="ri-mail-line auti-custom-input-icon"></i>
+                                                        <label for="correo">Correo electrónico</label>
+                                                        <input type="email" class="form-control" id="correo" th:field="*{correo}" placeholder="Ingresar correo electrónico" required>
+                                                    </div>
+                                                    <div th:if="${#fields.hasErrors('correo')}" th:errors="*{correo}" class="text-danger"></div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="auth-form-group-custom mb-2 ">
+                                                        <i class=" ri-smartphone-line auti-custom-input-icon position-absolute top-50 start-0 translate-middle-y ms-3"></i>
+                                                        <label for="telefono">Teléfono</label>
+                                                        <input type="number" class="form-control" id="telefono" th:field="*{telefono}" placeholder="Ingresar número telefónico" required>
+                                                    </div>
+                                                    <div th:if="${#fields.hasErrors('telefono')}" th:errors="*{telefono}" class="text-danger"></div>
+                                                </div>
                                             </div>
-                                            <div class="auth-form-group-custom mb-2">
-                                                <i class=" ri-smartphone-line auti-custom-input-icon"></i>
-                                                <label for="telefono">Teléfono</label>
-                                                <input type="number" class="form-control" id="telefono" th:field="*{telefono}" placeholder="Ingrese su teléfono" required>
-                                                <div th:if="${#fields.hasErrors('telefono')}" th:errors="*{telefono}" class="text-danger"></div>
-                                            </div>
-                                            <div class="auth-form-group-custom mb-2">
-                                                <i class="ri-community-line auti-custom-input-icon"></i>
-                                                <label for="direccion" class="fw-semibold">Dirección</label>
-                                                <input type="text" class="form-control" id="direccion" th:field="*{direccion}" placeholder="Ingresar dirección" required>
-                                                <div th:if="${#fields.hasErrors('direccion')}" th:errors="*{direccion}" class="text-danger"></div>
-                                            </div>
-                                            <div class="auth-form-group-custom mb-2">
-                                                <i class="ri-map-2-line auti-custom-input-icon"></i>
-                                                <label for="distrito" class="fw-semibold">Distrito</label>
-                                                <select name="distrito" id="distrito" class="form-control" required>
-                                                    <option th:each="distrito : ${distritos}"
-                                                            th:value="${distrito.nombre}"
-                                                            th:text="${distrito.nombre}">
-                                                    </option>
-                                                </select>
-                                            </div>
-                                            <div>
-                                                <ul class="text-muted mb-2 mt-2 mx-3">
-                                                    <li>La longitud mínima de la contraseña es de 8 caracteres y máxima de 16 caracteres</li>
-                                                    <li>Debe contener al menos 1 número</li>
-                                                    <li>Debe contener al menos 2 caracteres especiales</li>
-                                                    <li>Debe contener al menos 1 letra mayúscula y minúscula</li>
-                                                </ul>
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <div class="auth-form-group-custom mb-2 ">
+                                                        <i class="ri-community-line auti-custom-input-icon"></i>
+                                                        <label for="direccion" class="fw-semibold">Dirección</label>
+                                                        <input type="text" class="form-control" id="direccion" th:field="*{direccion}" placeholder="Ingresar dirección" required>
+                                                    </div>
+                                                    <div th:if="${#fields.hasErrors('direccion')}" th:errors="*{direccion}" class="text-danger"></div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="auth-form-group-custom mb-2 ">
+                                                        <i class="ri-map-2-line auti-custom-input-icon"></i>
+                                                        <label for="distrito" class="fw-semibold">Distrito</label>
+                                                        <select name="distrito" id="distrito" class="form-control" required>
+                                                            <option value="" selected disabled>Seleccionar Distrito</option>
+                                                            <option th:each="distrito : ${distritos}"
+                                                                    th:value="${distrito.nombre}"
+                                                                    th:text="${distrito.nombre}">
+                                                            </option>
+                                                        </select>
+                                                    </div>
+                                                </div>
                                             </div>
                                             <!-- Información de contraseñas -->
                                             <div th:object="${passwordRegisterDto}">
@@ -123,18 +124,43 @@
                                                     <i class="ri-lock-line auti-custom-input-icon"></i>
                                                     <label for="contrasena" class="fw-semibold">Contraseña</label>
                                                     <input type="password" class="form-control" id="contrasena" th:field="*{contrasena}" placeholder="Ingresar contraseña" required>
-                                                    <div th:if="${#fields.hasErrors('contrasena')}" th:errors="*{contrasena}" class="text-danger"></div>
+                                                </div>
+                                                <div th:if="${#fields.hasErrors('contrasena')}" th:errors="*{contrasena}" class="text-danger" th:class="mt-2"></div>
+                                                <div id="password-requirements1" style="display: none;">
+                                                    <ul class="text-muted mb-2 mt-2 mx-3">
+                                                        <li>Longitud entre 8 a 16 caracteres. Incluye al menos: 1 número, 2 símbolos, 1 mayúscula y 1 minúscula</li>
+                                                    </ul>
                                                 </div>
                                                 <div class="auth-form-group-custom mb-2">
                                                     <i class="ri-lock-line auti-custom-input-icon"></i>
                                                     <label for="confirmarContrasena" class="fw-semibold">Confirmar contraseña</label>
                                                     <input type="password" class="form-control" id="confirmarContrasena" th:field="*{confirmarContrasena}" placeholder="Confirmar contraseña" required>
-                                                    <div th:if="${#fields.hasErrors('confirmarContrasena')}" th:errors="*{confirmarContrasena}" class="text-danger"></div>
                                                 </div>
+                                                <div th:if="${#fields.hasErrors('confirmarContrasena')}" th:errors="*{confirmarContrasena}" class="text-danger"></div>
                                             </div>
+
+                                            <script>
+                                                const passwordInput = document.getElementById('contrasena');
+                                                const passwordRequirements1 = document.getElementById('password-requirements1');
+
+                                                // Función para mostrar los requisitos
+                                                function showRequirements1() {
+                                                    passwordRequirements1.style.display = 'block';
+                                                }
+
+                                                // Función para ocultar los requisitos
+                                                function hideRequirements1() {
+                                                    passwordRequirements1.style.display = 'none';
+                                                }
+
+
+                                                // Agregar eventos a los inputs
+                                                passwordInput.addEventListener('focus', showRequirements1);
+                                                passwordInput.addEventListener('blur', hideRequirements1);
+                                            </script>
                                             <input type="hidden" name="rolIdrol" value="4">
                                             <div class="mt-4 text-center">
-                                                <button class="w-100 btn btn-lg btn-primary" type="submit">Registrar</button>
+                                                <button class="w-100 btn btn-lg btn-primary w-50" type="submit">Registrar</button>
                                             </div>
                                         </form>
                                         <div class="mt-3 text-center">
@@ -142,18 +168,16 @@
                                             <p>© <script>document.write(new Date().getFullYear())</script> TRADO. Creado con <i class="mdi mdi-heart text-danger"></i> por Telesoft GT</p>
                                         </div>
                                     </div>
-                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-8 d-none d-lg-block fixed-right-side">
+            <div class="col-lg-7 d-none d-lg-flex fixed-right-side">
                 <img src="/images/297451387_172154511984888_7597808842372857148_n.jpg" alt="" class="right-side-image">
             </div>
         </div>
     </div>
-</div>
 <!-- JavaScript Base -->
 <span th:replace="~{Common/jsBase :: js_Base}"></span>
 <!-- Fin JavaScript Base -->
