@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8" />
-  <title>Agent New</title>
+  <title>Nuevo Agente</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <!-- CSS BASE -->
   <meta th:replace="~{Common/cssBase :: css_Base}">
@@ -38,9 +38,9 @@
 
               <div class="page-title-right">
                 <ol class="breadcrumb m-0">
-                  <li class="breadcrumb-item"><a href="javascript: void(0);">Home</a></li>
-                  <li class="breadcrumb-item active">Agent Management</li>
-                  <li class="breadcrumb-item active">Agent New</li>
+                  <li class="breadcrumb-item"><a href="/adminzonal/dashboard">Inicio</a></li>
+
+                  <li class="breadcrumb-item active">Nuevo Agente</li>
                 </ol>
               </div>
 
@@ -53,10 +53,13 @@
           <div class="col-xl-12">
             <div class="card">
               <div class="card-body">
+                <div th:if="${agenteSize >=3<<}" class="alert alert-danger">
+                  No puede registrar más de 3 agentes.
+                </div>
                 <h4 class="card-title">Registro de un nuevo Agente</h4>
                 <p class="card-title-desc"> Complete la información requerida para registrar un nuevo agente en el sistema. Todos los campos son obligatorios.</p>
 
-                <form th:object="${agente}" th:action="@{/adminzonal/saveAgente}" method="post" class="needs-validation" novalidate>
+                <form th:object="${agente}" th:action="@{/adminzonal/saveAgente}" method="post"  id="formAgente" class="needs-validation" novalidate>
                   <input th:field="*{id}" type="hidden">
                   <!-- Nombre y Apellidos -->
                   <div class="row">
@@ -79,10 +82,10 @@
                   <div class="row">
                     <div class="col-md-4">
                       <div class="mb-3">
-                        <label for="validationCustom03" class="form-label">Documento de identificación</label>
-                        <input type="text" class="form-control" id="validationCustom03"
-                               placeholder="ID"  th:field="*{dni}">
-                        <div id="dni-error" class="text-danger" style="display:none;"></div> <!-- Div para el mensaje de error -->
+                        <label for="dniInput" class="form-label">Documento de identificación</label>
+                        <input type="text" class="form-control" id="dniInput"
+                               placeholder="DNI" th:field="*{dni}" maxlength="8">
+                        <div id="dni-error" class="text-danger" style="display:none;">El DNI debe contener solo números y tener máximo 8 dígitos.</div>
                       </div>
                     </div>
                     <div class="col-md-4">
@@ -96,10 +99,10 @@
                     <div class="col-md-4">
                       <div class="mb-3">
                         <label for="validationCustom05" class="form-label">Correo electrónico</label>
-                        <input type="text" class="form-control" id="validationCustom05"
-                               placeholder="Email"  th:field="*{correo}">
-
+                        <input type="email" class="form-control" id="validationCustom05"
+                               placeholder="Email" th:field="*{correo}">
                       </div>
+
                     </div>
                   </div>
                   <!-- Requisitos -->
@@ -109,16 +112,17 @@
                         <label for="validationCustom06" class="form-label">Código de despachador</label>
                         <input type="text" class="form-control" id="validationCustom06"
                                placeholder="E.g DPC-04012" th:field="*{codigoDespachador}">
-
+                        <div id="codigo-error" class="text-danger" style="display: none;">El código debe tener el formato: ABC12345.</div>
                       </div>
                     </div>
                     <div class="col-md-3">
                       <div class="mb-3">
                         <label for="validationCustom07" class="form-label">RUC</label>
                         <input type="text" class="form-control" id="validationCustom07"
-                               placeholder="E.g 12345678901"  th:field="*{ruc}">
-
+                               placeholder="E.g 1234567890" th:field="*{ruc}">
+                        <div id="ruc-error" class="text-danger" style="display: none;">El RUC debe tener exactamente 10 dígitos.</div>
                       </div>
+
                     </div>
                     <div class="col-md-3">
                       <div class="mb-3">
@@ -131,9 +135,10 @@
                     <div class="col-md-3">
                       <div class="mb-3">
                         <label for="validationCustom09" class="form-label">Código de Juridicción</label>
-                        <input type="text" class="form-control" placeholder="E.g JUR-001" id="validationCustom09" >
-
+                        <input type="text" class="form-control" placeholder="E.g JUR-001" id="validationCustom09">
+                        <div id="juridiccion-error" class="text-danger" style="display: none;">El código debe tener el formato: ABC123.</div>
                       </div>
+
                     </div>
                   </div>
 
@@ -148,7 +153,7 @@
                     </div>
                     <div class="col-md-4">
                       <div class="mb-3">
-                        <label for="validationCustom11" class="form-label">Districto</label>
+                        <label for="validationCustom11" class="form-label">Distrito</label>
                         <select class="form-select" id="validationCustom11" th:field="*{distritoIddistrito}">
                           <option selected disabled value="">Distritos </option>
                           <option th:each="d : ${listaDistritos}" th:value="${d.id}" th:text="${d.nombre}"></option>
@@ -166,9 +171,10 @@
                     </div>
 
                   </div>
-                  <div>
+                  <div th:if="${agenteSize <= 2}">
                     <button class="btn btn-primary" type="submit">Guardar</button>
                   </div>
+
                 </form>
               </div>
             </div>
@@ -201,67 +207,248 @@
 <!-- END layout-wrapper -->
 
 
+
 <!-- JAVASCRIPT BASE-->
 <span th:replace="~{Common/jsBase :: js_Base}"></span>
 <!-- End JAVASCRIPT BASE-->
 <script>
-  $(document).ready(function() {
-    let isRequestInProgress = false; // Bandera para evitar múltiples solicitudes
-    let hasInteracted = false; // Bandera para saber si el usuario ya interactuó con el campo
-    const dniLength = 8; // Longitud esperada del DNI
+  document.addEventListener('DOMContentLoaded', () => {
+    const dniInput = document.getElementById('dniInput');
+    const dniError = document.getElementById('dni-error');
+    const nombreField = document.getElementById('validationCustom01');
+    const apellidoField = document.getElementById('validationCustom02');
+    const dniLength = 8;
+    let isRequestInProgress = false;
     let debounceTimeout;
 
-    $('#validationCustom03').on('input', function() {
-      const dni = $(this).val();
-
-      // Marcar que el usuario ha interactuado con el campo
-      hasInteracted = true;
-
-      // Limpiar el timeout del debounce si el usuario sigue escribiendo
-      clearTimeout(debounceTimeout);
-
-      // Validar que el DNI tenga la longitud correcta, la solicitud no esté en progreso y el usuario haya interactuado
-      if (dni.length === dniLength && !isRequestInProgress && hasInteracted) {
-        // Configurar un debounce de 500 ms para evitar solicitudes inmediatas
-        debounceTimeout = setTimeout(function() {
-          isRequestInProgress = true; // Indicar que la solicitud está en progreso
-
-          $.ajax({
-            url: '/api/consultarDni',
-            type: 'GET',
-            data: { dni: dni },
-            success: function(data) {
-              console.log("Datos recibidos:", data); // Verificar los datos en la consola
-              if (data.message === "DNI no válido") {
-                // Mostrar el mensaje de error en la interfaz
-                $('#dni-error').text(data.message).show(); // Mostrar el mensaje de error
-                $('#validationCustom01').val(''); // Limpiar campos en caso de error
-                $('#validationCustom02').val('');
-              } else {
-                $('#dni-error').hide(); // Ocultar el mensaje de error si la respuesta es válida
-                $('#validationCustom01').val(data.nombres); // Completa el campo de nombre
-                $('#validationCustom02').val(data.apellidoPaterno + " " + data.apellidoMaterno); // Completa el campo de apellido
-              }
-            },
-            error: function() {
-              $('#dni-error').text('No se pudo encontrar el DNI.').show(); // Mostrar error en caso de fallo
-            },
-            complete: function() {
-              isRequestInProgress = false; // Restablecer la bandera cuando la solicitud termina
-            }
-          });
-        }, 500); // Tiempo de espera en milisegundos para el debounce
-      } else {
-        $('#dni-error').hide(); // Ocultar el mensaje de error si el DNI no tiene la longitud correcta
+    dniInput.addEventListener('input', () => {
+      // Validar formato y longitud del DNI
+      let value = dniInput.value;
+      if (/[^0-9]/.test(value) || value.length > dniLength) {
+        dniInput.value = value.replace(/[^0-9]/g, '').slice(0, dniLength);
       }
+
+      // Mostrar mensaje si la longitud no es válida
+      if (dniInput.value.length < dniLength) {
+        dniError.textContent = "El DNI debe tener 8 dígitos.";
+        dniError.style.display = 'block';
+        nombreField.value = '';
+        apellidoField.value = '';
+        return;
+      } else {
+        dniError.style.display = 'none';
+      }
+
+      // Realizar solicitud AJAX solo si el DNI es válido
+      clearTimeout(debounceTimeout);
+      debounceTimeout = setTimeout(() => {
+        if (isRequestInProgress || dniInput.value.length !== dniLength) return;
+
+        isRequestInProgress = true;
+        $.ajax({
+          url: '/api/consultarDni',
+          type: 'GET',
+          data: { dni: dniInput.value },
+          success: function (data) {
+            if (!data || data.message === "DNI no válido") {
+              dniError.textContent = "No se encontró información para el DNI ingresado.";
+              dniError.style.display = 'block';
+              nombreField.value = '';
+              apellidoField.value = '';
+            } else {
+              dniError.style.display = 'none';
+              nombreField.value = data.nombres || '';
+              apellidoField.value = (data.apellidoPaterno || '') + ' ' + (data.apellidoMaterno || '');
+            }
+          },
+          error: function () {
+            dniError.textContent = "No se pudo conectar al servidor. Intenta nuevamente.";
+            dniError.style.display = 'block';
+          },
+          complete: function () {
+            isRequestInProgress = false;
+          }
+        });
+      }, 500); // Tiempo de espera para el debounce
     });
 
-    // Si el usuario recarga la página, resetear `hasInteracted` a false
-    $(window).on("load", function() {
-      hasInteracted = false;
+    dniInput.addEventListener('keypress', (e) => {
+      // Restringir entrada de caracteres no numéricos
+      if (!/[0-9]/.test(e.key)) {
+        e.preventDefault();
+      }
     });
   });
 </script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const dniInput = document.getElementById('dniInput');
+    const dniError = document.getElementById('dniError');
+    const telefonoInput = document.getElementById('validationCustom04');
+    const telefonoError = document.createElement('div');
+    telefonoError.id = 'telefono-error';
+    telefonoError.style.color = 'red';
+    telefonoError.style.display = 'none';
+    telefonoInput.parentNode.appendChild(telefonoError);
+
+    const telefonoLength = 9;
+
+    telefonoInput.addEventListener('input', () => {
+      let value = telefonoInput.value;
+      telefonoInput.value = value.replace(/[^0-9]/g, '').slice(0, telefonoLength);
+
+      if (telefonoInput.value.length < telefonoLength) {
+        telefonoError.textContent = "El teléfono debe tener 9 dígitos.";
+        telefonoError.style.display = 'block';
+      } else {
+        telefonoError.style.display = 'none';
+      }
+    });
+
+    telefonoInput.addEventListener('keypress', (e) => {
+      if (!/[0-9]/.test(e.key)) {
+        e.preventDefault();
+      }
+    });
+
+    telefonoInput.addEventListener('blur', () => {
+      if (telefonoInput.value.length !== telefonoLength) {
+        telefonoError.textContent = "El teléfono debe tener exactamente 9 dígitos.";
+        telefonoError.style.display = 'block';
+      } else {
+        telefonoError.style.display = 'none';
+      }
+    });
+
+    const rucInput = document.getElementById('validationCustom07');
+    const rucError = document.getElementById('ruc-error');
+    const rucLength = 10;
+
+    rucInput.addEventListener('input', () => {
+      let value = rucInput.value;
+      rucInput.value = value.replace(/[^0-9]/g, '').slice(0, rucLength);
+
+      if (rucInput.value.length < rucLength) {
+        rucError.style.display = 'block';
+      } else {
+        rucError.style.display = 'none';
+      }
+    });
+
+    rucInput.addEventListener('keypress', (e) => {
+      if (!/[0-9]/.test(e.key)) {
+        e.preventDefault();
+      }
+    });
+
+    rucInput.addEventListener('blur', () => {
+      if (rucInput.value.length !== rucLength) {
+        rucError.style.display = 'block';
+      } else {
+        rucError.style.display = 'none';
+      }
+    });
+
+    const codigoInput = document.getElementById('validationCustom06');
+    const codigoError = document.getElementById('codigo-error');
+    const codigoPattern = /^[A-Z]{3}\d{1,5}$/;
+
+    codigoInput.addEventListener('input', () => {
+      let value = codigoInput.value;
+      value = value.replace(/[^A-Za-z0-9]/g, '').toUpperCase();
+      if (value.length > 8) {
+        value = value.slice(0, 8);
+      }
+      codigoInput.value = value;
+
+      if (!codigoPattern.test(value)) {
+        codigoError.style.display = 'block';
+      } else {
+        codigoError.style.display = 'none';
+      }
+    });
+
+    codigoInput.addEventListener('blur', () => {
+      if (!codigoPattern.test(codigoInput.value)) {
+        codigoError.style.display = 'block';
+      } else {
+        codigoError.style.display = 'none';
+      }
+    });
+
+    const juridiccionInput = document.getElementById('validationCustom09');
+    const juridiccionError = document.getElementById('juridiccion-error');
+    const juridiccionPattern = /^[A-Z]{3}\d{1,3}$/;
+
+    juridiccionInput.addEventListener('input', () => {
+      let value = juridiccionInput.value;
+      value = value.replace(/[^A-Za-z0-9]/g, '').toUpperCase();
+      if (value.length > 6) {
+        value = value.slice(0, 6);
+      }
+      juridiccionInput.value = value;
+
+      if (!juridiccionPattern.test(value)) {
+        juridiccionError.style.display = 'block';
+      } else {
+        juridiccionError.style.display = 'none';
+      }
+    });
+
+    juridiccionInput.addEventListener('blur', () => {
+      if (!juridiccionPattern.test(juridiccionInput.value)) {
+        juridiccionError.style.display = 'block';
+      } else {
+        juridiccionError.style.display = 'none';
+      }
+    });
+
+    // Formulario y validación final
+    const form = document.getElementById('formAgente'); // Suponiendo que tu formulario tiene id="myForm"
+    form.addEventListener('submit', (e) => {
+      let isValid = true;
+
+      // Verificar si hay errores antes de enviar el formulario
+      if (telefonoInput.value.length !== telefonoLength) {
+        isValid = false;
+        telefonoError.textContent = "El teléfono debe tener 9 dígitos.";
+        telefonoError.style.display = 'block';
+      }
+
+      if (rucInput.value.length !== rucLength) {
+        isValid = false;
+        rucError.style.display = 'block';
+      }
+
+      if (!codigoPattern.test(codigoInput.value)) {
+        isValid = false;
+        codigoError.style.display = 'block';
+      }
+
+      if (!juridiccionPattern.test(juridiccionInput.value)) {
+        isValid = false;
+        juridiccionError.style.display = 'block';
+      }
+      if (dniInput.value.length !== 8 || dniInput.value === '') {
+        isValid = false;
+        dniError.textContent = "El DNI debe tener exactamente 8 dígitos.";
+        dniError.style.display = 'block';
+      } else {
+        dniError.style.display = 'none';
+      }
+      // Si no es válido, prevenir el envío
+      if (!isValid) {
+        e.preventDefault();
+      }
+
+    });
+  });
+</script>
+
+
+
+
+
 </body>
 
 </html>

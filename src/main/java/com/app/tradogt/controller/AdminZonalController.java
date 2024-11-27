@@ -303,8 +303,9 @@ public class AdminZonalController {
         /*List<Usuario> agentes = usuarioRepository.findAllByAdmzonalIdusuario_IdAndIsActivated(2, Byte.parseByte("1"));
         model.addAttribute("agentes", agentes);*/
 
-        List<AgenteInfoZon> agentes = usuarioRepository.getAgentesbyZonal(2);
+        List<AgenteInfoZon> agentes = usuarioRepository.getAgentesbyZonal(getAuthenticatedUserId());
         model.addAttribute("agentes", agentes);
+        model.addAttribute("agenteSize",agentes.size());
 
         List<Usuario> usuarios = usuarioRepository.findAll();
         model.addAttribute("usuarios", usuarios);
@@ -319,6 +320,8 @@ public class AdminZonalController {
     public String showNuevoAgente(Model model, @ModelAttribute("agente") Usuario usuario) {
         model.addAttribute("listaDistritos", distritoRepository.findByZonaIdzonaId(1));
         Optional<Usuario> AgentePrueba = usuarioRepository.findById(1);
+        List<AgenteInfoZon> agentes = usuarioRepository.getAgentesbyZonal(getAuthenticatedUserId());
+        model.addAttribute("agenteSize", agentes.size());
         model.addAttribute("agenteA", AgentePrueba.get());
         return "AdminZonal/nuevoAgente-AdminZonal";
     }
@@ -331,6 +334,7 @@ public class AdminZonalController {
             attr.addFlashAttribute("msg", "Agente " + (usuario.getId() == null ? "creado exitosamente" : "actualizado exitosamente"));
             usuario.setIsActivated(Byte.parseByte("1"));
             usuario.setIsPostulated(Byte.parseByte("1"));
+            usuario.setAdmzonalIdusuario(getAuthenticatedUser());
             usuario.setRolIdrol(rolRepository.findById(4).get());
             usuario.setZonaIdzona(zonaRepository.findById(1).get());
             usuarioRepository.save(usuario);

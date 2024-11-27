@@ -193,26 +193,27 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
     */
 
     @Query(value = """
-        SELECT\s
-        	u.idUsuario as id,
-            d.nombre as nombredistrito,
-            CONCAT(u.nombre," ", u.apellido) AS nombres,
+        SELECT 
+            u.idUsuario AS id,
+            d.nombre AS nombredistrito,
+            CONCAT(u.nombre, " ", u.apellido) AS nombres,
             COUNT(DISTINCT asignados.idUsuario) AS usAsignados,
             COUNT(DISTINCT o1.idOrden) AS importaFin,
             AVG(o2.valoracionAgente) AS calificacion
-        FROM\s
+        FROM 
             Usuario u
-        LEFT JOIN\s
+        LEFT JOIN 
             Usuario asignados ON asignados.agentCompra_idUsuario = u.idUsuario
-        LEFT JOIN\s
-            Orden o1 ON o1.estadoOrden_idEstadoOrden = 7 and o1.agentCompra_idUsuario = u.idUsuario -- Para contar las órdenes con estado 7
-        LEFT JOIN\s
-            Orden o2 ON o2.agentCompra_idUsuario = u.idUsuario AND o2.valoracionAgente IS NOT NULL-- Para obtener la calificación no nula
+        LEFT JOIN 
+            Orden o1 ON o1.estadoOrden_idEstadoOrden = 7 AND o1.agentCompra_idUsuario = u.idUsuario
+        LEFT JOIN 
+            Orden o2 ON o2.agentCompra_idUsuario = u.idUsuario AND o2.valoracionAgente IS NOT NULL
         LEFT JOIN
-        	Distrito d ON d.idDistrito = u.distrito_idDistrito
-        where u.admZonal_idUsuario = 2 and u.isActivated = 1
-        GROUP BY\s
-            u.idUsuario ;
+            Distrito d ON d.idDistrito = u.distrito_idDistrito
+        WHERE 
+            u.admZonal_idUsuario = :zonalId AND u.isActivated = 1
+        GROUP BY 
+            u.idUsuario
     """, nativeQuery = true)
     List<AgenteInfoZon> getAgentesbyZonal(@Param("zonalId") Integer zonalId);
 
