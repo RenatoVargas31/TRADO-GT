@@ -4,6 +4,7 @@ import com.app.tradogt.daos.DniDao;
 import com.app.tradogt.dto.PasswordRegisterDto;
 import com.app.tradogt.entity.*;
 import com.app.tradogt.repository.*;
+import com.app.tradogt.services.NotificationCorreoService;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.servlet.http.HttpServletRequest;
@@ -28,9 +29,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Controller
 public class LoginController {
@@ -52,6 +56,12 @@ public class LoginController {
     private String sender;
     @Autowired
     private JavaMailSender mailSender;
+
+    @Autowired
+    private NotificationCorreoService notificationCorreoService;
+
+    @Autowired
+    private PasswordResetTokenRepository tokenRepository;
 
 
     @Autowired
@@ -133,7 +143,8 @@ public class LoginController {
         return "CreateAcc";
     }
     @GetMapping("/recuperarPass")
-    public String viewPassRestore(){
+    public String viewPassRestore(Model model){
+        model.addAttribute("passwordResetToken", new PasswordResetToken());
         return "SolicitarRestore";
     }
 
@@ -147,13 +158,7 @@ public class LoginController {
                                    RedirectAttributes redirectAttributes,
                                    Model model) {
 
-        /*
-        // Validar que las contraseñas coincidan
-        if (!usuario.getContrasena().equals(usuario.getConfirmarContrasena())) {
-            result.rejectValue("confirmarContrasena", "error.usuario", "Las contraseñas no coinciden.");
-            return "CreateAcc";
-        }
-        */
+
         if (result.hasErrors() || passwordResult.hasErrors()) {
             model.addAttribute("usuario", usuario);
             model.addAttribute("passwordRegisterDto", passwordRegisterDto);
@@ -257,6 +262,44 @@ public class LoginController {
         sendMessage(usuario.getCorreo(), mensajeBienvenida);
         return "redirect:/loginForm";
     }
+
+    @PostMapping("/request-password-reset")
+    public String requestPasswordReset(@RequestParam String email, RedirectAttributes redirectAttributes) {
+
+        // Validación del formato del correo (expresión regular simple)
+        String emailRegex = "^[A-Za-z0-9+_.-]+@(.+)$";
+        if (!email.matches(emailRegex)) {
+            redirectAttributes.addFlashAttribute("error", "El correo ingresado no tiene un formato válido.");
+            return "redirect:/recuperarPass"; // Redirigir con el error
+        }
+
+        try {
+            // Buscar el usuario por correo
+            Usuario user = usuarioRepository.findByCorreo(email);
+            if (user == null) {
+                throw new IllegalArgumentException("El correo no está registrado.");
+            }
+
+            // Lógica para generar y enviar el token
+            String token = UUID.randomUUID().toString();
+            PasswordResetToken resetToken = new PasswordResetToken();
+            resetToken.setEmail(email);
+            resetToken.setToken(token);
+            resetToken.setExpirationDate(Instant.now().plus(30, ChronoUnit.MINUTES));
+            resetToken.setCreatedAt(Instant.now());
+            tokenRepository.save(resetToken);
+
+            // Enviar el correo de recuperación
+            notificationCorreoService.enviarCorreoRecuperacion(email, user.getNombre(), token);
+
+            redirectAttributes.addFlashAttribute("success", "¡El correo de recuperación se ha enviado exitosamente!");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "No se encontró una cuenta con ese correo electrónico.");
+        }
+
+        return "redirect:/recuperarPass";
+    }
+
 
     public void sendMessage(String email, String messageEmail) {
         try {
