@@ -1,6 +1,7 @@
 package com.app.tradogt.controller;
 
 import com.app.tradogt.daos.DniDao;
+import com.app.tradogt.dto.PasswordRecoverDto;
 import com.app.tradogt.dto.PasswordRegisterDto;
 import com.app.tradogt.entity.*;
 import com.app.tradogt.repository.*;
@@ -29,6 +30,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -338,17 +340,57 @@ public class LoginController {
         }
     }
 
-    /*
     @PostMapping("/reset-password")
     public String resetPassword(@RequestParam String token,
-                                @Valid @ModelAttribute PasswordRegisterDto passwordRegisterDto,
-                                BindingResult passwordResult,
+                                @RequestParam String newPassword,
+                                @RequestParam String confirmPassword,
                                 RedirectAttributes redirectAttributes) {
 
+        // Validar que el token existe y no ha expirado
+        Optional<PasswordResetToken> passwordResetTokenOpt = tokenRepository.findByToken(token);
+        if (passwordResetTokenOpt.isEmpty() || passwordResetTokenOpt.get().getExpirationDate().isBefore(Instant.now())) {
+            redirectAttributes.addFlashAttribute("error", "El token de reseteo de contraseña es inválido o ha expirado.");
+            return "redirect:/recuperarPass";
+        }
 
+        // Verificar que las contraseñas coincidan
+        if (!newPassword.equals(confirmPassword)) {
+            redirectAttributes.addFlashAttribute("error", "Las contraseñas no coinciden.");
+            return "redirect:/reset-password-form?token=" + token;
+        }
+
+        // Obtener el usuario por el email almacenado en el token
+        String userEmail = passwordResetTokenOpt.get().getEmail();
+        Usuario usuario = usuarioRepository.findByCorreo(userEmail);
+
+        if (usuario == null) {
+            redirectAttributes.addFlashAttribute("error", "No se encontró el usuario asociado.");
+            return "redirect:/recuperarPass";
+        }
+
+        // Actualizar la contraseña del usuario
+        usuario.setContrasena(passwordEncoder.encode(newPassword));
+        usuarioRepository.save(usuario);
+
+        // Eliminar el token de reseteo de la base de datos
+        tokenRepository.delete(passwordResetTokenOpt.get());
+
+        // Enviar correo de confirmación
+        try {
+            notificationCorreoService.enviarCorreoCambioContraseña(usuario.getCorreo(), usuario.getNombre());
+        } catch (Exception e) {
+            // Log the error but don't stop the password reset process
+            e.printStackTrace();
+        }
+
+        // Agregar mensaje de éxito
+        redirectAttributes.addFlashAttribute("success", "Contraseña cambiada con éxito. Por favor, inicia sesión con tu nueva contraseña.");
+
+        // Redirigir a la página de login
+        return "redirect:/loginForm";
     }
 
-     */
+
 
 
     public void sendMessage(String email, String messageEmail) {
