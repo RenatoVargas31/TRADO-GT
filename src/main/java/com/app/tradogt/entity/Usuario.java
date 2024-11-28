@@ -72,7 +72,6 @@ public class Usuario implements Serializable{
     @NotBlank(message = "El teléfono es obligatorio")
     @Digits(integer = 9, fraction = 0)
     @Column(name = "telefono", length = 9)
-    @Pattern(regexp = "^9[0-9]{8}$", message = "El teléfono debe comenzar con 9 y tener 9 dígitos.")
     private String telefono;
 
     @Email
@@ -82,7 +81,6 @@ public class Usuario implements Serializable{
     private String correo;
 
     @Size(max = 120)
-    @Size(min = 8, max = 16, message = "La contraseña debe tener entre 8 y 16 caracteres.")
     @Column(name = "contrasena", length = 80)
     private String contrasena;
 
