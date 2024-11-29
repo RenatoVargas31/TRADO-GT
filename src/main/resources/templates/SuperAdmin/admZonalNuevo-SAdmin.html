@@ -72,27 +72,6 @@
                                         <h4 class="card-title fw-bold">Datos de registro:</h4>
                                         <form th:object="${usuario}" th:action="@{/superadmin/admZonalNuevo}" method="post" class="needs-validation" novalidate>
                                             <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="mb-3">
-                                                        <label for="nombreUsuario" class="form-label">Nombres</label>
-                                                        <input type="text" class="form-control bg-light" id="nombreUsuario" name="nombre" placeholder="Ingrese sus nombres"  required readonly>
-                                                        <div class="valid-feedback">
-                                                            Looks good!
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="mb-3">
-                                                        <label for="apellidoUsuario" class="form-label">Apellidos</label>
-                                                        <input type="text" class="form-control bg-light" id="apellidoUsuario" name="apellido"
-                                                               placeholder="Ingrese sus apellidos"  required readonly>
-                                                        <div class="valid-feedback">
-                                                            Looks good!
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
                                                 <div class="col-md-4">
                                                     <div class="mb-3">
                                                         <label for="dniUsuario" class="form-label">DNI</label>
@@ -116,8 +95,27 @@
                                                         </div>
                                                     </div>
                                                 </div>
-
-
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="mb-3">
+                                                        <label for="nombreUsuario" class="form-label">Nombres</label>
+                                                        <input type="text" class="form-control bg-light" id="nombreUsuario" name="nombre" placeholder="Ingrese sus nombres"  required readonly>
+                                                        <div class="valid-feedback">
+                                                            Looks good!
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="mb-3">
+                                                        <label for="apellidoUsuario" class="form-label">Apellidos</label>
+                                                        <input type="text" class="form-control bg-light" id="apellidoUsuario" name="apellido"
+                                                               placeholder="Ingrese sus apellidos"  required readonly>
+                                                        <div class="valid-feedback">
+                                                            Looks good!
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-6">
