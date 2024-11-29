@@ -531,7 +531,11 @@ public class SuperAdminController {
 
         // 1. Obtener el Producto desde el formulario
         Producto producto = formProducto.getProducto();
+        productosRepository.save(producto);
 
+        producto.setCodigo(ProductCodeGenerator.generateProductCode(producto));
+        //Guardar el producto
+        productosRepository.save(producto);
         // 2. Asignación del valor inicial para la foto del producto (valor predeterminado)
         producto.setFoto("default.jpg");  // Establecer la foto predeterminada
         productosRepository.save(producto);  // Guardar el producto para generar su ID
