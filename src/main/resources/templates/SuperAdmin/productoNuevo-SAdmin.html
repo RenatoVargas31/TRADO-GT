@@ -37,7 +37,7 @@
                         <div class="card">
                             <div class="card-body">
                                 <!-- src/main/resources/templates/SuperAdmin/productoNuevo-SAdmin.html -->
-                                <form th:action="@{/superadmin/productoNuevo}" th:object="${formProducto}" method="post">
+                                <form th:action="@{/superadmin/productoNuevo}" th:object="${formProducto}" method="post" enctype="multipart/form-data">
                                     <div class="row">
                                         <div class="col-lg-6">
                                             <div class="mb-3">
@@ -212,13 +212,36 @@
                                                     </div>
                                                 </div>
                                             </div>
+
+                                            <div class="row">
+
+                                            </div>
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="mb-3">
                                                 <label class="form-label" for="productdesc">Descripción</label>
-                                                <textarea class="form-control" id="productdesc" rows="24" th:field="*{producto.descripcion}"></textarea>
+                                                <textarea class="form-control" id="productdesc" rows="5" th:field="*{producto.descripcion}"></textarea>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <div class="mb-4">
+                                                    <label for="foto" class="form-label">Subir Foto</label>
+                                                    <input type="file" class="form-control" id="foto" name="foto" accept="image/*" onchange="previewImage(event)" required>
+                                                    <div class="valid-feedback">Looks good!</div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <!-- Contenedor para la previsualización de la imagen -->
+                                                <div style="display: flex; justify-content: center; align-items: center; height: 100%; overflow: hidden;">
+                                                    <img id="fotoPreview" src="" alt="Imagen previsualizada" style="display: none; max-width: 100%; max-height: 300px; object-fit: contain;">
+                                                </div>
                                             </div>
                                         </div>
+
+
+
+
+
                                     </div>
                                     <div>
                                         <button class="btn btn-primary" type="submit">Registrar</button>
@@ -236,6 +259,26 @@
     <script th:src="@{../libs/jquery/jquery.min.js}"></script>
     <script th:src="@{../libs/bootstrap-touchspin/jquery.bootstrap-touchspin.min.js}"></script>
     <script th:src="@{../js/pages/form-advanced.init.js}"></script>
+    <script>
+        function previewImage(event) {
+            const file = event.target.files[0]; // Obtiene el archivo seleccionado
+            const preview = document.getElementById('fotoPreview'); // Elemento de imagen donde se mostrará la previsualización
+
+            if (file) {
+                const reader = new FileReader();
+
+                reader.onload = function() {
+                    preview.src = reader.result; // Establece la fuente de la imagen al resultado de FileReader
+                    preview.style.display = 'block'; // Muestra la imagen
+                };
+
+                reader.readAsDataURL(file); // Lee el archivo como URL de datos
+            } else {
+                preview.src = ""; // Si no hay archivo, limpia la imagen
+                preview.style.display = 'none'; // Oculta la imagen
+            }
+        }
+    </script>
     <script>
         $(document).ready(function() {
             $('#demo3').TouchSpin({ min: 0, max: 100000 });
