@@ -55,7 +55,10 @@
                             </div>
                         </div>
                     </div>
-
+                    <!-- Mostrar mensaje de éxito -->
+                    <div th:if="${successMessage}" class="alert alert-success" role="alert">
+                        <span th:text="${successMessage}"></span>
+                    </div>
                     <div class="row">
                         <div class="col-12">
                             <div class="card">
@@ -86,28 +89,28 @@
                                                         <input type="hidden" name="id" th:value="${proveedor.id}" />
                                                         <button type="submit" class="btn btn-success btn-sm waves-effect waves-light" title="Editar"><i class="ri-pencil-fill"></i></button>
                                                     </form>
-                                                    <button type="button" class="btn btn-danger btn-sm waves-effect waves-light" title="Eliminar" data-bs-toggle="modal" th:data-bs-target="'#deleteConfirmModal-' + ${proveedor.nombre} + '-' + ${proveedor.id}">
+                                                    <button type="button" class="btn btn-danger btn-sm waves-effect waves-light" title="Eliminar" data-bs-toggle="modal" th:data-bs-target="'#deleteConfirmModal-' + ${proveedor.id}">
                                                         <i class="ri-delete-bin-fill"></i>
                                                     </button>
-                                                    <!-- Modal de Confirmación de Eliminación -->
-                                                    <div class="modal fade" th:id="'deleteConfirmModal-' + ${proveedor.nombre} + '-' + ${proveedor.id}" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
-                                                        <div class="modal-dialog">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <h5 class="modal-title" id="deleteConfirmModalLabel">Confirmar Eliminación</h5>
-                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                                </div>
-                                                                <div class="modal-body">
-                                                                    ¿Estás seguro de que deseas eliminar este Proveedor?
-                                                                </div>
-                                                                <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                                                    <a th:href="@{/superadmin/proveedorBorrar(id=${proveedor.id})}" class="btn btn-danger">Eliminar</a>
-                                                                </div>
+                                                </td>
+                                                <!-- Modal de Confirmación de Eliminación -->
+                                                <div class="modal fade" th:id="'deleteConfirmModal-' + ${proveedor.id}" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="deleteConfirmModalLabel">Confirmar Eliminación</h5>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                ¿Estás seguro de borrar a <strong th:text="${proveedor.nombre} + ' ' + ${proveedor.apellido}"></strong>?
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                                                <a th:href="@{/superadmin/proveedorBorrar(id=${proveedor.id})}" class="btn btn-danger">Continuar</a>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </td>
+                                                </div>
                                             </tr>
                                         </tbody>
                                     </table>

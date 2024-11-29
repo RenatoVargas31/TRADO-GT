@@ -114,8 +114,8 @@
                                                 <div class="col-md-6">
                                                     <div class="mb-3">
                                                         <label for="telefonoUsuario" class="form-label">Teléfono</label>
-                                                        <input type="tel" class="form-control" th:field="*{telefono}" id="telefonoUsuario" name="telefono"
-                                                               placeholder="Teléfono" required>
+                                                        <input type="text" class="form-control" th:field="*{telefono}" id="telefonoUsuario" name="telefono"
+                                                               placeholder="Teléfono" required maxlength="9" oninput="validatePhone(this)">
                                                         <div class="valid-feedback">
                                                             Looks good!
                                                         </div>
@@ -211,7 +211,16 @@
         <!-- JAVASCRIPT BASE-->
         <span th:replace="~{Common/jsBase :: js_Base}"></span>
         <!-- End JAVASCRIPT BASE-->
-
+    <script>
+        function validatePhone(input) {
+            // Remove non-numeric characters
+            input.value = input.value.replace(/[^0-9]/g, '');
+            // Limit to 8 characters
+            if (input.value.length > 8) {
+                input.value = input.value.slice(0, 9);
+            }
+        }
+    </script>
     </body>
 
 </html>

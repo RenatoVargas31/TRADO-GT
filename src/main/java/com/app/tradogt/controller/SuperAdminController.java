@@ -212,18 +212,33 @@ public class SuperAdminController {
         return "SuperAdmin/admZonalNuevo-SAdmin";
     }
     @PostMapping("/admZonalNuevo")
-    public String viewAdmZonalNuevoForm(@ModelAttribute Usuario usuario) {
-        //Asignar una contraseña por random de 10 dígitos y que combine número y letras
+    public String viewAdmZonalNuevoForm(@ModelAttribute Usuario usuario, RedirectAttributes redirectAttributes) {
+        // Validar atributos del usuario
+        if (usuario.getCorreo() == null || usuario.getCorreo().isEmpty() ||
+                usuario.getTelefono() == null || usuario.getTelefono().isEmpty() ||
+                usuario.getFechaNacimiento() == null || usuario.getFechaNacimiento().toString().isEmpty() ||
+                usuario.getNombre()== null || usuario.getNombre().isEmpty() ||
+                usuario.getApellido() == null || usuario.getApellido().isEmpty() ||
+                usuario.getZonaIdzona().getId() == null || usuario.getZonaIdzona().getId().toString().isEmpty() ||
+                usuario.getDni() == null || usuario.getDni().isEmpty()) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Todos los campos son obligatorios.");
+            return "redirect:/superadmin/admZonalNuevoForm";
+        }
+
+        // Asignar una contraseña por random de 10 dígitos y que combine número y letras
         String password = PasswordGenerator.generateRandomPassword();
         System.out.println(password);
-        //Encriptar la contraseña con BCrypt de 10 rondas
+        // Encriptar la contraseña con BCrypt de 10 rondas
         String passwordEncrypted = BCrypt.hashpw(password, BCrypt.gensalt(10));
         usuario.setContrasena(passwordEncrypted);
-        //Guardar usuario
+        // Guardar usuario
         usuarioRepository.save(usuario);
         String enlaceFeik = "holi";
         notificationCorreoService.enviarCorreoCreacionCuentaAgente(usuario.getCorreo(),usuario.getNombre(),password,enlaceFeik);
-        return "redirect:/superadmin/admZonalNuevoForm";
+        // Flash attribute de confirmación
+        redirectAttributes.addFlashAttribute("successMessage", "Administrador Zonal creado correctamente.");
+
+        return "redirect:/superadmin/admZonalActivos";
     }
     //</editor-fold>
 
@@ -231,7 +246,7 @@ public class SuperAdminController {
     @PostMapping("/admZonalEditarForm")
     public String viewAdmZonalEditarForm(Model model, Integer id) {
         // Buscar proveedor por id y obtener el usuario directamente
-        Usuario usuario = usuarioRepository.findById(id).get();
+        Usuario usuario = usuarioRepository.findById(id).orElseThrow();
         // Enviar a la vista
         model.addAttribute("usuario", usuario);
         // Enviar lista de zonas
@@ -241,14 +256,16 @@ public class SuperAdminController {
         return "SuperAdmin/admZonalEditar-SAdmin";
     }
     @PostMapping("/admZonalEditar")
-    public String viewAdmZonalEditar(Usuario usuario) {
+    public String viewAdmZonalEditar(Usuario usuario, RedirectAttributes redirectAttributes) {
+
         //Actualizar usuario existente con Optional
         Usuario usuarioActual = usuarioRepository.findById(usuario.getId()).get();
         usuarioActual.setCorreo(usuario.getCorreo());
         usuarioActual.setTelefono(usuario.getTelefono());
         usuarioActual.setZonaIdzona(usuario.getZonaIdzona());
         usuarioRepository.save(usuarioActual);
-
+        //Success message
+        redirectAttributes.addFlashAttribute("successMessage", "Administrador Zonal actualizado correctamente.");
         if (usuario.getIsActivated() == 1) {
             return "redirect:/superadmin/admZonalActivos";
         } else {
@@ -276,24 +293,29 @@ public class SuperAdminController {
     //</editor-fold>
     //<editor-fold desc="Baneo y desbaneo de AdministradorZonal">
     @GetMapping("/admZonalBorrar")
-    public String viewAdmZonalBorrar(Integer id) {
+    public String viewAdmZonalBorrar(Integer id, RedirectAttributes redirectAttributes) {
         // Retrieve the user by id
         Usuario usuario = usuarioRepository.findById(id).get();
         // Set isActivated to 0 for logical deletion
         usuario.setIsActivated((byte) 0);
         // Save the updated user
         usuarioRepository.save(usuario);
-        return "redirect:/superadmin/admZonalActivos";
+        // Flash attribute de confirmación
+        redirectAttributes.addFlashAttribute("successMessage", "Administrador Zonal separado correctamente.");
+        return "redirect:/superadmin/admZonalInactivos";
     }
     @GetMapping("/admZonalReactivar")
-    public String viewAdmZonalReactivar(Integer id) {
+    public String viewAdmZonalReactivar(Integer id, RedirectAttributes redirectAttributes) {
         // Retrieve the user by id
         Usuario usuario = usuarioRepository.findById(id).get();
         // Set isActivated to 0 for logical deletion
         usuario.setIsActivated((byte) 1);
         // Save the updated user
         usuarioRepository.save(usuario);
-        return "redirect:/superadmin/admZonalInactivos";
+
+        // Flash attribute de confirmación
+        redirectAttributes.addFlashAttribute("successMessage", "Administrador Zonal reincorporado correctamente.");
+        return "redirect:/superadmin/admZonalActivos";
     }
     //</editor-fold>
     //</editor-fold>
@@ -313,7 +335,7 @@ public class SuperAdminController {
     }
 
     @PostMapping("/agentCompraEditar")
-    public String viewAgentCompraEditar(Usuario usuario) {
+    public String viewAgentCompraEditar(Usuario usuario, RedirectAttributes redirectAttributes) {
         //Actualizar usuario existente sin query method
         Usuario usuarioActual = usuarioRepository.findById(usuario.getId()).get();
         usuarioActual.setCorreo(usuario.getCorreo());
@@ -323,6 +345,8 @@ public class SuperAdminController {
         usuarioActual.setRazonSocial(usuario.getRazonSocial());
         usuarioActual.setCodigoDespachador(usuario.getCodigoDespachador());
         usuarioRepository.save(usuarioActual);
+        //Success Message
+        redirectAttributes.addFlashAttribute("successMessage", "Agente de Compra actualizado correctamente.");
 
         if (usuario.getIsActivated() == 1) {
             return "redirect:/superadmin/agentCompraActivos";
@@ -358,20 +382,24 @@ public class SuperAdminController {
     }
 
     @GetMapping("/agentCompraBorrar")
-    public String viewAgentCompraBorrar(Integer id) {
+    public String viewAgentCompraBorrar(Integer id, RedirectAttributes redirectAttributes) {
         //Borrado lógico del proveedor sin query method
         Usuario usuario = usuarioRepository.findById(id).get();
         usuario.setIsActivated((byte) 0);
         usuarioRepository.save(usuario);
-        return "redirect:/superadmin/agentCompraActivos";
+        //Flash attribute de confirmación
+        redirectAttributes.addFlashAttribute("successMessage", "Agente de Compra separado correctamente.");
+        return "redirect:/superadmin/agentCompraInactivos";
     }
     @GetMapping("/agentCompraReactivar")
-    public String viewAgentCompraReactivar(Integer id) {
+    public String viewAgentCompraReactivar(Integer id, RedirectAttributes redirectAttributes) {
         //Reactivar usuario sin query method
         Usuario usuario = usuarioRepository.findById(id).get();
         usuario.setIsActivated((byte) 1);
         usuarioRepository.save(usuario);
-        return "redirect:/superadmin/agentCompraInactivos";
+        //Flash attribute de confirmación
+        redirectAttributes.addFlashAttribute("successMessage", "Agente de Compra reincorporado correctamente.");
+        return "redirect:/superadmin/agentCompraActivos";
     }
 
     @GetMapping("/agentCompraPostulanteApto")
@@ -431,13 +459,15 @@ public class SuperAdminController {
     }
 
     @PostMapping("/importadorEditar")
-    public String viewImportadorEditar(Usuario usuario) {
+    public String viewImportadorEditar(Usuario usuario, RedirectAttributes redirectAttributes) {
         //Actualizar usuario existente sin query method
         Usuario usuarioActual = usuarioRepository.findById(usuario.getId()).get();
         usuarioActual.setCorreo(usuario.getCorreo());
         usuarioActual.setDireccion(usuario.getDireccion());
         usuarioActual.setDistritoIddistrito(usuario.getDistritoIddistrito());
         usuarioRepository.save(usuarioActual);
+        //Success Message
+        redirectAttributes.addFlashAttribute("successMessage", "Importador actualizado correctamente.");
         if (usuario.getIsActivated() == 1) {
             return "redirect:/superadmin/importadorActivos";
         } else {
@@ -473,20 +503,24 @@ public class SuperAdminController {
     }
 
     @GetMapping("/importadorBorrar")
-    public String viewImportadorBorrar(Integer id) {
+    public String viewImportadorBorrar(Integer id, RedirectAttributes redirectAttributes) {
         //Borrado lógico del proveedor sin query method
         Usuario usuario = usuarioRepository.findById(id).get();
         usuario.setIsActivated((byte) 0);
         usuarioRepository.save(usuario);
-        return "redirect:/superadmin/importadorActivos";
+        //Flash attribute de confirmación
+        redirectAttributes.addFlashAttribute("successMessage", "Importador separado correctamente.");
+        return "redirect:/superadmin/importadorInactivos";
     }
     @GetMapping("/importadorReactivar")
-    public String viewImportadorReactivar(Integer id) {
+    public String viewImportadorReactivar(Integer id, RedirectAttributes redirectAttributes) {
         //Reactivar usuario sin query method
         Usuario usuario = usuarioRepository.findById(id).get();
         usuario.setIsActivated((byte) 1);
         usuarioRepository.save(usuario);
-        return "redirect:/superadmin/importadorInactivos";
+        //Flash attribute de confirmación
+        redirectAttributes.addFlashAttribute("successMessage", "Importador reincorporado correctamente.");
+        return "redirect:/superadmin/importadorActivos";
     }
 
     @GetMapping("/importadorAceptado")
@@ -761,10 +795,12 @@ public class SuperAdminController {
     }
 
     @PostMapping("/proveedorNuevo")
-    public String viewProveedorNuevo(Proveedor proveedor) {
+    public String viewProveedorNuevo(Proveedor proveedor, RedirectAttributes redirectAttributes) {
         //Guardar proveedor
         proveedorRepository.save(proveedor);
-        return "redirect:/superadmin/proveedorNuevoForm";
+        //Flash attribute de confirmación
+        redirectAttributes.addFlashAttribute("successMessage", "Proveedor registrado correctamente.");
+        return "redirect:/superadmin/proveedorLista";
     }
     //</editor-fold>
     //<editor-fold desc="Lista Proveedores">
@@ -788,17 +824,21 @@ public class SuperAdminController {
     }
 
     @PostMapping("/proveedorEditar")
-    public String viewProveedorEditar(Proveedor proveedor) {
+    public String viewProveedorEditar(Proveedor proveedor, RedirectAttributes redirectAttributes) {
         //Actualizar proveedor existente
         proveedorRepository.updateProveedor(proveedor.getTelefono(),proveedor.getTienda(), proveedor.getId());
+        //Flash attribute de confirmación
+        redirectAttributes.addFlashAttribute("successMessage", "Proveedor actualizado correctamente.");
         return "redirect:/superadmin/proveedorLista";
     }
     //</editor-fold>
     //<editor-fold desc="Borrar Proveedor">
     @GetMapping("/proveedorBorrar")
-    public String viewProveedorBorrar(Integer id) {
+    public String viewProveedorBorrar(Integer id, RedirectAttributes redirectAttributes) {
         //Borrado lógico del proveedor
         proveedorRepository.deleteProveedor(id);
+        //Flash attribute de confirmación
+        redirectAttributes.addFlashAttribute("successMessage", "Proveedor borrado correctamente.");
         return "redirect:/superadmin/proveedorLista";
     }
     //</editor-fold>

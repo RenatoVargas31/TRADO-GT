@@ -3,7 +3,7 @@
 
     <head>
         <meta charset="utf-8" />
-        <title>Starter page | Nazox - Admin & Dashboard Template</title>
+        <title>Editar Zonal | TRADO</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <!-- CSS BASE -->
         <meta th:replace="~{Common/cssBase :: css_Base}">
@@ -97,11 +97,8 @@
                                                 <div class="col-md-4">
                                                     <div class="mb-3">
                                                         <label for="telefonoUsuario" class="form-label">Teléfono</label>
-                                                        <input type="tel" class="form-control" id="telefonoUsuario" name="telefono"
-                                                               th:field="*{telefono}" placeholder="Ingrese su teléfono" required>
-                                                        <div class="valid-feedback">
-                                                            Looks good!
-                                                        </div>
+                                                        <input type="text" class="form-control" id="telefonoUsuario" name="telefono"
+                                                               th:field="*{telefono}" placeholder="Ingrese su teléfono" required maxlength="9" oninput="validatePhone(this)" >
                                                     </div>
                                                 </div>
                                                 <div class="col-md-4">
@@ -168,6 +165,24 @@
         <!-- JAVASCRIPT BASE-->
         <span th:replace="~{Common/jsBase :: js_Base}"></span>
         <!-- End JAVASCRIPT BASE-->
+    <script>
+        function validateDNI(input) {
+            // Remove non-numeric characters
+            input.value = input.value.replace(/[^0-9]/g, '');
+            // Limit to 8 characters
+            if (input.value.length > 8) {
+                input.value = input.value.slice(0, 8);
+            }
+        }
+        function validatePhone(input) {
+            // Remove non-numeric characters
+            input.value = input.value.replace(/[^0-9]/g, '');
+            // Limit to 8 characters
+            if (input.value.length > 8) {
+                input.value = input.value.slice(0, 9);
+            }
+        }
+    </script>
     </body>
 
 </html>
