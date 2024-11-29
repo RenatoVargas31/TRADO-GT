@@ -59,7 +59,10 @@
                             </div>
                         </div>
                         <!-- end page title -->
-
+                        <!-- Mostrar mensaje de error -->
+                        <div th:if="${errorMessage}" class="alert alert-danger" role="alert">
+                            <span th:text="${errorMessage}"></span>
+                        </div>
                         <div class="row">
                             <div class="align-content-center-xl-6">
                                 <div class="card">

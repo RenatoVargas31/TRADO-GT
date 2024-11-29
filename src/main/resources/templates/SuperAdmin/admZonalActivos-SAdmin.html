@@ -55,6 +55,11 @@
                             </div>
                         </div>
                     </div>
+                    <!--Alert para recibir el errorMessage color rojo o successMessage color verde del controller-->
+                    <!-- Mostrar mensaje de éxito -->
+                    <div th:if="${successMessage}" class="alert alert-success" role="alert">
+                        <span th:text="${successMessage}"></span>
+                    </div>
 
                     <div class="row">
                         <div class="col-12">
@@ -99,11 +104,11 @@
                                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                         </div>
                                                         <div class="modal-body">
-                                                            ¿Estás seguro de que deseas eliminar este Administrador Zonal?
+                                                            ¿Estás seguro de separar a <strong th:text="${usuario.nombre} + ' ' + ${usuario.apellido}"></strong>?
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                                            <a th:href="@{/superadmin/admZonalBorrar(id=${usuario.id})}" class="btn btn-danger">Eliminar</a>
+                                                            <a th:href="@{/superadmin/admZonalBorrar(id=${usuario.id})}" class="btn btn-danger">Continuar</a>
                                                         </div>
                                                     </div>
                                                 </div>

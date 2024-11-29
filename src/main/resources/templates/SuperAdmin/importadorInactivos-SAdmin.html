@@ -55,6 +55,10 @@
                             </div>
                         </div>
                     </div>
+                    <!-- Mostrar mensaje de éxito -->
+                    <div th:if="${successMessage}" class="alert alert-success" role="alert">
+                        <span th:text="${successMessage}"></span>
+                    </div>
 
                     <div class="row">
                         <div class="col-12">
@@ -88,25 +92,25 @@
                                                 <button type="button" class="btn btn-warning btn-sm waves-effect waves-light" title="Eliminar" data-bs-toggle="modal" th:data-bs-target="'#deleteConfirmModal-' + ${usuario.id}">
                                                     <i class="ri-restart-line"></i>
                                                 </button>
-                                                <!-- Modal de Confirmación de Eliminación -->
-                                                <div class="modal fade" th:id="'deleteConfirmModal-' + ${usuario.id}" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
-                                                    <div class="modal-dialog">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title" id="deleteConfirmModalLabel">Confirmar Eliminación</h5>
-                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                ¿Estás seguro de que deseas reactivar a este Importador?
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                                                <a th:href="@{/superadmin/importadorReactivar(id=${usuario.id})}" class="btn btn-warning">Reactivar</a>
-                                                            </div>
+                                            </td>
+                                            <!-- Modal de Confirmación de Eliminación -->
+                                            <div class="modal fade" th:id="'deleteConfirmModal-' + ${usuario.id}" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="deleteConfirmModalLabel">Confirmar Eliminación</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            ¿Estás seguro de reincorporar a <strong th:text="${usuario.nombre} + ' ' + ${usuario.apellido}"></strong>?
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                                            <a th:href="@{/superadmin/importadorReactivar(id=${usuario.id})}" class="btn btn-warning">Continuar</a>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </td>
+                                            </div>
                                         </tr>
                                         </tbody>
                                     </table>

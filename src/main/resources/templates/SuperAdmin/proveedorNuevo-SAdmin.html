@@ -83,20 +83,13 @@
                                                 <div class="col-md-6">
                                                     <div class="mb-4">
                                                         <label for="dni" class="form-label">DNI</label>
-                                                        <input type="text" class="form-control" id="dni" name="dni"  placeholder="Ingrese el DNI" required>
-                                                        <div id="dni-error" class="text-danger" style="display:none;"></div> <!-- Div para el mensaje de error -->
-                                                        <div class="valid-feedback">
-                                                            Looks good!
-                                                        </div>
+                                                        <input type="text" class="form-control" id="dni" name="dni"  placeholder="Ingrese el DNI" required maxlength="8" oninput="validateDNI(this)">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="mb-4">
                                                         <label for="ruc" class="form-label">RUC</label>
-                                                        <input type="text" class="form-control" id="ruc" name="ruc"  placeholder="Ingrese el RUC" required>
-                                                        <div class="valid-feedback">
-                                                            Looks good!
-                                                        </div>
+                                                        <input type="text" class="form-control" id="ruc" name="ruc"  placeholder="Ingrese el RUC" required maxlength="10"oninput="validateRUC(this)">
                                                     </div>
                                                 </div>
                                             </div>
@@ -104,10 +97,7 @@
                                                 <div class="col-md-6">
                                                     <div class="mb-4">
                                                         <label for="telefono" class="form-label">Teléfono</label>
-                                                        <input type="tel" class="form-control" id="telefono" name="telefono" placeholder="Ingrese el teléfono" required>
-                                                        <div class="valid-feedback">
-                                                            Looks good!
-                                                        </div>
+                                                        <input type="text" class="form-control" id="telefono" name="telefono" placeholder="Ingrese el teléfono" required maxlength="9" oninput="validatePhone(this)">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
@@ -204,6 +194,32 @@
                 hasInteracted = false;
             });
         });
+    </script>
+    <script>
+        function validateDNI(input) {
+            // Remove non-numeric characters
+            input.value = input.value.replace(/[^0-9]/g, '');
+            // Limit to 8 characters
+            if (input.value.length > 8) {
+                input.value = input.value.slice(0, 8);
+            }
+        }
+        function validateRUC(input) {
+            // Remove non-numeric characters
+            input.value = input.value.replace(/[^0-9]/g, '');
+            // Limit to 8 characters
+            if (input.value.length > 8) {
+                input.value = input.value.slice(0, 10);
+            }
+        }
+        function validatePhone(input) {
+            // Remove non-numeric characters
+            input.value = input.value.replace(/[^0-9]/g, '');
+            // Limit to 8 characters
+            if (input.value.length > 8) {
+                input.value = input.value.slice(0, 9);
+            }
+        }
     </script>
     </body>
 
