@@ -62,9 +62,9 @@ public class Usuario implements Serializable{
     @Column(name = "fechaNacimiento")
     private LocalDate fechaNacimiento;
 
-    @Size(max = 8)
-    @Digits(integer = 8, fraction = 0, message = "El DNI debe estar compuesto por 8 dígitos")
-    @NotBlank(message = "El documento de identidad es obligatoria")
+    @Size(max = 8, message = "El DNI debe tener exactamente 8 caracteres")
+    @Digits(integer = 8, fraction = 0, message = "Ingresé un número de DNI válido")
+    @NotBlank(message = "El documento de identidad es obligatorio")
     @Column(name = "dni", length = 8)
     private String dni;
 
@@ -77,6 +77,7 @@ public class Usuario implements Serializable{
     @Email
     @Size(max = 45)
     @Column(name = "correo", length = 45)
+   // @Pattern(regexp = "^[a-zA-Z0-9._%+-]+@(gmail\\.com|hotmail\\.com|yahoo\\.com|outlook\\.com)$", message = "El correo debe ser de Gmail, Hotmail, Yahoo u Outlook.")
     private String correo;
 
     @Size(max = 120)

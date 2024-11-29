@@ -47,24 +47,36 @@
 
                                     <div class="p-2 mt-5">
                                         <form th:action="@{/reset-password}" method="post">
-                                            <input type="hidden" name="token" th:value="${token}"/> <!-- Token recibido en el enlace -->
+                                            <input type="hidden" name="token" th:value="${token}"/>
 
                                             <div class="auth-form-group-custom mb-4">
                                                 <i class="ri-lock-line auti-custom-input-icon"></i>
                                                 <label for="newPassword">Nueva Contraseña</label>
-                                                <input type="password" class="form-control" id="newPassword" name="newPassword" placeholder="Ingresar nueva contraseña" required>
+                                                <input type="password" class="form-control" id="newPassword" name="newPassword"
+                                                       placeholder="Ingresar nueva contraseña" required>
                                             </div>
 
                                             <div class="auth-form-group-custom mb-4">
                                                 <i class="ri-lock-line auti-custom-input-icon"></i>
                                                 <label for="confirmPassword">Confirmar Contraseña</label>
-                                                <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Confirmar nueva contraseña" required>
+                                                <input type="password" class="form-control" id="confirmPassword" name="confirmPassword"
+                                                       placeholder="Confirmar nueva contraseña" required>
                                             </div>
 
                                             <div class="mt-4 text-center">
-                                                <button class="btn btn-primary w-md waves-effect waves-light" type="submit" >Restablecer</button>
+                                                <button class="btn btn-primary w-md waves-effect waves-light" type="submit">
+                                                    Restablecer
+                                                </button>
                                             </div>
                                         </form>
+
+                                    </div>
+                                    <div th:if="${success}" class="alert alert-success text-center" role="alert">
+                                        <p th:text="${success}"></p>
+                                    </div>
+                                    <!-- Mensaje de error si las credenciales son incorrectas -->
+                                    <div th:if="${error}" class="error-message">
+                                        <p th:text="${error}"></p>
                                     </div>
                                 </div>
                             </div>
