@@ -563,6 +563,17 @@ public class SuperAdminController {
                 producto.setFoto(nombreArchivo);  // Asignar el nombre de la foto al producto
                 productosRepository.save(producto);  // Guardar el producto con la foto actualizada
 
+                String staticDir = "src/main/resources/static/images/product/";
+                Path staticPath = Paths.get(staticDir);
+
+                if (!Files.exists(staticPath)) {
+                    Files.createDirectories(staticPath);
+                }
+
+                Path staticFilePath = staticPath.resolve(nombreArchivo);
+                Files.write(staticFilePath, foto.getBytes());  // Escribir la foto en el directorio estático
+
+
                 // Mensaje de éxito
                 redirectAttributes.addFlashAttribute("message", "Producto creado exitosamente con la imagen.");
             } catch (IOException e) {
