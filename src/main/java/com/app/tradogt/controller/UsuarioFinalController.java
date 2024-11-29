@@ -22,6 +22,7 @@ import com.app.tradogt.repository.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.management.Attribute;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.nio.file.Files;
@@ -136,9 +137,12 @@ public class UsuarioFinalController {
     @GetMapping("/inicio")
     public String inicio(Model model) {
         //updateOrderStatus();
-
         //Listar los pedidos recientes
         int userId = getAuthenticatedUserId();  // Obtener el ID del usuario autenticado
+
+
+        model.addAttribute("productList", productosRepository.findProductMuebles(zonaId));
+
 
         // Obtener los pedidos recientes del usuario con el ID especificado
         List<Object[]> listaPedidos = ordenRepository.obtenerPedidosPorUsuario(userId);
@@ -468,7 +472,8 @@ public class UsuarioFinalController {
     }*/
 
     @GetMapping("/productoDetalles")
-    public String showProductoDetalles(@RequestParam("id") int id, Model model) {
+    public String showProductoDetalles(@RequestParam("id") int id, Model model, RedirectAttributes redirectAttributes ) {
+
         // Buscar el producto por id
         int id2 = getAuthenticatedUserId();
         Optional<Usuario> optionalUsuario = usuarioRepository.findById(id2);
@@ -514,6 +519,8 @@ public class UsuarioFinalController {
                     model.addAttribute("productList", productosRepository.findAll());
                     break;
             }
+            //Mostrar aviso al inico que solo puede comprar como minimo 20 productos
+            redirectAttributes.addFlashAttribute("MensajeAlerta", "La cantidad mínima de compra es de 20 productos");
             return "Usuario/producto-detalles";
             // Devuelve la vista con el producto
         } else {
@@ -525,7 +532,7 @@ public class UsuarioFinalController {
     //Seleción de producto al carrito
    @PostMapping("/selecionarProducto")
     public String selecionarProducto(@RequestParam("productoId") int productoId,
-                                     @RequestParam("cantidad") String cantidadOculta , RedirectAttributes attr, Model model) {
+                                     @RequestParam("cantidad") String cantidadOculta , Model model, RedirectAttributes redirectAttributes) {
 
         //Busco un carrito creado a mi id
         int idUser= getAuthenticatedUserId();
@@ -535,58 +542,71 @@ public class UsuarioFinalController {
        System.out.println("zonaid: " + zonaid);
        int cantidadP = Integer.parseInt(cantidadOculta);
 
-       //Nombre del producto
-       Producto producto = productosRepository.findById(productoId).get();
 
-        Carrito hayCarrito = carritoRepository.findByUsuarioIdusuarioAndIsDelete(usuario, (byte) 0);
-       System.out.println("hay carrito?: " + hayCarrito);
-       //Añadimos el producto al carrito nuevo
-       ProductoEnCarrito misProductoEnCarrito = new ProductoEnCarrito();
-       //Producto en Zona (TIENDA)
-       Optional<ProductoEnZona> productoEnZona = productoEnZonaRepository.findByIdAndZona(productoId, usuario.getDistritoIddistrito().getZonaIdzona().getId());
+           //Nombre del producto
+           Producto producto = productosRepository.findById(productoId).get();
 
-       int stock = productoEnZona.get().getCantidad();
+           Carrito hayCarrito = carritoRepository.findByUsuarioIdusuarioAndIsDelete(usuario, (byte) 0);
+           System.out.println("hay carrito?: " + hayCarrito);
+           //Añadimos el producto al carrito nuevo
+           ProductoEnCarrito misProductoEnCarrito = new ProductoEnCarrito();
+           //Producto en Zona (TIENDA)
+           Optional<ProductoEnZona> productoEnZona = productoEnZonaRepository.findByIdAndZona(productoId, usuario.getDistritoIddistrito().getZonaIdzona().getId());
 
-       ProductoEnCarritoId id_ProductoEnCarrito = new ProductoEnCarritoId();
-       id_ProductoEnCarrito.setProductoenzonaProductoIdproducto(productoId);
-       id_ProductoEnCarrito.setProductoenzonaZonaIdzona(zonaid);
+           int stock = productoEnZona.get().getCantidad();
 
-       if(stock>=cantidadP) {
-           if(hayCarrito != null) {
-               //Hay carrito --> Añadimos el producto
-               Carrito miCarritoActual = carritoRepository.findByUsuarioIdusuarioAndIsDelete(usuario, (byte) 0);
+           ProductoEnCarritoId id_ProductoEnCarrito = new ProductoEnCarritoId();
+           id_ProductoEnCarrito.setProductoenzonaProductoIdproducto(productoId);
+           id_ProductoEnCarrito.setProductoenzonaZonaIdzona(zonaid);
 
-               //Añado un nuevo producto
-               id_ProductoEnCarrito.setCarritoIdcarrito(miCarritoActual.getId());
-               //mensaje
-               attr.addFlashAttribute("mensajeProductNuevo", "Se ha añadido un nuevo producto: " + producto.getNombre());
-               misProductoEnCarrito.setCantidad(cantidadP);
-               misProductoEnCarrito.setCarritoIdcarrito(miCarritoActual);
-               misProductoEnCarrito.setId(id_ProductoEnCarrito);
-               misProductoEnCarrito.setProductoEnZona(productoEnZona.get());
-               productoEnCarritoRepository.save(misProductoEnCarrito);
+           if(stock>=cantidadP && cantidadP>=20) {
+               if (hayCarrito != null) {
+                   //Hay carrito --> Añadimos el producto
+                   Carrito miCarritoActual = carritoRepository.findByUsuarioIdusuarioAndIsDelete(usuario, (byte) 0);
 
-           }else{
-               //No hay carrito --> Creamos uno nuevo
-               Carrito miCarritoNuevo = new Carrito();
-               miCarritoNuevo.setUsuarioIdusuario(usuario);
-               miCarritoNuevo.setIsDelete((byte) 0);
-               carritoRepository.save(miCarritoNuevo);
-               id_ProductoEnCarrito.setCarritoIdcarrito(miCarritoNuevo.getId());
-               //mensaje
-               attr.addFlashAttribute("mensajeProductNuevo", "Se ha añadido un nuevo producto: " + producto.getCodigo() +' ' + producto.getNombre());
+                   //Añado un nuevo producto
+                   id_ProductoEnCarrito.setCarritoIdcarrito(miCarritoActual.getId());
+                   //mensaje
+                   redirectAttributes.addFlashAttribute("mensajeProductNuevo", "Se ha añadido un nuevo producto: " + producto.getCodigo() + ' ' + producto.getNombre());
+                   misProductoEnCarrito.setCantidad(cantidadP);
+                   misProductoEnCarrito.setCarritoIdcarrito(miCarritoActual);
+                   misProductoEnCarrito.setId(id_ProductoEnCarrito);
+                   misProductoEnCarrito.setProductoEnZona(productoEnZona.get());
+                   productoEnCarritoRepository.save(misProductoEnCarrito);
 
-               misProductoEnCarrito.setCantidad(cantidadP);
-               misProductoEnCarrito.setCarritoIdcarrito(miCarritoNuevo);
-               misProductoEnCarrito.setId(id_ProductoEnCarrito);
-               misProductoEnCarrito.setProductoEnZona(productoEnZona.get());
-               productoEnCarritoRepository.save(misProductoEnCarrito);
+               } else {
+                   //No hay carrito --> Creamos uno nuevo
+                   Carrito miCarritoNuevo = new Carrito();
+                   miCarritoNuevo.setUsuarioIdusuario(usuario);
+                   miCarritoNuevo.setIsDelete((byte) 0);
+                   carritoRepository.save(miCarritoNuevo);
+                   id_ProductoEnCarrito.setCarritoIdcarrito(miCarritoNuevo.getId());
+                   //mensaje
+                   redirectAttributes.addFlashAttribute("mensajeProductNuevo", "Se ha añadido un nuevo producto: " + producto.getCodigo() + ' ' + producto.getNombre());
+
+                   misProductoEnCarrito.setCantidad(cantidadP);
+                   misProductoEnCarrito.setCarritoIdcarrito(miCarritoNuevo);
+                   misProductoEnCarrito.setId(id_ProductoEnCarrito);
+                   misProductoEnCarrito.setProductoEnZona(productoEnZona.get());
+                   productoEnCarritoRepository.save(misProductoEnCarrito);
+               }
+           } else if(cantidadP > stock ) {
+               redirectAttributes.addFlashAttribute("MensajeAlerta", "No hay stock suficiente para este producto");
+               return "redirect:/usuario/productoDetalles?id=" + productoId;
+           }else if(cantidadP==20) {
+               redirectAttributes.addFlashAttribute("mensajeProductNuevo", "Se ha añadido un nuevo producto: " + producto.getCodigo() + ' ' + producto.getNombre());
+               return "redirect:/usuario/productoDetalles?id=" + productoId;
+           } else if(cantidadP <20 ){
+                   redirectAttributes.addFlashAttribute("MensajeAlerta", "Por favor, recuerda que la cantidad mínima para realizar una compra es de 20 productos. Ajusta tu pedido para continuar.");
+                   return "redirect:/usuario/productoDetalles?id=" + productoId;
+           }else {
+               //mensaje de no hay stock suficiente
+               redirectAttributes.addFlashAttribute("msgError", "No hay stock suficiente para este producto");
            }
-       }else {
-           //mensaje de no hay stock suficiente
-           attr.addFlashAttribute("msgError", "No hay stock suficiente para este producto");
-       }
+
+
        // Redirige al detalle del producto
+
        return "redirect:/usuario/productoDetalles?id=" + productoId;
     }
 

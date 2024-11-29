@@ -289,7 +289,9 @@ SELECT
             "    `dev-TRADO_DB`.Usuario ua ON o.usuario_idUsuario = ua.idUsuario\n" +
             "WHERE \n" +
             "    o.usuario_idUsuario = ? \n" +
-            "    AND o.isDeleted = 0;\n", nativeQuery = true)
+            "    AND o.isDeleted = 0\n"+
+            "ORDER BY \n" +
+            "    o.fechaCreacion ASC;", nativeQuery = true)
     List<Object[]> findOrdersByUsuarioIdusuario(Integer idUsuario);
 
     Optional<Orden> findByCodigo(String codigo);
@@ -297,6 +299,7 @@ SELECT
     List<Orden> findAllByAgentcompraIdusuario(Usuario usuario);
 
     List<Orden> findAllByUsuarioIdusuario(Usuario idUsuario);
+
 
     @Query("SELECT new com.app.tradogt.dto.OrdenEstadoDto(o.fechaCreacion, o.fechaValidacion, o.fechaEnProceso, o.fechaArribo, o.fechaEnAduanas, o.fechaEnRuta, o.fechaRecibido) FROM Orden o WHERE YEAR(o.fechaCreacion) = YEAR(CURRENT_DATE ) AND MONTH(o.fechaCreacion) <= MONTH(CURRENT_DATE )")
     List<OrdenEstadoDto> getOrdenEstado();

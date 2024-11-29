@@ -263,9 +263,14 @@
                               <span th:text="${product.codigo}"></span>
                             </div>
                           </div>
-                          <div th:if="${product.id >= 1 and product.id <= 10}">
-                            <img th:src="@{|../images/product/product${product.id}.jpg|}" alt="img-${id}"
-                                 class="img-fluid mx-auto d-block" style="width: 250px; height: 250px; object-fit: cover;">
+                          <div th:if="${product.id >= 1}">
+                            <img
+                                    th:src="@{|../images/product/product${product.id}.jpg|}"
+                                    alt="img-${product.id}"
+                                    class="img-fluid mx-auto d-block"
+                                    style="width: 250px; height: 250px; object-fit: cover;"
+                                    onerror="this.onerror=null; this.src='../images/error.jpg';"
+                            >
                           </div>
 
                       <div class="text-center mt-3">

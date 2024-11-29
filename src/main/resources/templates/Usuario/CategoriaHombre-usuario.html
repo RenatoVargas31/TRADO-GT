@@ -263,10 +263,16 @@
                               <span th:text="${product.codigo}"></span>
                             </div>
                           </div>
-                          <div th:if="${product.id >= 1 and product.id <= 26}">
-                            <img th:src="@{|../images/product/product${product.id}.jpg|}" alt="img-${id}"
-                                 class="img-fluid mx-auto d-block" style="width: 250px; height: 250px; object-fit: cover;">
-                          </div> <div class="text-center mt-3">
+                          <div th:if="${product.id >= 1}">
+                            <img
+                                    th:src="@{|../images/product/product${product.id}.jpg|}"
+                                    alt="img-${product.id}"
+                                    class="img-fluid mx-auto d-block"
+                                    style="width: 250px; height: 250px; object-fit: cover;"
+                                    onerror="this.onerror=null; this.src='../images/error.jpg';"
+                            >
+                          </div>
+                          <div class="text-center mt-3">
                             <p class="font-size-12 mb-1 text-primary">
                               <span th:text="${product.subcategoriaIdsubcategoria.nombre}">Categoría, Subcategoría</span>
                             </p>
