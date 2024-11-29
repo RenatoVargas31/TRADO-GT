@@ -1290,6 +1290,9 @@ public class UsuarioFinalController {
 
                 }else {
                     System.out.println("Nuevo stock: " + newTotal);
+                    if(newTotal<25){
+                        tienda.get().setEstadoRepo((byte) 1);
+                    }
                     tienda.get().setCantidad(newTotal);
                     productoEnZonaRepository.save(tienda.get());
                 }

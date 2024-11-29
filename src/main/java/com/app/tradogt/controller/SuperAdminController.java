@@ -673,6 +673,19 @@ public class SuperAdminController {
             formProducto.getProductoEnZonaSur().setProductoyZona(productoEdit,zonaRepository.findById(2).get());
             formProducto.getProductoEnZonaEste().setProductoyZona(productoEdit,zonaRepository.findById(3).get());
             formProducto.getProductoEnZonaOeste().setProductoyZona(productoEdit,zonaRepository.findById(4).get());
+
+            if (formProducto.getProductoEnZonaNorte().getCantidad() >= 25) {
+                formProducto.getProductoEnZonaNorte().setEstadoRepo((byte) 0); // Stock adecuado
+            }
+            if (formProducto.getProductoEnZonaSur().getCantidad() >= 25) {
+                formProducto.getProductoEnZonaSur().setEstadoRepo((byte) 0); // Stock adecuado
+            }
+            if (formProducto.getProductoEnZonaEste().getCantidad() >= 25) {
+                formProducto.getProductoEnZonaEste().setEstadoRepo((byte) 0); // Stock adecuado
+            }
+            if (formProducto.getProductoEnZonaSur().getCantidad() >= 25) {
+                formProducto.getProductoEnZonaSur().setEstadoRepo((byte) 0); // Stock adecuado
+            }
             //Guardar los productos en zona
             productoEnZonaRepository.save(formProducto.getProductoEnZonaNorte());
             productoEnZonaRepository.save(formProducto.getProductoEnZonaSur());
