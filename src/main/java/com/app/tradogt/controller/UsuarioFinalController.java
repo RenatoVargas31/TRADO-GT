@@ -43,6 +43,7 @@ public class UsuarioFinalController {
 
     private Optional<Usuario> authenticatedUser;
     private int zonaId;
+    final DistritoRepository distritoRepository;
 
 
     public static class RandomCodeGenerator {
@@ -85,7 +86,8 @@ public class UsuarioFinalController {
     final AutenticacionRepository autenticacionRepository;
     final EstadoOrdenRepository estadoOrdenRepository;
 
-    public UsuarioFinalController(ProductosRepository productosRepository, OrdenRepository ordenRepository, UsuarioRepository usuarioRepository, ProductoEnZonaRepository productoEnZonaRepository, PublicacionRepository publicacionRepository, ComentarioRepository comentarioRepository, SubCategoriaRepository subCategoriaRepository, CarritoRepository carritoRepository, PagoRepository pagoRepository, ResenaRepository resenaRepository, ProductoEnCarritoRepository productoEnCarritoRepository, AutenticacionRepository autenticacionRepository, EstadoOrdenRepository estadoOrdenRepository) {
+    public UsuarioFinalController(DistritoRepository distritoRepository, ProductosRepository productosRepository, OrdenRepository ordenRepository, UsuarioRepository usuarioRepository, ProductoEnZonaRepository productoEnZonaRepository, PublicacionRepository publicacionRepository, ComentarioRepository comentarioRepository, SubCategoriaRepository subCategoriaRepository, CarritoRepository carritoRepository, PagoRepository pagoRepository, ResenaRepository resenaRepository, ProductoEnCarritoRepository productoEnCarritoRepository, AutenticacionRepository autenticacionRepository, EstadoOrdenRepository estadoOrdenRepository) {
+        this.distritoRepository = distritoRepository;
         this.productosRepository = productosRepository;
         this.ordenRepository = ordenRepository;
         this.usuarioRepository = usuarioRepository;
@@ -100,6 +102,34 @@ public class UsuarioFinalController {
         this.productoEnCarritoRepository = productoEnCarritoRepository;
         this.autenticacionRepository = autenticacionRepository;
         this.estadoOrdenRepository = estadoOrdenRepository;
+    }
+
+    public void updateOrderStatus() {
+        //Obtener la fecha actual
+        LocalDate today = LocalDate.now();
+        Optional<EstadoOrden> estadoactual = estadoOrdenRepository.findById(3);
+        Optional<EstadoOrden> arriboAlPais = estadoOrdenRepository.findById(4);
+        Optional<EstadoOrden> aduanas = estadoOrdenRepository.findById(5);
+        Optional<EstadoOrden> ruta = estadoOrdenRepository.findById(6);
+        Optional<EstadoOrden> recibido = estadoOrdenRepository.findById(7);
+        List<Orden> ordensInProcess = ordenRepository.findByEstadoordenIdestadoorden(estadoactual);
+        for (Orden orden : ordensInProcess) {
+            System.out.println("Orden ID: " + orden.getId());
+            // Cambiar el estado de acuerdo a la fecha actual
+            if (orden.getFechaArribo() != null && orden.getFechaArribo().isEqual(today)) {
+                orden.setEstadoordenIdestadoorden(arriboAlPais.get());
+            } else if (orden.getFechaEnAduanas() != null && orden.getFechaEnAduanas().isEqual(today)) {
+                orden.setEstadoordenIdestadoorden(aduanas.get());
+            } else if (orden.getFechaEnRuta() != null && orden.getFechaEnRuta().isEqual(today)) {
+                orden.setEstadoordenIdestadoorden(ruta.get());
+            } else if (orden.getFechaRecibido() != null && orden.getFechaRecibido().isEqual(today)) {
+                orden.setEstadoordenIdestadoorden(recibido.get());
+            }else{
+                orden.setEstadoordenIdestadoorden(orden.getEstadoordenIdestadoorden());
+            }
+            // Guardar la orden actualizada
+            ordenRepository.save(orden);
+        }
     }
 
 
@@ -136,7 +166,7 @@ public class UsuarioFinalController {
 
     @GetMapping("/inicio")
     public String inicio(Model model) {
-        //updateOrderStatus();
+        updateOrderStatus();
         //Listar los pedidos recientes
         int userId = getAuthenticatedUserId();  // Obtener el ID del usuario autenticado
 
@@ -641,16 +671,31 @@ public class UsuarioFinalController {
 
         return "Usuario/carrito-usuario";
     }
-   @PostMapping("/actualizarCantidad") //Aquí se debe guardar una lista o array de las cantidades de cada producto.
-    public String actualizarCantidad (
+   @PostMapping("/actualizarCantidad")
+    public String actualizarCantidad (RedirectAttributes attr,
             @RequestParam("total") BigDecimal total,
             @RequestParam("cantidad") List<Integer> cantidad) {
-        System.out.println(cantidad);
 
+        // Obtener el usuario autenticado
         int id = getAuthenticatedUserId();
         Usuario usuario = usuarioRepository.findById(id).get();
+
+        // Obtener el carrito del usuario
         Carrito micarrito = carritoRepository.findByUsuarioIdusuarioAndIsDelete(usuario,(byte) 0);
 
+        // Si el carrito no existe
+       if(micarrito == null) {
+           return "redirect:/usuario/carrito";
+       }
+
+       // Validamos que todas las cantidades sean mayores o igual a 20
+       for(Integer qty : cantidad) {
+           if(qty < 20){
+               attr.addFlashAttribute("ErrorCantidad", "La cantidad ingresada no es válida. El mínimo de compra es de 20 unidades. Por favor, inténtelo de nuevo.");
+
+               return "redirect:/usuario/carrito";
+           }
+       }
         micarrito.setCostoTotal(total);
         carritoRepository.save(micarrito);
         List<ProductoEnCarrito> misproductos = productoEnCarritoRepository.findBycarritoIdcarrito(micarrito);
@@ -660,17 +705,10 @@ public class UsuarioFinalController {
                // Guarda el producto actualizado en el repositorio
                productoEnCarritoRepository.save(misproductos.get(i));
            }
-
-        //Obtener la zona del usuario
-        Zona zone = usuario.getZonaIdzona();
-        //obtener el id del producto
-        int idproduct = micarrito.getId();
-
-        //CORRREGIRRRRRRRRRRRRR AQUIIIIIIIIII
-
-
         return "redirect:/usuario/checkout-info";
     }
+
+
     //Eliminar un producto  de la lista
     @PostMapping("/eliminarProducto")
     public String eliminarProducto(@RequestParam("productoId") Integer productoId,
@@ -694,10 +732,6 @@ public class UsuarioFinalController {
         item.setCarritoIdcarrito(miCarrito.getId());
         item.setProductoenzonaZonaIdzona(myUser.get().getDistritoIddistrito().getZonaIdzona().getId());
         item.setProductoenzonaProductoIdproducto(productoId);
-        System.out.println("------------");
-        System.out.println("ID Carrito: " + item.getCarritoIdcarrito());
-        System.out.println("ID Zona: " + item.getProductoenzonaZonaIdzona());
-        System.out.println("ID Producto: " + item.getProductoenzonaProductoIdproducto());
         //Obtenego el producto
         Optional<ProductoEnCarrito> itemDelete = productoEnCarritoRepository.findById(item);
         productoEnCarritoRepository.delete(itemDelete.get());
@@ -1211,6 +1245,9 @@ public class UsuarioFinalController {
 
                 ProductoEnCarrito item = misProductos.get(0);
                 BigDecimal costoEnvio = item.getProductoEnZona().getCostoEnvio();
+                model.addAttribute("distritos", distritoRepository.findAll());
+                model.addAttribute("usuario", usuarioRepository.findByIdUsuario(user));
+                System.out.println(distritoRepository.findAll());
                 model.addAttribute("costoEnvio", costoEnvio);
             }
 

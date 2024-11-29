@@ -48,14 +48,12 @@
                 </div>
                 <!-- end page title -->
                 <div class="row" >
-
                     <div class="col-md-4 col-12">
-                        <div class="card checkout-order-summary">
+                        <div class="card ">
+                            <div class="card-header">
+                                <h5 class="font-size-14 mb-0">Resumen de la Compra<span class="float-end ms-2"></span></h5>
+                            </div>
                             <div class="card-body">
-
-                                <div class="p-3 bg-light mb-4">
-                                    <h5 class="font-size-14 mb-0">Resumen de la Compra<span class="float-end ms-2"></span></h5>
-                                </div>
                                 <div class="table-responsive" style="max-height: 700px; overflow-y: auto;">
                                     <table class="table table-centered mb-0 table-nowrap">
                                         <thead>
@@ -69,14 +67,14 @@
                                         <tbody>
                                         <tr th:each="producto : ${carrito}">
                                             <th scope="row" th:text="${producto.productoEnZona.productoIdproducto.codigo}"></th>
-                                            <th scope="row"><img th:src="@{'../../images/product/product' + ${producto.productoEnZona.productoIdproducto.id} + '.jpg'}" alt="product-img" title="product-img" class="avatar-md"></th>
+                                            <th scope="row"><img th:src="@{'../../images/product/product' + ${producto.productoEnZona.productoIdproducto.id} + '.jpg'}" alt="product-img" title="product-img" class="avatar-sm" style="width: 50px; height: 50px;"></th>
+
                                             <td>
                                                 <h5 class="font-size-14 text-truncate"><a href="/usuario/productoDetalles" class="text-reset" th:text="${producto.productoEnZona.productoIdproducto.nombre}"></a></h5>
                                                 <p class="text-muted mb-0" th:text=" 'S/. ' + ${producto.productoEnZona.productoIdproducto.precio} + ' x ' + ${producto.cantidad}"></p>
                                             </td>
-                                            <td th:text="(${producto.productoEnZona.productoIdproducto.precio} * ${producto.cantidad})"></td>
+                                            <td th:text="('S/. ' +  ${producto.productoEnZona.productoIdproducto.precio} * ${producto.cantidad})"></td>
                                         </tr>
-
                                         <tr>
                                             <td colspan="3">
                                                 <h6 class="m-0 text-end">Sub Total:</h6>
@@ -84,12 +82,8 @@
                                             <td th:text="'S/. ' + (${total} - ${costoEnvio})"></td>
                                         </tr>
                                         <tr>
-                                            <td colspan="4">
-                                                <div class="bg-primary-subtle  p-3 rounded">
-                                                    <h5 class="font-size-14 text-primary mb-0"><i class="fas fa-shipping-fast"></i> Envío: <span class="float-md-end text-between" th:text="'S/. ' + ${costoEnvio}"></span></h5>
-
-                                                </div>
-
+                                            <td colspan="4" class="bg-primary-subtle  p-3 rounded">
+                                                <h6 class="font-size-14 text-primary mb-0"><i class="fas fa-shipping-fast"></i> Envío: <span class="float-md-end text-between" th:text="'S/.' + ${costoEnvio}"></span></h6>
                                             </td>
                                         </tr>
                                         <tr>
@@ -100,200 +94,206 @@
                                         </tr>
                                         </tbody>
                                     </table>
-
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-8  ">
+                    <div class="col-md-8 col-12">
                         <form method="post" th:action="@{/usuario/savePayment}" id="paymentForm">
                             <div class="card">
-                                <div class="card-body">
-                                    <div class="tab-pane" id="billing-info">
-                                        <h5 class="card-title">Información de facturación</h5>
-                                        <p class="card-title-desc">Por favor, ingrese sus detalles de facturación. Esta información se utilizará para procesar su pedido y generar su factura</p>
-                                        <div>
+                                <div class="card-header" data-bs-toggle="collapse" data-bs-target="#collapseBillingInfo" aria-expanded="true" aria-controls="collapseBillingInfo">
+                                    <h5 class="card-title">Información de facturación</h5>
+                                </div>
+                                <div id="collapseBillingInfo" class="collapse show">
+                                    <div class="card-body">
+                                        <div class="tab-pane" id="billing-info">
+                                            <p class="card-title-desc">Por favor, ingrese sus detalles de facturación. Esta información se utilizará para procesar su pedido y generar su factura</p>
+                                            <div>
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        <div class="mb-2">
+                                                            <label class="form-label" for="nombre">Nombre</label>
+                                                            <input type="text" class="form-control bg-light" name="nombre" id="nombre" placeholder="Ingresar nombre" readonly>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <div class="mb-2">
+                                                            <label class="form-label" for="apellido">Apellido</label>
+                                                            <input type="text" class="form-control bg-light" name="apellido" id="apellido" placeholder="Ingresar apellido" readonly>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row mt-2">
+                                                    <div class="col-lg-4 mt-2">
+                                                        <div class="mb-2">
+                                                            <label class="form-label" for="dni">Documento de identidad</label>
+                                                            <input type="text" class="form-control" name="dni" id="dni" placeholder="Ingresar dni" required>
+                                                            <div id="dni-error" class="text-danger" style="display:none;"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4 mt-2">
+                                                        <div class="mb-2">
+                                                            <label class="form-label" for="correo">Correo electrónico</label>
+                                                            <input type="email" class="form-control" id="correo" th:field="*{usuario.correo}" placeholder="Ingresar correo electrónico" required>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4 mt-2">
+                                                        <div class="mb-2">
+                                                            <label class="form-label" for="telefono">Teléfono</label>
+                                                            <!-- Segundo input (inicialmente oculto y deshabilitado) -->
+                                                            <input type="number" class="form-control" id="telefono" th:field="*{usuario.telefono}" placeholder="Ingresar número telefónico" required>
 
-                                            <div class="row">
-                                                <div class="col-lg-6">
-                                                    <div class="mb-4">
-                                                        <label class="form-label" for="nombre">Nombre</label>
-                                                        <input type="text" class="form-control bg-light" name="nombre" id="nombre" placeholder="Ingresar nombre" readonly >
-                                                        <!--<input type="text" class="form-control" id="billing-name" placeholder="Enter name"> -->
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-6">
-                                                    <div class="mb-4">
-                                                        <label class="form-label" for="apellido">Apellido</label>
-                                                        <input type="text" class="form-control bg-light" name="apellido" id="apellido" placeholder="Ingresar apellido"  readonly >
-                                                        <!--<input type="text" class="form-control" id="billing-fullname" placeholder="Enter name">-->
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row mt-2">
-                                                <div class="col-lg-4 mt-2">
-                                                    <div class="mb-4">
-                                                        <label class="form-label" for="dni">Documento de identidad</label>
-                                                        <input type="text" class="form-control" name="dni" id="dni" placeholder="Ingresar dni"  required >
-                                                        <div id="dni-error" class="text-danger" style="display:none;"></div> <!-- Div para el mensaje de error -->
-                                                        <!-- <input type="text" class="form-control" id="billing-dni" placeholder="Enter Phone no.">-->
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-4 mt-2">
-                                                    <div class="mb-4">
-                                                        <label class="form-label" for="correo">Correo electrónico</label>
-                                                        <input type="text" class="form-control" name="correo" id="correo" placeholder="Ingresar correo"  required >
-                                                        <!-- <input type="email" class="form-control" id="billing-email-address" placeholder="Enter email">-->
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-4 mt-2">
-                                                    <div class="mb-4">
-                                                        <label class="form-label" for="telefono">Teléfono</label>
-                                                        <input type="text" class="form-control" name="telefono" id="telefono" placeholder="Ingresar teléfono"  required>
-                                                        <!-- <input type="text" class="form-control" id="billing-phone" placeholder="Enter Phone no.">-->
-                                                    </div>
-                                                </div>
 
-                                            </div>
-
-                                            <div class="row">
-                                                <div class="col-lg-6 mt-2">
-                                                    <div class="mb-4 mb-lg-0">
-                                                        <label class="form-label" for="distrito">Distrito</label>
-                                                        <input type="text" class="form-control" name="distrito" id="distrito" placeholder="Ingresar distrito"  required >
-                                                        <!-- <input type="text" class="form-control" name="billingDistrict" placeholder="Ingresar Distrito">-->
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-lg-6 mt-2">
-                                                    <div class="mb-4">
-                                                        <label class="form-label" for="direccion">Dirección</label>
-                                                        <input type="text" class="form-control" name="direccion" id="direccion" placeholder="Ingresar dirección"  required >
+                                                <div class="row">
+                                                    <div class="col-lg-6 mt-2">
+                                                        <div class="mb-4 mb-lg-0">
+                                                            <label class="form-label" for="distrito">Distrito</label>
+                                                            <select name="distrito" id="distrito" class="form-control" required>
+                                                                <option value="" selected disabled>Seleccionar Distrito</option>
+                                                                <option th:each="distrito : ${distritos}"
+                                                                        th:value="${distrito.nombre}"
+                                                                        th:text="${distrito.nombre}">
+                                                                </option>
+                                                            </select>
+                                                        </div>
                                                     </div>
-
+                                                    <div class="col-lg-6 mt-2">
+                                                        <div class="mb-4">
+                                                            <label class="form-label" for="direccion">Dirección</label>
+                                                            <input type="text" class="form-control" id="direccion" th:field="*{usuario.direccion}" placeholder="Ingresar dirección" required>
+                                                        </div>
+                                                    </div>
                                                 </div>
-
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="card">
-                                <div class="card-body">
-                                    <div class="tab-pane active" id="delivery-info">
-                                        <h5 class="card-title">Información de Entrega</h5>
-                                        <p class="card-title-desc">Por favor, ingrese la dirección donde desea recibir su pedido. Asegúrese de que toda la información sea correcta antes de continuar.</p>
-                                        <input type="text" class="form-control" id="LugarEntrega" name="LugarEntrega" maxlength="45" placeholder="Ingresar la dirección de entrega">
+                                <div class="card-header" data-bs-toggle="collapse" data-bs-target="#collapseDeliveryInfo" aria-expanded="true" aria-controls="collapseDeliveryInfo">
+                                    <h5 class="card-title">Información de Entrega</h5>
+                                </div>
+                                <div id="collapseDeliveryInfo" class="collapse show">
+                                    <div class="card-body">
+                                        <div class="tab-pane active" id="delivery-info">
+                                            <p class="card-title-desc">Por favor, ingrese la dirección donde desea recibir su pedido. Asegúrese de que toda la información sea correcta antes de continuar.</p>
+                                            <input type="text" class="form-control" id="LugarEntrega" name="LugarEntrega" maxlength="45" placeholder="Ingresar la dirección de entrega">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+
                             <div class="card">
-                                <div class="card-body">
-                                    <div class="tab-pane active" id="payment-info">
-                                        <h5 class="card-title">Información de pago</h5>
-                                        <p class="card-title-desc">Por favor, seleccione su método de pago preferido y complete los detalles a continuación. Asegúrese de que toda la información sea correcta antes de continuar.</p>
+                                <div class="card-header" data-bs-toggle="collapse" data-bs-target="#collapsePaymentInfo" aria-expanded="true" aria-controls="collapsePaymentInfo">
+                                    <h5 class="card-title">Información de pago</h5>
+                                </div>
+                                <div id="collapsePaymentInfo" class="collapse show">
+                                    <div class="card-body">
+                                        <div class="tab-pane active" id="payment-info">
+                                            <p class="card-title-desc">Por favor, seleccione su método de pago preferido y complete los detalles a continuación. Asegúrese de que toda la información sea correcta antes de continuar.</p>
 
-                                        <h5 class="font-size-14">Método de pago:</h5>
-                                        <div class="row">
-                                            <div class="col-lg-4 col-sm-6">
-                                                <label class="form-label card-radio-label mb-3">
-                                                    <input type="radio" name="metodo" value="American Express" class="card-radio-input">
-                                                    <span class="card-radio">
-                                                            <i class="ri-bank-card-fill font-size-24 align-middle me-2"></i>
-                                                            <span>American Express</span>
-                                                        </span>
-                                                </label>
-                                            </div>
-                                            <div class="col-lg-4 col-sm-6">
-                                                <label class="form-label card-radio-label mb-3">
-                                                    <input type="radio" name="metodo" value="Visa" class="card-radio-input">
-                                                    <span class="card-radio">
-                                                                <i class="ri-visa-fill font-size-24 align-middle me-2"></i>
-                                                                <span>Visa</span>
-                                                            </span>
-                                                </label>
-                                            </div>
-                                            <div class="col-lg-4 col-sm-6">
-                                                <label class="form-label card-radio-label mb-3">
-                                                    <input type="radio" name="metodo" value="MasterCard" class="card-radio-input">
-                                                    <span class="card-radio">
-                                                                <i class="ri-mastercard-fill font-size-24 align-middle me-2"></i>
-                                                            <span>MasterCard</span>
-                                                        </span>
-                                                </label>
-                                            </div>
-                                        </div>
-
-                                        <h5 class="my-3 font-size-14">Para pagar con tarjeta</h5>
-                                        <div class="p-4 border">
-                                            <div class="mb-3">
-                                                <label class="form-label" for="nombreTarjeta">Nombre del propietario</label>
-                                                <input type="text" class="form-control" id="nombreTarjeta" name="nombreTarjeta" placeholder="Nombre en la tarjeta" required pattern="[A-Za-z\s]+" title="El nombre solo puede contener letras y espacios" oninput="validateNombreTarjeta(this)">
-                                            </div>
-
+                                            <h5 class="font-size-14">Método de pago:</h5>
                                             <div class="row">
                                                 <div class="col-lg-4 col-sm-6">
-                                                    <div class="mb-3 mb-lg-0">
-                                                        <label class="form-label" for="numeroTarjeta">Número de tarjeta</label>
-                                                        <input type="text" class="form-control" id="numeroTarjeta" name="numeroTarjeta" placeholder="0000 0000 0000 0000" required pattern="\d{4} \d{4} \d{4} \d{4}" maxlength="19" oninput="formatTarjeta(this)">
-                                                    </div>
+                                                    <label class="form-label card-radio-label mb-3">
+                                                        <input type="radio" name="metodo" value="American Express" class="card-radio-input">
+                                                        <span class="card-radio">
+                                <i class="ri-bank-card-fill font-size-24 align-middle me-2"></i>
+                                <span>American Express</span>
+                            </span>
+                                                    </label>
                                                 </div>
-
                                                 <div class="col-lg-4 col-sm-6">
-                                                    <div class="mb-3 mb-lg-0">
-                                                        <label class="form-label" for="fechaTarjeta">Fecha de vencimiento</label>
-                                                        <input type="text" class="form-control" id="fechaTarjeta" name="fechaTarjeta" placeholder="MM/YY" required pattern="(0[1-9]|1[0-2])\/([0-9]{2})" maxlength="5" oninput="formatDate(this)">
-                                                    </div>
+                                                    <label class="form-label card-radio-label mb-3">
+                                                        <input type="radio" name="metodo" value="Visa" class="card-radio-input">
+                                                        <span class="card-radio">
+                                <i class="ri-visa-fill font-size-24 align-middle me-2"></i>
+                                <span>Visa</span>
+                            </span>
+                                                    </label>
                                                 </div>
-
                                                 <div class="col-lg-4 col-sm-6">
-                                                    <div class="mb-3 mb-lg-0">
-                                                        <label class="form-label" for="codigoCVV">Código CVV</label>
-                                                        <input type="text" class="form-control" id="codigoCVV" name="codigoCVV" placeholder="Ingrese código CVV" required oninput="validateCVV(this)" maxlength="3">
-                                                        <small id="cvvError" class="text-danger" style="display:none;">El CVV debe ser un número de 3 dígitos.</small>
-                                                    </div>
-
-
-
+                                                    <label class="form-label card-radio-label mb-3">
+                                                        <input type="radio" name="metodo" value="MasterCard" class="card-radio-input">
+                                                        <span class="card-radio">
+                                <i class="ri-mastercard-fill font-size-24 align-middle me-2"></i>
+                                <span>MasterCard</span>
+                            </span>
+                                                    </label>
                                                 </div>
                                             </div>
-                                            <div class="mb-3" style="display: none;">
-                                                <label class="form-label" for="monto">Monto</label>
-                                                <input type="hidden" id="monto" name="monto" th:value="${total}">
+
+                                            <h5 class="my-3 font-size-14">Para pagar con tarjeta</h5>
+                                            <div class="p-4 border">
+                                                <div class="mb-3">
+                                                    <label class="form-label" for="nombreTarjeta">Nombre del propietario</label>
+                                                    <input type="text" class="form-control" id="nombreTarjeta" name="nombreTarjeta" placeholder="Nombre en la tarjeta" required pattern="[A-Za-z\s]+" title="El nombre solo puede contener letras y espacios" oninput="validateNombreTarjeta(this)">
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-lg-4 col-sm-6">
+                                                        <div class="mb-3 mb-lg-0">
+                                                            <label class="form-label" for="numeroTarjeta">Número de tarjeta</label>
+                                                            <input type="text" class="form-control" id="numeroTarjeta" name="numeroTarjeta" placeholder="0000 0000 0000 0000" required pattern="\d{4} \d{4} \d{4} \d{4}" maxlength="19" oninput="formatTarjeta(this)">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-lg-4 col-sm-6">
+                                                        <div class="mb-3 mb-lg-0">
+                                                            <label class="form-label" for="fechaTarjeta">Fecha de vencimiento</label>
+                                                            <input type="text" class="form-control" id="fechaTarjeta" name="fechaTarjeta" placeholder="MM/YY" required pattern="(0[1-9]|1[0-2])\/([0-9]{2})" maxlength="5" oninput="formatDate(this)">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-lg-4 col-sm-6">
+                                                        <div class="mb-3 mb-lg-0">
+                                                            <label class="form-label" for="codigoCVV">Código CVV</label>
+                                                            <input type="text" class="form-control" id="codigoCVV" name="codigoCVV" placeholder="Ingrese código CVV" required oninput="validateCVV(this)" maxlength="3">
+                                                            <small id="cvvError" class="text-danger" style="display:none;">El CVV debe ser un número de 3 dígitos.</small>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="mb-3" style="display: none;">
+                                                    <label class="form-label" for="monto">Monto</label>
+                                                    <input type="hidden" id="monto" name="monto" th:value="${total}">
+                                                </div>
                                             </div>
-                                        </div>
 
-                                        <div class="mt-4 text-end">
-                                            <a th:href="@{/usuario/carrito}"  class="btn btn-danger waves-effect waves-light" >
-                                                Regresar
-                                            </a>
-                                            <button class="btn btn-success waves-effect waves-light" id="submitPayment">
-                                                Finalizar
-                                            </button>
-                                        </div>
+                                            <div class="mt-4 text-end">
+                                                <a th:href="@{/usuario/carrito}" class="btn btn-danger waves-effect waves-light">
+                                                    Regresar
+                                                </a>
+                                                <button class="btn btn-success waves-effect waves-light" id="submitPayment">
+                                                    Finalizar
+                                                </button>
+                                            </div>
 
-                                        <!-- Modal -->
-                                        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                                            <div class="modal-dialog" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="staticBackdropLabel">¡Compra exitosa!</h5>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <p>¡Gracias por tu compra! Su pedido ha sido recibido y está en espera para ser procesado. Si usted tiene alguna pregunta, no dudes en contactar con un Agente de compra. ¡Que disfrutes de su compra!</p>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button  type="submit" class="btn btn-primary waves-effect waves-light">Ver boleta</button>
+                                            <!-- Modal -->
+                                            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="staticBackdropLabel">¡Compra exitosa!</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <p>¡Gracias por tu compra! Su pedido ha sido recibido y está en espera para ser procesado. Si usted tiene alguna pregunta, no dudes en contactar con un Agente de compra. ¡Que disfrutes de su compra!</p>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="submit" class="btn btn-primary waves-effect waves-light">Ver boleta</button>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-
                                     </div>
                                 </div>
                             </div>
+
                         </form>
-
                     </div>
                 </div>
 
@@ -482,6 +482,9 @@
         });
     });
 </script>
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz4fnFO9gyb3v6AMz1clKpq0JLumf4H2Xo4HhIfefRCPtggOfFuC1gO6p9" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js" integrity="sha384-Q+vYyYXRR/mh+mDBVRdN/lq6LQcRb6VEFzRULAJ68Bwd26CP8G/ZyM/g5t2RfS+3" crossorigin="anonymous"></script>
 </body>
 
 </html>
