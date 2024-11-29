@@ -106,4 +106,9 @@ public class Producto {
     @Column(name = "cantidad", nullable = false)
     private Integer cantidad;
 
+
+    @Size(max = 45)
+    @Column(name = "foto", length = 45)
+    private String foto;
+
 }
