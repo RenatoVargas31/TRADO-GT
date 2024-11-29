@@ -85,6 +85,10 @@
                         <label for="dniInput" class="form-label">Documento de identificación</label>
                         <input type="text" class="form-control" id="dniInput"
                                placeholder="DNI" th:field="*{dni}" maxlength="8">
+                        <!-- Mostrar mensaje de error para el campo correo -->
+                        <div th:if="${#fields.hasErrors('dni')}" class="text-danger">
+                          <p th:errors="*{dni}">El DNI ya está registrado.</p>
+                        </div>
                         <div id="dni-error" class="text-danger" style="display:none;">El DNI debe contener solo números y tener máximo 8 dígitos.</div>
                       </div>
                     </div>
@@ -101,6 +105,10 @@
                         <label for="validationCustom05" class="form-label">Correo electrónico</label>
                         <input type="email" class="form-control" id="validationCustom05"
                                placeholder="Email" th:field="*{correo}">
+                        <!-- Mostrar mensaje de error para el campo correo -->
+                        <div th:if="${#fields.hasErrors('correo')}" class="text-danger">
+                          <p th:errors="*{correo}">El correo electrónico ya está registrado.</p>
+                        </div>
                       </div>
 
                     </div>

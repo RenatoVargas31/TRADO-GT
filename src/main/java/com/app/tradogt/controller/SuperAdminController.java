@@ -221,6 +221,8 @@ public class SuperAdminController {
         usuario.setContrasena(passwordEncrypted);
         //Guardar usuario
         usuarioRepository.save(usuario);
+        String enlaceFeik = "holi";
+        notificationCorreoService.enviarCorreoCreacionCuentaAgente(usuario.getCorreo(),usuario.getNombre(),password,enlaceFeik);
         return "redirect:/superadmin/admZonalNuevoForm";
     }
     //</editor-fold>

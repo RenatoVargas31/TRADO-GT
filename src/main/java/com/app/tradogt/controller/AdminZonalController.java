@@ -2,6 +2,7 @@ package com.app.tradogt.controller;
 
 import com.app.tradogt.dto.*;
 import com.app.tradogt.entity.*;
+import com.app.tradogt.helpers.PasswordGenerator;
 import com.app.tradogt.services.NotificationCorreoService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -318,8 +319,10 @@ public class AdminZonalController {
 
     @GetMapping("/nuevoAgente")
     public String showNuevoAgente(Model model, @ModelAttribute("agente") Usuario usuario) {
-        model.addAttribute("listaDistritos", distritoRepository.findByZonaIdzonaId(1));
-        Optional<Usuario> AgentePrueba = usuarioRepository.findById(1);
+
+        int zonaIdZonal = getAuthenticatedUser().getZonaIdzona().getId();
+        model.addAttribute("listaDistritos", distritoRepository.findByZonaIdzonaId(zonaIdZonal));
+        Optional<Usuario> AgentePrueba = usuarioRepository.findById(zonaIdZonal);
         List<AgenteInfoZon> agentes = usuarioRepository.getAgentesbyZonal(getAuthenticatedUserId());
         model.addAttribute("agenteSize", agentes.size());
         model.addAttribute("agenteA", AgentePrueba.get());
@@ -327,20 +330,41 @@ public class AdminZonalController {
     }
 
     @PostMapping("/saveAgente")
-    public String saveAgente(@ModelAttribute("agente") Usuario usuario, BindingResult bindingResult, RedirectAttributes attr) {
-        if(bindingResult.hasErrors()){
-            return "nuevoAgente-AdminZonal";
+    public String saveAgente(@ModelAttribute("agente") Usuario usuario, BindingResult bindingResult, RedirectAttributes attr, Model model) {
+        int zonaIdZonal = getAuthenticatedUser().getZonaIdzona().getId();
+        // Verificar si el correo ya está registrado en la base de datos
+        if (usuarioRepository.existsByCorreo(usuario.getCorreo())) {
+            bindingResult.rejectValue("correo", "error.correo", "El correo electrónico ya está registrado.");
+        }
+        // Verificar si el DNI ya está registrado en la base de datos
+        if (usuarioRepository.existsByDni(usuario.getDni())) {
+            bindingResult.rejectValue("dni", "error.dni", "El DNI ya está registrado.");
+        }
+        // Verificar si hay errores de validación (incluido el correo ya existente)
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("listaDistritos", distritoRepository.findByZonaIdzonaId(zonaIdZonal));
+            return "AdminZonal/nuevoAgente-AdminZonal"; // Vuelve al formulario con el mensaje de error
         } else {
+            //Asignar una contraseña por random de 10 dígitos y que combine número y letras
+            String password = PasswordGenerator.generateRandomPassword();
+            System.out.println(password);
+            usuario.setContrasena(passwordEncoder.encode(password));
+            // Si no hay errores, proceder con el guardado del usuario
             attr.addFlashAttribute("msg", "Agente " + (usuario.getId() == null ? "creado exitosamente" : "actualizado exitosamente"));
             usuario.setIsActivated(Byte.parseByte("1"));
-            usuario.setIsPostulated(Byte.parseByte("1"));
+            usuario.setIsAccepted(Byte.parseByte("1"));
             usuario.setAdmzonalIdusuario(getAuthenticatedUser());
-            usuario.setRolIdrol(rolRepository.findById(4).get());
-            usuario.setZonaIdzona(zonaRepository.findById(1).get());
+            usuario.setRolIdrol(rolRepository.findById(3).get());
+            usuario.setZonaIdzona(zonaRepository.findById(zonaIdZonal).get());
             usuarioRepository.save(usuario);
-            return "redirect:/adminzonal/gestionAgente";
+
+            String enlaceFeik = "holi";
+
+            notificationCorreoService.enviarCorreoCreacionCuentaAgente(usuario.getCorreo(),usuario.getNombre(),password,enlaceFeik);
+            return "redirect:/adminzonal/gestionAgente"; // Redirigir a la lista de agentes
         }
     }
+
 
 
     @GetMapping("/verAgente/{id}")

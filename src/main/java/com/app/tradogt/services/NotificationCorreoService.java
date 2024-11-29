@@ -126,4 +126,61 @@ public class NotificationCorreoService {
             throw new RuntimeException("Error al enviar el correo de recuperación de contraseña", e);
         }
     }
+
+    public void enviarCorreoCreacionCuentaAgente(String destinatario, String nombreUsuario, String contrasenaTemporal, String enlaceCambioContrasena) {
+        String asunto = "Tu Cuenta Ha Sido Creada Exitosamente";
+
+        // Mensaje HTML con la contraseña temporal y el enlace para cambiarla
+        String mensajeHtml = "<!DOCTYPE html>" +
+                "<html lang='es'>" +
+                "<head>" +
+                "    <meta charset='UTF-8'>" +
+                "    <meta name='viewport' content='width=device-width, initial-scale=1.0'>" +
+                "</head>" +
+                "<body style='margin:0; padding:0; font-family: Arial, sans-serif; background-color: #f4f4f4;'>" +
+                "    <table width='100%' border='0' cellspacing='0' cellpadding='0'>" +
+                "        <tr>" +
+                "            <td align='center' style='padding: 40px 0; background-color: #800080; color: #ffffff;'>" +
+                "                <h1 style='margin: 0; font-size: 24px;'>Hola " + nombreUsuario + ",</h1>" +
+                "            </td>" +
+                "        </tr>" +
+                "        <tr>" +
+                "            <td align='center' style='padding: 20px;'>" +
+                "                <table width='600' border='0' cellspacing='0' cellpadding='0' style='background-color: #ffffff; border-radius: 8px; padding: 40px;'>" +
+                "                    <tr>" +
+                "                        <td align='center' style='padding: 20px; color: #333333;'>" +
+                "                            <p style='font-size: 16px; line-height: 1.5;'>Tu cuenta ha sido creada exitosamente.</p>" +
+                "                            <p style='font-size: 16px; line-height: 1.5;'>Tu contraseña temporal es: <strong>" + contrasenaTemporal + "</strong></p>" +
+                "                            <p style='font-size: 16px; line-height: 1.5;'>Por favor, haz clic en el siguiente enlace para cambiar tu contraseña:</p>" +
+                "                            <a href='" + enlaceCambioContrasena + "' style='display: inline-block; margin-top: 20px; padding: 12px 24px; background-color: #800080; color: #ffffff; text-decoration: none; border-radius: 5px; font-size: 16px;'>Cambiar mi Contraseña</a>" +
+                "                        </td>" +
+                "                    </tr>" +
+                "                </table>" +
+                "            </td>" +
+                "        </tr>" +
+                "        <tr>" +
+                "            <td align='center' style='padding: 20px; color: #888888; font-size: 12px;'>" +
+                "                <p>Saludos,<br>El equipo de soporte</p>" +
+                "            </td>" +
+                "        </tr>" +
+                "    </table>" +
+                "</body>" +
+                "</html>";
+
+        try {
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true);
+
+            // Configuración del correo
+            helper.setSubject(asunto);
+            helper.setTo(destinatario);
+            helper.setText(mensajeHtml, true); // true permite contenido HTML
+
+            // Enviar el correo (el remitente se toma de spring.mail.username automáticamente)
+            mailSender.send(message);
+        } catch (MessagingException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Error al enviar el correo de creación de cuenta", e);
+        }
+    }
 }
