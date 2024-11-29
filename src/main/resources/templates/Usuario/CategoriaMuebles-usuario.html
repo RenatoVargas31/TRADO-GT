@@ -211,47 +211,41 @@
                       <h3 class="fw-bold">Muebles</h3>
                     </div>
                     <div class="col-md-6 d-flex justify-content-end">
-                      <form class="d-flex" action="/usuario/categoriaMueblesSearch" method="GET"> <!-- El action envía la búsqueda a la ruta /buscar -->
+                      <form class="d-flex" action="/usuario/categoriaMueblesSearch" method="GET">
                         <div class="search-box me-2">
                           <div class="position-relative">
-                            <input type="text" name="query" class="form-control rounded" placeholder="Buscar..."> <!-- "query" como nombre del campo de búsqueda -->
+                            <input type="text" id="search-input" name="query" class="form-control rounded" placeholder="Buscar...">
                             <i class="mdi mdi-magnify search-icon"></i>
                           </div>
                         </div>
                         <div class="form-inline me-2">
-                          <button type="submit" class="btn btn-primary waves-effect waves-light">Buscar</button> <!-- Botón envía el formulario -->
+                          <button type="submit" class="btn btn-primary waves-effect waves-light">Buscar</button>
                         </div>
                       </form>
                     </div>
                   </div>
                   <hr class="opacity-0">
 
-
-
-
-                  <!--Inicio del loop-->
-                  <div class="row g-0">
+                  <!-- Inicio del loop de productos -->
+                  <div id="product-list" class="row g-0">
                     <div th:if="${productList == null or #lists.isEmpty(productList)}" class="alert alert-warning text-center">
                       No hay productos disponibles
                     </div>
-                    <div th:each="product, iterStat : ${productList}" class="col-xl-4 col-sm-6">
-                      <div class="card product-box">
-                        <a th:href="@{'/usuario/productoDetalles?id=' + ${product.id} }" class="text-decoration-none">     <div class="product-img">
+                    <div th:each="product, iterStat : ${productList}" class="col-xl-4 col-sm-6 product-box">
+                      <div class="card">
+                        <a th:href="@{'/usuario/productoDetalles?id=' + ${product.id}}" class="text-decoration-none">
+                          <div class="product-img">
                             <div class="product-ribbon badge bg-warning">
-                              <!-- Mostrar el código de producto -->
                               <span th:text="${product.codigo}"></span>
                             </div>
                           </div>
-                          <div th:if="${product.id >= 1}">
-                            <img
-                                    th:src="@{|../images/product/product${product.id}.jpg|}"
-                                    alt="img-${product.id}"
-                                    class="img-fluid mx-auto d-block"
-                                    style="width: 250px; height: 250px; object-fit: cover;"
-                                    onerror="this.onerror=null; this.src='../images/error.jpg';"
-                            >
+                          <div class="card-img">
+                            <img th:src="@{'/uploads/imagenesProductos/' + ${product.foto}}"
+                                 src="/images/error.jpg"
+                                 onerror="this.onerror=null;this.src='/images/error.jpg';"
+                                 alt="producto-img"
+                                 class="img-fluid mx-auto d-block" style="width: 250px; height: 250px; object-fit: cover;">
                           </div>
-
                           <div class="text-center mt-3">
                             <p class="font-size-12 mb-1 text-primary">
                               <span th:text="${product.subcategoriaIdsubcategoria.nombre}">Categoría, Subcategoría</span>
@@ -259,7 +253,6 @@
                             <h5 class="font-size-15">
                               <a th:text="${product.nombre}" class="text-reset">Product Name</a>
                             </h5>
-
                             <h5 class="mt-2" style="font-size: 14px;">
                               S/ <span th:text="${product.precio}">100</span>
                               <span style="font-size: 12px; color: #888;">por unidad</span>
@@ -267,35 +260,27 @@
                           </div>
                           <div class="provider-info d-flex align-items-center justify-content-center">
                             <img th:src="@{../images/product/iconoProvedor.png}" alt="Proveedor Icono" class="rounded-circle me-2" style="width: 30px; height: 30px;">
-
-                            <span th:text="${product.proveedorIdproveedor.tienda}" class="provider-name">Nombre del proveedor</span>
+                            <span th:text="${product.proveedorIdproveedor.tienda}" class="provider-name">Proveedor</span>
                           </div>
                         </a>
                       </div>
                     </div>
                   </div>
-                  <!--FIN del loop-->
+                  <!-- Fin del loop de productos -->
+
+                  <!-- Paginación -->
                   <div class="row mt-4">
                     <div class="col-sm-6">
                       <div>
-                        <p class="mb-sm-0 mt-2">Page <span class="fw-bold">1</span> Of <span class="fw-bold">1</span></p>
+                        <p class="mb-sm-0 mt-2">Página <span id="current-page" class="fw-bold">1</span> de <span id="total-pages" class="fw-bold">1</span></p>
                       </div>
                     </div>
                     <div class="col-sm-6">
                       <div class="float-sm-end">
-                        <ul class="pagination pagination-rounded mb-sm-0">
-                          <!--
-                          <li class="page-item disabled">
-                              <a  class="page-link"><i class="mdi mdi-chevron-left"></i></a>
-                          </li>
-                          -->
-                          <li class="page-item active">
-                            <a  class="page-link">1</a>
-                          </li>
-
-                          <li class="page-item">
-                            <a  class="page-link"><i class="mdi mdi-chevron-end"></i></a>
-                          </li>
+                        <ul id="pagination" class="pagination pagination-rounded mb-sm-0">
+                          <li class="page-item" id="prev-page"><a class="page-link"><i class="mdi mdi-chevron-left"></i></a></li>
+                          <li class="page-item active"><a class="page-link" id="current-page-num">1</a></li>
+                          <li class="page-item" id="next-page"><a class="page-link"><i class="mdi mdi-chevron-right"></i></a></li>
                         </ul>
                       </div>
                     </div>
@@ -335,6 +320,95 @@
 
 <!-- Ion Range Slider-->
 <script th:src="@{../libs/ion-rangeslider/js/ion.rangeSlider.min.js}"></script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const itemsPerPage = 9; // 3 filas de 3 productos cada una
+    let currentPage = 1;
+
+    const productCards = document.querySelectorAll('.product-box');
+    const totalItems = productCards.length;
+    const totalPages = Math.ceil(totalItems / itemsPerPage);
+
+    const paginationElement = document.getElementById('pagination');
+    const currentPageElement = document.getElementById('current-page');
+    const totalPagesElement = document.getElementById('total-pages');
+
+    totalPagesElement.textContent = totalPages; // Mostrar el total de páginas
+
+    // Mostrar solo los productos de la página actual
+    function showPage(page) {
+      currentPage = page;
+
+      // Ocultar todos los productos
+      productCards.forEach((card, index) => {
+        card.style.display = 'none'; // Ocultar todos los productos
+        if (index >= (page - 1) * itemsPerPage && index < page * itemsPerPage) {
+          card.style.display = 'block'; // Mostrar productos en la página actual
+        }
+      });
+
+      // Actualizar el número de página actual
+      currentPageElement.textContent = currentPage;
+      document.getElementById('current-page-num').textContent = currentPage;
+
+      // Habilitar o deshabilitar los botones "prev" y "next"
+      document.getElementById('prev-page').classList.toggle('disabled', currentPage === 1);
+      document.getElementById('next-page').classList.toggle('disabled', currentPage === totalPages);
+    }
+
+    // Manejar el evento de clic para la paginación
+    paginationElement.addEventListener('click', function(event) {
+      const pageItem = event.target.closest('li');
+      if (pageItem) {
+        if (pageItem.id === 'prev-page' && currentPage > 1) {
+          showPage(currentPage - 1);
+        } else if (pageItem.id === 'next-page' && currentPage < totalPages) {
+          showPage(currentPage + 1);
+        }
+      }
+    });
+
+    // Inicializa la primera página
+    showPage(currentPage);
+
+    // Filtrar productos por búsqueda
+    const searchInput = document.getElementById('search-input');
+    searchInput.addEventListener('input', function() {
+      const searchTerm = searchInput.value.toLowerCase();
+
+      // Filtrar productos
+      let visibleItems = 0;
+      productCards.forEach(card => {
+        const productName = card.querySelector('h5').textContent.toLowerCase();
+        const providerName = card.querySelector('.provider-name').textContent.toLowerCase();
+        const productCode = card.querySelector('.product-ribbon').textContent.toLowerCase();
+
+        if (productName.includes(searchTerm) || providerName.includes(searchTerm) || productCode.includes(searchTerm)) {
+          card.style.display = 'block';
+          visibleItems++;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      // Actualizar la paginación para los productos filtrados
+      const newTotalPages = Math.ceil(visibleItems / itemsPerPage);
+      totalPagesElement.textContent = newTotalPages;
+
+      // Si no hay productos visibles, mostrar el mensaje de "No hay productos"
+      const noResultsMessage = document.getElementById('no-results-message');
+      if (visibleItems === 0) {
+        noResultsMessage.style.display = 'block';
+      } else {
+        noResultsMessage.style.display = 'none';
+      }
+
+      showPage(1); // Mostrar la primera página de los resultados filtrados
+    });
+  });
+</script>
+
 <script>
   document.getElementById('filterForm').onsubmit = function(event) {
     event.preventDefault(); // Evitar el envío inmediato del formulario

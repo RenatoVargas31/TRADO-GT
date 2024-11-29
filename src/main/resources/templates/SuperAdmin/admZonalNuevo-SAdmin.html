@@ -8,6 +8,17 @@
         <!-- CSS BASE -->
         <meta th:replace="~{Common/cssBase :: css_Base}">
         <!-- End CSS BASE -->
+        <style>
+            input[type=number]::-webkit-outer-spin-button,
+            input[type=number]::-webkit-inner-spin-button {
+                -webkit-appearance: none;
+                margin: 0;
+            }
+
+            input[type=number] {
+                -moz-appearance: textfield;
+            }
+        </style>
 
     </head>
 
@@ -61,6 +72,31 @@
                                         <h4 class="card-title fw-bold">Datos de registro:</h4>
                                         <form th:object="${usuario}" th:action="@{/superadmin/admZonalNuevo}" method="post" class="needs-validation" novalidate>
                                             <div class="row">
+                                                <div class="col-md-4">
+                                                    <div class="mb-3">
+                                                        <label for="dniUsuario" class="form-label">DNI</label>
+                                                        <input type="text" class="form-control" id="dniUsuario" name="dni"
+                                                               placeholder="Ingrese su DNI" required maxlength="8" oninput="validateDNI(this)">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="mb-3">
+                                                        <label for="telefonoUsuario" class="form-label">Teléfono</label>
+                                                        <input type="text" class="form-control" id="telefonoUsuario" name="telefono"
+                                                               placeholder="Ingrese su teléfono" required maxlength="9" oninput="validatePhone(this)">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="mb-3">
+                                                        <label for="fechaNacimiento" class="form-label">Fecha de nacimiento</label>
+                                                        <input type="date" class="form-control" id="fechaNacimiento" name="fechaNacimiento" required>
+                                                        <div class="valid-feedback">
+                                                            Looks good!
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="mb-3">
                                                         <label for="nombreUsuario" class="form-label">Nombres</label>
@@ -82,48 +118,11 @@
                                                 </div>
                                             </div>
                                             <div class="row">
-                                                <div class="col-md-4">
-                                                    <div class="mb-3">
-                                                        <label for="dniUsuario" class="form-label">DNI</label>
-                                                        <input type="text" class="form-control" id="dniUsuario" name="dni"
-                                                               placeholder="Ingrese su DNI" required>
-                                                        <div class="valid-feedback">
-                                                            Looks good!
-                                                        </div>
-                                                        <div id="dni-error" class="text-danger" style="display:none;"></div> <!-- Div para el mensaje de error -->
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="mb-3">
-                                                        <label for="telefonoUsuario" class="form-label">Teléfono</label>
-                                                        <input type="tel" class="form-control" id="telefonoUsuario" name="telefono"
-                                                               placeholder="Ingrese su teléfono" required>
-                                                        <div class="valid-feedback">
-                                                            Looks good!
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="mb-3">
-                                                        <label for="fechaNacimiento" class="form-label">Fecha de nacimiento</label>
-                                                        <input type="date" class="form-control" id="fechaNacimiento" name="fechaNacimiento" required>
-                                                        <div class="valid-feedback">
-                                                            Looks good!
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-
-                                            </div>
-                                            <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="mb-3">
                                                         <label for="correo" class="form-label">Correo electrónico</label>
                                                         <input type="email" class="form-control" id="correo" name="correo"
                                                                placeholder="Ingrese su correo electrónico" required>
-                                                        <div class="valid-feedback">
-                                                            Looks good!
-                                                        </div>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
@@ -224,6 +223,24 @@
                 hasInteracted = false;
             });
         });
+    </script>
+    <script>
+        function validateDNI(input) {
+            // Remove non-numeric characters
+            input.value = input.value.replace(/[^0-9]/g, '');
+            // Limit to 8 characters
+            if (input.value.length > 8) {
+                input.value = input.value.slice(0, 8);
+            }
+        }
+        function validatePhone(input) {
+            // Remove non-numeric characters
+            input.value = input.value.replace(/[^0-9]/g, '');
+            // Limit to 8 characters
+            if (input.value.length > 8) {
+                input.value = input.value.slice(0, 9);
+            }
+        }
     </script>
     </body>
 

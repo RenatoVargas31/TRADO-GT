@@ -94,12 +94,16 @@
                                         <td th:text="${order.usuarioPropietario}"></td>
                                         <td th:data-order="${order.fechaCreacion}"
                                             th:text="${#dates.format(order.fechaCreacion, 'dd-MM-yyyy')}"></td>
-                                        <td th:data-order="${order.fechaRecibido}"
-                                            th:text="${#dates.format(order.fechaRecibido, 'dd-MM-yyyy')}" class="fecha-arribo"></td>
+                                        <!-- Verificar si fechaRecibido es null -->
+                                        <td th:data-order="${order.fechaRecibido}">
+                                            <span th:if="${order.fechaRecibido != null}" th:text="${#dates.format(order.fechaRecibido, 'dd-MM-yyyy')}"></span>
+                                            <span th:if="${order.fechaRecibido == null}" th:text="'Sin definir'"></span>
+                                        </td>
                                         <td th:text="${order.nombreDistrito}"></td>
                                         <td th:text="${order.estadoPedido}"></td>
                                         <td>
-                                            <a class="btn btn-info btn-sm waves-effect waves-light edit-btn"
+                                            <a th:if="${order.fechaRecibido != null}"
+                                               class="btn btn-info btn-sm waves-effect waves-light edit-btn"
                                                title="Edit"
                                                data-bs-toggle="modal"
                                                data-bs-target="#staticBackdrop"
@@ -107,6 +111,13 @@
                                                th:data-codigo="${order.codigoOrden}">
                                                 <i class="ri-pencil-fill"></i>
                                             </a>
+
+                                            <!-- Botón desactivado (cuando la fechaRecibido es null o 'sin asignar') -->
+                                            <button class="btn btn-secondary btn-sm waves-effect waves-light edit-btn"
+                                               title="No puede editar"
+                                               th:if="${order.fechaRecibido == null}" disabled>
+                                            <i class="ri-pencil-fill"></i>
+                                            </button>
                                         </td>
                                     </tr>
                                     </tbody>
@@ -142,10 +153,8 @@
                         </div>
                     </div>
                 </div>
-
-
-
                 <!--End Modal-->
+
 
             </div> <!-- container-fluid -->
         </div>

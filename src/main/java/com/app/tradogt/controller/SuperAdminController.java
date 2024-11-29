@@ -221,6 +221,8 @@ public class SuperAdminController {
         usuario.setContrasena(passwordEncrypted);
         //Guardar usuario
         usuarioRepository.save(usuario);
+        String enlaceFeik = "holi";
+        notificationCorreoService.enviarCorreoCreacionCuentaAgente(usuario.getCorreo(),usuario.getNombre(),password,enlaceFeik);
         return "redirect:/superadmin/admZonalNuevoForm";
     }
     //</editor-fold>
@@ -524,37 +526,92 @@ public class SuperAdminController {
         return "SuperAdmin/productoNuevo-SAdmin";
     }
     @PostMapping("/productoNuevo")
-    public String viewProductoNuevo(@ModelAttribute FormProducto formProducto) {
-        // Crear una instancia de Producto
+    public String viewProductoNuevo(
+            @ModelAttribute FormProducto formProducto,
+            @RequestParam(value = "foto", required = false) MultipartFile foto,
+            RedirectAttributes redirectAttributes) {
+
+        // 1. Obtener el Producto desde el formulario
         Producto producto = formProducto.getProducto();
-        System.out.println(producto);
-        // Guardar el producto
         productosRepository.save(producto);
-        //Genrar un código de producto con ProductCodeGenerator
+
         producto.setCodigo(ProductCodeGenerator.generateProductCode(producto));
         //Guardar el producto
         productosRepository.save(producto);
-        //Crear instancias de ProductoEnZona
-        //Norte
+        // 2. Asignación del valor inicial para la foto del producto (valor predeterminado)
+        producto.setFoto("default.jpg");  // Establecer la foto predeterminada
+        productosRepository.save(producto);  // Guardar el producto para generar su ID
+
+        // 3. Subir la foto si se ha seleccionado una
+        if (foto != null && !foto.isEmpty()) {
+            try {
+                // Ruta dinámica para guardar las imágenes de productos
+                String uploadDir = "uploads/imagenesProductos/";
+
+                // Crear el directorio si no existe
+                Path uploadPath = Paths.get(uploadDir);
+                if (!Files.exists(uploadPath)) {
+                    Files.createDirectories(uploadPath);
+                }
+
+                // Generar un nombre único para el archivo de la imagen usando el ID del producto y el timestamp
+                String nombreArchivo = "producto_" + producto.getId() + "_" + System.currentTimeMillis() + ".jpg"; // Asigna el nombre con el ID del producto y timestamp
+
+                // Guardar el archivo de la foto
+                Path path = uploadPath.resolve(nombreArchivo);
+                Files.write(path, foto.getBytes());
+
+                // Actualizar la imagen del producto en la base de datos
+                producto.setFoto(nombreArchivo);  // Asignar el nombre de la foto al producto
+                productosRepository.save(producto);  // Guardar el producto con la foto actualizada
+
+                String staticDir = "src/main/resources/static/images/product/";
+                Path staticPath = Paths.get(staticDir);
+
+                if (!Files.exists(staticPath)) {
+                    Files.createDirectories(staticPath);
+                }
+
+                Path staticFilePath = staticPath.resolve(nombreArchivo);
+                Files.write(staticFilePath, foto.getBytes());  // Escribir la foto en el directorio estático
+
+
+                // Mensaje de éxito
+                redirectAttributes.addFlashAttribute("message", "Producto creado exitosamente con la imagen.");
+            } catch (IOException e) {
+                e.printStackTrace();
+                redirectAttributes.addFlashAttribute("error", "Error al subir la imagen del producto.");
+                return "redirect:/superadmin/productoNuevoForm";  // Redirigir si hay un error al subir la imagen
+            }
+        } else {
+            // Si no se subió una foto, el producto se guarda con la imagen predeterminada ("default.jpg")
+            redirectAttributes.addFlashAttribute("message", "Producto creado sin imagen.");
+        }
+
+        // 4. Asignación de productos a las zonas
         ProductoEnZona productoEnZonaNorte = formProducto.getProductoEnZonaNorte();
-        productoEnZonaNorte.setProductoyZona(producto,zonaRepository.findById(1).get());
+        productoEnZonaNorte.setProductoyZona(producto, zonaRepository.findById(1).get());
         productoEnZonaRepository.save(productoEnZonaNorte);
-        System.out.println(productoEnZonaNorte.getId());
-        //Sur
+
         ProductoEnZona productoEnZonaSur = formProducto.getProductoEnZonaSur();
-        productoEnZonaSur.setProductoyZona(producto,zonaRepository.findById(2).get());
+        productoEnZonaSur.setProductoyZona(producto, zonaRepository.findById(2).get());
         productoEnZonaRepository.save(productoEnZonaSur);
-        //Este
+
         ProductoEnZona productoEnZonaEste = formProducto.getProductoEnZonaEste();
-        productoEnZonaEste.setProductoyZona(producto,zonaRepository.findById(3).get());
+        productoEnZonaEste.setProductoyZona(producto, zonaRepository.findById(3).get());
         productoEnZonaRepository.save(productoEnZonaEste);
-        //Oeste
+
         ProductoEnZona productoEnZonaOeste = formProducto.getProductoEnZonaOeste();
-        productoEnZonaOeste.setProductoyZona(producto,zonaRepository.findById(4).get());
+        productoEnZonaOeste.setProductoyZona(producto, zonaRepository.findById(4).get());
         productoEnZonaRepository.save(productoEnZonaOeste);
 
+        // 5. Redirigir al formulario de nuevo producto
         return "redirect:/superadmin/productoNuevoForm";
     }
+
+
+
+
     @GetMapping("/productoLista")
     public String viewProductoLista(Model model) {
         List<Producto> productos = productosRepository.findAllByIsDeleted((byte) 0);
@@ -633,6 +690,19 @@ public class SuperAdminController {
             formProducto.getProductoEnZonaSur().setProductoyZona(productoEdit,zonaRepository.findById(2).get());
             formProducto.getProductoEnZonaEste().setProductoyZona(productoEdit,zonaRepository.findById(3).get());
             formProducto.getProductoEnZonaOeste().setProductoyZona(productoEdit,zonaRepository.findById(4).get());
+
+            if (formProducto.getProductoEnZonaNorte().getCantidad() >= 25) {
+                formProducto.getProductoEnZonaNorte().setEstadoRepo((byte) 0); // Stock adecuado
+            }
+            if (formProducto.getProductoEnZonaSur().getCantidad() >= 25) {
+                formProducto.getProductoEnZonaSur().setEstadoRepo((byte) 0); // Stock adecuado
+            }
+            if (formProducto.getProductoEnZonaEste().getCantidad() >= 25) {
+                formProducto.getProductoEnZonaEste().setEstadoRepo((byte) 0); // Stock adecuado
+            }
+            if (formProducto.getProductoEnZonaSur().getCantidad() >= 25) {
+                formProducto.getProductoEnZonaSur().setEstadoRepo((byte) 0); // Stock adecuado
+            }
             //Guardar los productos en zona
             productoEnZonaRepository.save(formProducto.getProductoEnZonaNorte());
             productoEnZonaRepository.save(formProducto.getProductoEnZonaSur());
