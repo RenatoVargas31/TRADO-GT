@@ -8,7 +8,6 @@
     <!-- CSS BASE -->
     <meta th:replace="~{Common/cssBase :: css_Base}">
     <!-- End CSS BASE -->
-
     <style>
         .carousel-inner img {
             max-height: 300px; /* Ajusta la altura máxima */
@@ -144,413 +143,408 @@
 <!-- <body data-layout="horizontal" data-topbar="dark"> -->
 
 <!-- Begin page -->
-    <div id="layout-wrapper">
+<div id="layout-wrapper">
 
-        <!-- ========== NavBar Start ========== -->
-        <header th:replace="~{Usuario/fragments/navbar :: nav_bar}"></header>
-        <!-- Navbar End -->
-        <!-- ========== Left Sidebar Start ========== -->
-        <div th:replace="~{Usuario/fragments/sidebar :: side_bar}"></div>
-        <!-- Left Sidebar End -->
-        <!-- ============================================================== -->
-        <!-- Start right Content here -->
-        <!-- ============================================================== -->
-        <div class="main-content">
-            <div class="page-content">
-                <div class="container-fluid">
+    <!-- ========== NavBar Start ========== -->
+    <header th:replace="~{Usuario/fragments/navbar :: nav_bar}"></header>
+    <!-- Navbar End -->
+    <!-- ========== Left Sidebar Start ========== -->
+    <div th:replace="~{Usuario/fragments/sidebar :: side_bar}"></div>
+    <!-- Left Sidebar End -->
+    <!-- ============================================================== -->
+    <!-- Start right Content here -->
+    <!-- ============================================================== -->
+    <div class="main-content">
+        <div class="page-content">
+            <div class="container-fluid">
 
-                    <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
-                        <span th:text="${successMessage}"></span>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-
-                    <div class="row">
-                        <div class="card text-center" style="background-color: #ffc600; color: #d4720b;">
-                            <div class="card-body">
-                                <h2 class="banner-title"><b>TRADO</b></h2>
-                                <p class="banner-subtitle">Desde Asia a tu puerta, fácil y seguro</p>
-                            </div>
+                <div class="row">
+                    <div class="card text-center" style="background-color: #ffc600; color: #d4720b;">
+                        <div class="card-body">
+                            <h2 class="banner-title"><b>TRADO</b></h2>
+                            <p class="banner-subtitle">Desde Asia a tu puerta, fácil y seguro</p>
                         </div>
                     </div>
+                </div>
 
-                    <div class="row">
-                        <div class="container">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h2 class="card-title"><b>Últimos Lanzamientos</b></h2>
-                                </div>
-                                <div class="card-body" style="background-color: white"> <!--Carrusel -->
-                                    <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
-                                        <div class="carousel-inner">
-                                            <!-- Primer grupo de imágenes -->
-                                            <div class="carousel-item active">
-                                                <div class="row">
-                                                    <div class="col-6 col-md-3">
-                                                        <a th:href="@{/usuario/productoDetalles?id=5}">
-                                                            <div style="width: 100%; height: 200px; overflow: hidden; display: flex; justify-content: center; align-items: center;">
-                                                                <img th:src="@{../images/product/product5.jpg}" style="width: 100%; height: auto; object-fit: cover;" alt="Imagen 1">
-                                                            </div>
-                                                        </a>
-                                                    </div>
-                                                    <div class="col-6 col-md-3">
-                                                        <a th:href="@{/usuario/productoDetalles?id=4}">
-                                                            <div style="width: 100%; height: 200px; overflow: hidden; display: flex; justify-content: center; align-items: center;">
-                                                                <img th:src="@{../images/product/product4.jpg}" style="width: 100%; height: auto; object-fit: cover;" alt="Imagen 2">
-                                                            </div>
-                                                        </a>
-                                                    </div>
-                                                    <div class="col-6 col-md-3">
-                                                        <a th:href="@{/usuario/productoDetalles?id=3}">
-                                                            <div style="width: 100%; height: 200px; overflow: hidden; display: flex; justify-content: center; align-items: center;">
-                                                                <img th:src="@{../images/product/product3.jpg}" style="width: 100%; height: auto; object-fit: cover;" alt="Imagen 3">
-                                                            </div>
-                                                        </a>
-                                                    </div>
-                                                    <div class="col-6 col-md-3">
-                                                        <a th:href="@{/usuario/productoDetalles?id=2}">
-                                                            <div style="width: 100%; height: 200px; overflow: hidden; display: flex; justify-content: center; align-items: center;">
-                                                                <img th:src="@{../images/product/product2.jpg}" style="width: 100%; height: auto; object-fit: cover;" alt="Imagen 4">
-                                                            </div>
-                                                        </a>
-                                                    </div>
+                <div class="row">
+                    <div class="container">
+                        <div class="card">
+                            <div class="card-header">
+                                <h2 class="card-title"><b>Últimos Lanzamientos</b></h2>
+                            </div>
+                            <div class="card-body" style="background-color: white"> <!--Carrusel -->
+                                <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
+                                    <div class="carousel-inner">
+                                        <!-- Primer grupo de imágenes -->
+                                        <div class="carousel-item active">
+                                            <div class="row">
+                                                <div class="col-6 col-md-3">
+                                                    <a th:href="@{/usuario/productoDetalles?id=5}">
+                                                        <div style="width: 100%; height: 200px; overflow: hidden; display: flex; justify-content: center; align-items: center;">
+                                                            <img th:src="@{../images/product/product5.jpg}" style="width: 100%; height: auto; object-fit: cover;" alt="Imagen 1">
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                                <div class="col-6 col-md-3">
+                                                    <a th:href="@{/usuario/productoDetalles?id=4}">
+                                                        <div style="width: 100%; height: 200px; overflow: hidden; display: flex; justify-content: center; align-items: center;">
+                                                            <img th:src="@{../images/product/product4.jpg}" style="width: 100%; height: auto; object-fit: cover;" alt="Imagen 2">
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                                <div class="col-6 col-md-3">
+                                                    <a th:href="@{/usuario/productoDetalles?id=3}">
+                                                        <div style="width: 100%; height: 200px; overflow: hidden; display: flex; justify-content: center; align-items: center;">
+                                                            <img th:src="@{../images/product/product3.jpg}" style="width: 100%; height: auto; object-fit: cover;" alt="Imagen 3">
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                                <div class="col-6 col-md-3">
+                                                    <a th:href="@{/usuario/productoDetalles?id=2}">
+                                                        <div style="width: 100%; height: 200px; overflow: hidden; display: flex; justify-content: center; align-items: center;">
+                                                            <img th:src="@{../images/product/product2.jpg}" style="width: 100%; height: auto; object-fit: cover;" alt="Imagen 4">
+                                                        </div>
+                                                    </a>
                                                 </div>
                                             </div>
-
-                                            <!-- Segundo grupo de imágenes -->
-                                            <div class="carousel-item">
-                                                <div class="row">
-                                                    <div class="col-6 col-md-3">
-                                                        <a th:href="@{/usuario/productoDetalles?id=1}">
-                                                            <div style="width: 100%; height: 200px; overflow: hidden; display: flex; justify-content: center; align-items: center;">
-                                                                <img th:src="@{../images/product/product1.jpg}" style="width: 100%; height: auto; object-fit: cover;" alt="Imagen 5">
-                                                            </div>
-                                                        </a>
-                                                    </div>
-                                                    <div class="col-6 col-md-3">
-                                                        <a th:href="@{/usuario/productoDetalles?id=6}">
-                                                            <div style="width: 100%; height: 200px; overflow: hidden; display: flex; justify-content: center; align-items: center;">
-                                                                <img th:src="@{../images/product/product6.jpg}" style="width: 100%; height: auto; object-fit: cover;" alt="Imagen 6">
-                                                            </div>
-                                                        </a>
-                                                    </div>
-                                                    <div class="col-6 col-md-3">
-                                                        <a th:href="@{/usuario/productoDetalles?id=7}">
-                                                            <div style="width: 100%; height: 200px; overflow: hidden; display: flex; justify-content: center; align-items: center;">
-                                                                <img th:src="@{../images/product/product7.jpg}" style="width: 100%; height: auto; object-fit: cover;" alt="Imagen 7">
-                                                            </div>
-                                                        </a>
-                                                    </div>
-                                                    <div class="col-6 col-md-3">
-                                                        <a th:href="@{/usuario/productoDetalles?id=8}">
-                                                            <div style="width: 100%; height: 200px; overflow: hidden; display: flex; justify-content: center; align-items: center;">
-                                                                <img th:src="@{../images/product/product8.jpg}" style="width: 100%; height: auto; object-fit: cover;" alt="Imagen 8">
-                                                            </div>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!-- Tercer grupo de imágenes -->
-                                            <div class="carousel-item">
-                                                <div class="row">
-                                                    <div class="col-6 col-md-3">
-                                                        <a th:href="@{/usuario/productoDetalles?id=9}">
-                                                            <div style="width: 100%; height: 200px; overflow: hidden; display: flex; justify-content: center; align-items: center;">
-                                                                <img th:src="@{../images/product/product9.jpg}" style="width: 100%; height: auto; object-fit: cover;" alt="Imagen 9">
-                                                            </div>
-                                                        </a>
-                                                    </div>
-                                                    <div class="col-6 col-md-3">
-                                                        <a th:href="@{/usuario/productoDetalles?id=10}">
-                                                            <div style="width: 100%; height: 200px; overflow: hidden; display: flex; justify-content: center; align-items: center;">
-                                                                <img th:src="@{../images/product/product10.jpg}" style="width: 100%; height: auto; object-fit: cover;" alt="Imagen 10">
-                                                            </div>
-                                                        </a>
-                                                    </div>
-                                                    <div class="col-6 col-md-3">
-                                                        <a th:href="@{/usuario/productoDetalles?id=26}">
-                                                            <div style="width: 100%; height: 200px; overflow: hidden; display: flex; justify-content: center; align-items: center;">
-                                                                <img th:src="@{../images/product/product26.jpg}" style="width: 100%; height: auto; object-fit: cover;" alt="Imagen 11">
-                                                            </div>
-                                                        </a>
-                                                    </div>
-                                                    <div class="col-6 col-md-3">
-                                                        <a th:href="@{/usuario/productoDetalles?id=7}">
-                                                            <div style="width: 100%; height: 200px; overflow: hidden; display: flex; justify-content: center; align-items: center;">
-                                                                <img th:src="@{../images/product/product7.jpg}" style="width: 100%; height: auto; object-fit: cover;" alt="Imagen 12">
-                                                            </div>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>
-
                                         </div>
 
-                                        <!-- Controles del carrusel -->
-                                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev" style="width: 40px; height: 40px; padding: 0; position: absolute; left: 10px; top: 50%; transform: translateY(-50%); background-color: transparent; border: none;">
-                                            <span class="carousel-control-prev-icon" aria-hidden="true" style="background-color: black; border-radius: 50%; width: 20px; height: 20px;"></span>
-                                            <span class="visually-hidden">Anterior</span>
-                                        </button>
-                                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next" style="width: 40px; height: 40px; padding: 0; position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background-color: transparent; border: none;">
-                                            <span class="carousel-control-next-icon" aria-hidden="true" style="background-color: black; border-radius: 50%; width: 20px; height: 20px;"></span>
-                                            <span class="visually-hidden">Siguiente</span>
-                                        </button>
+                                        <!-- Segundo grupo de imágenes -->
+                                        <div class="carousel-item">
+                                            <div class="row">
+                                                <div class="col-6 col-md-3">
+                                                    <a th:href="@{/usuario/productoDetalles?id=1}">
+                                                        <div style="width: 100%; height: 200px; overflow: hidden; display: flex; justify-content: center; align-items: center;">
+                                                            <img th:src="@{../images/product/product1.jpg}" style="width: 100%; height: auto; object-fit: cover;" alt="Imagen 5">
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                                <div class="col-6 col-md-3">
+                                                    <a th:href="@{/usuario/productoDetalles?id=6}">
+                                                        <div style="width: 100%; height: 200px; overflow: hidden; display: flex; justify-content: center; align-items: center;">
+                                                            <img th:src="@{../images/product/product6.jpg}" style="width: 100%; height: auto; object-fit: cover;" alt="Imagen 6">
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                                <div class="col-6 col-md-3">
+                                                    <a th:href="@{/usuario/productoDetalles?id=7}">
+                                                        <div style="width: 100%; height: 200px; overflow: hidden; display: flex; justify-content: center; align-items: center;">
+                                                            <img th:src="@{../images/product/product7.jpg}" style="width: 100%; height: auto; object-fit: cover;" alt="Imagen 7">
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                                <div class="col-6 col-md-3">
+                                                    <a th:href="@{/usuario/productoDetalles?id=8}">
+                                                        <div style="width: 100%; height: 200px; overflow: hidden; display: flex; justify-content: center; align-items: center;">
+                                                            <img th:src="@{../images/product/product8.jpg}" style="width: 100%; height: auto; object-fit: cover;" alt="Imagen 8">
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
 
-
+                                        <!-- Tercer grupo de imágenes -->
+                                        <div class="carousel-item">
+                                            <div class="row">
+                                                <div class="col-6 col-md-3">
+                                                    <a th:href="@{/usuario/productoDetalles?id=9}">
+                                                        <div style="width: 100%; height: 200px; overflow: hidden; display: flex; justify-content: center; align-items: center;">
+                                                            <img th:src="@{../images/product/product9.jpg}" style="width: 100%; height: auto; object-fit: cover;" alt="Imagen 9">
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                                <div class="col-6 col-md-3">
+                                                    <a th:href="@{/usuario/productoDetalles?id=10}">
+                                                        <div style="width: 100%; height: 200px; overflow: hidden; display: flex; justify-content: center; align-items: center;">
+                                                            <img th:src="@{../images/product/product10.jpg}" style="width: 100%; height: auto; object-fit: cover;" alt="Imagen 10">
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                                <div class="col-6 col-md-3">
+                                                    <a th:href="@{/usuario/productoDetalles?id=26}">
+                                                        <div style="width: 100%; height: 200px; overflow: hidden; display: flex; justify-content: center; align-items: center;">
+                                                            <img th:src="@{../images/product/product26.jpg}" style="width: 100%; height: auto; object-fit: cover;" alt="Imagen 11">
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                                <div class="col-6 col-md-3">
+                                                    <a th:href="@{/usuario/productoDetalles?id=7}">
+                                                        <div style="width: 100%; height: 200px; overflow: hidden; display: flex; justify-content: center; align-items: center;">
+                                                            <img th:src="@{../images/product/product7.jpg}" style="width: 100%; height: auto; object-fit: cover;" alt="Imagen 12">
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
 
                                     </div>
+
+                                    <!-- Controles del carrusel -->
+                                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev" style="width: 40px; height: 40px; padding: 0; position: absolute; left: 10px; top: 50%; transform: translateY(-50%); background-color: transparent; border: none;">
+                                        <span class="carousel-control-prev-icon" aria-hidden="true" style="background-color: black; border-radius: 50%; width: 20px; height: 20px;"></span>
+                                        <span class="visually-hidden">Anterior</span>
+                                    </button>
+                                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next" style="width: 40px; height: 40px; padding: 0; position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background-color: transparent; border: none;">
+                                        <span class="carousel-control-next-icon" aria-hidden="true" style="background-color: black; border-radius: 50%; width: 20px; height: 20px;"></span>
+                                        <span class="visually-hidden">Siguiente</span>
+                                    </button>
+
+
+
                                 </div>
                             </div>
                         </div>
                     </div>
+                </div>
 
 
-                    <div class="row">
-                        <div class="container">
+                <div class="row">
+                    <div class="container">
+                        <div class="card">
+                            <div class="card-header">
+                                <h2 class="card-title"><b>Categorías</b></h2>
+                            </div>
+                            <div class="card-body" style="background-color: snow">
+                                <div id="carouselExample2" class="carousel slide" data-bs-ride="carousel">
+                                    <div class="carousel-inner">
+                                        <!-- Primer grupo de categorías - Moda Femenina -->
+                                        <div class="carousel-item active">
+                                            <div class="row justify-content-center text-end">
+                                                <div class="col-3 col-md-2 text-center">
+                                                    <a th:href="@{/usuario/categoriaMujerFilter?categoria=1}">
+                                                        <img class="rounded-circle avatar-md img-fluid" alt="Blusas" th:src="@{../images/modaFemenina/blusa.jpeg}">
+                                                    </a>
+                                                    <div class="mt-2">
+                                                        <p>Blusas</p>
+                                                    </div>
+                                                </div>
+                                                <div class="col-3 col-md-2 text-center">
+                                                    <a th:href="@{/usuario/categoriaMujerFilter?categoria=2}">
+                                                        <img class="rounded-circle avatar-md img-fluid" alt="Short Mujer" th:src="@{../images/modaFemenina/short.jpeg}">
+                                                    </a>
+                                                    <div class="mt-2">
+                                                        <p>Short (Mujer)</p>
+                                                    </div>
+                                                </div>
+                                                <div class="col-3 col-md-2 text-center">
+                                                    <a th:href="@{/usuario/categoriaMujerFilter?categoria=3}">
+                                                        <img class="rounded-circle avatar-md img-fluid" alt="Polera Mujer" th:src="@{../images/modaFemenina/polera.jpg}">
+                                                    </a>
+                                                    <div class="mt-2">
+                                                        <p>Polera (Mujer)</p>
+                                                    </div>
+                                                </div>
+                                                <div class="col-3 col-md-2 text-center">
+                                                    <a th:href="@{/usuario/categoriaMujerFilter?categoria=4}">
+                                                        <img class="rounded-circle avatar-md img-fluid" alt="Pantalones Mujer" th:src="@{../images/modaFemenina/pantalon.jpg}">
+                                                    </a>
+                                                    <div class="mt-2">
+                                                        <p>Pantalones (Mujer)</p>
+                                                    </div>
+                                                </div>
+                                                <div class="col-3 col-md-2 text-center">
+                                                    <a th:href="@{/usuario/categoriaMujerFilter?categoria=5}">
+                                                        <img class="rounded-circle avatar-md img-fluid" alt="Vestidos" th:src="@{../images/modaFemenina/vestido.jpeg}">
+                                                    </a>
+                                                    <div class="mt-2">
+                                                        <p>Vestidos</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Segundo grupo de categorías - Moda Masculina -->
+                                        <div class="carousel-item">
+                                            <div class="row justify-content-center text-end">
+                                                <div class="col-6 col-md-2 text-center">
+                                                    <a th:href="@{/usuario/categoriaHombreFilter?categoria=6}">
+                                                        <img class="rounded-circle avatar-md img-fluid" alt="Polos Hombre" th:src="@{../images/modaMasculina/polo.jpeg}">
+                                                    </a>
+                                                    <div class="mt-2">
+                                                        <p>Polos (Hombre)</p>
+                                                    </div>
+                                                </div>
+                                                <div class="col-6 col-md-2 text-center">
+                                                    <a th:href="@{/usuario/categoriaHombreFilter?categoria=7}">
+                                                        <img class="rounded-circle avatar-md img-fluid" alt="Camisas Hombre" th:src="@{../images/modaMasculina/camisa.jpeg}">
+                                                    </a>
+                                                    <div class="mt-2">
+                                                        <p>Camisas (Hombre)</p>
+                                                    </div>
+                                                </div>
+                                                <div class="col-6 col-md-2 text-center">
+                                                    <a th:href="@{/usuario/categoriaHombreFilter?categoria=8}">
+                                                        <img class="rounded-circle avatar-md img-fluid" alt="Poleras Hombre" th:src="@{../images/modaMasculina/polera.jpg}">
+                                                    </a>
+                                                    <div class="mt-2">
+                                                        <p>Poleras (Hombre)</p>
+                                                    </div>
+                                                </div>
+                                                <div class="col-6 col-md-2 text-center">
+                                                    <a th:href="@{/usuario/categoriaHombreFilter?categoria=9}">
+                                                        <img class="rounded-circle avatar-md img-fluid" alt="Chompas Hombre" th:src="@{../images/modaMasculina/chompa.jpeg}">
+                                                    </a>
+                                                    <div class="mt-2">
+                                                        <p>Chompas (Hombre)</p>
+                                                    </div>
+                                                </div>
+                                                <div class="col-6 col-md-2 text-center">
+                                                    <a th:href="@{/usuario/categoriaHombreFilter?categoria=10}">
+                                                        <img class="rounded-circle avatar-md img-fluid" alt="Pantalones Hombre" th:src="@{../images/modaMasculina/pantalon.jpg}">
+                                                    </a>
+                                                    <div class="mt-2">
+                                                        <p>Pantalones (Hombre)</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Tercer grupo de categorías - Tecnología -->
+                                        <div class="carousel-item">
+                                            <div class="row justify-content-center text-end">
+                                                <div class="col-6 col-md-2 text-center">
+                                                    <a th:href="@{/usuario/categoriaTecnologiaFilter?categoria=15}">
+                                                        <img class="rounded-circle avatar-md img-fluid" alt="Auriculares" th:src="@{../images/tecnologia/audifono.jpeg}">
+                                                    </a>
+                                                    <div class="mt-2">
+                                                        <p>Auriculares</p>
+                                                    </div>
+                                                </div>
+                                                <div class="col-6 col-md-2 text-center">
+                                                    <a th:href="@{/usuario/categoriaTecnologiaFilter?categoria=14}">
+                                                        <img class="rounded-circle avatar-md img-fluid" alt="Celulares" th:src="@{../images/tecnologia/celular.jpeg}">
+                                                    </a>
+                                                    <div class="mt-2">
+                                                        <p>Celulares</p>
+                                                    </div>
+                                                </div>
+                                                <div class="col-6 col-md-2 text-center">
+                                                    <a th:href="@{/usuario/categoriaTecnologiaFilter?categoria=13}">
+                                                        <img class="rounded-circle avatar-md img-fluid" alt="Tablets" th:src="@{../images/tecnologia/tablet.jpeg}">
+                                                    </a>
+                                                    <div class="mt-2">
+                                                        <p>Tablets</p>
+                                                    </div>
+                                                </div>
+                                                <div class="col-6 col-md-2 text-center">
+                                                    <a th:href="@{/usuario/categoriaTecnologiaFilter?categoria=12}">
+                                                        <img class="rounded-circle avatar-md img-fluid" alt="Laptops" th:src="@{../images/tecnologia/laptop.jpeg}">
+                                                    </a>
+                                                    <div class="mt-2">
+                                                        <p>Laptops</p>
+                                                    </div>
+                                                </div>
+                                                <div class="col-6 col-md-2 text-center">
+                                                    <a th:href="@{/usuario/categoriaTecnologiaFilter?categoria=11}">
+                                                        <img class="rounded-circle avatar-md img-fluid" alt="Computadoras" th:src="@{../images/tecnologia/pc.jpeg}">
+                                                    </a>
+                                                    <div class="mt-2">
+                                                        <p>Computadoras</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Cuarto grupo de categorías - Muebles -->
+                                        <div class="carousel-item">
+                                            <div class="row justify-content-center text-end">
+                                                <div class="col-6 col-md-2 text-center">
+                                                    <a th:href="@{/usuario/categoriaMueblesFilter?categoria=16}">
+                                                        <img class="rounded-circle avatar-md img-fluid" alt="Comedores" th:src="@{../images/mueblesHogar/comedor.jpeg}">
+                                                    </a>
+                                                    <div class="mt-2">
+                                                        <p>Juego de Comedor</p>
+                                                    </div>
+                                                </div>
+                                                <div class="col-6 col-md-2 text-center">
+                                                    <a th:href="@{/usuario/categoriaMueblesFilter?categoria=17}">
+                                                        <img class="rounded-circle avatar-md img-fluid" alt="Sillones" th:src="@{../images/mueblesHogar/sillon.jpeg}">
+                                                    </a>
+                                                    <div class="mt-2">
+                                                        <p>Sillones</p>
+                                                    </div>
+                                                </div>
+                                                <div class="col-6 col-md-2 text-center">
+                                                    <a th:href="@{/usuario/categoriaMueblesFilter?categoria=18}">
+                                                        <img class="rounded-circle avatar-md img-fluid" alt="Armarios" th:src="@{../images/mueblesHogar/armario.jpeg}">
+                                                    </a>
+                                                    <div class="mt-2">
+                                                        <p>Armarios</p>
+                                                    </div>
+                                                </div>
+                                                <div class="col-6 col-md-2 text-center">
+                                                    <a th:href="@{/usuario/categoriaMueblesFilter?categoria=19}">
+                                                        <img class="rounded-circle avatar-md img-fluid" alt="Literas" th:src="@{../images/mueblesHogar/Literas.jpeg}">
+                                                    </a>
+                                                    <div class="mt-2">
+                                                        <p>Literas</p>
+                                                    </div>
+                                                </div>
+                                                <div class="col-6 col-md-2 text-center">
+                                                    <a th:href="@{/usuario/categoriaMueblesFilter?categoria=20}">
+                                                        <img class="rounded-circle avatar-md img-fluid" alt="Estantes" th:src="@{../images/mueblesHogar/Estante.jpeg}">
+                                                    </a>
+                                                    <div class="mt-2">
+                                                        <p>Estantes</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <!-- Controles del carrusel -->
+                                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample2" data-bs-slide="prev" style="width: 40px; height: 40px; padding: 0; position: absolute; left: 10px; top: 50%; transform: translateY(-50%); border: none;">
+                                        <span class="carousel-control-prev-icon" aria-hidden="true" style="width: 20px; height: 20px; background-color: black; border-radius: 50%;"></span>
+                                        <span class="visually-hidden">Anterior</span>
+                                    </button>
+                                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExample2" data-bs-slide="next" style="width: 40px; height: 40px; padding: 0; position: absolute; right: 10px; top: 50%; transform: translateY(-50%); border: none;">
+                                        <span class="carousel-control-next-icon" aria-hidden="true" style="width: 20px; height: 20px; background-color: black; border-radius: 50%;"></span>
+                                        <span class="visually-hidden">Siguiente</span>
+                                    </button>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="container">
+                        <div class="col-lg-12">
                             <div class="card">
-                                <div class="card-header">
-                                    <h2 class="card-title"><b>Categorías</b></h2>
+                                <div class="card-body">
+                                    <h2 class="card-title"><b>Lista de últimos pedidos</b></h2>
                                 </div>
                                 <div class="card-body" style="background-color: snow">
-                                    <div id="carouselExample2" class="carousel slide" data-bs-ride="carousel">
-                                        <div class="carousel-inner">
-                                            <!-- Primer grupo de categorías - Moda Femenina -->
-                                            <div class="carousel-item active">
-                                                <div class="row justify-content-center text-end">
-                                                    <div class="col-3 col-md-2 text-center">
-                                                        <a th:href="@{/usuario/categoriaMujerFilter?categoria=1}">
-                                                            <img class="rounded-circle avatar-md img-fluid" alt="Blusas" th:src="@{../images/modaFemenina/blusa.jpeg}">
-                                                        </a>
-                                                        <div class="mt-2">
-                                                            <p>Blusas</p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-3 col-md-2 text-center">
-                                                        <a th:href="@{/usuario/categoriaMujerFilter?categoria=2}">
-                                                            <img class="rounded-circle avatar-md img-fluid" alt="Short Mujer" th:src="@{../images/modaFemenina/short.jpeg}">
-                                                        </a>
-                                                        <div class="mt-2">
-                                                            <p>Short (Mujer)</p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-3 col-md-2 text-center">
-                                                        <a th:href="@{/usuario/categoriaMujerFilter?categoria=3}">
-                                                            <img class="rounded-circle avatar-md img-fluid" alt="Polera Mujer" th:src="@{../images/modaFemenina/polera.jpg}">
-                                                        </a>
-                                                        <div class="mt-2">
-                                                            <p>Polera (Mujer)</p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-3 col-md-2 text-center">
-                                                        <a th:href="@{/usuario/categoriaMujerFilter?categoria=4}">
-                                                            <img class="rounded-circle avatar-md img-fluid" alt="Pantalones Mujer" th:src="@{../images/modaFemenina/pantalon.jpg}">
-                                                        </a>
-                                                        <div class="mt-2">
-                                                            <p>Pantalones (Mujer)</p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-3 col-md-2 text-center">
-                                                        <a th:href="@{/usuario/categoriaMujerFilter?categoria=5}">
-                                                            <img class="rounded-circle avatar-md img-fluid" alt="Vestidos" th:src="@{../images/modaFemenina/vestido.jpeg}">
-                                                        </a>
-                                                        <div class="mt-2">
-                                                            <p>Vestidos</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!-- Segundo grupo de categorías - Moda Masculina -->
-                                            <div class="carousel-item">
-                                                <div class="row justify-content-center text-end">
-                                                    <div class="col-6 col-md-2 text-center">
-                                                        <a th:href="@{/usuario/categoriaHombreFilter?categoria=6}">
-                                                            <img class="rounded-circle avatar-md img-fluid" alt="Polos Hombre" th:src="@{../images/modaMasculina/polo.jpeg}">
-                                                        </a>
-                                                        <div class="mt-2">
-                                                            <p>Polos (Hombre)</p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-6 col-md-2 text-center">
-                                                        <a th:href="@{/usuario/categoriaHombreFilter?categoria=7}">
-                                                            <img class="rounded-circle avatar-md img-fluid" alt="Camisas Hombre" th:src="@{../images/modaMasculina/camisa.jpeg}">
-                                                        </a>
-                                                        <div class="mt-2">
-                                                            <p>Camisas (Hombre)</p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-6 col-md-2 text-center">
-                                                        <a th:href="@{/usuario/categoriaHombreFilter?categoria=8}">
-                                                            <img class="rounded-circle avatar-md img-fluid" alt="Poleras Hombre" th:src="@{../images/modaMasculina/polera.jpg}">
-                                                        </a>
-                                                        <div class="mt-2">
-                                                            <p>Poleras (Hombre)</p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-6 col-md-2 text-center">
-                                                        <a th:href="@{/usuario/categoriaHombreFilter?categoria=9}">
-                                                            <img class="rounded-circle avatar-md img-fluid" alt="Chompas Hombre" th:src="@{../images/modaMasculina/chompa.jpeg}">
-                                                        </a>
-                                                        <div class="mt-2">
-                                                            <p>Chompas (Hombre)</p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-6 col-md-2 text-center">
-                                                        <a th:href="@{/usuario/categoriaHombreFilter?categoria=10}">
-                                                            <img class="rounded-circle avatar-md img-fluid" alt="Pantalones Hombre" th:src="@{../images/modaMasculina/pantalon.jpg}">
-                                                        </a>
-                                                        <div class="mt-2">
-                                                            <p>Pantalones (Hombre)</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!-- Tercer grupo de categorías - Tecnología -->
-                                            <div class="carousel-item">
-                                                <div class="row justify-content-center text-end">
-                                                    <div class="col-6 col-md-2 text-center">
-                                                        <a th:href="@{/usuario/categoriaTecnologiaFilter?categoria=15}">
-                                                            <img class="rounded-circle avatar-md img-fluid" alt="Auriculares" th:src="@{../images/tecnologia/audifono.jpeg}">
-                                                        </a>
-                                                        <div class="mt-2">
-                                                            <p>Auriculares</p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-6 col-md-2 text-center">
-                                                        <a th:href="@{/usuario/categoriaTecnologiaFilter?categoria=14}">
-                                                            <img class="rounded-circle avatar-md img-fluid" alt="Celulares" th:src="@{../images/tecnologia/celular.jpeg}">
-                                                        </a>
-                                                        <div class="mt-2">
-                                                            <p>Celulares</p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-6 col-md-2 text-center">
-                                                        <a th:href="@{/usuario/categoriaTecnologiaFilter?categoria=13}">
-                                                            <img class="rounded-circle avatar-md img-fluid" alt="Tablets" th:src="@{../images/tecnologia/tablet.jpeg}">
-                                                        </a>
-                                                        <div class="mt-2">
-                                                            <p>Tablets</p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-6 col-md-2 text-center">
-                                                        <a th:href="@{/usuario/categoriaTecnologiaFilter?categoria=12}">
-                                                            <img class="rounded-circle avatar-md img-fluid" alt="Laptops" th:src="@{../images/tecnologia/laptop.jpeg}">
-                                                        </a>
-                                                        <div class="mt-2">
-                                                            <p>Laptops</p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-6 col-md-2 text-center">
-                                                        <a th:href="@{/usuario/categoriaTecnologiaFilter?categoria=11}">
-                                                            <img class="rounded-circle avatar-md img-fluid" alt="Computadoras" th:src="@{../images/tecnologia/pc.jpeg}">
-                                                        </a>
-                                                        <div class="mt-2">
-                                                            <p>Computadoras</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!-- Cuarto grupo de categorías - Muebles -->
-                                            <div class="carousel-item">
-                                                <div class="row justify-content-center text-end">
-                                                    <div class="col-6 col-md-2 text-center">
-                                                        <a th:href="@{/usuario/categoriaMueblesFilter?categoria=16}">
-                                                            <img class="rounded-circle avatar-md img-fluid" alt="Comedores" th:src="@{../images/mueblesHogar/comedor.jpeg}">
-                                                        </a>
-                                                        <div class="mt-2">
-                                                            <p>Juego de Comedor</p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-6 col-md-2 text-center">
-                                                        <a th:href="@{/usuario/categoriaMueblesFilter?categoria=17}">
-                                                            <img class="rounded-circle avatar-md img-fluid" alt="Sillones" th:src="@{../images/mueblesHogar/sillon.jpeg}">
-                                                        </a>
-                                                        <div class="mt-2">
-                                                            <p>Sillones</p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-6 col-md-2 text-center">
-                                                        <a th:href="@{/usuario/categoriaMueblesFilter?categoria=18}">
-                                                            <img class="rounded-circle avatar-md img-fluid" alt="Armarios" th:src="@{../images/mueblesHogar/armario.jpeg}">
-                                                        </a>
-                                                        <div class="mt-2">
-                                                            <p>Armarios</p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-6 col-md-2 text-center">
-                                                        <a th:href="@{/usuario/categoriaMueblesFilter?categoria=19}">
-                                                            <img class="rounded-circle avatar-md img-fluid" alt="Literas" th:src="@{../images/mueblesHogar/Literas.jpeg}">
-                                                        </a>
-                                                        <div class="mt-2">
-                                                            <p>Literas</p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-6 col-md-2 text-center">
-                                                        <a th:href="@{/usuario/categoriaMueblesFilter?categoria=20}">
-                                                            <img class="rounded-circle avatar-md img-fluid" alt="Estantes" th:src="@{../images/mueblesHogar/Estante.jpeg}">
-                                                        </a>
-                                                        <div class="mt-2">
-                                                            <p>Estantes</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-
-
-                                        <!-- Controles del carrusel -->
-                                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample2" data-bs-slide="prev" style="width: 40px; height: 40px; padding: 0; position: absolute; left: 10px; top: 50%; transform: translateY(-50%); border: none;">
-                                            <span class="carousel-control-prev-icon" aria-hidden="true" style="width: 20px; height: 20px; background-color: black; border-radius: 50%;"></span>
-                                            <span class="visually-hidden">Anterior</span>
-                                        </button>
-                                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExample2" data-bs-slide="next" style="width: 40px; height: 40px; padding: 0; position: absolute; right: 10px; top: 50%; transform: translateY(-50%); border: none;">
-                                            <span class="carousel-control-next-icon" aria-hidden="true" style="width: 20px; height: 20px; background-color: black; border-radius: 50%;"></span>
-                                            <span class="visually-hidden">Siguiente</span>
-                                        </button>
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="container">
-                            <div class="col-lg-12">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <h2 class="card-title"><b>Lista de últimos pedidos</b></h2>
-                                    </div>
-                                    <div class="card-body" style="background-color: snow">
-                                        <table id="datatable-historialComportamiento" class="table table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
-                                            <thead>
-                                            <tr>
-                                                <th>Código</th>
-                                                <th>Precio</th>
-                                                <th>Fecha</th>
-                                                <th>Estado</th>
-                                                <th>Agente</th>
-                                                <th>Acción</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            <tr th:each="pedido : ${listaPedidos}">
-                                                <td th:text="${pedido[0]}">#NZ1579</td> <!-- Código de la orden -->
-                                                <td th:text="'S/ ' + ${pedido[2]}">S/. 25</td> <!-- Precio del producto -->
-                                                <td th:text="${pedido[4]}">01/09/2023</td> <!-- Fecha de creación -->
-                                                <td th:text="${pedido[5]}">Creado</td> <!-- Estado de la orden -->
-                                                <td th:text="${pedido[6]}"> -- </td> <!-- Nombre del agente de compra (si existe) -->
-                                                <td>
-                                                    <a th:href="@{/usuario/tracking(id=${pedido[0]})}" class="btn btn-outline-secondary btn-sm edit" title="Ver">
-                                                        <i class="fas fa-eye"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
+                                    <table id="datatable-historialComportamiento" class="table table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                        <thead>
+                                        <tr>
+                                            <th>Código</th>
+                                            <th>Precio</th>
+                                            <th>Fecha</th>
+                                            <th>Estado</th>
+                                            <th>Agente</th>
+                                            <th>Acción</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr th:each="pedido : ${listaPedidos}">
+                                            <td th:text="${pedido[0]}">#NZ1579</td> <!-- Código de la orden -->
+                                            <td th:text="'S/ ' + ${pedido[2]}">S/. 25</td> <!-- Precio del producto -->
+                                            <td th:text="${pedido[4]}">01/09/2023</td> <!-- Fecha de creación -->
+                                            <td th:text="${pedido[5]}">Creado</td> <!-- Estado de la orden -->
+                                            <td th:text="${pedido[6]}"> -- </td> <!-- Nombre del agente de compra (si existe) -->
+                                            <td>
+                                                <a th:href="@{/usuario/tracking(id=${pedido[0]})}" class="btn btn-outline-secondary btn-sm edit" title="Ver">
+                                                    <i class="fas fa-eye"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
@@ -582,7 +576,7 @@
                 <button id="chatbot-close-btn">&times;</button>
             </div>
 
-           <!-- <iframe src='https://webchat.botframework.com/embed/TRADO-bot?s=vBA9LTncK4E.xtJE6xeFxR3axt9ZuouclDvAOHsxn3MCbA73cOl-LWQ' style='width: 100%; height: 100%; border: none;'></iframe> -->
+            <!-- <iframe src='https://webchat.botframework.com/embed/TRADO-bot?s=vBA9LTncK4E.xtJE6xeFxR3axt9ZuouclDvAOHsxn3MCbA73cOl-LWQ' style='width: 100%; height: 100%; border: none;'></iframe> -->
             <iframe src='https://webchat.botframework.com/embed/tradito-bot2?s=uk1vH9Jy5cI.ABqEVevj8LGk-uecYJm11nv2FAUuWmCLwCeF35JLICw'  style='width: 100%; height: 100%; border: none;'></iframe>
         </div>
 
@@ -595,65 +589,65 @@
 
 
 
-            <!-- JAVASCRIPT BASE-->
-    <span th:replace="~{Common/jsBase :: js_Base}"></span>
-    <!-- End JAVASCRIPT BASE-->
-<script>
-    document.getElementById('chatbot-open-btn').addEventListener('click', function() {
-        document.getElementById('chatbot-container').style.display = 'flex';
-        document.getElementById('chatbot-toggle').style.display = 'none';
-    });
+        <!-- JAVASCRIPT BASE-->
+        <span th:replace="~{Common/jsBase :: js_Base}"></span>
+        <!-- End JAVASCRIPT BASE-->
+        <script>
+            document.getElementById('chatbot-open-btn').addEventListener('click', function() {
+                document.getElementById('chatbot-container').style.display = 'flex';
+                document.getElementById('chatbot-toggle').style.display = 'none';
+            });
 
-    document.getElementById('chatbot-close-btn').addEventListener('click', function() {
-        document.getElementById('chatbot-container').style.display = 'none';
-        document.getElementById('chatbot-toggle').style.display = 'block';
-    });
+            document.getElementById('chatbot-close-btn').addEventListener('click', function() {
+                document.getElementById('chatbot-container').style.display = 'none';
+                document.getElementById('chatbot-toggle').style.display = 'block';
+            });
 
-    document.getElementById('chat-send-btn').addEventListener('click', function() {
-        sendMessage();
-    });
+            document.getElementById('chat-send-btn').addEventListener('click', function() {
+                sendMessage();
+            });
 
-    document.getElementById('chat-input').addEventListener('keypress', function(event) {
-        if (event.key === 'Enter') {
-            sendMessage();
-        }
-    });
+            document.getElementById('chat-input').addEventListener('keypress', function(event) {
+                if (event.key === 'Enter') {
+                    sendMessage();
+                }
+            });
 
-    // Abre el chatbot
-    document.getElementById("chatbot-open-btn").onclick = function() {
-        document.getElementById("chatbot-container").style.display = "flex";
-        document.getElementById("chatbot-toggle").style.display = "none";
-    };
+            // Abre el chatbot
+            document.getElementById("chatbot-open-btn").onclick = function() {
+                document.getElementById("chatbot-container").style.display = "flex";
+                document.getElementById("chatbot-toggle").style.display = "none";
+            };
 
-    // Cierra el chatbot
-    document.getElementById("chatbot-close-btn").onclick = function() {
-        document.getElementById("chatbot-container").style.display = "none";
-        document.getElementById("chatbot-toggle").style.display = "block";
-    };
+            // Cierra el chatbot
+            document.getElementById("chatbot-close-btn").onclick = function() {
+                document.getElementById("chatbot-container").style.display = "none";
+                document.getElementById("chatbot-toggle").style.display = "block";
+            };
 
 
 
-</script>
+        </script>
 
-<!-- Required datatable js -->
-<script th:src="@{../libs/datatables.net/js/jquery.dataTables.min.js}"></script>
-<script th:src="@{../libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js}"></script>
-<!-- Buttons examples -->
-<script th:src="@{../libs/datatables.net-buttons/js/dataTables.buttons.min.js}"></script>
-<script th:src="@{../libs/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js}"></script>
-<script th:src="@{../libs/jszip/jszip.min.js}"></script>
-<script th:src="@{../libs/pdfmake/build/pdfmake.min.js}"></script>
-<script th:src="@{../libs/pdfmake/build/vfs_fonts.js}"></script>
-<script th:src="@{../libs/datatables.net-buttons/js/buttons.print.min.js}"></script>
-<script th:src="@{../libs/datatables.net-buttons/js/buttons.colVis.min.js}"></script>
+        <!-- Required datatable js -->
+        <script th:src="@{../libs/datatables.net/js/jquery.dataTables.min.js}"></script>
+        <script th:src="@{../libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js}"></script>
+        <!-- Buttons examples -->
+        <script th:src="@{../libs/datatables.net-buttons/js/dataTables.buttons.min.js}"></script>
+        <script th:src="@{../libs/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js}"></script>
+        <script th:src="@{../libs/jszip/jszip.min.js}"></script>
+        <script th:src="@{../libs/pdfmake/build/pdfmake.min.js}"></script>
+        <script th:src="@{../libs/pdfmake/build/vfs_fonts.js}"></script>
+        <script th:src="@{../libs/datatables.net-buttons/js/buttons.print.min.js}"></script>
+        <script th:src="@{../libs/datatables.net-buttons/js/buttons.colVis.min.js}"></script>
 
-<script th:src="@{../libs/datatables.net-keytable/js/dataTables.keyTable.min.js}"></script>
-<script th:src="@{../libs/datatables.net-select/js/dataTables.select.min.js}"></script>
+        <script th:src="@{../libs/datatables.net-keytable/js/dataTables.keyTable.min.js}"></script>
+        <script th:src="@{../libs/datatables.net-select/js/dataTables.select.min.js}"></script>
 
-<!-- Responsive examples -->
-<script th:src="@{../libs/datatables.net-responsive/js/dataTables.responsive.min.js}"></script>
-<script th:src="@{../libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js}"></script>
-<script th:src="@{../js/pages/datatables.init.js}"></script>
+        <!-- Responsive examples -->
+        <script th:src="@{../libs/datatables.net-responsive/js/dataTables.responsive.min.js}"></script>
+        <script th:src="@{../libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js}"></script>
+        <script th:src="@{../js/pages/datatables.init.js}"></script>
 
 
 
