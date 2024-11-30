@@ -86,7 +86,7 @@
                                                            #strings.substring(order.fechaCreacion, 3, 5) + '-' +
                                                            #strings.substring(order.fechaCreacion, 0, 2)}"
                                             th:text="${order.fechaCreacion}"></td>
-                                        <td th:text="${order.montoTotal}"></td>
+                                        <td th:text="'S/. ' + ${order.montoTotal}"></td>
                                         <td>
                                             <!-- Botón que abre el modal correcto -->
                                             <a th:href="@{'/agente/detailsOrder?idOrden=' + ${order.idOrden} + '&idUsuario=' + ${order.idUsuarioAsignado} }" class="btn btn-primary btn-sm waves-effect waves-light" title="Ver">

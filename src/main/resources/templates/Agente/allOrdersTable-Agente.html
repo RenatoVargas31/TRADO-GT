@@ -92,7 +92,7 @@
                    #strings.substring(order.fechaCreacion, 3, 5) + '-' +
                    #strings.substring(order.fechaCreacion, 0, 2)}"
                         th:text="${order.fechaCreacion}"></td>
-                    <td th:text="${order.montoTotal}"></td>
+                    <td th:text="'S/. ' + ${order.montoTotal}"></td>
                     <!-- Aquí utilizamos th:switch para manejar diferentes estados -->
                     <td>
                 <span th:switch="${order.estadoPedido}">

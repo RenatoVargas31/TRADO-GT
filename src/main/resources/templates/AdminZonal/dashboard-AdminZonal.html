@@ -87,9 +87,8 @@
                                         <div class="mt-4 mt-sm-0">
                                             <p class="mb-2 text-muted text-truncate"><i class="mdi mdi-circle text-danger font-size-10 me-1"></i> Producto con Menor Stock:</p>
                                             <div class="d-inline-flex">
-                                                <h5 class="mb-0" th:text="${productoStockMenor.nombre}"></h5>
-                                                <br>
-                                                (<p class="mb-0" th:text="${productoStockMenor.stock} + ' unidades'"></p>)
+                                                <h6 class="mb-0" th:text="${productoStockMenor.nombre}" style="font-size: 12px;"></h6><br><br>
+                                                <p class="mb-0" th:text="'(' + ${productoStockMenor.stock} + ' unidades)'"></p>
                                             </div>
                                         </div>
                                     </div>
@@ -215,110 +214,7 @@
 
 
                 <div class="row">
-                    <div class="col-lg-4">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="dropdown float-end">
-                                    <a href="#" class="dropdown-toggle arrow-none card-drop" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <i class="mdi mdi-dots-vertical"></i>
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-end">
-                                        <!-- item-->
-                                        <a href="javascript:void(0);" class="dropdown-item">Ver agentes</a>
-                                        <!-- item-->
-                                        <a href="javascript:void(0);" class="dropdown-item">Crear agentes</a>
-                                        <!-- item-->
-                                        <a href="javascript:void(0);" class="dropdown-item">Reportar agentes</a>
-                                    </div>
-                                </div>
-
-                                <h4 class="card-title mb-4">Actividad reciente de agentes</h4>
-
-                                <div data-simplebar style="max-height: 200px;">
-                                    <ul class="list-unstyled activity-wid">
-                                        <li class="activity-list">
-                                            <div class="activity-icon avatar-xs">
-                                                <span class="avatar-title bg-primary-subtle text-primary rounded-circle">
-                                                    <i class="ri-edit-2-fill"></i>
-                                                </span>
-                                            </div>
-                                            <div>
-                                                <div>
-                                                    <h5 class="font-size-13">10 Sep, 2024 <small class="text-muted">02:15 pm</small></h5>
-                                                </div>
-                                                <div>
-                                                    <p class="text-muted mb-0">El agente <strong>María López</strong> respondió a la solicitud de cotización de <strong>Juan García</strong> para productos electrónicos</p>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li class="activity-list">
-                                            <div class="activity-icon avatar-xs">
-                                                <span class="avatar-title bg-primary-subtle text-primary rounded-circle">
-                                                    <i class="ri-user-2-fill"></i>
-                                                </span>
-                                            </div>
-                                            <div>
-                                                <div>
-                                                    <h5 class="font-size-13">09 Sep, 2024 <small class="text-muted">10:30 am</small></h5>
-                                                </div>
-                                                <div>
-                                                    <p class="text-muted mb-0">El agente <strong>Carlos Mendoza</strong> agregó a <strong>Sofía Herrera</strong> como cliente interesada en maquinaria industrial</p>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li class="activity-list">
-                                            <div class="activity-icon avatar-xs">
-                                                <span class="avatar-title bg-primary-subtle text-primary rounded-circle">
-                                                    <i class="ri-bar-chart-fill"></i>
-                                                </span>
-                                            </div>
-                                            <div>
-                                                <div>
-                                                    <h5 class="font-size-13">08 Sep, 2024 <small class="text-muted">03:45 pm</small></h5>
-                                                </div>
-                                                <div>
-                                                    <p class="text-muted mb-0">El agente <strong>Ana Pérez</strong> realizó el seguimiento de la entrega de una orden de <strong>Pedro Gómez</strong> para muebles</p>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li class="activity-list">
-                                            <div class="activity-icon avatar-xs">
-                                                <span class="avatar-title bg-primary-subtle text-primary rounded-circle">
-                                                    <i class="ri-mail-fill"></i>
-                                                </span>
-                                            </div>
-                                            <div>
-                                                <div>
-                                                    <h5 class="font-size-13">06 Sep, 2024 <small class="text-muted">12:20 pm</small></h5>
-                                                </div>
-                                                <div>
-                                                    <p class="text-muted mb-0">El agente <strong>David Ruiz</strong> respondió a la consulta de <strong>Laura Fernández</strong> sobre productos de tecnología</p>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li class="activity-list">
-                                            <div class="activity-icon avatar-xs">
-                                                <span class="avatar-title bg-primary-subtle text-primary rounded-circle">
-                                                    <i class="ri-calendar-2-fill"></i>
-                                                </span>
-                                            </div>
-                                            <div>
-                                                <div>
-                                                    <h5 class="font-size-13">04 Sep, 2024 <small class="text-muted">09:15 am</small></h5>
-                                                </div>
-                                                <div>
-                                                    <p class="text-muted mb-0">El agente <strong>Lucía Ramírez</strong> programó una reunión con el proveedor de textiles para <strong>Esteban Martínez</strong></p>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </div>
-
-
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-8">
+                    <div class="col-lg-12">
                         <div class="card">
                             <div class="card-body">
                                 <div class="dropdown float-end">
