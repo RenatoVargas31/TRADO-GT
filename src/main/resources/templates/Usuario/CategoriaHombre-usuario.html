@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8" />
-  <title>Productos</title>
+  <title>Moda masculina</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <!-- CSS BASE -->
   <meta th:replace="~{Common/cssBase :: css_Base}">
@@ -38,13 +38,13 @@
         <div class="row">
           <div class="col-12">
             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-              <h4 class="mb-sm-0">Productos</h4>
+              <h4 class="mb-sm-0">Moda masculina</h4>
 
               <div class="page-title-right">
                 <ol class="breadcrumb m-0">
 
-                  <li class="breadcrumb-item active ">Productos</li>
-                  <li class="breadcrumb-item "><a href="javascript: void(0);">Hombre</a></li>
+                  <li class="breadcrumb-item active ">Tienda</li>
+                  <li class="breadcrumb-item "><a href="javascript: void(0);">Moda masculina</a></li>
                 </ol>
               </div>
 
@@ -56,220 +56,264 @@
 
         <!-- Inicio -->
 
+        <!-- Subcategorías -->
         <div class="row">
-          <div class="col-xl-3 col-lg-4">
-            <div class="card">
-              <div class="card-header bg-transparent border-bottom">
-                <h5 class="mb-0 fw-bolder ">Filtros</h5>
+          <div class="card">
+            <div class="card-body">
+              <div class="container">
+                <!-- Subcategorias -->
+                <div class="row flex-nowrap overflow-auto justify-content-start justify-content-md-center" style="gap: 10px;">
+                  <div class="col-6 col-sm-4 col-md-3 col-lg-2 text-center flex-shrink-0">
+                    <a href="#">
+                      <img class="rounded-circle avatar-md img-fluid" alt="Polos Hombre" th:src="@{../images/modaMasculina/polo.jpeg}"
+                           style="transition: transform 0.3s ease, box-shadow 0.3s ease; cursor: pointer; display: inline-block; transform-origin: center;"
+                           onmouseover="this.style.transform='scale(1.1)'; this.style.boxShadow='0 4px 8px rgba(0, 0, 0, 0.2)';"
+                           onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='none';">
+                    </a>
+                    <div class="mt-2">
+                      <p>Polos</p>
+                    </div>
+                  </div>
+                  <div class="col-6 col-sm-4 col-md-3 col-lg-2 text-center flex-shrink-0">
+                    <a href="#">
+                      <img class="rounded-circle avatar-md img-fluid" alt="Camisas Hombre"  th:src="@{../images/modaMasculina/camisa.jpeg}"
+                           style="transition: transform 0.3s ease, box-shadow 0.3s ease; cursor: pointer; display: inline-block; transform-origin: center;"
+                           onmouseover="this.style.transform='scale(1.1)'; this.style.boxShadow='0 4px 8px rgba(0, 0, 0, 0.2)';"
+                           onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='none';">
+                    </a>
+                    <div class="mt-2">
+                      <p>Camisas</p>
+                    </div>
+                  </div>
+                  <div class="col-6 col-sm-4 col-md-3 col-lg-2 text-center flex-shrink-0">
+                    <a href="#">
+                      <img class="rounded-circle avatar-md img-fluid" alt="Poleras Hombre" th:src="@{../images/modaMasculina/polera.jpg}"
+                           style="transition: transform 0.3s ease, box-shadow 0.3s ease; cursor: pointer; display: inline-block; transform-origin: center;"
+                           onmouseover="this.style.transform='scale(1.1)'; this.style.boxShadow='0 4px 8px rgba(0, 0, 0, 0.2)';"
+                           onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='none';">
+                    </a>
+                    <div class="mt-2">
+                      <p>Poleras</p>
+                    </div>
+                  </div>
+                  <div class="col-6 col-sm-4 col-md-3 col-lg-2 text-center flex-shrink-0">
+                    <a href="#">
+                      <img class="rounded-circle avatar-md img-fluid" alt="Chompas Hombre" th:src="@{../images/modaMasculina/chompa.jpeg}"
+                           style="transition: transform 0.3s ease, box-shadow 0.3s ease; cursor: pointer; display: inline-block; transform-origin: center;"
+                           onmouseover="this.style.transform='scale(1.1)'; this.style.boxShadow='0 4px 8px rgba(0, 0, 0, 0.2)';"
+                           onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='none';">
+                    </a>
+                    <div class="mt-2">
+                      <p>Chompas</p>
+                    </div>
+                  </div>
+                  <div class="col-6 col-sm-4 col-md-3 col-lg-2 text-center flex-shrink-0">
+                    <a href="#">
+                      <img class="rounded-circle avatar-md img-fluid" alt="Pantalones Hombre" th:src="@{../images/modaMasculina/pantalon.jpg}"
+                           style="transition: transform 0.3s ease, box-shadow 0.3s ease; cursor: pointer; display: inline-block; transform-origin: center;"
+                           onmouseover="this.style.transform='scale(1.1)'; this.style.boxShadow='0 4px 8px rgba(0, 0, 0, 0.2)';"
+                           onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='none';">
+                    </a>
+                    <div class="mt-2">
+                      <p>Pantalones</p>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <!--Inicio de filtro-->
-              <div class="custom-accordion">
-                <form action="/usuario/categoriaHombreFilter" method="GET" id="filterForm">
-                  <div class="card-body border-top">
-                    <div>
-                      <h5 class="font-size-14 mb-0">
-                        <a href="#collapseExample1" class="text-reset d-block" data-bs-toggle="collapse">Categorías <i class="mdi mdi-plus float-end accor-plus-icon"></i></a>
-                      </h5>
-                      <div class="collapse" id="collapseExample1">
-                        <div class="mt-4">
-                          <div th:each="categoria : ${categoriasList}" class="form-check mt-2">
-                            <input type="checkbox"
-                                   th:id="'categoria' + ${categoria.id}"
-                                   th:name="'categoria'"
-                                   th:value="${categoria.id}"
-                                   class="form-check-input"
-                                   th:checked="${param.categoria != null && param.categoria.contains(categoria.id.toString())}" />
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <!-- Filtros -->
+          <div class="col-lg-3">
+            <div class="row mb-3">
+              <div class="col">
+                <div class="card" style="max-height: 650px; overflow-y: auto;">
+                  <div class="card-header bg-transparent border-bottom">
+                    <h5 class="mb-0 fw-bolder ">Filtros</h5>
+                  </div>
+                  <!--Inicio de filtro-->
+                  <div class="custom-accordion">
+                    <form action="/usuario/categoriaHombreFilter" method="GET" id="filterForm">
+                      <div class="card-body border-top">
+                        <div>
+                          <h5 class="font-size-14 mb-0">
+                            <a href="#collapseExample1" class="text-reset d-block" data-bs-toggle="collapse">Categorías <i class="mdi mdi-plus float-end accor-plus-icon"></i></a>
+                          </h5>
+                          <div class="collapse" id="collapseExample1">
+                            <div class="mt-4">
+                              <div th:each="categoria : ${categoriasList}" class="form-check mt-2">
+                                <input type="checkbox"
+                                       th:id="'categoria' + ${categoria.id}"
+                                       th:name="'categoria'"
+                                       th:value="${categoria.id}"
+                                       class="form-check-input"
+                                       th:checked="${param.categoria != null && param.categoria.contains(categoria.id.toString())}" />
 
 
-                            <label class="form-check-label"
-                                   th:for="'categoria' + ${categoria.id}"
-                                   th:text="${categoria.nombre}">Categoria</label>
+                                <label class="form-check-label"
+                                       th:for="'categoria' + ${categoria.id}"
+                                       th:text="${categoria.nombre}">Categoria</label>
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  </div>
 
 
-                  <div class="card-body border-top">
-                    <div>
-                      <h5 class="font-size-14 mb-0">
-                        <a href="#collapseExample5" class="text-reset d-block" data-bs-toggle="collapse" aria-expanded="false" aria-controls="collapseExample5">
-                          Talla <i class="mdi mdi-plus float-end accor-plus-icon"></i>
-                        </a>
-                      </h5>
-                      <div class="collapse" id="collapseExample5">
-                        <div class="mt-4">
-                          <div th:each="talla, iterStat : ${tallasList}" class="form-check mt-2">
-                            <input type="checkbox"
-                                   th:id="'talla' + ${iterStat}"
-                                   name="talla"
-                                   class="form-check-input"
-                                   th:value="${talla.toLowerCase()}"
-                                   th:checked="${param.talla != null && param.talla.contains(talla.toLowerCase())}"/>
-                            <label class="form-check-label" th:for="'talla' + ${iterStat}" th:text="${talla}"></label>
+                      <div class="card-body border-top">
+                        <div>
+                          <h5 class="font-size-14 mb-0">
+                            <a href="#collapseExample5" class="text-reset d-block" data-bs-toggle="collapse" aria-expanded="false" aria-controls="collapseExample5">
+                              Talla <i class="mdi mdi-plus float-end accor-plus-icon"></i>
+                            </a>
+                          </h5>
+                          <div class="collapse" id="collapseExample5">
+                            <div class="mt-4">
+                              <div th:each="talla, iterStat : ${tallasList}" class="form-check mt-2">
+                                <input type="checkbox"
+                                       th:id="'talla' + ${iterStat}"
+                                       name="talla"
+                                       class="form-check-input"
+                                       th:value="${talla.toLowerCase()}"
+                                       th:checked="${param.talla != null && param.talla.contains(talla.toLowerCase())}"/>
+                                <label class="form-check-label" th:for="'talla' + ${iterStat}" th:text="${talla}"></label>
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  </div>
 
 
-                  <div class="card-body border-top">
-                    <div>
-                      <h5 class="font-size-14 mb-0">
-                        <a href="#collapseExample7" class="text-reset d-block" data-bs-toggle="collapse" aria-expanded="false" aria-controls="collapseExample5">
-                          Marca <i class="mdi mdi-plus float-end accor-plus-icon"></i>
-                        </a>
-                      </h5>
-                      <div class="collapse" id="collapseExample7">
-                        <div class="mt-4">
-                          <div th:each="marca, iterStat : ${marcaList}" class="form-check mt-2">
-                            <input type="checkbox"
-                                   th:id="'marca' + ${iterStat}"
-                                   name="marca"
-                                   class="form-check-input"
-                                   th:value="${marca.toLowerCase()}"
-                                   th:checked="${param.marca != null && param.marca.contains(marca.toLowerCase())}"/>
-                            <label class="form-check-label" th:for="'marca' + ${iterStat}" th:text="${marca}"></label>
+                      <div class="card-body border-top">
+                        <div>
+                          <h5 class="font-size-14 mb-0">
+                            <a href="#collapseExample7" class="text-reset d-block" data-bs-toggle="collapse" aria-expanded="false" aria-controls="collapseExample5">
+                              Marca <i class="mdi mdi-plus float-end accor-plus-icon"></i>
+                            </a>
+                          </h5>
+                          <div class="collapse" id="collapseExample7">
+                            <div class="mt-4">
+                              <div th:each="marca, iterStat : ${marcaList}" class="form-check mt-2">
+                                <input type="checkbox"
+                                       th:id="'marca' + ${iterStat}"
+                                       name="marca"
+                                       class="form-check-input"
+                                       th:value="${marca.toLowerCase()}"
+                                       th:checked="${param.marca != null && param.marca.contains(marca.toLowerCase())}"/>
+                                <label class="form-check-label" th:for="'marca' + ${iterStat}" th:text="${marca}"></label>
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  </div>
 
-                  <div class="card-body border-top">
-                    <div>
-                      <h5 class="font-size-14 mb-0">
-                        <a href="#collapseExample6" class="text-reset d-block" data-bs-toggle="collapse" aria-expanded="false" aria-controls="collapseExample5">
-                          Color <i class="mdi mdi-plus float-end accor-plus-icon"></i>
-                        </a>
-                      </h5>
-                      <div class="collapse" id="collapseExample6">
-                        <div class="mt-4">
-                          <div th:each="color, iterStat : ${coloresList}" class="form-check mt-2">
-                            <input type="checkbox"
-                                   th:id="'color' + ${iterStat}"
-                                   name="color"
-                                   class="form-check-input"
-                                   th:value="${color.toLowerCase()}"
-                                   th:checked="${param.color != null && param.color.contains(color.toLowerCase())}"/>
-                            <label class="form-check-label" th:for="'color' + ${iterStat}" th:text="${color}"></label>
+                      <div class="card-body border-top">
+                        <div>
+                          <h5 class="font-size-14 mb-0">
+                            <a href="#collapseExample6" class="text-reset d-block" data-bs-toggle="collapse" aria-expanded="false" aria-controls="collapseExample5">
+                              Color <i class="mdi mdi-plus float-end accor-plus-icon"></i>
+                            </a>
+                          </h5>
+                          <div class="collapse" id="collapseExample6">
+                            <div class="mt-4">
+                              <div th:each="color, iterStat : ${coloresList}" class="form-check mt-2">
+                                <input type="checkbox"
+                                       th:id="'color' + ${iterStat}"
+                                       name="color"
+                                       class="form-check-input"
+                                       th:value="${color.toLowerCase()}"
+                                       th:checked="${param.color != null && param.color.contains(color.toLowerCase())}"/>
+                                <label class="form-check-label" th:for="'color' + ${iterStat}" th:text="${color}"></label>
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  </div>
 
-                  <div class="card-body border-top">
-                    <div>
-                      <h5 class="font-size-14 mb-0">
-                        <a href="#collapseExample3" class="text-reset d-block" data-bs-toggle="collapse">Precio <i class="mdi mdi-plus float-end accor-plus-icon"></i></a>
-                      </h5>
-                      <div class="collapse" id="collapseExample3">
-                        <div class="mt-4">
-                          <div class="form-group">
-                            <label for="precioMin" class="form-label">Precio Mínimo</label>
-                            <input type="number" id="precioMin" name="precioMin" class="form-control" placeholder="Ingrese precio mínimo" min="0">
-                          </div>
-                          <hr class="opacity-0">
-                          <div class="form-group">
-                            <label for="precioMax" class="form-label">Precio Máximo</label>
-                            <input type="number" id="precioMax" name="precioMax" class="form-control" placeholder="Ingrese precio máximo" min="0">
+                      <div class="card-body border-top">
+                        <div>
+                          <h5 class="font-size-14 mb-0">
+                            <a href="#collapseExample3" class="text-reset d-block" data-bs-toggle="collapse">Precio <i class="mdi mdi-plus float-end accor-plus-icon"></i></a>
+                          </h5>
+                          <div class="collapse" id="collapseExample3">
+                            <div class="mt-4">
+                              <div class="form-group">
+                                <label for="precioMin" class="form-label">Precio Mínimo</label>
+                                <input type="number" id="precioMin" name="precioMin" class="form-control" placeholder="Ingrese precio mínimo" min="0">
+                              </div>
+                              <hr class="opacity-0">
+                              <div class="form-group">
+                                <label for="precioMax" class="form-label">Precio Máximo</label>
+                                <input type="number" id="precioMax" name="precioMax" class="form-control" placeholder="Ingrese precio máximo" min="0">
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
+                      <div class="text-center">
+                        <a href="/usuario/categoriaHombreFilter" class="btn btn-secondary mt-3 me-2 btn-sm">Limpiar</a>
+                        <button type="submit" class="btn btn-primary mt-3 btn-sm">Filtrar</button>
+                      </div>
+                      <hr class="opacity-0">
+                    </form>
                   </div>
-                  <!--
-                                    <div class="card-body border-top">
-                                      <div>
-                                        <h5 class="font-size-14 mb-0">
-                                          <a href="#collapseExample4" class="collapsed text-reset d-block" data-bs-toggle="collapse">Valoración del cliente <i class="mdi mdi-minus float-end accor-plus-icon"></i></a>
-                                        </h5>
-                                        <div class="collapse " id="collapseExample4">
-                                          <div class="mt-4">
-                                            <div class="form-check mt-2">
-                                              <input type="checkbox" id="productratingRadio1" name="valoracion" class="form-check-input" value="4mas">
-                                              <label class="form-check-label" for="productratingRadio1">4 <i class="mdi mdi-star text-warning"></i> y superior</label>
-                                            </div>
-                                            <div class="form-check mt-2">
-                                              <input type="checkbox" id="productratingRadio2" name="valoracion" class="form-check-input" value="3mas">
-                                              <label class="form-check-label" for="productratingRadio2">3 <i class="mdi mdi-star text-warning"></i> y superior</label>
-                                            </div>
-                                            <div class="form-check mt-2">
-                                              <input type="checkbox" id="productratingRadio3" name="valoracion" class="form-check-input" value="2mas">
-                                              <label class="form-check-label" for="productratingRadio3">2 <i class="mdi mdi-star text-warning"></i> y superior</label>
-                                            </div>
-                                            <div class="form-check mt-2">
-                                              <input type="checkbox" id="productratingRadio4" name="valoracion" class="form-check-input" value="1mas">
-                                              <label class="form-check-label" for="productratingRadio4">1 <i class="mdi mdi-star text-warning"></i></label>
-                                            </div>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
-                                    -->
-
-                  <div class="text-center">
-                    <a href="/usuario/categoriaHombreFilter" class="btn btn-secondary mt-3 me-2">Limpiar</a>
-                    <button type="submit" class="btn btn-primary mt-3">Filtrar</button>
-                  </div>
-                  <hr class="opacity-0">
-                </form>
+                  <!--Fin del filtro-->
+                </div>
               </div>
-              <!--Fin del filtro-->
             </div>
           </div>
 
-
+          <!-- Catálogo -->
           <div class="col-lg-9">
-            <div class="card">
+            <div class="card" style="max-height: 1050px; overflow-y: auto; min-height: 500px" >
               <div class="card-body">
-                <div>
+                <div  class="container">
+                  <!-- Buscador -->
                   <div class="row">
                     <div class="col-md-6">
-                      <h3 class="fw-bold">Moda masculina</h3>
+                      <h5 class="fw-bold">Moda masculina</h5>
                     </div>
                     <div class="col-md-6 d-flex justify-content-end">
                       <form class="d-flex" action="/usuario/categoriaHombreSearch" method="GET"> <!-- El action envía la búsqueda a la ruta /buscar -->
                         <div class="search-box me-2">
                           <div class="position-relative">
-                            <input type="text" name="query" class="form-control rounded" placeholder="Buscar..."> <!-- "query" como nombre del campo de búsqueda -->
-                            <i class="mdi mdi-magnify search-icon"></i>
+                            <input type="text" name="query" class="form-control form-control-sm rounded-pill ps-5" placeholder="Buscar...">
+                            <i class="mdi mdi-magnify search-icon position-absolute top-50 start-0 translate-middle-y ms-3"></i>
                           </div>
                         </div>
                         <div class="form-inline me-2">
-                          <button type="submit" class="btn btn-primary waves-effect waves-light">Buscar</button> <!-- Botón envía el formulario -->
+                          <button type="submit" class="btn btn-primary waves-effect waves-light btn-sm">Buscar</button> <!-- Botón envía el formulario -->
+                          <a href="/usuario/categoriaHombreFilter" class="btn btn-secondary me-2 btn-sm">Limpiar</a>
                         </div>
                       </form>
                     </div>
 
                   </div>
-                  <hr class="opacity-0">
+                  <hr>
 
-
-                  <!--Inicio del loop-->
+                  <!-- Cards -->
                   <div class="row g-0">
                     <div th:if="${productList == null or #lists.isEmpty(productList)}" class="alert alert-warning text-center">
                       No hay productos disponibles
                     </div>
-                    <div th:each="product, iterStat : ${productList}" class="col-xl-4 col-sm-6">
-                      <div class="card product-box">
+                    <div th:each="product, iterStat : ${productList}" class="col-xl-3 col-sm-4">
+                      <div class="card product-box"  style="max-height: 340px; height: 340px">
                         <a th:href="@{'/usuario/productoDetalles?id=' + ${product.id} }" class="text-decoration-none">
-                        <div class="product-img">
+                          <div class="product-img">
                             <div class="product-ribbon badge bg-warning">
                               <!-- Mostrar el código de producto -->
                               <span th:text="${product.codigo}"></span>
                             </div>
                           </div>
-                          <div class="card-img">
+                          <div th:if="${product.id >= 1}">
                             <img th:src="@{'/usuario/productoFoto/' + ${product.id}}"
-                                 src="/images/error.jpg"
-                                 onerror="this.onerror=null;this.src='/images/error.jpg';"
-                                 alt="producto-img"
+                                 alt="img-${product.id}"
                                  class="img-fluid mx-auto d-block"
-                                 style="width: 250px; height: 250px; object-fit: cover;">
+                                 style="width: 250px; max-height: 160px; object-fit: cover;height: 160px;"
+                                 onerror="this.onerror=null; this.src='../images/error.jpg';"
+                            >
                           </div>
                           <div class="text-center mt-3">
                             <p class="font-size-12 mb-1 text-primary">
@@ -278,45 +322,55 @@
                             <h5 class="font-size-15">
                               <a th:text="${product.nombre}" class="text-reset">Product Name</a>
                             </h5>
-
+                            <!-- Banner del corazón (like) en la esquina superior derecha -->
+                            <div class="product-like" th:if="${product.isFavorite == 1}">
+                              <div class="product-ribbon badge" style="position: absolute; top: 10px; right: 10px; color: red">
+                                <!-- Botón para enviar el formulario -->
+                                <div class="btn btn-danger "
+                                     style="border-radius: 50%; padding: 10px; width: 40px; height: 40px; display: flex; justify-content: center; align-items: center;">
+                                  <i class="mdi mdi-heart-outline" style="font-size: 24px;"></i>
+                                </div>
+                              </div>
+                            </div>
                             <h5 class="mt-2" style="font-size: 14px;">
                               S/ <span th:text="${product.precio}">100</span>
                               <span style="font-size: 12px; color: #888;">por unidad</span>
                             </h5>
-                           </div>
-                          <div class="provider-info d-flex align-items-center justify-content-center">
-                            <img th:src="@{../images/product/iconoProvedor.png}" alt="Proveedor Icono" class="rounded-circle me-2" style="width: 30px; height: 30px;">
-
-                            <span th:text="${product.proveedorIdproveedor.tienda}" class="provider-name">Nombre del proveedor</span>
+                          </div>
+                          <div class="provider-info d-flex align-items-center justify-content-center" style="margin-top: auto;">
+                            <img th:src="@{../images/product/iconoProvedor.png}" alt="Proveedor Icono" class="rounded-circle me-2" style="width: 25px; height: 25px;">
+                            <span th:text="${product.proveedorIdproveedor.tienda}" class="provider-name small">Nombre del proveedor</span>
                           </div>
                         </a>
                       </div>
                     </div>
                   </div>
-                  <!--FIN del loop-->
-                  <div class="row mt-4">
-                    <div class="col-sm-6">
-                      <div>
-                        <p class="mb-sm-0 mt-2">Page <span class="fw-bold">1</span> Of <span class="fw-bold">1</span></p>
-                      </div>
+                </div>
+              </div>
+              <div class="card-footer">
+                <!-- Paginación -->
+                <div class="row mt-4">
+                  <div class="col-sm-6">
+                    <div>
+                      <p class="mb-sm-0 mt-2">Page <span class="fw-bold">1</span> Of <span class="fw-bold">1</span></p>
                     </div>
-                    <div class="col-sm-6">
-                      <div class="float-sm-end">
-                        <ul class="pagination pagination-rounded mb-sm-0">
-                          <!--
-                          <li class="page-item disabled">
-                              <a  class="page-link"><i class="mdi mdi-chevron-left"></i></a>
-                          </li>
-                          -->
-                          <li class="page-item active">
-                            <a  class="page-link">1</a>
-                          </li>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="float-sm-end">
+                      <ul class="pagination pagination-rounded mb-sm-0">
+                        <!--
+                        <li class="page-item disabled">
+                            <a  class="page-link"><i class="mdi mdi-chevron-left"></i></a>
+                        </li>
+                        -->
+                        <li class="page-item active">
+                          <a  class="page-link">1</a>
+                        </li>
 
-                          <li class="page-item">
-                            <a  class="page-link"><i class="mdi mdi-chevron-end"></i></a>
-                          </li>
-                        </ul>
-                      </div>
+                        <li class="page-item">
+                          <a  class="page-link"><i class="mdi mdi-chevron-end"></i></a>
+                        </li>
+                      </ul>
                     </div>
                   </div>
                 </div>

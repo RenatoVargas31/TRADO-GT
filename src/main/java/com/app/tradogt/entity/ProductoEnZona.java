@@ -44,6 +44,9 @@ public class ProductoEnZona {
     @Column(name = "isDeleted", nullable = false)
     private Byte isDeleted = 0;
 
+    @Column(name = "contar")
+    private Integer contar = 0;
+
     public void setProductoyZona (Producto producto,Zona zona){
         this.id = new ProductoEnZonaId(producto.getId(),zona.getId());
         this.productoIdproducto = producto;

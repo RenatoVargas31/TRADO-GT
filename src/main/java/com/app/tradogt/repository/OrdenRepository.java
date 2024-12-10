@@ -347,4 +347,32 @@ SELECT
     """,nativeQuery = true)
 
     List<Object[]> getOrdersByZonaAdminZonal(Integer idZona);
+
+
+    @Query(
+            value =
+                    "SELECT \n" +
+                            "    o.codigo AS Codigo,\n" +
+                            "    o.fechaCreacion AS Fecha,\n" +
+                            "    es.nombre AS Estado,\n" +
+                            "    CASE \n" +
+                            "        WHEN o.agentCompra_idUsuario IS NULL THEN 'No asignado'\n" +
+                            "        ELSE CONCAT(ag.nombre, ' ', ag.apellido)\n" +
+                            "    END AS Agente\n" +
+                            "FROM \n" +
+                            "    Orden o\n" +
+                            "JOIN \n" +
+                            "    EstadoOrden es ON es.idEstadoOrden = o.estadoOrden_idEstadoOrden\n" +
+                            "LEFT JOIN \n" +
+                            "    Usuario u ON u.idUsuario = o.Usuario_idUsuario\n" +
+                            "LEFT JOIN \n" +
+                            "    Usuario ag ON ag.idUsuario = o.agentCompra_idUsuario\n" +
+                            "WHERE \n" +
+                            "    u.idUsuario = 17 \n" +
+                            "ORDER BY \n" +
+                            "    o.fechaCreacion DESC\n" +
+                            "LIMIT 3;",
+            nativeQuery = true
+    )
+    List<Object[]> misUltimosPedidos(@Param("idUser") Integer idUser);
 }

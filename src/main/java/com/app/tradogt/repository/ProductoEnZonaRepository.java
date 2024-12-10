@@ -66,7 +66,47 @@ public interface ProductoEnZonaRepository extends JpaRepository<ProductoEnZona, 
 
 
 
-
+    //Productos por zona con más calificados
+    @Query(value = "SELECT " +
+            "    p.producto_idProducto AS ID_Producto, " +
+            "    pr.nombre AS Nombre_Producto, " +
+            "    pr.marca AS Marca, " +
+            "    pr.color AS Color, " +
+            "    pr.foto AS Foto, " +
+            "    pr.proveedor_idProveedor AS ID_Proveedor, " +
+            "    pr.descripcion AS Descripcion, " +
+            "    su.nombre AS Subcategoria, " +
+            "    ca.nombre AS Categoria, " +
+            "    p.zona_idZona AS ID_Zona, " +
+            "    AVG(r.calificacion) AS Calificacion_Promedio, " +
+            "    p.contar AS Cantidad " +
+            "FROM " +
+            "    ProductoEnZona p " +
+            "JOIN " +
+            "    Resena r ON r.Producto_idProducto = p.producto_idProducto " +
+            "JOIN " +
+            "    Producto pr ON pr.idProducto = p.producto_idProducto " +
+            "JOIN " +
+            "    SubCategoria su ON su.idSubCategoria = pr.subCategoria_idSubCategoria " +
+            "JOIN " +
+            "    Categoria ca ON ca.idCategoria = su.Categoria_idCategoria " +
+            "WHERE " +
+            "    p.zona_idZona = :idZona " +
+            "GROUP BY " +
+            "    p.producto_idProducto, " +
+            "    pr.nombre, " +
+            "    pr.foto, " +
+            "    pr.proveedor_idProveedor, " +
+            "    pr.descripcion, " +
+            "    su.nombre, " +
+            "    ca.nombre, " +
+            "    p.zona_idZona, " +
+            "    p.contar " +
+            "ORDER BY " +
+            "    p.contar DESC " +
+            "LIMIT 5",
+            nativeQuery = true)
+    List<Object[]> productosTop(@Param("idZona") int idZona);
 
 
 

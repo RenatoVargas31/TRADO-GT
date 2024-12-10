@@ -1,106 +1,113 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-  <body>
-    <div th:fragment="side_bar" class="vertical-menu" style="background-color: #220135;">
-      <div data-simplebar class="h-100">
+<body>
+<div th:fragment="side_bar" class="vertical-menu" style="background-color: #220135;">
+  <div data-simplebar class="h-100">
 
-      <!--- Sidemenu -->
-      <div id="sidebar-menu">
-        <!-- Left Menu Start -->
-        <ul class="metismenu list-unstyled" id="side-menu">
-          <li class="menu-title">Menu</li>
+    <!--- Sidemenu -->
+    <div id="sidebar-menu">
+      <!-- Left Menu Start -->
+      <ul class="metismenu list-unstyled" id="side-menu">
+        <li class="menu-title">Menu</li>
 
-          <li>
-            <a href="/usuario/inicio" class="waves-effect">
-              <i class="ri-home-2-fill"></i>
-              <span>Inicio</span>
-            </a>
-          </li>
-          <li class="menu-title">Tienda</li>
-          <li>
-            <a href="#" class="has-arrow waves-effect">
-              <i class=" ri-shopping-bag-fill"></i>
-              <span>Productos</span>
-            </a>
-            <ul class="sub-menu" aria-expanded="false">
-              <li>
-                <a href="/usuario/categoriaMujer" class="waves-effect">
-                  <i class="ri-women-line"></i>
-                  <span>Ropa Femenina</span>
-                </a>
-              </li>
-              <li>
-                <a href="/usuario/categoriaHombre" class="waves-effect">
-                  <i class=" ri-men-line"></i>
-                  <span>Ropa Masculina</span>
-                </a>
-              </li>
-              <li>
-                <a href="/usuario/categoriaTecnologia" class="waves-effect">
-                  <i class=" ri-computer-fill"></i>
-                  <span>Electrónica</span>
-                </a>
-              </li>
-              <li>
-                <a href="/usuario/categoriaMuebles" class="waves-effect">
-                  <i class=" ri-hotel-bed-fill"></i>
-                  <span>Muebles</span>
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li class="menu-title">Ordenes</li>
-          <li>
-            <a href="/usuario/misPedidos" class="waves-effect">
-              <i class="ri-table-fill"></i>
-              <span>Lista de pedidos</span>
-            </a>
-          </li>
-          <li class="menu-title">Postulación Agente</li>
-          <li>
-            <a href="/usuario/solicitud" class=" waves-effect">
-              <i class="ri-file-user-fill"></i>
-              <span>Registrar Solicitud</span>
-            </a>
-          </li>
-          <li class="menu-title">Social</li>
-          <li>
-            <a href="#" class="has-arrow waves-effect">
-              <i class="ri-wechat-fill"></i>
-              <span>Foro</span>
-            </a>
-            <ul class="sub-menu" aria-expanded="false">
-              <!-- Pestaña para generar una resena -->
+        <li>
+          <a href="/usuario/inicio" class="waves-effect">
+            <i class="ri-home-2-fill"></i>
+            <span>Inicio</span>
+          </a>
+        </li>
+        <li class="menu-title">Tienda</li>
+
+        <li>
+          <a href="#" class="has-arrow waves-effect">
+            <i class=" ri-shopping-bag-fill"></i>
+            <span>Categorías</span>
+          </a>
+          <ul class="sub-menu" aria-expanded="false">
+            <li>
+              <a href="/usuario/categoriaMujer" class="waves-effect">
+                <i class="ri-women-line"></i>
+                <span>Moda femenina</span>
+              </a>
+            </li>
+            <li>
+              <a href="/usuario/categoriaHombre" class="waves-effect">
+                <i class=" ri-men-line"></i>
+                <span>Moda masculina</span>
+              </a>
+            </li>
+            <li>
+              <a href="/usuario/categoriaMuebles" class="waves-effect">
+                <i class=" ri-hotel-bed-fill"></i>
+                <span>Muebles</span>
+              </a>
+            </li>
+            <li>
+              <a href="/usuario/categoriaTecnologia" class="waves-effect">
+                <i class=" ri-computer-fill"></i>
+                <span>Electrónica</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <a href="/usuario/misFavoritos" class="waves-effect">
+            <i class="ri-heart-2-fill"></i>
+            <span>Mis favoritos</span>
+          </a>
+        </li>
+        <li class="menu-title">Ordenes</li>
+        <li>
+          <a href="/usuario/misPedidos" class="waves-effect">
+            <i class="ri-table-fill"></i>
+            <span>Lista de pedidos</span>
+          </a>
+        </li>
+        <li class="menu-title">Postulación Agente</li>
+        <li>
+          <a href="/usuario/solicitud" class=" waves-effect">
+            <i class="ri-file-user-fill"></i>
+            <span>Registrar Solicitud</span>
+          </a>
+        </li>
+        <li class="menu-title">Social</li>
+        <li>
+          <a href="#" class="has-arrow waves-effect">
+            <i class="ri-wechat-fill"></i>
+            <span>Foro</span>
+          </a>
+          <ul class="sub-menu" aria-expanded="false">
+            <!-- Pestaña para generar una resena -->
 
 
-              <!-- Pestaña para mostrar el Foro -->
-              <li>
-                <a href="/usuario/comunidad" class="waves-effect">
-                  <i class="ri-earth-line"></i>
-                  <span>Comunidad</span>
-                </a>
-              </li>
-              <li>
-                <a href="/usuario/resenas" class="waves-effect">
-                  <i class="ri-star-fill"></i>
-                  <span>resenas</span>
-                </a>
-              </li>
-            </ul>
-          </li>
+            <!-- Pestaña para mostrar el Foro -->
+            <li>
+              <a href="/usuario/comunidad" class="waves-effect">
+                <i class="ri-earth-line"></i>
+                <span>Comunidad</span>
+              </a>
+            </li>
+            <li>
+              <a href="/usuario/resenas" class="waves-effect">
+                <i class="ri-star-fill"></i>
+                <span>resenas</span>
+              </a>
+            </li>
+          </ul>
+        </li>
 
-          <li class="menu-title">Ayuda</li>
-          <li>
-            <a href="/usuario/soporte" class="waves-effect">
-              <i class="ri-settings-2-line"></i>
-              <span>Soporte técnico</span>
-            </a>
-          </li>
-        </ul>
-      </div>
-
-      <!-- Sidebar -->
+        <li class="menu-title">Ayuda</li>
+        <li>
+          <a href="/usuario/soporte" class="waves-effect">
+            <i class="ri-settings-2-line"></i>
+            <span>Soporte técnico</span>
+          </a>
+        </li>
+      </ul>
     </div>
-    </div>
-  </body>
+
+    <!-- Sidebar -->
+  </div>
+</div>
+</body>
 </html>

@@ -20,13 +20,25 @@ public interface ResenaRepository extends JpaRepository<Resena, Integer> {
             int isAccepted, int isPostulated, int isActivated);
 
     @Query("SELECT COALESCE(ROUND(AVG(r.calificacion), 1), 0) FROM Resena r WHERE r.productoIdproducto.id = :id")
-    Integer findRating(@Param("id") int id);
+    Double findRating(@Param("id") int id);
 
 
     @Query("SELECT COUNT(r) FROM Resena r WHERE r.productoIdproducto.id = :id")
     Integer countResena(@Param("id") int id);
 
-
+    @Query(value = "SELECT r.titulo as Titulo, " +
+            "r.cuerpo as Cuerpo, " +
+            "r.calificacion as Calificación, " +
+            "r.fechaCreacion as Fecha, " +
+            "CONCAT(u.nombre, ' ', u.apellido) AS NombreCompleto, " +
+            "u.foto as Avatar " +
+            "FROM Resena r " +
+            "JOIN Usuario u ON u.idUsuario = r.Usuario_idUsuario " +
+            "WHERE r.Producto_idProducto = :id " +
+            "ORDER BY r.fechaCreacion DESC " +
+            "LIMIT 4",
+            nativeQuery = true)
+    List<Object[]> comentarioProducto(@Param("id") Integer id);
 
 
 

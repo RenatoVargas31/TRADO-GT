@@ -105,7 +105,8 @@ public class Producto {
     @NotNull
     @Column(name = "cantidad", nullable = false)
     private Integer cantidad;
-
+    @Column(name = "isFavorite")
+    private String isFavorite;
 
     @Lob
     @Basic(fetch = FetchType.LAZY) // Opcional: si prefieres cargarlo bajo demanda

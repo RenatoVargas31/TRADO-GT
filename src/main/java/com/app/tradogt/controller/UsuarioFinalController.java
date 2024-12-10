@@ -179,20 +179,46 @@ public class UsuarioFinalController {
         updateOrderStatus();
         //Listar los pedidos recientes
         int userId = getAuthenticatedUserId();  // Obtener el ID del usuario autenticado
+        Usuario user = usuarioRepository.findById(userId).get();
+        int IdZona = user.getDistritoIddistrito().getZonaIdzona().getId();
 
+        //Listar los productos con las calificaciones altas
+        List<Object[]> productosTop = productoEnZonaRepository.productosTop(IdZona);
+        model.addAttribute("productosTop", productosTop);
 
-        model.addAttribute("productList", productosRepository.findProductMuebles(zonaId));
+        //Listar mis ultimos pedidos
+        List<Object[]> misUltimosPedidos = ordenRepository.misUltimosPedidos(userId);
+        model.addAttribute("misUltimosPedidos", misUltimosPedidos);
 
-
-        // Obtener los pedidos recientes del usuario con el ID especificado
-        List<Object[]> listaPedidos = ordenRepository.obtenerPedidosPorUsuario(userId);
-
-        // Pasar la lista de pedidos al modelo para usarla en la vista
-        model.addAttribute("listaPedidos", listaPedidos);
-
+        // Listar mis productos favoritos
 
 
         return "Usuario/inicio-usuario";
+    }
+
+    @PostMapping("/guardarFavorito")
+    public String guardarFavorito(Model model, @RequestParam("productId") Integer productId, RedirectAttributes attr){
+
+        //Buscar producto
+        Optional<Producto> miProducto = productosRepository.findById(productId);
+        System.out.println("Holaaa, producto favorito aqui ");
+
+        if(miProducto.isPresent()){
+            System.out.println("Esto es el problema :'v -->" +miProducto.get().getIsFavorite());
+            if(miProducto.get().getIsFavorite()== "0"){
+                System.out.println("Aqui  ");
+                miProducto.get().setIsFavorite("1");
+                System.out.println("Aqui :'v ");
+                productosRepository.save(miProducto.get());
+                attr.addAttribute("ProductoGuardado", "El producto " + miProducto.get().getNombre()+ " se ha añadido a tu lista de favoritos.");
+                System.out.println("Aqui estoy ");
+            }else{
+                attr.addAttribute("ProductoGuardado", "¡Hey! Este producto ya lo tienes entre tus favoritos.");
+                System.out.println("Aqui no estoy ");
+            }
+        }
+
+        return "redirect:/usuario/productoDetalles?id=" + miProducto.get().getId();
     }
 
     @GetMapping("/misPedidos")
@@ -541,6 +567,17 @@ public class UsuarioFinalController {
             model.addAttribute("rating", resenaRepository.findRating(id));
             model.addAttribute("conteoRating", resenaRepository.countResena(id));
             model.addAttribute("currentId",id);
+            // En tu controlador
+            List<Object[]> comentarios = resenaRepository.comentarioProducto(id);
+
+            // Verificamos si los comentarios están vacíos
+            if (comentarios.isEmpty()) {
+                // Si está vacío, agregar un atributo para la alerta
+                model.addAttribute("alerta", "No hay comentarios para este producto.");
+            } else {
+                // Si hay comentarios, agregarlos al modelo
+                model.addAttribute("comentarios", comentarios);
+            }
 
             switch(producto.getSubcategoriaIdsubcategoria().getCategoriaIdcategoria().getId()) {
                 case 1:
@@ -559,8 +596,8 @@ public class UsuarioFinalController {
                     model.addAttribute("productList", productosRepository.findAll());
                     break;
             }
-            //Mostrar aviso al inico que solo puede comprar como minimo 20 productos
-            redirectAttributes.addFlashAttribute("MensajeAlerta", "La cantidad mínima de compra es de 20 productos");
+            //Mostrar aviso al inico que solo puede comprar como minimo 12 productos
+            redirectAttributes.addFlashAttribute("MensajeAlerta", "La cantidad mínima de compra es de 12 productos");
             return "Usuario/producto-detalles";
             // Devuelve la vista con el producto
         } else {
@@ -698,10 +735,10 @@ public class UsuarioFinalController {
            return "redirect:/usuario/carrito";
        }
 
-       // Validamos que todas las cantidades sean mayores o igual a 20
+       // Validamos que todas las cantidades sean mayores o igual a 12
        for(Integer qty : cantidad) {
-           if(qty < 20){
-               attr.addFlashAttribute("ErrorCantidad", "La cantidad ingresada no es válida. El mínimo de compra es de 20 unidades. Por favor, inténtelo de nuevo.");
+           if(qty < 12){
+               attr.addFlashAttribute("ErrorCantidad", "La cantidad ingresada no es válida. El mínimo de compra es de 12 unidades. Por favor, inténtelo de nuevo.");
 
                return "redirect:/usuario/carrito";
            }
@@ -1239,7 +1276,7 @@ public class UsuarioFinalController {
         model.addAttribute("ramList", productosRepository.findDistinctRam(3));
         model.addAttribute("categoriasList",subCategoriaRepository.findSubcategorias(3));
         model.addAttribute("marcaList", productosRepository.findDistinctMarca(3));
-        return "Usuario/CategoriaHombre-usuario";
+        return "Usuario/CategoriaTecnologia-usuario";
     }
     @GetMapping("/categoriaMuebleSearch")
     public String showMuebleCategoriaBuscar(Model model,
@@ -1362,6 +1399,9 @@ public class UsuarioFinalController {
                     attr.addFlashAttribute("error", "El producto no se encontró en la tienda.");
                     return "redirect:/usuario/carrito";
                 }
+                //Contabilizar el producto
+                int i = tienda.get().getContar();
+                tienda.get().setContar(i + 1);
 
                 //Obtengo el total de stock en tienda
                 int Stock = tienda.get().getCantidad();
