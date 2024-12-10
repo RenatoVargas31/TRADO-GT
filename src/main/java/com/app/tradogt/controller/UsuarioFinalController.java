@@ -8,6 +8,10 @@ import com.app.tradogt.services.NotificationCorreoService;
 import com.app.tradogt.services.StorageService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -22,7 +26,10 @@ import com.app.tradogt.repository.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.ByteArrayOutputStream;
+
 import javax.management.Attribute;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.nio.file.Files;
@@ -85,6 +92,9 @@ public class UsuarioFinalController {
     final ProductoEnCarritoRepository productoEnCarritoRepository;
     final AutenticacionRepository autenticacionRepository;
     final EstadoOrdenRepository estadoOrdenRepository;
+
+
+
 
     public UsuarioFinalController(DistritoRepository distritoRepository, ProductosRepository productosRepository, OrdenRepository ordenRepository, UsuarioRepository usuarioRepository, ProductoEnZonaRepository productoEnZonaRepository, PublicacionRepository publicacionRepository, ComentarioRepository comentarioRepository, SubCategoriaRepository subCategoriaRepository, CarritoRepository carritoRepository, PagoRepository pagoRepository, ResenaRepository resenaRepository, ProductoEnCarritoRepository productoEnCarritoRepository, AutenticacionRepository autenticacionRepository, EstadoOrdenRepository estadoOrdenRepository) {
         this.distritoRepository = distritoRepository;
@@ -1113,6 +1123,25 @@ public class UsuarioFinalController {
         model.addAttribute("categoriasList",subCategoriaRepository.findSubcategorias(4));
         return "Usuario/CategoriaMuebles-usuario";
     }
+
+    @GetMapping("/productoFoto/{id}")
+    @ResponseBody
+    public ResponseEntity<byte[]> getProductoFoto(@PathVariable("id") Integer id) {
+        Optional<Producto> productoOpt = productosRepository.findById(id);
+
+        if (productoOpt.isPresent() && productoOpt.get().getFoto() != null) {
+            byte[] foto = productoOpt.get().getFoto();
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.IMAGE_JPEG); // Cambia según el tipo de imagen
+            return new ResponseEntity<>(foto, headers, HttpStatus.OK);
+        }
+
+        // Retorna una imagen predeterminada si no hay foto o el producto no existe
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+
     @GetMapping("/categoriaMueblesFilter")
     public String showMuebleCategoriaFilter(Model model,
                                             @RequestParam(value = "categoria", required = false) List<Integer> categoria,

@@ -107,8 +107,9 @@ public class Producto {
     private Integer cantidad;
 
 
-    @Size(max = 45)
-    @Column(name = "foto", length = 45)
-    private String foto;
+    @Lob
+    @Basic(fetch = FetchType.LAZY) // Opcional: si prefieres cargarlo bajo demanda
+    @Column(name = "foto")
+    private byte[] foto;
 
 }

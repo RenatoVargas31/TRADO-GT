@@ -240,11 +240,12 @@
                             </div>
                           </div>
                           <div class="card-img">
-                            <img th:src="@{'/uploads/imagenesProductos/' + ${product.foto}}"
+                            <img th:src="@{'/usuario/productoFoto/' + ${product.id}}"
                                  src="/images/error.jpg"
                                  onerror="this.onerror=null;this.src='/images/error.jpg';"
                                  alt="producto-img"
-                                 class="img-fluid mx-auto d-block" style="width: 250px; height: 250px; object-fit: cover;">
+                                 class="img-fluid mx-auto d-block"
+                                 style="width: 250px; height: 250px; object-fit: cover;">
                           </div>
                           <div class="text-center mt-3">
                             <p class="font-size-12 mb-1 text-primary">
@@ -322,90 +323,97 @@
 <script th:src="@{../libs/ion-rangeslider/js/ion.rangeSlider.min.js}"></script>
 
 <script>
-  document.addEventListener("DOMContentLoaded", function() {
-    const itemsPerPage = 9; // 3 filas de 3 productos cada una
+  document.addEventListener("DOMContentLoaded", function () {
+    const itemsPerPage = 9; // Cantidad de productos por página
     let currentPage = 1;
 
-    const productCards = document.querySelectorAll('.product-box');
-    const totalItems = productCards.length;
-    const totalPages = Math.ceil(totalItems / itemsPerPage);
+    const productCards = document.querySelectorAll('.product-box'); // Todos los productos
+    const totalItems = productCards.length; // Total de productos
+    const totalPages = Math.ceil(totalItems / itemsPerPage); // Total de páginas
 
     const paginationElement = document.getElementById('pagination');
     const currentPageElement = document.getElementById('current-page');
     const totalPagesElement = document.getElementById('total-pages');
 
-    totalPagesElement.textContent = totalPages; // Mostrar el total de páginas
+    totalPagesElement.textContent = totalPages; // Mostrar total de páginas
 
-    // Mostrar solo los productos de la página actual
+    // Mostrar productos de la página actual
     function showPage(page) {
       currentPage = page;
 
-      // Ocultar todos los productos
+      const start = (page - 1) * itemsPerPage;
+      const end = start + itemsPerPage;
+
+      // Ocultar todos los productos y mostrar solo los de la página actual
       productCards.forEach((card, index) => {
-        card.style.display = 'none'; // Ocultar todos los productos
-        if (index >= (page - 1) * itemsPerPage && index < page * itemsPerPage) {
-          card.style.display = 'block'; // Mostrar productos en la página actual
-        }
+        card.style.display = index >= start && index < end ? 'block' : 'none';
       });
 
-      // Actualizar el número de página actual
+      // Actualizar paginación
       currentPageElement.textContent = currentPage;
-      document.getElementById('current-page-num').textContent = currentPage;
 
-      // Habilitar o deshabilitar los botones "prev" y "next"
+      // Deshabilitar los botones si estamos en la primera o última página
       document.getElementById('prev-page').classList.toggle('disabled', currentPage === 1);
       document.getElementById('next-page').classList.toggle('disabled', currentPage === totalPages);
     }
 
-    // Manejar el evento de clic para la paginación
-    paginationElement.addEventListener('click', function(event) {
-      const pageItem = event.target.closest('li');
-      if (pageItem) {
-        if (pageItem.id === 'prev-page' && currentPage > 1) {
+    // Manejo de clics en paginación
+    paginationElement.addEventListener('click', function (event) {
+      const clickedElement = event.target.closest('li');
+
+      if (clickedElement && !clickedElement.classList.contains('disabled')) {
+        if (clickedElement.id === 'prev-page' && currentPage > 1) {
           showPage(currentPage - 1);
-        } else if (pageItem.id === 'next-page' && currentPage < totalPages) {
+        } else if (clickedElement.id === 'next-page' && currentPage < totalPages) {
           showPage(currentPage + 1);
         }
       }
     });
 
-    // Inicializa la primera página
+    // Inicializar paginación
     showPage(currentPage);
 
-    // Filtrar productos por búsqueda
+    // Manejar búsqueda
     const searchInput = document.getElementById('search-input');
-    searchInput.addEventListener('input', function() {
-      const searchTerm = searchInput.value.toLowerCase();
+    if (searchInput) {
+      searchInput.addEventListener('input', function () {
+        const searchTerm = searchInput.value.toLowerCase();
+        let filteredItems = 0;
 
-      // Filtrar productos
-      let visibleItems = 0;
-      productCards.forEach(card => {
-        const productName = card.querySelector('h5').textContent.toLowerCase();
-        const providerName = card.querySelector('.provider-name').textContent.toLowerCase();
-        const productCode = card.querySelector('.product-ribbon').textContent.toLowerCase();
+        productCards.forEach(card => {
+          const productName = card.querySelector('h5').textContent.toLowerCase();
+          const providerName = card.querySelector('.provider-name').textContent.toLowerCase();
+          const productCode = card.querySelector('.product-ribbon span').textContent.toLowerCase();
 
-        if (productName.includes(searchTerm) || providerName.includes(searchTerm) || productCode.includes(searchTerm)) {
-          card.style.display = 'block';
-          visibleItems++;
+          if (
+                  productName.includes(searchTerm) ||
+                  providerName.includes(searchTerm) ||
+                  productCode.includes(searchTerm)
+          ) {
+            card.style.display = 'block';
+            filteredItems++;
+          } else {
+            card.style.display = 'none';
+          }
+        });
+
+        // Actualizar total de páginas para resultados filtrados
+        const newTotalPages = Math.ceil(filteredItems / itemsPerPage);
+        totalPagesElement.textContent = newTotalPages;
+
+        // Mostrar mensaje si no hay resultados
+        const noResultsMessage = document.getElementById('no-results-message');
+        if (filteredItems === 0) {
+          noResultsMessage.style.display = 'block';
         } else {
-          card.style.display = 'none';
+          noResultsMessage.style.display = 'none';
         }
+
+        // Reiniciar paginación para los resultados filtrados
+        currentPage = 1;
+        showPage(1);
       });
-
-      // Actualizar la paginación para los productos filtrados
-      const newTotalPages = Math.ceil(visibleItems / itemsPerPage);
-      totalPagesElement.textContent = newTotalPages;
-
-      // Si no hay productos visibles, mostrar el mensaje de "No hay productos"
-      const noResultsMessage = document.getElementById('no-results-message');
-      if (visibleItems === 0) {
-        noResultsMessage.style.display = 'block';
-      } else {
-        noResultsMessage.style.display = 'none';
-      }
-
-      showPage(1); // Mostrar la primera página de los resultados filtrados
-    });
+    }
   });
 </script>
 
