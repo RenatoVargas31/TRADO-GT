@@ -52,66 +52,63 @@
 
                 <!-- INICIO -->
                 <div class="row justify-content-center">
-                    <div class="col-lg-12">
+                    <div class="col-lg-12 col-12">
                         <div class="card">
-                            <div th:if="${error != null}" class="alert alert-danger" th:text="${error}"></div>
-                            <div th:if="${message != null}" class="alert alert-danger" th:text="${message}"></div>
-                            <div th:if="${ErrorCantidad != null}" class="alert alert-warning" th:text="${ErrorCantidad}"></div>
                             <div class="card-body" style="width: 100%; height: 100%; padding: 20px;">
+                                <!-- Alerts-->
+                                <div th:if="${error != null}" class="alert alert-danger" th:text="${error}"></div>
+                                <div th:if="${message != null}" class="alert alert-danger" th:text="${message}"></div>
+                                <div th:if="${ErrorCantidad != null}" class="alert alert-warning" th:text="${ErrorCantidad}"></div>
+
                                 <!-- Empty cart message -->
                                 <div th:if="${carrito.isEmpty()}" style="text-align: center; margin-top: 50px;" class="mb-5">
                                     <h2 style="font-weight: bold; font-size: 24px;">Su carrito de compras está vacío</h2>
                                     <div class="mb-5 mt-5 justify-content-center">
                                         <img th:src="@{../images/carritovacio.png}" style="width: 200px; display: block; margin: 0 auto;">
                                     </div>
-
                                     <a th:href="@{/usuario/inicio}" class="btn btn-primary mb-5" style="padding: 10px 20px; border-radius: 20px; font-size: 16px; font-weight: bold; cursor: pointer; text-decoration: none;" >
                                         ¡Comienza a comprar!
                                     </a>
                                 </div>
-                                <!-- Cart table -->
-                                <div class="row" th:if="${!carrito.isEmpty()}">
-                                    <div class="col-md-12">
+
+                                <div class="row">
+                                    <div class="col-lg-12" th:if="${!carrito.isEmpty()}">
+                                        <!-- Cart table -->
                                         <div class="table-responsive">
                                             <table class="table table-centered mb-0 table-nowrap" >
                                                 <thead class="bg-light">
                                                 <tr>
-                                                    <th >Código</th>
-                                                    <th style="width: 120px">Producto</th>
-                                                    <th>Nombre</th>
-                                                    <th>Categoría, Subcategoría</th>
-                                                    <th>Precio Unit.</th>
+                                                    <th>Imagen</th>
+                                                    <th>Detalles</th>
                                                     <th>Cantidad</th>
                                                     <th>Total</th>
-                                                    <th class="text-center">Acción</th>
+                                                    <th></th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                <tr th:if="${mensaje != null}">
-                                                    <td colspan="4" class="text-center" th:text="${mensaje}"></td>
-                                                </tr>
-                                                <tr th:each="producto,iterStat : ${carrito}">
-                                                    <td th:text="${producto.productoEnZona.productoIdproducto.codigo}"></td>
+                                                <tr th:each="producto,iterStat : ${carrito}" style="height: 15px">
                                                     <td>
-                                                        <img th:src="@{'../../images/product/product' + ${producto.productoEnZona.productoIdproducto.id} + '.jpg'}" alt="product-img"
-                                                             title="product-img" class="avatar-md" />
+                                                        <img th:src="@{'/usuario/productoFoto/' + ${producto.productoEnZona.productoIdproducto.id}}" alt="product-img"
+                                                             title="product-img" class="avatar-md" style="height: 120px; width: 120px;" />
                                                     </td>
                                                     <td>
-                                                        <h5 class="font-size-14 text-truncate"><a th:href="@{'/usuario/productoDetalles?id=' + ${producto.productoEnZona.productoIdproducto.id} }" class="text-reset" th:text="${producto.productoEnZona.productoIdproducto.nombre}"></a></h5>
-                                                        <p class="mb-0">Proveedor : <span class="fw-medium" th:text="${producto.productoEnZona.productoIdproducto.proveedorIdproveedor.tienda}"></span></p>
+                                                        <small class="text-primary" th:text="${producto.productoEnZona.productoIdproducto.subcategoriaIdsubcategoria.categoriaIdcategoria.nombre} + ', ' + ${producto.productoEnZona.productoIdproducto.subcategoriaIdsubcategoria.nombre}"></small><br>
+                                                        <h4 class="font-size-14 text-truncate"><a th:href="@{'/usuario/productoDetalles?id=' + ${producto.productoEnZona.productoIdproducto.id} }" class="text-reset" th:text="${producto.productoEnZona.productoIdproducto.nombre} + '    '"></a><small class="text-bg-warning"  th:text="${producto.productoEnZona.productoIdproducto.codigo}"></small></h4>
+                                                        <small  th:text="'Precio Unitario: S/. '+ ${producto.productoEnZona.productoIdproducto.precio}"></small><br>
+                                                        <small class="mb-0">Vendido por: <span class="fw-medium" th:text="${producto.productoEnZona.productoIdproducto.proveedorIdproveedor.tienda}"></span></small>
                                                     </td>
-                                                    <td th:text="${producto.productoEnZona.productoIdproducto.subcategoriaIdsubcategoria.categoriaIdcategoria.nombre} + ', ' + ${producto.productoEnZona.productoIdproducto.subcategoriaIdsubcategoria.nombre}"></td>
 
-                                                    <td th:id="'precio-'+ ${iterStat.index + 1}"   th:text="'S/. '+ ${producto.productoEnZona.productoIdproducto.precio}"></td>
+                                                    <td  th:id="'precio-'+ ${iterStat.index + 1}"   th:text="'S/. '+ ${producto.productoEnZona.productoIdproducto.precio}" style="display: none;"></td>
 
                                                     <!-- Guardar la cantidad de producto -->
                                                     <td>
-                                                        <div style="width: 120px;" class="product-cart-touchspin">
-                                                            <button type="button" th:onclick="'disminuir(\'cantidad-' + ${iterStat.index + 1} + '\', \'precio-' + ${iterStat.index + 1} + '\', \'total-' + ${iterStat.index + 1} + '\')'">-</button>
-                                                            <label th:for="'cantidad-'+${iterStat.index + 1}"></label>
-                                                            <input class="w-50" th:id="'cantidad-'+${iterStat.index + 1}" type="text" th:value="${producto.cantidad}" readonly>
-                                                            <button type="button" th:onclick="'incrementar(\'cantidad-' + ${iterStat.index + 1} + '\', \'precio-' + ${iterStat.index + 1} + '\', \'total-' + ${iterStat.index + 1} + '\')'">+</button>
+                                                        <div style="width: 120px;" class="product-cart-touchspin d-flex align-items-center justify-content-between">
+                                                            <button type="button" class="btn btn-secondary btn-sm" th:onclick="'disminuir(\'cantidad-' + ${iterStat.index + 1} + '\', \'precio-' + ${iterStat.index + 1} + '\', \'total-' + ${iterStat.index + 1} + '\')'">-</button>
+                                                            <label th:for="'cantidad-'+${iterStat.index + 1}" class="sr-only"></label>
+                                                            <input class="form-control form-control-sm text-center mx-2" th:id="'cantidad-'+${iterStat.index + 1}" type="text" th:value="${producto.cantidad}" readonly style="width: 50px;">
+                                                            <button type="button" class="btn btn-secondary btn-sm" th:onclick="'incrementar(\'cantidad-' + ${iterStat.index + 1} + '\', \'precio-' + ${iterStat.index + 1} + '\', \'total-' + ${iterStat.index + 1} + '\')'">+</button>
                                                         </div>
+
                                                     </td>
 
                                                     <td th:id="'total-'+ ${iterStat.index + 1}"  th:text="'S/. ' + (${producto.productoEnZona.productoIdproducto.precio} * ${producto.cantidad})"></td>
@@ -233,7 +230,7 @@
                                                     <td style="width: 90px;" class="text-center">
                                                         <button type="button" class="btn btn-danger waves-effect waves-light btn-sm"
                                                                 th:data-bs-target="'#deleteProductModal' + ${producto.productoEnZona.productoIdproducto.id}"
-                                                                data-bs-toggle="modal">
+                                                                data-bs-toggle="modal" >
                                                             <i class="ri-indeterminate-circle-fill"></i>
                                                         </button>
                                                         <div class="modal fade"
@@ -266,47 +263,50 @@
                                                 </tbody>
                                             </table>
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="row" th:if="${!carrito.isEmpty()}">
-                                    <div class="col-md-12">
-                                        <div class="table-responsive">
-                                            <table class="table table-centered mb-0 table-nowrap">
-                                                <tbody>
-                                                <tr class="bg-light text-end">
-                                                    <th scope="row" colspan="8">Sub Total :</th>
-                                                    <td id="subtotal" th:text="'S/. ' + (${costoTotal != null ? costoTotal : 0.00})"></td>
-                                                </tr>
-                                                <tr class="bg-light text-end">
-                                                    <th scope="row" colspan="8">Costo de envío :</th>
-                                                    <td id="envio" th:text="'S/. ' + (${costoEnvio != null ? costoEnvio : 0.00})"></td>
-                                                </tr>
-                                                <tr class="bg-light text-end">
-                                                    <th scope="row" colspan="8">Total :</th>
-                                                    <td id="total"  th:text="'S/. ' + ((${costoTotal != null ? costoTotal : 0.00}) + (${costoEnvio != null ? costoEnvio : 0.00}))">
-                                                </tr>
-                                                <tr class="bg-light text-end">
-                                                    <th scope="row" colspan="8"></th>
-                                                    <td  th:classappend="${#lists.isEmpty(carrito)} ? 'disabled' : ''" th:attr="aria-disabled=${#lists.isEmpty(carrito)}" >
-                                                        <form th:action="@{/usuario/actualizarCantidad}" method="post">
-                                                            <input type="hidden" name="cantidad" id="input-cantidad" >
-                                                            <input type="hidden" name="total" id="input-total" />
-                                                            <button type="submit" class="btn btn-primary btn-sm" th:if="${!carrito.isEmpty}">Pagar</button>
+                                        <!-- Detalles de la compra -->
+                                        <div class="row" th:if="${!carrito.isEmpty()}">
+                                            <div class="col-md-12">
+                                                <div class="table-responsive">
+                                                    <table class="table table-centered mb-0 table-nowrap">
+                                                        <tbody>
+                                                        <tr class="bg-light text-end">
+                                                            <th scope="row" colspan="1">Sub total:</th>
+                                                            <td id="subtotal" th:text="'S/. ' + (${costoTotal != null ? costoTotal : 0.00})"></td>
+                                                        </tr>
+                                                        <tr class="bg-light text-end">
+                                                            <th scope="row" colspan="1">Costo de envío:</th>
+                                                            <td id="envio" th:text="'S/. ' + (${costoEnvio != null ? costoEnvio : 0.00})"></td>
+                                                        </tr>
+                                                        <tr class="bg-light text-end">
+                                                            <th scope="row" colspan="1">Monto final:</th>
+                                                            <td id="total"  th:text="'S/. ' + ((${costoTotal != null ? costoTotal : 0.00}) + (${costoEnvio != null ? costoEnvio : 0.00}))">
+                                                        </tr>
+                                                        <tr class="bg-light text-end">
+                                                            <th scope="row" colspan="1"></th>
+                                                            <td  th:classappend="${#lists.isEmpty(carrito)} ? 'disabled' : ''" th:attr="aria-disabled=${#lists.isEmpty(carrito)}" >
+                                                                <form th:action="@{/usuario/actualizarCantidad}" method="post">
+                                                                    <input type="hidden" name="cantidad" id="input-cantidad" >
+                                                                    <input type="hidden" name="total" id="input-total" />
+                                                                    <button type="submit" class="btn btn-primary btn-sm" th:if="${!carrito.isEmpty}">Pagar</button>
 
-                                                        </form>
-                                                    </td>
-                                                </tr>
-                                                </tbody>
-                                            </table>
+                                                                </form>
+                                                            </td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
 
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
+
+
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div> <!-- container-fluid -->
+            </div>
         </div>
 
 

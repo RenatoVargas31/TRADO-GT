@@ -296,7 +296,7 @@
                             <!-- Cuerpo -->
                             <div class="card-body ">
                                 <h6 class="text-center">Electrónica</h6>
-                                <p>Descubre lo último en tecnología con nuestros gadgets de vanguardia. ¡Lleva tu vida al siguiente</p>
+                                <p>Descubre lo último en tecnología con nuestros gadgets de vanguardia. ¡Lleva tu vida al siguiente nivel!</p>
                             </div>
                             <!-- Lista oculta -->
                             <div class="list-group" style="display: none; position: absolute; top: 100%; left: 0; z-index: 10; width: 100%;">
@@ -338,7 +338,7 @@
                                         <div class="card product-card" style="background-color: white; border: none; height: 300px; width: 100%; margin: 0; position: relative;">
                                             <!-- Imagen -->
                                             <div class="card-img-top" style="width: 100%; height: 200px; overflow: hidden; display: flex; justify-content: center; align-items: center;">
-                                                <img th:src="@{'../images/product/' + ${producto[4]}}" alt="Electrónica" class="img-fluid" style="width: 100%; height: 100%; object-fit: cover;">
+                                                <img th:src="@{'/usuario/productoFoto/' + ${producto[0]}}" alt="Electrónica" class="img-fluid" style="width: 100%; height: 100%; object-fit: cover;">
                                             </div>
                                             <div class="card-body" style="padding: 0; position: relative; overflow: hidden;">
                                                 <br>
@@ -346,27 +346,46 @@
                                             </div>
                                             <!-- Calificación con estrellas -->
                                             <div class="card-footer">
-                                                <small class="text-muted">Calificación: <span th:text="${producto[10]}"></span><i class="mdi mdi-star" style="color: gold;"></i></small>
+                                                <div class="d-inline-flex align-items-center justify-content-end">
+                                                    <div class="text-muted me-2" style="font-size: 14px;">
+                                                        <small th:each="i : ${#numbers.sequence(1, 5)}"
+                                                              th:classappend="${i <= producto[10] ? 'mdi mdi-star text-warning' :
+                                                                               (i - 1 < producto[10] && producto[10] < i ? 'mdi mdi-star-half text-warning' :
+                                                                               'mdi mdi-star-outline text-warning')}">
+                                                        </small>
+                                                    </div>
+                                                    <div class="text-muted" style="font-size: 14px;">
+                                                        <small th:if="${producto[12] == 0}">No hay reseñas</small>
+                                                        <small th:if="${producto[12] != 0}">
+                                                            <small th:text="${producto[10]} +'/5.0'"></small>
+                                                            (<small th:text="${producto[12]}"></small> reseñas)
+                                                        </small>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                     <!-- Cara Trasera -->
                                     <div class="card-back product-card" style="position: absolute; width: 100%; height: 100%; backface-visibility: hidden; background-color: #f8f9fa; border: none; transform: rotateY(180deg); display: flex; flex-direction: column; justify-content: center; align-items: center;">
-                                        <h6 th:text="${producto[1]}"></h6>
+                                        <h6 class="text-center" th:text="${producto[1]} + ' ' + ${producto[3]} + ' ' + ${producto[2]}"> </h6>
                                         <small th:text="${producto[6]}" style="text-align: center; padding: 0 10px; margin-bottom: 10px;"></small>
                                         <a th:href="@{'/usuario/productoDetalles?id=' + ${producto[0]} }" class="btn btn-primary btn-sm" type="button"><small >Ver detalles</small></a>
                                     </div>
 
+
                                 </div>
                             </div>
                         </div>
-                        <!-- Tarjeta bloqueada -->
+                        <!-- Tarjeta bloqueada
                         <div th:if="${productosTop.size() < 5}" th:each="i : ${#numbers.sequence(1, 5 - productosTop.size())}" class="col col-12 col-sm-6 col-md-4 col-lg-2 p-1" style="display: flex; justify-content: center;">
                             <div class="card product-card" style="background-color: #f0f0f0; border: none; height: 300px; width: 100%; margin: 0; display: flex; justify-content: center; align-items: center;">
                                 <div class="card-body" style="text-align: center; color: #ccc; flex-grow: 1; display: flex; justify-content: center; align-items: center;">
                                     Contenido no disponible
                                 </div>
                             </div>
+                        </div>-->
+                        <div th:if="${#lists.isEmpty(productosTop)}">
+                            <p>No hay productos disponibles</p>
                         </div>
                     </div>
                     <script>
@@ -418,7 +437,7 @@
                 <!-- Productos Recomendados -->
                 <br>
                 <div class="row">
-                    <div class="col-6">
+                    <div class="col-12 col-lg-6">
                         <h5>Mis últimos hallazgos favoritos</h5>
                         <hr>
                         <div class="card" style="background-color: white">
@@ -447,7 +466,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-6">
+                    <div class="col-12 col-lg-6">
                         <h5>Mis últimos pedidos</h5>
                         <hr>
                         <div class="card" style="background-color: white">

@@ -56,14 +56,14 @@
 
                 <!-- Subcategorías -->
                 <div class="row">
-                    <div class="card">
+                    <div class="card" style="height:130px">
                         <div class="card-body">
                             <div class="container">
                                 <!-- Subcategorias -->
                                 <div class="row flex-nowrap overflow-auto justify-content-start justify-content-md-center" style="gap: 10px;">
                                     <!-- Blusas -->
                                     <div class="col-6 col-sm-4 col-md-3 col-lg-2 text-center flex-shrink-0">
-                                        <a href="#">
+                                        <a th:href="@{/usuario/categoriaMujerFilter?categoria=1}">
                                             <img class="rounded-circle avatar-md img-fluid" alt="Blusas" th:src="@{../images/modaFemenina/blusa.jpeg}"
                                                  style="transition: transform 0.3s ease, box-shadow 0.3s ease; cursor: pointer; display: inline-block; transform-origin: center;"
                                                  onmouseover="this.style.transform='scale(1.1)'; this.style.boxShadow='0 4px 8px rgba(0, 0, 0, 0.2)';"
@@ -74,7 +74,7 @@
                                         </div>
                                     </div>
                                     <div class="col-6 col-sm-4 col-md-3 col-lg-2 text-center flex-shrink-0">
-                                        <a href="#">
+                                        <a th:href="@{/usuario/categoriaMujerFilter?categoria=2}">
                                             <img class="rounded-circle avatar-md img-fluid" alt="Short Mujer" th:src="@{../images/modaFemenina/short.jpeg}"
                                                  style="transition: transform 0.3s ease, box-shadow 0.3s ease; cursor: pointer; display: inline-block; transform-origin: center;"
                                                  onmouseover="this.style.transform='scale(1.1)'; this.style.boxShadow='0 4px 8px rgba(0, 0, 0, 0.2)';"
@@ -85,7 +85,7 @@
                                         </div>
                                     </div>
                                     <div class="col-6 col-sm-4 col-md-3 col-lg-2 text-center flex-shrink-0">
-                                        <a href="#">
+                                        <a th:href="@{/usuario/categoriaMujerFilter?categoria=3}">
                                             <img class="rounded-circle avatar-md img-fluid" alt="Polera Mujer" th:src="@{../images/modaFemenina/polera.jpg}"
                                                  style="transition: transform 0.3s ease, box-shadow 0.3s ease; cursor: pointer; display: inline-block; transform-origin: center;"
                                                  onmouseover="this.style.transform='scale(1.1)'; this.style.boxShadow='0 4px 8px rgba(0, 0, 0, 0.2)';"
@@ -96,7 +96,7 @@
                                         </div>
                                     </div>
                                     <div class="col-6 col-sm-4 col-md-3 col-lg-2 text-center flex-shrink-0">
-                                        <a href="#">
+                                        <a th:href="@{/usuario/categoriaMujerFilter?categoria=4}">
                                             <img class="rounded-circle avatar-md img-fluid" alt="Pantalones Mujer" th:src="@{../images/modaFemenina/pantalon.jpg}"
                                                  style="transition: transform 0.3s ease, box-shadow 0.3s ease; cursor: pointer; display: inline-block; transform-origin: center;"
                                                  onmouseover="this.style.transform='scale(1.1)'; this.style.boxShadow='0 4px 8px rgba(0, 0, 0, 0.2)';"
@@ -107,7 +107,7 @@
                                         </div>
                                     </div>
                                     <div class="col-6 col-sm-4 col-md-3 col-lg-2 text-center flex-shrink-0">
-                                        <a href="#">
+                                        <a th:href="@{/usuario/categoriaMujerFilter?categoria=5}">
                                             <img class="rounded-circle avatar-md img-fluid" alt="Vestidos" th:src="@{../images/modaFemenina/vestido.jpeg}"
                                                  style="transition: transform 0.3s ease, box-shadow 0.3s ease; cursor: pointer; display: inline-block; transform-origin: center;"
                                                  onmouseover="this.style.transform='scale(1.1)'; this.style.boxShadow='0 4px 8px rgba(0, 0, 0, 0.2)';"
@@ -262,6 +262,15 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="card" style="height: 200px">
+                                    <div class="card-body">
+                                        Hola
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Catálogo -->
@@ -293,10 +302,11 @@
                                     <hr>
                                     <!-- Cards -->
                                     <div class="row g-0">
-                                        <div th:if="${productList == null or #lists.isEmpty(productList)}" class="alert alert-warning text-center">
+                                        <strong th:text="'Resultados: '+${productList.size()}"></strong>
+                                        <div th:if="${productList == null or #lists.isEmpty(productList)}" class="alert alert-warning text-center mt-2">
                                             No hay productos disponibles
                                         </div>
-                                        <div th:each="product, iterStat : ${productList}" class="col-xl-3 col-sm-4" >
+                                        <div th:each="product, iterStat : ${productList}" class="col-xl-3 col-sm-4 mt-2" >
                                             <div class="card product-box"  style="max-height: 340px; height: 340px">
 
                                                 <a th:href="@{'/usuario/productoDetalles?id=' + ${product.id} }" class="text-decoration-none">
@@ -322,7 +332,7 @@
                                                             <a th:text="${product.nombre}" class="text-reset">Product Name</a>
                                                         </h5>
                                                         <!-- Banner del corazón (like) en la esquina superior derecha -->
-                                                        <div class="product-like" th:if="${product.isFavorite == 1}">
+                                                        <div class="product-like" th:if="${product.isFavorite == '1'}">
                                                             <div class="product-ribbon badge" style="position: absolute; top: 10px; right: 10px; color: red">
                                                                 <!-- Botón para enviar el formulario -->
                                                                 <div class="btn btn-danger "

@@ -53,14 +53,14 @@
         </div>
         <!-- Subcategorías -->
         <div class="row">
-          <div class="card">
+          <div class="card" style="height:130px">
             <div class="card-body">
               <div class="container">
                 <!-- Subcategorias -->
                 <div class="row flex-nowrap overflow-auto justify-content-start justify-content-md-center" style="gap: 10px;">
                   <!-- Blusas -->
                   <div class="col-6 col-sm-4 col-md-3 col-lg-2 text-center flex-shrink-0">
-                    <a href="#">
+                    <a th:href="@{/usuario/categoriaTecnologiaFilter?categoria=15}">
                       <img class="rounded-circle avatar-md img-fluid" alt="Auriculares" th:src="@{../images/tecnologia/audifono.jpeg}"
                            style="transition: transform 0.3s ease, box-shadow 0.3s ease; cursor: pointer; display: inline-block; transform-origin: center;"
                            onmouseover="this.style.transform='scale(1.1)'; this.style.boxShadow='0 4px 8px rgba(0, 0, 0, 0.2)';"
@@ -71,7 +71,7 @@
                     </div>
                   </div>
                   <div class="col-6 col-sm-4 col-md-3 col-lg-2 text-center flex-shrink-0">
-                    <a href="#">
+                    <a th:href="@{/usuario/categoriaTecnologiaFilter?categoria=14}">
                       <img class="rounded-circle avatar-md img-fluid" alt="Celulares" th:src="@{../images/tecnologia/celular.jpeg}"
                            style="transition: transform 0.3s ease, box-shadow 0.3s ease; cursor: pointer; display: inline-block; transform-origin: center;"
                            onmouseover="this.style.transform='scale(1.1)'; this.style.boxShadow='0 4px 8px rgba(0, 0, 0, 0.2)';"
@@ -82,7 +82,7 @@
                     </div>
                   </div>
                   <div class="col-6 col-sm-4 col-md-3 col-lg-2 text-center flex-shrink-0">
-                    <a href="#">
+                    <a th:href="@{/usuario/categoriaTecnologiaFilter?categoria=13}">
                       <img class="rounded-circle avatar-md img-fluid" alt="Tablets" th:src="@{../images/tecnologia/tablet.jpeg}"
                            style="transition: transform 0.3s ease, box-shadow 0.3s ease; cursor: pointer; display: inline-block; transform-origin: center;"
                            onmouseover="this.style.transform='scale(1.1)'; this.style.boxShadow='0 4px 8px rgba(0, 0, 0, 0.2)';"
@@ -93,7 +93,7 @@
                     </div>
                   </div>
                   <div class="col-6 col-sm-4 col-md-3 col-lg-2 text-center flex-shrink-0">
-                    <a href="#">
+                    <a th:href="@{/usuario/categoriaTecnologiaFilter?categoria=12}">
                       <img class="rounded-circle avatar-md img-fluid" alt="Laptops" th:src="@{../images/tecnologia/laptop.jpeg}"
                            style="transition: transform 0.3s ease, box-shadow 0.3s ease; cursor: pointer; display: inline-block; transform-origin: center;"
                            onmouseover="this.style.transform='scale(1.1)'; this.style.boxShadow='0 4px 8px rgba(0, 0, 0, 0.2)';"
@@ -104,7 +104,7 @@
                     </div>
                   </div>
                   <div class="col-6 col-sm-4 col-md-3 col-lg-2 text-center flex-shrink-0">
-                    <a href="#">
+                    <a th:href="@{/usuario/categoriaTecnologiaFilter?categoria=11}">
                       <img class="rounded-circle avatar-md img-fluid" alt="Computadoras" th:src="@{../images/tecnologia/pc.jpeg}"
                            style="transition: transform 0.3s ease, box-shadow 0.3s ease; cursor: pointer; display: inline-block; transform-origin: center;"
                            onmouseover="this.style.transform='scale(1.1)'; this.style.boxShadow='0 4px 8px rgba(0, 0, 0, 0.2)';"
@@ -121,12 +121,12 @@
         </div>
 
         <!-- Contenido -->
-        <div class="row">
+        <div class="row d-flex">
           <!-- Filtros -->
-          <div class="col-lg-3">
-            <div class="row mb-3">
+          <div class="col-lg-3 order-1 d-flex flex-column">
+            <div class="row mb-3 ">
               <div class="col">
-                <div class="card" style="max-height: 650px; overflow-y: auto;">
+                <div class="card" style="max-height: 950px; overflow-y: auto;">
                   <div class="card-header bg-transparent border-bottom">
                     <div class="row align-items-center">
                       <div class="col-md-6">
@@ -253,13 +253,14 @@
                       <br>
                     </form>
                   </div>
+                  <hr>
                 </div>
               </div>
             </div>
           </div>
 
           <!-- Catálogo -->
-          <div class="col-lg-9">
+          <div class="col-lg-9 order-2 d-flex flex-column">
             <div class="card" style="max-height: 1050px; overflow-y: auto; min-height: 500px">
               <div class="card-body">
                 <div class="container">
@@ -286,10 +287,11 @@
                   <hr>
                   <!-- Cards -->
                   <div class="row g-0">
-                    <div th:if="${productList == null or #lists.isEmpty(productList)}" class="alert alert-warning text-center">
+                    <strong th:text="'Resultados: '+${productList.size()}"></strong>
+                    <div th:if="${productList == null or #lists.isEmpty(productList)}" class="alert alert-warning text-center mt-2">
                       No hay productos disponibles
                     </div>
-                    <div th:each="product, iterStat : ${productList}" class="col-xl-3 col-sm-4" >
+                    <div th:each="product, iterStat : ${productList}" class="col-xl-3 col-sm-4 mt-2" >
 
                       <div class="card product-box" style="max-height: 340px; height: 340px">
                         <a th:href="@{'/usuario/productoDetalles?id=' + ${product.id} }" class="text-decoration-none">       <div class="product-img">
@@ -371,6 +373,7 @@
               </div>
             </div>
           </div>
+
         </div>
 
       </div> <!-- container-fluid -->

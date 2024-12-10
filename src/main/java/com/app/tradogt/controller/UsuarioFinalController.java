@@ -636,7 +636,7 @@ public class UsuarioFinalController {
            id_ProductoEnCarrito.setProductoenzonaProductoIdproducto(productoId);
            id_ProductoEnCarrito.setProductoenzonaZonaIdzona(zonaid);
 
-           if(stock>=cantidadP && cantidadP>=20) {
+           if(stock>=cantidadP && cantidadP>=12) {
                if (hayCarrito != null) {
                    //Hay carrito --> Añadimos el producto
                    Carrito miCarritoActual = carritoRepository.findByUsuarioIdusuarioAndIsDelete(usuario, (byte) 0);
@@ -644,7 +644,7 @@ public class UsuarioFinalController {
                    //Añado un nuevo producto
                    id_ProductoEnCarrito.setCarritoIdcarrito(miCarritoActual.getId());
                    //mensaje
-                   redirectAttributes.addFlashAttribute("mensajeProductNuevo", "Se ha añadido un nuevo producto: " + producto.getCodigo() + ' ' + producto.getNombre());
+                   redirectAttributes.addFlashAttribute("mensajeProductNuevo", "Se ha añadido un nuevo producto al carrito: " + producto.getCodigo() + ' ' + producto.getNombre());
                    misProductoEnCarrito.setCantidad(cantidadP);
                    misProductoEnCarrito.setCarritoIdcarrito(miCarritoActual);
                    misProductoEnCarrito.setId(id_ProductoEnCarrito);
@@ -659,7 +659,7 @@ public class UsuarioFinalController {
                    carritoRepository.save(miCarritoNuevo);
                    id_ProductoEnCarrito.setCarritoIdcarrito(miCarritoNuevo.getId());
                    //mensaje
-                   redirectAttributes.addFlashAttribute("mensajeProductNuevo", "Se ha añadido un nuevo producto: " + producto.getCodigo() + ' ' + producto.getNombre());
+                   redirectAttributes.addFlashAttribute("mensajeProductNuevo", "Se ha añadido un nuevo producto al carrito: " + producto.getCodigo() + ' ' + producto.getNombre());
 
                    misProductoEnCarrito.setCantidad(cantidadP);
                    misProductoEnCarrito.setCarritoIdcarrito(miCarritoNuevo);
@@ -670,11 +670,11 @@ public class UsuarioFinalController {
            } else if(cantidadP > stock ) {
                redirectAttributes.addFlashAttribute("MensajeAlerta", "No hay stock suficiente para este producto");
                return "redirect:/usuario/productoDetalles?id=" + productoId;
-           }else if(cantidadP==20) {
-               redirectAttributes.addFlashAttribute("mensajeProductNuevo", "Se ha añadido un nuevo producto: " + producto.getCodigo() + ' ' + producto.getNombre());
+           }else if(cantidadP==12) {
+               redirectAttributes.addFlashAttribute("mensajeProductNuevo", "Se ha añadido un nuevo producto al carrito: " + producto.getCodigo() + ' ' + producto.getNombre());
                return "redirect:/usuario/productoDetalles?id=" + productoId;
-           } else if(cantidadP <20 ){
-                   redirectAttributes.addFlashAttribute("MensajeAlerta", "Por favor, recuerda que la cantidad mínima para realizar una compra es de 20 productos. Ajusta tu pedido para continuar.");
+           } else if(cantidadP <12 ){
+                   redirectAttributes.addFlashAttribute("MensajeAlerta", "Por favor, recuerda que la cantidad mínima para realizar una compra es de 12 productos. Ajusta tu pedido para continuar.");
                    return "redirect:/usuario/productoDetalles?id=" + productoId;
            }else {
                //mensaje de no hay stock suficiente
@@ -1132,6 +1132,7 @@ public class UsuarioFinalController {
 
         model.addAttribute("coloresList", productosRepository.findDistinctColores(1));
         model.addAttribute("categoriasList",subCategoriaRepository.findSubcategorias(1));
+
         return "Usuario/CategoriaMujer-usuario";
     }
     @GetMapping("/categoriaHombre")

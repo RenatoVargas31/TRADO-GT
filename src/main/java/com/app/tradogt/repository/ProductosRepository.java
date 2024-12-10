@@ -60,7 +60,7 @@ public interface ProductosRepository extends JpaRepository<Producto, Integer> {
             "JOIN p.subcategoriaIdsubcategoria s " +  // Suponiendo que hay una relación mapeada
             "JOIN s.categoriaIdcategoria c " +        // Suponiendo que hay una relación mapeada
             "JOIN ProductoEnZona d ON p.id = d.productoIdproducto.id " + // Realizamos el JOIN con ProductoEnZona
-            "WHERE c.id = 1 AND d.zonaIdzona.id = :zona AND d.cantidad > 25") // Filtrar por categoría, zona y cantidad
+            "WHERE c.id = 1 AND d.zonaIdzona.id = :zona AND d.cantidad > 25 order by  d.contar desc") // Filtrar por categoría, zona y cantidad
     List<Producto> findProductRopaMujer(@Param("zona") int zona);
 
 
@@ -68,7 +68,7 @@ public interface ProductosRepository extends JpaRepository<Producto, Integer> {
             "JOIN p.subcategoriaIdsubcategoria s " +  // Suponiendo que hay una relación mapeada
             "JOIN s.categoriaIdcategoria c " +        // Suponiendo que hay una relación mapeada
             "JOIN ProductoEnZona d ON p.id = d.productoIdproducto.id " + // Realizamos el JOIN con ProductoEnZona
-            "WHERE c.id = 2 AND d.zonaIdzona.id = :zona AND d.cantidad > 25") // Filtrar por categoría, zona y cantidad
+            "WHERE c.id = 2 AND d.zonaIdzona.id = :zona AND d.cantidad > 25 order by  d.contar desc") // Filtrar por categoría, zona y cantidad
     List<Producto> findProductRopaHombre(@Param("zona") int zona);
 
     @Query("SELECT DISTINCT p.material FROM Producto p " +
@@ -114,7 +114,7 @@ public interface ProductosRepository extends JpaRepository<Producto, Integer> {
             "JOIN p.subcategoriaIdsubcategoria s " +  // Suponiendo que hay una relación mapeada
             "JOIN s.categoriaIdcategoria c " +        // Suponiendo que hay una relación mapeada
             "JOIN ProductoEnZona d ON p.id = d.productoIdproducto.id " + // Realizamos el JOIN con ProductoEnZona
-            "WHERE c.id = 3 AND d.zonaIdzona.id = :zona AND d.cantidad > 25") // Filtrar por categoría, zona y cantidad
+            "WHERE c.id = 3 AND d.zonaIdzona.id = :zona AND d.cantidad > 25 order by  d.contar desc") // Filtrar por categoría, zona y cantidad
     List<Producto> findProductElectronico(@Param("zona") int zona);
 
 
@@ -123,7 +123,7 @@ public interface ProductosRepository extends JpaRepository<Producto, Integer> {
             "JOIN p.subcategoriaIdsubcategoria s " +  // Suponiendo que hay una relación mapeada
             "JOIN s.categoriaIdcategoria c " +        // Suponiendo que hay una relación mapeada
             "JOIN ProductoEnZona d ON p.id = d.productoIdproducto.id " + // Realizamos el JOIN con ProductoEnZona
-            "WHERE c.id = 4 AND d.zonaIdzona.id = :zona AND d.cantidad > 25") // Filtrar por categoría, zona y cantidad
+            "WHERE c.id = 4 AND d.zonaIdzona.id = :zona AND d.cantidad > 25 order by  d.contar desc") // Filtrar por categoría, zona y cantidad
     List<Producto> findProductMuebles(@Param("zona") int zona);
 
     @Query("SELECT p FROM Producto p " +
@@ -249,5 +249,7 @@ public interface ProductosRepository extends JpaRepository<Producto, Integer> {
             + "ORDER BY SUM(pc.cantidad) DESC "
             + "LIMIT 5")
     List<ProductoMasVendidoDto> getProductosMasVendidos();
+
+
 
 }

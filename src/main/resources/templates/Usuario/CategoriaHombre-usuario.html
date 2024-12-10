@@ -58,13 +58,13 @@
 
         <!-- Subcategorías -->
         <div class="row">
-          <div class="card">
+          <div class="card" style="height:130px">
             <div class="card-body">
               <div class="container">
                 <!-- Subcategorias -->
                 <div class="row flex-nowrap overflow-auto justify-content-start justify-content-md-center" style="gap: 10px;">
                   <div class="col-6 col-sm-4 col-md-3 col-lg-2 text-center flex-shrink-0">
-                    <a href="#">
+                    <a th:href="@{/usuario/categoriaHombreFilter?categoria=6}">
                       <img class="rounded-circle avatar-md img-fluid" alt="Polos Hombre" th:src="@{../images/modaMasculina/polo.jpeg}"
                            style="transition: transform 0.3s ease, box-shadow 0.3s ease; cursor: pointer; display: inline-block; transform-origin: center;"
                            onmouseover="this.style.transform='scale(1.1)'; this.style.boxShadow='0 4px 8px rgba(0, 0, 0, 0.2)';"
@@ -75,7 +75,7 @@
                     </div>
                   </div>
                   <div class="col-6 col-sm-4 col-md-3 col-lg-2 text-center flex-shrink-0">
-                    <a href="#">
+                    <a th:href="@{/usuario/categoriaHombreFilter?categoria=7}">
                       <img class="rounded-circle avatar-md img-fluid" alt="Camisas Hombre"  th:src="@{../images/modaMasculina/camisa.jpeg}"
                            style="transition: transform 0.3s ease, box-shadow 0.3s ease; cursor: pointer; display: inline-block; transform-origin: center;"
                            onmouseover="this.style.transform='scale(1.1)'; this.style.boxShadow='0 4px 8px rgba(0, 0, 0, 0.2)';"
@@ -86,7 +86,7 @@
                     </div>
                   </div>
                   <div class="col-6 col-sm-4 col-md-3 col-lg-2 text-center flex-shrink-0">
-                    <a href="#">
+                    <a th:href="@{/usuario/categoriaHombreFilter?categoria=8}">
                       <img class="rounded-circle avatar-md img-fluid" alt="Poleras Hombre" th:src="@{../images/modaMasculina/polera.jpg}"
                            style="transition: transform 0.3s ease, box-shadow 0.3s ease; cursor: pointer; display: inline-block; transform-origin: center;"
                            onmouseover="this.style.transform='scale(1.1)'; this.style.boxShadow='0 4px 8px rgba(0, 0, 0, 0.2)';"
@@ -97,7 +97,7 @@
                     </div>
                   </div>
                   <div class="col-6 col-sm-4 col-md-3 col-lg-2 text-center flex-shrink-0">
-                    <a href="#">
+                    <a th:href="@{/usuario/categoriaHombreFilter?categoria=9}">
                       <img class="rounded-circle avatar-md img-fluid" alt="Chompas Hombre" th:src="@{../images/modaMasculina/chompa.jpeg}"
                            style="transition: transform 0.3s ease, box-shadow 0.3s ease; cursor: pointer; display: inline-block; transform-origin: center;"
                            onmouseover="this.style.transform='scale(1.1)'; this.style.boxShadow='0 4px 8px rgba(0, 0, 0, 0.2)';"
@@ -108,7 +108,7 @@
                     </div>
                   </div>
                   <div class="col-6 col-sm-4 col-md-3 col-lg-2 text-center flex-shrink-0">
-                    <a href="#">
+                    <a th:href="@{/usuario/categoriaHombreFilter?categoria=10}">
                       <img class="rounded-circle avatar-md img-fluid" alt="Pantalones Hombre" th:src="@{../images/modaMasculina/pantalon.jpg}"
                            style="transition: transform 0.3s ease, box-shadow 0.3s ease; cursor: pointer; display: inline-block; transform-origin: center;"
                            onmouseover="this.style.transform='scale(1.1)'; this.style.boxShadow='0 4px 8px rgba(0, 0, 0, 0.2)';"
@@ -295,10 +295,11 @@
 
                   <!-- Cards -->
                   <div class="row g-0">
-                    <div th:if="${productList == null or #lists.isEmpty(productList)}" class="alert alert-warning text-center">
+                    <strong th:text="'Resultados: '+${productList.size()}"></strong>
+                    <div th:if="${productList == null or #lists.isEmpty(productList)}" class="alert alert-warning text-center mt-2">
                       No hay productos disponibles
                     </div>
-                    <div th:each="product, iterStat : ${productList}" class="col-xl-3 col-sm-4">
+                    <div th:each="product, iterStat : ${productList}" class="col-xl-3 col-sm-4 mt-2">
                       <div class="card product-box"  style="max-height: 340px; height: 340px">
                         <a th:href="@{'/usuario/productoDetalles?id=' + ${product.id} }" class="text-decoration-none">
                           <div class="product-img">

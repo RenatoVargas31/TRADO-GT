@@ -67,44 +67,47 @@ public interface ProductoEnZonaRepository extends JpaRepository<ProductoEnZona, 
 
 
     //Productos por zona con más calificados
-    @Query(value = "SELECT " +
-            "    p.producto_idProducto AS ID_Producto, " +
-            "    pr.nombre AS Nombre_Producto, " +
-            "    pr.marca AS Marca, " +
-            "    pr.color AS Color, " +
-            "    pr.foto AS Foto, " +
-            "    pr.proveedor_idProveedor AS ID_Proveedor, " +
-            "    pr.descripcion AS Descripcion, " +
-            "    su.nombre AS Subcategoria, " +
-            "    ca.nombre AS Categoria, " +
-            "    p.zona_idZona AS ID_Zona, " +
-            "    AVG(r.calificacion) AS Calificacion_Promedio, " +
-            "    p.contar AS Cantidad " +
-            "FROM " +
-            "    ProductoEnZona p " +
-            "JOIN " +
-            "    Resena r ON r.Producto_idProducto = p.producto_idProducto " +
-            "JOIN " +
-            "    Producto pr ON pr.idProducto = p.producto_idProducto " +
-            "JOIN " +
-            "    SubCategoria su ON su.idSubCategoria = pr.subCategoria_idSubCategoria " +
-            "JOIN " +
-            "    Categoria ca ON ca.idCategoria = su.Categoria_idCategoria " +
-            "WHERE " +
-            "    p.zona_idZona = :idZona " +
-            "GROUP BY " +
-            "    p.producto_idProducto, " +
-            "    pr.nombre, " +
-            "    pr.foto, " +
-            "    pr.proveedor_idProveedor, " +
-            "    pr.descripcion, " +
-            "    su.nombre, " +
-            "    ca.nombre, " +
-            "    p.zona_idZona, " +
-            "    p.contar " +
-            "ORDER BY " +
-            "    p.contar DESC " +
-            "LIMIT 5",
+    @Query(value = "SELECT \n" +
+            "    p.producto_idProducto AS ID_Producto, \n" +
+            "    pr.nombre AS Nombre_Producto, \n" +
+            "    pr.marca AS Marca, \n" +
+            "    pr.color AS Color, \n" +
+            "    pr.foto AS Foto, \n" +
+            "    pr.proveedor_idProveedor AS ID_Proveedor, \n" +
+            "    pr.descripcion AS Descripcion, \n" +
+            "    su.nombre AS Subcategoria, \n" +
+            "    ca.nombre AS Categoria, \n" +
+            "    p.zona_idZona AS ID_Zona, \n" +
+            "    ROUND(AVG(r.calificacion), 1) AS Calificacion_Promedio, \n" +
+            "    p.contar AS Cantidad ,\n" +
+            "    count(r.Producto_idProducto) as NumeroResena\n" +
+            "FROM \n" +
+            "    ProductoEnZona p\n" +
+            "JOIN \n" +
+            "    Resena r ON r.Producto_idProducto = p.producto_idProducto\n" +
+            "JOIN \n" +
+            "    Producto pr ON pr.idProducto = p.producto_idProducto\n" +
+            "JOIN \n" +
+            "    SubCategoria su ON su.idSubCategoria = pr.subCategoria_idSubCategoria\n" +
+            "JOIN \n" +
+            "    Categoria ca ON ca.idCategoria = su.Categoria_idCategoria\n" +
+            "WHERE \n" +
+            "    p.zona_idZona = :idZona\n" +
+            "GROUP BY \n" +
+            "    p.producto_idProducto, \n" +
+            "    pr.nombre, \n" +
+            "    pr.marca, \n" +
+            "    pr.color, \n" +
+            "    pr.foto, \n" +
+            "    pr.proveedor_idProveedor, \n" +
+            "    pr.descripcion, \n" +
+            "    su.nombre, \n" +
+            "    ca.nombre, \n" +
+            "    p.zona_idZona, \n" +
+            "    p.contar\n" +
+            "ORDER BY \n" +
+            "    p.contar DESC\n" +
+            "LIMIT 5;",
             nativeQuery = true)
     List<Object[]> productosTop(@Param("idZona") int idZona);
 
