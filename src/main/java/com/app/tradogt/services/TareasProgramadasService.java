@@ -63,21 +63,22 @@ public class TareasProgramadasService {
                     orden.setEstadoordenIdestadoorden(estadoEnAduanas.get());
                     // Enviamos notificación a agente
                     String messagetoAgente = "La orden #" + orden.getCodigo() + " está actualmente en aduanas.";
-                    String messagetoUser = "Tu orden #" + orden.getCodigo() + " ha llegado al país.";
+                    String messagetoUser = "Tu orden #" + orden.getCodigo() + " está actualmente en aduanas.";
                     notificationService.orderChangeNotification(messagetoAgente, orden.getAgentcompraIdusuario(), orden);
                     notificationService.orderChangeNotification(messagetoUser, orden.getUsuarioIdusuario(), orden);
                 } else if (orden.getFechaEnRuta() != null && orden.getFechaEnRuta().isEqual(today)) {
                     orden.setEstadoordenIdestadoorden(estadoEnRuta.get());
                     // Enviamos notificación a agente
                     String messagetoAgente = "La orden #" + orden.getCodigo() + " está en ruta hacia el destino.";
-                    String messagetoUser = "Tu orden #" + orden.getCodigo() + " ha llegado al país.";
+                    String messagetoUser = "Tu orden #" + orden.getCodigo() + " está en ruta hacia el destino.";
                     notificationService.orderChangeNotification(messagetoAgente, orden.getAgentcompraIdusuario(), orden);
                     notificationService.orderChangeNotification(messagetoUser, orden.getUsuarioIdusuario(), orden);
                 } else if (orden.getFechaRecibido() != null && orden.getFechaRecibido().isEqual(today)) {
                     orden.setEstadoordenIdestadoorden(estadoRecibido.get());
                     // Enviamos notificación a agente
+                    System.out.println("ocurre esto xddddd (ojo aqui)");
                     String messagetoAgente = "La orden #" + orden.getCodigo() + " ha sido recibida.";
-                    String messagetoUser = "Tu orden #" + orden.getCodigo() + " ha llegado al país.";
+                    String messagetoUser = "Tu orden #" + orden.getCodigo() + " ha sido recibida.";
                     notificationService.orderChangeNotification(messagetoAgente, orden.getAgentcompraIdusuario(), orden);
                     notificationService.orderChangeNotification(messagetoUser, orden.getUsuarioIdusuario(), orden);
                 }

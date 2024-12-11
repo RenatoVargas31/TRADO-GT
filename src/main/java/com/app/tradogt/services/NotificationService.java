@@ -32,6 +32,8 @@ public class NotificationService {
     // Crear y enviar una notificación en tiempo real
     //Esta notificación indicará el cambio de estado de la respectiva orden
     public void orderChangeNotification(String message, Usuario usuario, Orden orden) {
+        System.out.println("Creando notificación para usuario ID: " + usuario.getId() + " con mensaje: " + message);
+
         // Crear y guardar la notificación en la base de datos
         Notificacion notificacion = new Notificacion();
         notificacion.setContenido(message);
@@ -41,13 +43,35 @@ public class NotificationService {
         notificacion.setLeido(false);  // La notificación es no leída por defecto
         notificacionRepository.save(notificacion);
 
+        // Seleccionar una imagen dependiendo del estado de la orden
+        String imageUrl;
+        switch (orden.getEstadoordenIdestadoorden().getId()) {
+            case 4: // Arribo al país
+                imageUrl = "/images/notiIcons/orden-arriboPais-svgrepo-com.svg";
+                break;
+            case 5: // En aduanas
+                imageUrl = "/images/notiIcons/orden-aduanas-svgrepo-com.svg";
+                break;
+            case 6: // En ruta
+                imageUrl = "/images/notiIcons/orden-enCamino-svgrepo-com.svg";
+                break;
+            case 7: // Recibido
+                imageUrl = "/images/notiIcons/orden-recibida-svgrepo-com.svg";
+                break;
+            default:
+                imageUrl = "/images/notiIcons/order-svgrepo-com.svg";
+        }
+
         // Enviar la notificación en tiempo real a través de Pusher
         Map<String, String> notificationData = new HashMap<>();
         notificationData.put("message", message);
         notificationData.put("orderId", orden.getCodigo()); // Suponiendo que `codigo` es el identificador de la orden
         notificationData.put("userId", usuario.getId().toString()); // Incluye el ID del usuario
+        notificationData.put("imageUrl", imageUrl); // Agrega la URL de la imagen
 
         pusher.trigger("ordenes-" + usuario.getId(), "orden-actualizada", notificationData);
+        System.out.println("Enviando notificación: " + message + " al canal ordenes-" + usuario.getId());
+
     }
 
     // Obtener todas las notificaciones no leídas para un usuario específico

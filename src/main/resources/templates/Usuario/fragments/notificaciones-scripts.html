@@ -7,7 +7,7 @@
         document.addEventListener("DOMContentLoaded", function () {
             // Obtén el ID del usuario autenticado desde el backend
             const userId = /*[[${usuarioAutenticado.id}]]*/ 'default';
-            fetch(`/agente/notificaciones?usuarioId=${userId}`)
+            fetch(`/usuario/notificaciones?usuarioId=${userId}`)
                 .then(response => response.json())
                 .then(data => {
                     const notificationContainer = document.getElementById("notification-container");
