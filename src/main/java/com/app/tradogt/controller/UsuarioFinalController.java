@@ -1125,6 +1125,7 @@ public class UsuarioFinalController {
             redirectAttributes.addFlashAttribute("message", "Reseña creada sin imagen.");
         }
 
+
         return "redirect:/usuario/resenas";
     }
 
