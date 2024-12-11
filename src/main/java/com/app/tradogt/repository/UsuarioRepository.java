@@ -201,7 +201,8 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
             CONCAT(u.nombre, " ", u.apellido) AS nombres,
             COUNT(DISTINCT asignados.idUsuario) AS usAsignados,
             COUNT(DISTINCT o1.idOrden) AS importaFin,
-            AVG(o2.valoracionAgente) AS calificacion
+            IFNULL(AVG(o2.valoracionAgente), 0) AS calificacion,
+            u.ruc AS ruc
         FROM 
             Usuario u
         LEFT JOIN 
@@ -233,20 +234,31 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
 
     boolean existsByDni(String dni);
     boolean existsByCorreo(String correo);
-    @Query("SELECT (SUM(CASE WHEN u.isActivated = 1 THEN 1 ELSE 0 END) * 100.0) / COUNT(u) FROM Usuario u")
-    double porcentajeUsuariosActivos();
+    @Query(value = "SELECT (SUM(CASE WHEN u.isActivated = 1 THEN 1 ELSE 0 END) * 100.0) / COUNT(*) FROM Usuario u\n" +
+            "join Distrito d on d.idDistrito = u.distrito_idDistrito\n" +
+            "where d.zona_idZona=:zonalId;", nativeQuery = true)
+    double porcentajeUsuariosActivos(@Param("zonalId") Integer zonalId);
 
-    @Query("SELECT COUNT(u) FROM Usuario u WHERE u.isActivated = 1")
-    int countUsuariosActivos();
+    @Query(value = "SELECT COUNT(*) FROM Usuario u \n" +
+            "join Distrito d ON d.idDistrito = u.distrito_idDistrito\n" +
+            "WHERE u.isActivated = 1 and d.zona_idZona=:zonalId", nativeQuery = true)
+    int countUsuariosActivos(@Param("zonalId") Integer zonalId);
 
-    @Query("SELECT COUNT(u) FROM Usuario u WHERE u.isActivated = 0")
-    int countUsuariosInactivos();
+    @Query(value = "SELECT COUNT(*) FROM Usuario u join Distrito d ON d.idDistrito = u.distrito_idDistrito WHERE u.isActivated = 0 and d.zona_idZona=:zonalId", nativeQuery = true)
+    int countUsuariosInactivos(@Param("zonalId") Integer zonalId);
 
-    @Query("SELECT COUNT(u) FROM Usuario u ")
-    int countUsuarios();
+    @Query(value = "SELECT COUNT(*) FROM Usuario u join Distrito d ON d.idDistrito = u.distrito_idDistrito WHERE  d.zona_idZona=:zonalId", nativeQuery = true)
+    int countUsuarios(@Param("zonalId") Integer zonalId);
 
     //Con esto obtengo la lista de administradores zonales de determinada zona y así se les envía las notificaciones correspondientes
     List<Usuario> findByRolIdrolAndZonaIdzona(Rol rol, Zona zona);
+
+
+    @Query(value = "SELECT count(u.admZonal_idUsuario)\n" +
+            "\n" +
+            "from Usuario u \n" +
+            "where u.admZonal_idUsuario=:idUser;", nativeQuery = true)
+    int countAgenteACargo(@Param("idUser") Integer idUser);
 }
 
 

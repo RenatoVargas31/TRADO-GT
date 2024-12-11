@@ -38,9 +38,8 @@
 
               <div class="page-title-right">
                 <ol class="breadcrumb m-0">
-                  <li class="breadcrumb-item"><a href="/adminzonal/dashboard">Inicio</a></li>
-
-                  <li class="breadcrumb-item active">Nuevo Agente</li>
+                  <li class="breadcrumb-item">Productividad</li>
+                  <li class="breadcrumb-item active"><a href="javascript: void(0);">Crear nuevo Agente</a></li>
                 </ol>
               </div>
 
@@ -52,6 +51,7 @@
         <div class="row">
           <div class="col-xl-12">
             <div class="card">
+              <div th:if="${ErrorAgente != null}" class="alert alert-warning" th:text="${ErrorAgente}"></div>
               <div class="card-body">
                 <div th:if="${agenteSize >=3}" class="alert alert-danger">
                   No puede registrar más de 3 agentes.

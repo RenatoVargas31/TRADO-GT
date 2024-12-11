@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>Dashboard</title>
+    <title>Panel de control</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- CSS BASE -->
     <meta th:replace="~{Common/cssBase :: css_Base}">
@@ -36,177 +36,176 @@
     <!-- ============================================================== -->
     <div class="main-content">
         <div class="page-content">
-            <div class="container-fluid">
+            <!-- Banner -->
 
-                <!-- start page title -->
-                <div class="row">
-                    <div class="col-12">
-                        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                            <h4 class="mb-sm-0">Dashboard</h4>
 
-                            <div class="page-title-right">
-                                <ol class="breadcrumb m-0">
-                                    <li class="breadcrumb-item active">Home</li>
-                                    <li class="breadcrumb-item"><a href="javascript: void(0);">Dashboard</a></li>
-                                </ol>
+            <div class="container-fluid" style="background-color: whitesmoke">
+                <!-- DASHBOARD -->
+                <div class="row ">
+                    <h5>Panel de control</h5>
+                    <hr>
+                    <!-- Grafica de actividad -->
+                    <div class="row">
+                        <div class="col-lg-4 col-4">
+                            <div class="card shadow-sm border-0">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center">
+                                        <div class="flex-1 overflow-hidden">
+                                            <p class="card-title mb-2">Usuarios activos</p>
+                                            <h4 class="mb-0 text-success" th:text="${active}"></h4>
+                                        </div>
+                                        <div class="icon-box bg-light-primary text-success ms-auto rounded-circle d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
+                                            <i class="ri-emotion-fill font-size-24"></i>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-
+                        </div>
+                        <div class="col-lg-4 col-4">
+                            <div class="card shadow-sm border-0 ">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center">
+                                        <div class="flex-1 overflow-hidden">
+                                            <p class="card-title mb-2">Usuarios inactivos</p>
+                                            <h4 class="mb-0 text-danger" th:text="${inactive}"></h4>
+                                        </div>
+                                        <div class="icon-box bg-light-primary text-danger ms-auto rounded-circle d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
+                                            <i class="ri-emotion-unhappy-fill font-size-24"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-4">
+                            <div class="card shadow-sm border-0 ">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center">
+                                        <div class="flex-1 overflow-hidden">
+                                            <p class="card-title mb-2">Usuarios registrados</p>
+                                            <h4 class="mb-0 text-info" th:text="${usuariosTotal}"></h4>
+                                        </div>
+                                        <div class="icon-box bg-light-primary text-info ms-auto rounded-circle d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
+                                            <i class="ri-team-fill font-size-24"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <!-- end page title -->
-
-
-
-
-
-                <div class="row">
-                    <div class="col-xl-8">
-
-                        <div class="card">
+                    <!-- Grafica del stock de productos -->
+                    <div class="row ">
+                        <div class="card" >
                             <div class="card-body">
-
-                                <h4 class="card-title mb-4">Stock de productos</h4>
-                                <span class="d-none d-xl-inline-block ms-1" th:text="${usuarioAutenticado.nombre}+' '+${usuarioAutenticado.apellido}" ></span>
-
+                                <h4 class="card-title mb-2">Disponibilidad de stock por producto</h4>
+                                <div class="row text-center">
+                                    <!-- Stock Total -->
+                                    <div class="col-sm-4">
+                                        <div class="mt-4">
+                                            <p class="mb-2 text-muted text-truncate" style="font-size: 12px;">
+                                                <i class="mdi mdi-circle text-success font-size-10 me-1"></i>Stock total:
+                                            </p>
+                                            <h6 class="mb-0 text-muted" style="font-size: 14px;" th:text="${stockTotal}"></h6>
+                                        </div>
+                                    </div>
+                                    <!-- Producto con Menor Stock -->
+                                    <div class="col-sm-4">
+                                        <div class="mt-4">
+                                            <p class="mb-2 text-muted text-truncate" style="font-size: 12px;">
+                                                <i class="mdi mdi-circle text-danger font-size-10 me-1"></i>Producto cpn menor stock:
+                                            </p>
+                                            <h6 class="mb-0 text-muted" style="font-size: 12px;" th:text="${productoStockMenor.nombre}"></h6>
+                                            <p class="mb-0 text-muted" style="font-size: 12px;" th:text="'(' + ${productoStockMenor.stock} + ' unidades)'"></p>
+                                        </div>
+                                    </div>
+                                    <!-- Stock Promedio -->
+                                    <div class="col-sm-4">
+                                        <div class="mt-4">
+                                            <p class="mb-2 text-muted text-truncate" style="font-size: 12px;">
+                                                <i class="mdi mdi-circle text-info font-size-10 me-1"></i>Stock promedio:
+                                            </p>
+                                            <h6 class="mb-0 text-muted" style="font-size: 14px;" th:text="${stockPromedio}"></h6>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div>
                                     <div id="bar_chart1_top10_3" class="apex-charts" dir="ltr"></div>
                                 </div>
                             </div>
-
-                            <div class="card-body border-top text-center">
-                                <div class="row">
-                                    <div class="col-sm-4">
-                                        <div class="mt-4 mt-sm-0">
-                                            <p class="mb-2 text-muted text-truncate"><i class="mdi mdi-circle text-info font-size-10 me-1"></i> Stock Total :</p>
-                                            <div class="d-inline-flex">
-                                                <h5 class="mb-0" th:text="${stockTotal}"></h5>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-sm-4">
-                                        <div class="mt-4 mt-sm-0">
-                                            <p class="mb-2 text-muted text-truncate"><i class="mdi mdi-circle text-danger font-size-10 me-1"></i> Producto con Menor Stock:</p>
-                                            <div class="d-inline-flex">
-                                                <h6 class="mb-0" th:text="${productoStockMenor.nombre}" style="font-size: 12px;"></h6><br><br>
-                                                <p class="mb-0" th:text="'(' + ${productoStockMenor.stock} + ' unidades)'"></p>
-                                            </div>
-                                        </div>
-                                    </div>
-
-
-
-                                    <div class="col-sm-4">
-                                        <div class="mt-4 mt-sm-0">
-                                            <p class="mb-2 text-muted text-truncate"><i class="mdi mdi-circle text-success font-size-10 me-1"></i> Stock Promedio :</p>
-                                            <div class="d-inline-flex">
-                                                <h5 class="mb-0" th:text="${stockPromedio}"></h5>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
                         </div>
                     </div>
-
-                    <div class="col-xl-4">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="d-flex">
-                                    <div class="flex-1 overflow-hidden">
-                                        <p class="text-truncate font-size-14 mb-2">N° Usuarios Activos</p>
-                                        <h4 class="mb-0" th:text="${active}"></h4>
-                                    </div>
-                                    <div class="text-success ms-auto">
-                                        <i class="ri-emotion-fill font-size-24"></i>
+                    <!-- Grafica de actividad del usuario
+                    <div class="col-xl-3 order-1 order-xl-2">
+                        <div class="row">
+                            <div class="col-lg-12 col-4">
+                                <div class="card shadow-sm border-0">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center">
+                                            <div class="flex-1 overflow-hidden">
+                                                <p class="text-truncate font-size-14 text-muted mb-2">Usuarios activos</p>
+                                                <h4 class="mb-0 text-success" th:text="${active}"></h4>
+                                            </div>
+                                            <div class="icon-box bg-light-primary text-success ms-auto rounded-circle d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
+                                                <i class="ri-emotion-fill font-size-24"></i>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-
-                            <div class="card-body border-top py-3">
-                                <div class="text-truncate">
-                                    <span class="badge bg-success-subtle text-success  font-size-11"><i class="mdi mdi-menu-up"> </i> 5% </span>
-                                    <span class="text-muted ms-2">Mes anterior</span>
+                            <div class="col-lg-12 col-4">
+                                <div class="card shadow-sm border-0 ">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center">
+                                            <div class="flex-1 overflow-hidden">
+                                                <p class="text-truncate font-size-14 text-muted mb-2">Usuarios inactivos</p>
+                                                <h4 class="mb-0 text-danger" th:text="${inactive}"></h4>
+                                            </div>
+                                            <div class="icon-box bg-light-primary text-danger ms-auto rounded-circle d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
+                                                <i class="ri-emotion-unhappy-fill font-size-24"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-12 col-4">
+                                <div class="card shadow-sm border-0 ">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center">
+                                            <div class="flex-1 overflow-hidden">
+                                                <p class="text-truncate font-size-14 text-muted mb-2">Usuarios registrados</p>
+                                                <h4 class="mb-0 text-info" th:text="${usuariosTotal}"></h4>
+                                            </div>
+                                            <div class="icon-box bg-light-primary text-info ms-auto rounded-circle d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
+                                                <i class="ri-team-fill font-size-24"></i>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-
-
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="d-flex">
-                                    <div class="flex-1 overflow-hidden">
-                                        <p class="text-truncate font-size-14 mb-2">N° Usuarios Inactivos</p>
-                                        <h4 class="mb-0" th:text="${inactive}"></h4>
-                                    </div>
-                                    <div class="text-danger ms-auto">
-                                        <i class="ri-emotion-unhappy-fill font-size-24"></i>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-body border-top py-3">
-                                <div class="text-truncate">
-                                    <span class="badge bg-success-subtle text-success  font-size-11"><i class="mdi mdi-menu-up"> </i> 10% </span>
-                                    <span class="text-muted ms-2">Mes anterior</span>
-                                </div>
-                            </div>
-                        </div>
-
-
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="d-flex">
-                                    <div class="flex-1 overflow-hidden">
-                                        <p class="text-truncate font-size-14 mb-2">N° Usuarios Registrados</p>
-                                        <h4 class="mb-0" th:text="${usuariosTotal}"></h4>
-                                    </div>
-                                    <div class="text-primary ms-auto">
-                                        <i class="ri-team-fill font-size-24"></i>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-body border-top py-3">
-                                <div class="text-truncate">
-                                    <span class="badge bg-success-subtle text-success  font-size-11"><i class="mdi mdi-menu-up"> </i> 7.2% </span>
-                                    <span class="text-muted ms-2">Mes anterior</span>
-                                </div>
-                            </div>
-                        </div>
-
-
-                        <!-- end row -->
-
-
-                    </div>
+                    </div>-->
                 </div>
-                <!-- end row -->
 
                 <div class="row">
                     <div class="col-lg-4">
-                        <div class="card">
+                        <div class="card" style="max-height: 450px">
                             <div class="card-body">
-                                <h4 class="card-title mb-4">Top 10 productos más importados en la zona</h4>
-
+                                <h4 class="card-title mb-2">Raking de los 10 productos más importados en la zona</h4>
                                 <div id="bar_chart1_top10_2" class="apex-charts" dir="ltr"></div>
                             </div>
                         </div><!--end card-->
                     </div>
                     <div class="col-lg-4">
-                        <div class="card">
+                        <div class="card" style="max-height: 450px">
                             <div class="card-body">
-                                <h4 class="card-title mb-4">Top 10 importadores</h4>
-
+                                <h4 class="card-title mb-2">Ranking de los 10 mejores vendedores</h4>
                                 <div id="bar_chart2_top10_2" class="apex-charts" dir="ltr"></div>
                             </div>
                         </div><!--end card-->
                     </div>
                     <div class="col-lg-4">
-                        <div class="card">
+                        <div class="card" style="max-height: 450px">
                             <div class="card-body">
-                                <h4 class="card-title mb-4">Usuarios Inactivos/Activos</h4>
-
+                                <h4 class="card-title mb-2">Estado de actividad de Usuarios</h4>
                                 <div id="pie_chart_AdminZonal_2" class="apex-charts" dir="ltr"></div>
                             </div>
                         </div><!--end card-->
@@ -268,11 +267,11 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-sm-6">
-                        <script>document.write(new Date().getFullYear())</script> © Nazox.
+                        <script>document.write(new Date().getFullYear())</script> © TRADO.
                     </div>
                     <div class="col-sm-6">
                         <div class="text-sm-end d-none d-sm-block">
-                            Crafted with <i class="mdi mdi-heart text-danger"></i> by Themesdesign
+                            Crafted with <i class="mdi mdi-heart text-danger"></i> by TelesoftGT
                         </div>
                     </div>
                 </div>

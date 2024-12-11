@@ -296,7 +296,19 @@ SELECT
 
     Optional<Orden> findByCodigo(String codigo);
 
-    List<Orden> findAllByAgentcompraIdusuario(Usuario usuario);
+    @Query(value = "SELECT \n" +
+            "    CONCAT(ag.nombre, ' ', ag.apellido) AS Agente,\n" +
+            "    o.codigo AS Codigo,\n" +
+            "    o.fechaCreacion AS Fecha,\n" +
+            "    eo.nombre AS Estado,\n" +
+            "    CONCAT(u.nombre, ' ', u.apellido) AS Cliente,\n" +
+            "    COALESCE(o.valoracionAgente, 'Sin calificación') AS Valoración\n" +
+            "FROM Orden o \n" +
+            "JOIN Usuario u ON u.idUsuario = o.Usuario_idUsuario\n" +
+            "JOIN EstadoOrden eo ON eo.idEstadoOrden = o.estadoOrden_idEstadoOrden\n" +
+            "JOIN Usuario ag ON ag.idUsuario = o.agentCompra_idUsuario\n" +
+            "WHERE ag.admZonal_idUsuario =:userid;", nativeQuery = true)
+    List<Object[]> findAllByAgentcompraIdusuario(int userid);
 
     List<Orden> findAllByUsuarioIdusuario(Usuario idUsuario);
 

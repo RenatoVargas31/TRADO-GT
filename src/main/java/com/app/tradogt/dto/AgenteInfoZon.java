@@ -9,5 +9,6 @@ public interface AgenteInfoZon {
     Integer getUsasignados();
     Integer getImportafin();
     Double getCalificacion();
+    String getRuc();
 
 }

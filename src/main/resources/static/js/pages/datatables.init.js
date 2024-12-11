@@ -14,14 +14,38 @@ $(document).ready(function () {
 $(document).ready(function () {
     var a = $("#datatable-buttons").DataTable({
         lengthChange: !1,
-        language: {paginate: {previous: "<i class='mdi mdi-chevron-left'>", next: "<i class='mdi mdi-chevron-right'>"}},
-        drawCallback: function () {
-            $(".dataTables_paginate > .pagination").addClass("pagination-rounded")
+        pageLength: 7,
+        language: {
+            paginate: {
+                previous: "<i class='mdi mdi-chevron-left'></i>",
+                next: "<i class='mdi mdi-chevron-right'></i>"
+            },
+            emptyTable: "No hay datos disponibles en la tabla",
+            zeroRecords: "No se encontraron coincidencias",
+            info: "Mostrando de _START_ a _END_ registros de un total de _TOTAL_ registros",
+            infoEmpty: "Mostrando de 0 a 0 registros de un total de 0 registros",
+            infoFiltered: "(filtrado de _MAX_ registros totales)",
+            lengthMenu: "Mostrar _MENU_ registros",
+            search: "Buscar:",
+            loadingRecords: "Cargando...",
+            processing: "Procesando..."
         },
+        drawCallback: function () {
+            $(".dataTables_paginate > .pagination").addClass("pagination-rounded");
+        },
+        buttons: ["csv", "excel", "pdf"],
+        columnDefs: [
+            { targets: -1, searchable: false }, // Deshabilitar búsqueda en la última columna
+            { targets: -1, orderable: false },
+            { targets: 0, orderable: false }
+        ],
+        order: [[2, 'desc']] // Ordena por la tercera columna (índice 2) en orden descendente
     });
+
     a.buttons().container().appendTo("#datatable-buttons_wrapper .col-md-6:eq(0)");
     $(".dataTables_length select").addClass("form-select form-select-sm");
 });
+
 //DATATABLES - SUPERADMIN
 //AdminZonal - Inicio
 $(document).ready(function () {

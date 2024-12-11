@@ -115,9 +115,9 @@ public class AdminZonalController {
     @GetMapping("/dashboard")
     public String showDashboard(Model model) {
         int zonaId = getAuthenticatedUser().getZonaIdzona().getId();
-        model.addAttribute("active", usuarioRepository.countUsuariosActivos());
-        model.addAttribute("inactive", usuarioRepository.countUsuariosInactivos());
-        model.addAttribute("usuariosTotal", usuarioRepository.countUsuarios());
+        model.addAttribute("active", usuarioRepository.countUsuariosActivos(zonaId));
+        model.addAttribute("inactive", usuarioRepository.countUsuariosInactivos(zonaId));
+        model.addAttribute("usuariosTotal", usuarioRepository.countUsuarios(zonaId));
         model.addAttribute("stockTotal", productoEnZonaRepository.countStockTotal(zonaId));
         model.addAttribute("stockPromedio", productoEnZonaRepository.stockPorProducto(zonaId));
         model.addAttribute("productoStockMenor", productoEnZonaRepository.productStockMenor(zonaId).get(0));
@@ -321,7 +321,10 @@ public class AdminZonalController {
         List<Usuario> usuarios = usuarioRepository.findAll();
         model.addAttribute("usuarios", usuarios);
 
-        List<Orden> ordenes = ordenRepository.findAllByAgentcompraIdusuario(usuarioRepository.findByIdUsuario(4));
+        //Obtenemos usuario
+        int userid =getAuthenticatedUser().getId();
+
+        List<Object[]> ordenes = ordenRepository.findAllByAgentcompraIdusuario(userid);
         model.addAttribute("ordenes", ordenes);
 
 
@@ -342,6 +345,10 @@ public class AdminZonalController {
     @PostMapping("/saveAgente")
     public String saveAgente(@ModelAttribute("agente") Usuario usuario, BindingResult bindingResult, RedirectAttributes attr, Model model) {
         int zonaIdZonal = getAuthenticatedUser().getZonaIdzona().getId();
+        //Vereficamos si no hay mas de 3 agentes asignados/ creados
+        int agentes = usuarioRepository.countAgenteACargo(getAuthenticatedUserId());
+
+
         // Verificar si el correo ya está registrado en la base de datos
         if (usuarioRepository.existsByCorreo(usuario.getCorreo())) {
             bindingResult.rejectValue("correo", "error.correo", "El correo electrónico ya está registrado.");
@@ -354,11 +361,18 @@ public class AdminZonalController {
         if (bindingResult.hasErrors()) {
             model.addAttribute("listaDistritos", distritoRepository.findByZonaIdzonaId(zonaIdZonal));
             return "AdminZonal/nuevoAgente-AdminZonal"; // Vuelve al formulario con el mensaje de error
-        } else {
+        } else if (agentes>=3){
+            attr.addFlashAttribute("ErrorAgente", "Has alcanzado el límite de 3 agentes de compra a cargo.");
+            return "AdminZonal/nuevoAgente-AdminZonal";
+        }else {
             //Asignar una contraseña por random de 10 dígitos y que combine número y letras
             String password = PasswordGenerator.generateRandomPassword();
             System.out.println(password);
             usuario.setContrasena(passwordEncoder.encode(password));
+
+
+
+
             // Si no hay errores, proceder con el guardado del usuario
             attr.addFlashAttribute("msg", "Agente " + (usuario.getId() == null ? "creado exitosamente" : "actualizado exitosamente"));
             usuario.setIsActivated(Byte.parseByte("1"));
@@ -487,8 +501,9 @@ public class AdminZonalController {
     @ResponseBody
     public Map<String, Object> getCountUsuarios() {
         // Obtener el porcentaje de usuarios activos
-        double porcentajeActivos = usuarioRepository.porcentajeUsuariosActivos();
+        double porcentajeActivos = usuarioRepository.porcentajeUsuariosActivos(getAuthenticatedUser().getZonaIdzona().getId());
 
+        System.out.println("Holaaaaa "+ porcentajeActivos);
         // Crear el mapa de respuesta con los porcentajes
         Map<String, Object> response = new HashMap<>();
         response.put("active", porcentajeActivos); // Porcentaje de usuarios activos
