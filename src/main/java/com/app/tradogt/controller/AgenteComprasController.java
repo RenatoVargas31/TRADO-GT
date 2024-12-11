@@ -77,13 +77,49 @@ public class AgenteComprasController {
         Usuario usuario = usuarioRepository.findByCorreo(correoUsuario);  // Método para buscar usuario por correo
         return usuario.getId(); // Retornar el ID del agente autenticado
     }
-
+    /*
     @GetMapping("/notificaciones")
     @ResponseBody
     public List<Notificacion> obtenerNotificaciones(@RequestParam("usuarioId") int usuarioId) {
         Usuario usuario = usuarioRepository.findById(usuarioId).get();
         return notificationService.getUnreadNotifications(usuario);
     }
+     */
+
+    @GetMapping("/notificaciones")
+    @ResponseBody
+    public List<Map<String, String>> obtenerNotificaciones(@RequestParam("usuarioId") int usuarioId) {
+        Usuario usuario = usuarioRepository.findById(usuarioId).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        // Obtener las notificaciones no leídas
+        List<Notificacion> notificaciones = notificationService.getUnreadNotifications(usuario);
+
+        // Transformar las notificaciones en una estructura enriquecida con URLs
+        return notificaciones.stream().map(notif -> {
+            Map<String, String> data = new HashMap<>();
+            data.put("contenido", notif.getContenido());
+            data.put("orderId", notif.getOrden().getCodigo());
+            data.put("imageUrl", getImageUrlForOrder(notif.getOrden())); // Generar la URL de la imagen
+            data.put("idImportador",notif.getOrden().getUsuarioIdusuario().getId().toString());
+            return data;
+        }).collect(Collectors.toList());
+    }
+
+    // Método auxiliar para obtener la URL de la imagen según el estado de la orden
+    private String getImageUrlForOrder(Orden orden) {
+        if (orden == null || orden.getEstadoordenIdestadoorden() == null) {
+            return "/images/notiIcons/default-notification.svg";
+        }
+
+        switch (orden.getEstadoordenIdestadoorden().getId()) {
+            case 4: return "/images/notiIcons/orden-arriboPais-svgrepo-com.svg";
+            case 5: return "/images/notiIcons/orden-aduanas-svgrepo-com.svg";
+            case 6: return "/images/notiIcons/orden-enCamino-svgrepo-com.svg";
+            case 7: return "/images/notiIcons/orden-recibida-svgrepo-com.svg";
+            default: return "/images/notiIcons/order-svgrepo-com.svg";
+        }
+    }
+
 
     @GetMapping("/inicio")
     public String showInicio() {
@@ -443,11 +479,12 @@ public class AgenteComprasController {
             ordenRepository.save(orden);
 
             // Crear y enviar la notificación
-            if (optionalUsuario.isPresent()) {
+            /*if (optionalUsuario.isPresent()) {
                 Usuario usuario = optionalUsuario.get();
                 String mensaje = "La orden #" + orden.getCodigo() + " ha cambiado su estado a 'En proceso'.";
                 notificationService.orderChangeNotification(mensaje, usuario, orden);
             }
+             */
 
             // Agregar un mensaje flash para la confirmación
             redirectAttributes.addFlashAttribute("mensaje", "La orden ha sido validada con éxito.");

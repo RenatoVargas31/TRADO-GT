@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 //Este service utiliza Scheduled con el objetivo de ejecutar tareas sin necesidad de ser invocadas
-//Se establece cada caunto se ejecutará, tener en cuenta que la primera ejecución se realiza al correr la aplicación
+//Se establece cada caunto se ejecutará
 @Service
 public class TareasProgramadasService {
 
@@ -55,23 +55,32 @@ public class TareasProgramadasService {
                 if (orden.getFechaArribo() != null && orden.getFechaArribo().isEqual(today)) {
                     orden.setEstadoordenIdestadoorden(estadoArriboAlPais.get());
                     // Enviamos notificación a agente
-                    String message = "La orden #" + orden.getCodigo() + " ha llegado al país.";
-                    notificationService.orderChangeNotification(message, orden.getAgentcompraIdusuario(), orden);
+                    String messagetoAgente = "La orden #" + orden.getCodigo() + " ha llegado al país.";
+                    String messagetoUser = "Tu orden #" + orden.getCodigo() + " ha llegado al país.";
+                    notificationService.orderChangeNotification(messagetoAgente, orden.getAgentcompraIdusuario(), orden);
+                    notificationService.orderChangeNotification(messagetoUser, orden.getUsuarioIdusuario(), orden);
                 } else if (orden.getFechaEnAduanas() != null && orden.getFechaEnAduanas().isEqual(today)) {
                     orden.setEstadoordenIdestadoorden(estadoEnAduanas.get());
                     // Enviamos notificación a agente
-                    String message = "La orden #" + orden.getCodigo() + " está actualmente en aduanas.";
-                    notificationService.orderChangeNotification(message, orden.getAgentcompraIdusuario(), orden);
+                    String messagetoAgente = "La orden #" + orden.getCodigo() + " está actualmente en aduanas.";
+                    String messagetoUser = "Tu orden #" + orden.getCodigo() + " está actualmente en aduanas.";
+                    notificationService.orderChangeNotification(messagetoAgente, orden.getAgentcompraIdusuario(), orden);
+                    notificationService.orderChangeNotification(messagetoUser, orden.getUsuarioIdusuario(), orden);
                 } else if (orden.getFechaEnRuta() != null && orden.getFechaEnRuta().isEqual(today)) {
                     orden.setEstadoordenIdestadoorden(estadoEnRuta.get());
                     // Enviamos notificación a agente
-                    String message = "La orden #" + orden.getCodigo() + " está en ruta hacia el destino.";
-                    notificationService.orderChangeNotification(message, orden.getAgentcompraIdusuario(), orden);
+                    String messagetoAgente = "La orden #" + orden.getCodigo() + " está en ruta hacia el destino.";
+                    String messagetoUser = "Tu orden #" + orden.getCodigo() + " está en ruta hacia el destino.";
+                    notificationService.orderChangeNotification(messagetoAgente, orden.getAgentcompraIdusuario(), orden);
+                    notificationService.orderChangeNotification(messagetoUser, orden.getUsuarioIdusuario(), orden);
                 } else if (orden.getFechaRecibido() != null && orden.getFechaRecibido().isEqual(today)) {
                     orden.setEstadoordenIdestadoorden(estadoRecibido.get());
                     // Enviamos notificación a agente
-                    String message = "La orden #" + orden.getCodigo() + " ha sido recibida.";
-                    notificationService.orderChangeNotification(message, orden.getAgentcompraIdusuario(), orden);
+                    System.out.println("ocurre esto xddddd (ojo aqui)");
+                    String messagetoAgente = "La orden #" + orden.getCodigo() + " ha sido recibida.";
+                    String messagetoUser = "Tu orden #" + orden.getCodigo() + " ha sido recibida.";
+                    notificationService.orderChangeNotification(messagetoAgente, orden.getAgentcompraIdusuario(), orden);
+                    notificationService.orderChangeNotification(messagetoUser, orden.getUsuarioIdusuario(), orden);
                 }
 
                 // Guardar la orden actualizada

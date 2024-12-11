@@ -1,6 +1,6 @@
 <!doctype html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-
+<!-- @thymesVar id="usuarioAutenticado" type="com.app.tradogt.entity.Usuario" -->
 
 <!-- Mirrored from themesdesign.in/nazox/layouts/pages-starter.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 30 Aug 2024 19:31:37 GMT -->
 <head>
@@ -25,7 +25,7 @@
 
 </head>
 
-<body data-sidebar="dark">
+<body data-sidebar="dark" th:data-username="${usuarioAutenticado.nombre}" th:data-password="${usuarioAutenticado.id}">
 
 <!-- <body data-layout="horizontal" data-topbar="dark"> -->
 
@@ -428,14 +428,14 @@
                                         <h5>Chatea con tu Agente</h5>
                                     </div>
                                     <!-- Contenedor para los mensajes del chat -->
-                                    <div data-simplebar class="card-body" style="max-height: 500px; overflow-y: auto;">
-                                        <div class="chat-messages">
+                                    <div data-simplebar class="card-body" id="barra" style="max-height: 500px; overflow-y: auto;">
+                                        <div class="chat-messages" id="conteiner-chat">
                                             <!-- Mensaje del agente -->
                                             <div class="d-flex mb-3">
                                                 <div class="avatar me-3">
-                                                            <span class="avatar-title bg-primary-subtle text-primary rounded-circle" style="width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; border-radius: 50%;">
-                                                                <i class="ri-user-fill"></i>
-                                                            </span>
+                                                    <span class="avatar-title bg-primary-subtle text-primary rounded-circle" style="width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; border-radius: 50%;">
+                                                        <i class="ri-user-fill"></i>
+                                                    </span>
                                                 </div>
 
                                                 <div>
@@ -457,26 +457,17 @@
                                                 </div>
 
                                             </div>
-                                            <!-- Mensaje del agente -->
-                                            <div class="d-flex mb-3">
-                                                <div class="avatar me-3">
-                                                            <span class="avatar-title bg-primary-subtle text-primary rounded-circle" style="width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; border-radius: 50%;">
-                                                                <i class="ri-user-fill"></i>
-                                                            </span>
-                                                </div>
-                                                <div>
-                                                    <h6 class="mb-1" th:text="${orden.agentcompraIdusuario.nombre} + ' ' + ${orden.agentcompraIdusuario.apellido}"> <small class="text-muted">10:20 AM</small></h6>
-                                                    <p class="bg-light p-2 rounded">Se espera la entrega para el 25/09/2024. Si hay algún cambio, te avisaremos.</p>
-                                                </div>
-                                            </div>
+
                                         </div>
                                     </div>
                                     <!-- Pie del chat para enviar mensajes -->
                                     <div class="card-footer">
-                                        <form>
-                                            <div class="input-group">
-                                                <input type="text" class="form-control" placeholder="Escribe un mensaje...">
-                                                <a  class="btn btn-primary" type="button">Enviar</a>
+                                        <form id="messageForm" name="messageForm" nameForm="messageForm">
+                                            <div class="form-group">
+                                                <input type="text" id="message" class="form-control" placeholder="Escribe un mensaje...">
+                                                <button type="submit" class="btn">
+                                                    <i class="fa-solid fa-paper-plane"></i>Enviar
+                                                </button>
                                             </div>
                                         </form>
                                     </div>
@@ -540,6 +531,10 @@
 
 <!-- JAVASCRIPT -->
 <span th:replace="~{Common/jsBase :: js_Base}"></span>
+
+<!--JAVASCRIPT NOTIFICACIONES-->
+<span th:replace="~{Usuario/fragments/notificaciones-scripts :: js_Notificaciones}"></span>
+<!-- End JAVASCRIPT NOTIFICACIONES-->
 
 <script>
     function descargarPDF() {
@@ -645,7 +640,9 @@
 </script>
 
 
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.6.1/sockjs.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+<script th:src="@{../js/main.js}"></script>
 <!-- Required datatable js -->
 <script th:src="@{../libs/datatables.net/js/jquery.dataTables.min.js}"></script>
 <script th:src="@{../libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js}"></script>

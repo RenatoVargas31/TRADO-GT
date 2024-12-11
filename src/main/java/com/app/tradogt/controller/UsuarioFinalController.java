@@ -836,6 +836,7 @@ public class UsuarioFinalController {
     @PostMapping("/agregarComentario")
     public String agregarComentario(@RequestParam("cuerpo") String cuerpo,
                                     @RequestParam("publicacionId") Integer publicacionId,
+                                    RedirectAttributes redirectAttributes,
                                     Model model) {
         // Buscar la publicación por su ID
         int id = getAuthenticatedUserId();
@@ -858,6 +859,8 @@ public class UsuarioFinalController {
         comentarioRepository.save(comentario);
 
         // Redirigir nuevamente a la publicación para ver el comentario agregado
+        redirectAttributes.addFlashAttribute("successMessage", "¡Comentario agregado exitosamente!");
+
         return "redirect:/usuario/verPublicacion/" + publicacionId;
     }
 
@@ -1022,7 +1025,7 @@ public class UsuarioFinalController {
     }
 
     @PostMapping("/nuevaPublicacion")
-    public String crearPublicacion(@ModelAttribute("publicacion") Publicacion publicacion, BindingResult result, Model model) {
+    public String crearPublicacion(@ModelAttribute("publicacion") Publicacion publicacion, BindingResult result, RedirectAttributes redirectAttributes, Model model) {
         int id = getAuthenticatedUserId();
 
 
@@ -1038,6 +1041,8 @@ public class UsuarioFinalController {
         publicacionRepository.save(publicacion);
 
         // Redirigir a la lista de publicaciones después de crear la nueva publicación
+        redirectAttributes.addFlashAttribute("successMessage", "Publicación creada exitosamente.");
+
         return "redirect:/usuario/comunidad";
     }
 
@@ -1119,6 +1124,7 @@ public class UsuarioFinalController {
         } else {
             redirectAttributes.addFlashAttribute("message", "Reseña creada sin imagen.");
         }
+
 
         return "redirect:/usuario/resenas";
     }
@@ -1327,6 +1333,13 @@ public class UsuarioFinalController {
             return "Usuario/carrito-usuario";
         }
         return "Usuario/billing-info-usuario";
+    }
+
+    @GetMapping("/notificaciones")
+    @ResponseBody
+    public List<Notificacion> obtenerNotificaciones(@RequestParam("usuarioId") int usuarioId) {
+        Usuario usuario = usuarioRepository.findById(usuarioId).get();
+        return notificationService.getUnreadNotifications(usuario);
     }
 
     //Guardar los datos de pago

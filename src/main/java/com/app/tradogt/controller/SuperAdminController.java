@@ -22,6 +22,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.sql.DataSource;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -567,13 +568,138 @@ public class SuperAdminController {
     public String viewProductoNuevo(
             @ModelAttribute FormProducto formProducto,
             @RequestParam(value = "foto", required = false) MultipartFile foto,
-            RedirectAttributes redirectAttributes) {
+            RedirectAttributes redirectAttributes,
+            Model model) {
+
+        Producto producto = formProducto.getProducto();
+        boolean hasErrors = false;
+
+        if (producto.getNombre() == null || producto.getNombre().trim().isEmpty() || !producto.getNombre().matches("[a-zA-Z0-9\\s]+")) {
+            model.addAttribute("nombreError", "El nombre del producto es obligatorio y debe contener solo letras, números y espacios.");
+            hasErrors = true;
+        }
+
+        if (producto.getDescripcion() == null || producto.getDescripcion().trim().isEmpty() || producto.getDescripcion().length() > 250) {
+            model.addAttribute("descripcionError", "La descripción es obligatoria y no puede exceder los 250 caracteres.");
+            hasErrors = true;
+        }
+
+        if (producto.getCantidad() == null || producto.getCantidad() < 0) {
+            model.addAttribute("cantidadError", "La cantidad debe ser un número entero positivo.");
+            hasErrors = true;
+        }
+
+        if (producto.getPrecio() == null || producto.getPrecio().compareTo(BigDecimal.ZERO) <= 0) {
+            model.addAttribute("precioError", "El precio debe ser un número decimal positivo.");
+            hasErrors = true;
+        }
+
+        if (producto.getPeso() == null || producto.getPeso().compareTo(BigDecimal.ZERO) <= 0) {
+            model.addAttribute("pesoError", "El peso debe ser un número positivo.");
+            hasErrors = true;
+        }
+
+        if (producto.getProveedorIdproveedor() == null) {
+            model.addAttribute("proveedorError", "Debe seleccionar un proveedor válido.");
+            hasErrors = true;
+        }
+
+        if (producto.getSubcategoriaIdsubcategoria() == null) {
+            model.addAttribute("subcategoriaError", "Debe seleccionar una subcategoría válida.");
+            hasErrors = true;
+        }
+
+
+
+        if (producto.getMarca() != null && producto.getMarca().length() > 45) {
+            model.addAttribute("marcaError", "La marca no puede exceder los 45 caracteres.");
+            hasErrors = true;
+        }
+
+        if (producto.getColor() != null  && producto.getColor().length() > 45) {
+            model.addAttribute("colorError", "El color no puede exceder los 45 caracteres.");
+            hasErrors = true;
+        }
+
+        if (producto.getModelo() != null  &&  producto.getModelo().length() > 45) {
+            model.addAttribute("modeloError", "El modelo no puede exceder los 45 caracteres.");
+            hasErrors = true;
+        }
+
+        if (producto.getMaterial() != null  &&  producto.getMaterial().length() > 45) {
+            model.addAttribute("materialError", "El material no puede exceder los 45 caracteres.");
+            hasErrors = true;
+        }
+
+//no obligatorios
+
+        if (producto.getTalla().length() > 45) {
+            model.addAttribute("tallaError", "La talla no puede exceder los 45 caracteres.");
+            hasErrors = true;
+        }
+
+        if (producto.getAncho().length() > 45) {
+            model.addAttribute("anchoError", "El ancho no puede exceder los 45 caracteres.");
+            hasErrors = true;
+        }
+
+        if (producto.getAlto().length() > 45) {
+            model.addAttribute("altoError", "El alto no puede exceder los 45 caracteres.");
+            hasErrors = true;
+        }
+
+        if (producto.getProfundidad().length() > 45) {
+            model.addAttribute("profundidadError", "La profundidad no puede exceder los 45 caracteres.");
+            hasErrors = true;
+        }
+
+        if (producto.getResolucion().length() > 45) {
+            model.addAttribute("resolucionError", "La resolucion no puede exceder los 45 caracteres.");
+            hasErrors = true;
+        }
+
+        if (producto.getRam().length() > 45) {
+            model.addAttribute("ramError", "La ram no puede exceder los 45 caracteres.");
+            hasErrors = true;
+        }
+
+        if (producto.getAlmacenamiento().length() > 45) {
+            model.addAttribute("almacenamientoError", "El almacenamiento no puede exceder los 45 caracteres.");
+            hasErrors = true;
+        }
+
+        // Validaciones por zona
+        for (ProductoEnZona zona : new ProductoEnZona[]{
+                formProducto.getProductoEnZonaNorte(),
+                formProducto.getProductoEnZonaSur(),
+                formProducto.getProductoEnZonaEste(),
+                formProducto.getProductoEnZonaOeste()
+        }) {
+            if (zona.getCantidad() == null || zona.getCantidad() < 0) {
+                model.addAttribute("zonaCantidadError", "La cantidad en cada zona debe ser un número entero positivo.");
+                hasErrors = true;
+            }
+            if (zona.getCostoEnvio() == null || zona.getCostoEnvio().compareTo(BigDecimal.ZERO) < 0) {
+                model.addAttribute("zonaCostoEnvioError", "El costo de envío en cada zona debe ser un número positivo.");
+                hasErrors = true;
+            }
+        }
+
+        if (foto != null && !foto.isEmpty() && foto.getSize() > 200 * 1024) { // 80 KB
+            model.addAttribute("fotoError", "La foto no debe exceder los 200 KB.");
+            hasErrors = true;
+        }
+
+        if (hasErrors) {
+            model.addAttribute("formProducto", formProducto);
+            model.addAttribute("subcategorias", subCategoriaRepository.findAll());
+            model.addAttribute("proveedores", proveedorRepository.findAll());
+            return "SuperAdmin/productoNuevo-SAdmin";
+        }
 
 
         try {
             // 1. Obtener el Producto desde el formulario
-            Producto producto = formProducto.getProducto();
-
             productosRepository.save(producto);
 
             producto.setCodigo(ProductCodeGenerator.generateProductCode(producto));
@@ -584,8 +710,8 @@ public class SuperAdminController {
             // 2. Verificar si se subió una foto
             if (foto != null && !foto.isEmpty()) {
                 // Verificar el tamaño del archivo (máximo 80 KB)
-                if (foto.getSize() > 80 * 1024) { // 80 KB = 80 * 1024 bytes
-                    redirectAttributes.addFlashAttribute("error", "La imagen no debe exceder los 80 KB.");
+                if (foto.getSize() > 200 * 1024) { // 80 KB = 80 * 1024 bytes
+                    redirectAttributes.addFlashAttribute("error", "La imagen no debe exceder los 200 KB.");
                     return "redirect:/superadmin/productoNuevoForm";
                 }
 
@@ -630,7 +756,9 @@ public class SuperAdminController {
         }
 
         // Redirigir al formulario de nuevo producto
-        return "redirect:/superadmin/productoNuevoForm";
+
+        redirectAttributes.addFlashAttribute("successMessage", "Producto creado exitosamente.");
+        return "redirect:/superadmin/productoLista";
     }
 
 
