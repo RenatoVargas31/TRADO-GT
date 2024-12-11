@@ -1,6 +1,6 @@
 <!doctype html>
 <html xmlns:th="http://www.thymeleaf.org" lang="es">
-
+<!-- @thymesVar id="usuarioAutenticado" type="com.app.tradogt.entity.Usuario" -->
 <head>
     <meta charset="utf-8" />
     <title>Detalles de orden</title>
@@ -18,7 +18,7 @@
 
 </head>
 
-<body data-sidebar="dark">
+<body data-sidebar="dark" th:data-username="${usuarioAutenticado.nombre}" th:data-password="${usuarioAutenticado.id}">
 
 <!-- <body data-layout="horizontal" data-topbar="dark"> -->
 
@@ -570,30 +570,30 @@
                             <div class="card-header bg-light">
                                 <h5>Chat con el Importador</h5>
                             </div>
-                            <div data-simplebar class="card-body" style="max-height: 250px;">
-                                <div class="chat-messages">
+                            <div data-simplebar class="card-body" id="barra" style="max-height: 250px;">
+                                <div class="chat-messages" id="conteiner-chat">
                                     <!-- Mensaje del agente (debe estar a la derecha) -->
                                     <div class="d-flex justify-content-end mb-3">
                                         <div>
                                             <h6 class="mb-1 text-end">
-                                                <span th:text="${orden.agentcompraIdusuario.nombre} + ' ' + ${orden.agentcompraIdusuario.apellido}"></span>
+                                                <span th:text="${usuarioAutenticado.nombre} + ' ' + ${usuarioAutenticado.apellido}"></span>
                                                 <small class="text-muted">10:15 AM</small>
                                             </h6>
                                             <p class="bg-primary text-white p-2 rounded">Hola, el pedido ya está en aduanas. ¿Tienes alguna pregunta?</p>
                                         </div>
                                         <div class="avatar ms-3">
-                <span class="avatar-title bg-primary text-white rounded-circle" style="width: 50px; height: 50px; display: flex; justify-content: center; align-items: center;">
-                    <i class="ri-user-fill"></i>
-                </span>
+                                            <span class="avatar-title bg-primary text-white rounded-circle" style="width: 50px; height: 50px; display: flex; justify-content: center; align-items: center;">
+                                                <i class="ri-user-fill"></i>
+                                            </span>
                                         </div>
                                     </div>
 
                                     <!-- Mensaje del importador (debe estar a la izquierda) -->
                                     <div class="d-flex mb-3">
                                         <div class="avatar me-3">
-                <span class="avatar-title bg-primary-subtle text-primary rounded-circle" style="width: 50px; height: 50px; display: flex; justify-content: center; align-items: center;">
-                    <i class="ri-user-fill"></i>
-                </span>
+                                            <span class="avatar-title bg-primary-subtle text-primary rounded-circle" style="width: 50px; height: 50px; display: flex; justify-content: center; align-items: center;">
+                                                <i class="ri-user-fill"></i>
+                                            </span>
                                         </div>
                                         <div>
                                             <h6 class="mb-1">
@@ -604,30 +604,18 @@
                                         </div>
                                     </div>
 
-                                    <!-- Mensaje del agente (debe estar a la derecha) -->
-                                    <div class="d-flex justify-content-end mb-3">
-                                        <div>
-                                            <h6 class="mb-1 text-end">
-                                                <span th:text="${orden.agentcompraIdusuario.nombre} + ' ' + ${orden.agentcompraIdusuario.apellido}"></span>
-                                                <small class="text-muted">10:20 AM</small>
-                                            </h6>
-                                            <p class="bg-primary text-white p-2 rounded">Se espera la entrega para el 25/09/2024. Si hay algún cambio, te avisaremos.</p>
-                                        </div>
-                                        <div class="avatar ms-3">
-                <span class="avatar-title bg-primary text-white rounded-circle" style="width: 50px; height: 50px; display: flex; justify-content: center; align-items: center;">
-                    <i class="ri-user-fill"></i>
-                </span>
-                                        </div>
-                                    </div>
+
                                 </div>
                             </div>
 
 
                             <div class="card-footer">
-                                <form>
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" placeholder="Escribe un mensaje...">
-                                        <button class="btn btn-primary" type="button">Enviar</button>
+                                <form id="messageForm" name="messageForm" nameForm="messageForm">
+                                    <div class="form-group">
+                                        <input type="text" id="message" class="form-control" placeholder="Escribe un mensaje...">
+                                        <button type="submit" class="btn">
+                                            <i class="fa-solid fa-paper-plane"></i>Enviar
+                                        </button>
                                     </div>
                                 </form>
                             </div>
@@ -772,6 +760,9 @@
 
 
 <!-- Required datatable js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.6.1/sockjs.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+<script th:src="@{../js/main.js}"></script>
 <script th:src="@{../libs/datatables.net/js/jquery.dataTables.min.js}"></script>
 <script th:src="@{../libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js}"></script>
 <!-- Buttons examples -->
