@@ -77,10 +77,7 @@ function send(event) {
     event.preventDefault();
 }
 
-/**
- * Handles the received message and updates the chat interface accordingly.
- * param {Object} payload - The payload containing the message data.
- */
+
 function onMessageReceived(payload) {
 
     var currentDate = new Date();
@@ -98,41 +95,40 @@ function onMessageReceived(payload) {
         if(message.sender === username){
             var messageText = document.createTextNode(message.content);
             htmlCode = `<div class="d-flex justify-content-end mb-3">
-                                    <div>
-                                        <h6 class="mb-1 text-end">
-                                            <span type="text">` + message.sender + `</span>
-                                            <small class="text-muted">` + timeString + `</small>
-                                        </h6>
-                                        <p class="bg-primary text-white p-2 rounded">` + message.content + `</p>
-                                    </div>
-                                    <div class="avatar ms-3">
-                                        <span class="avatar-title bg-primary text-white rounded-circle" style="width: 50px; height: 50px; display: flex; justify-content: center; align-items: center;">
-                                            <i class="ri-user-fill"></i>
-                                        </span>
-                                    </div>
-                                </div>`;
+                            <div>
+                                <h6 class="mb-1 text-end">
+                                    <span type="text">` + message.sender + `</span>
+                                    <small class="text-muted">` + timeString + `</small>
+                                </h6>
+                                <p class="bg-primary text-white p-2 rounded">` + message.content + `</p>
+                            </div>
+                            <div class="avatar ms-3">
+                                <span class="avatar-title bg-primary text-white rounded-circle" style="width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; border-radius: 50%;">
+                                    <i class="ri-user-fill"></i>
+                                </span>
+                            </div>
+                        </div>`;
 
         } else{
             var messageText = document.createTextNode(message.content);
-            htmlCode = `<div class="d-flex justify-content-end mb-3">
-                                    <div>
-                                        <h6 class="mb-1 text-end">
-                                            <span type="text">ga</span>
-                                            <small class="text-muted">10:15 AM</small>
-                                        </h6>
-                                        <p class="bg-primary text-white p-2 rounded">` + message.content + `</p>
-                                    </div>
-                                    <div class="avatar ms-3">
-                                        <span class="avatar-title bg-primary text-white rounded-circle" style="width: 50px; height: 50px; display: flex; justify-content: center; align-items: center;">
-                                            <i class="ri-user-fill"></i>
-                                        </span>
-                                    </div>
-                                </div>`;
+            htmlCode = `<div class="d-flex mb-3">
+                            <div class="avatar me-3">
+                                <span class="avatar-title bg-primary-subtle text-primary rounded-circle" style="width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; border-radius: 50%;">
+                                    <i class="ri-user-fill"></i>
+                                </span>
+                            </div>
+
+                            <div>
+                                <h6 class="mb-1">` + message.sender + `</h6>
+                                <small class="text-muted">` + timeString + `</small>
+                                <p class="bg-light p-2 rounded">` + message.content + `</p>
+                            </div>
+                        </div>`;
         }
 
         if (container) {
             container.insertAdjacentHTML("beforeend", htmlCode);
-            slide.scrollTop = slide.scrollHeight;
+            container.scrollTop = container.scrollHeight;
             console.log("Elemento encontrado.");
 
         } else {
