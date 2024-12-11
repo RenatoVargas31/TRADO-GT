@@ -27,6 +27,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -445,7 +446,7 @@ public class AgenteComprasController {
             if (optionalUsuario.isPresent()) {
                 Usuario usuario = optionalUsuario.get();
                 String mensaje = "La orden #" + orden.getCodigo() + " ha cambiado su estado a 'En proceso'.";
-                notificationService.createNotification(mensaje, usuario, orden);
+                notificationService.orderChangeNotification(mensaje, usuario, orden);
             }
 
             // Agregar un mensaje flash para la confirmación
@@ -680,8 +681,10 @@ public class AgenteComprasController {
     //PREGUNTAS FRECUENTES
     @GetMapping("/faq")
     public String showFaq() {
+        /*
         // ID de usuario de prueba (reemplaza esto con el ID del usuario autenticado si tienes uno disponible)
-        int userId = 4; // Por ejemplo, un ID fijo para pruebas
+
+        int userId = getAuthenticatedUserId(); // Por ejemplo, un ID fijo para pruebas
 
         // Busca al usuario en la base de datos usando el ID
         Optional<Usuario> optionalUsuario = usuarioRepository.findById(userId);
@@ -694,12 +697,14 @@ public class AgenteComprasController {
 
             if (orden != null) {
                 // Mensaje de prueba para la notificación
-                String mensaje = "Esta es una notificación de prueba al visitar la página FAQ.";
+                LocalDateTime tiempoActual = LocalDateTime.now();
+                String mensaje = "Esta es una notificación de prueba al visitar la página FAQ." + " " + tiempoActual;
 
                 // Enviar la notificación de prueba
                 notificationService.createNotification(mensaje, usuario, orden);
             }
         }
+         */
         return "Agente/faq-Agente";
     }
 

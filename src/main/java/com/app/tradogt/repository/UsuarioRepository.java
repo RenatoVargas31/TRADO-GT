@@ -2,7 +2,9 @@ package com.app.tradogt.repository;
 
 import com.app.tradogt.dto.AgenteInfoZon;
 import com.app.tradogt.dto.UsuarioMesDto;
+import com.app.tradogt.entity.Rol;
 import com.app.tradogt.entity.Usuario;
+import com.app.tradogt.entity.Zona;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -243,7 +245,8 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
     @Query("SELECT COUNT(u) FROM Usuario u ")
     int countUsuarios();
 
-
+    //Con esto obtengo la lista de administradores zonales de determinada zona y así se les envía las notificaciones correspondientes
+    List<Usuario> findByRolIdrolAndZonaIdzona(Rol rol, Zona zona);
 }
 
 
