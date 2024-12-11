@@ -1329,6 +1329,13 @@ public class UsuarioFinalController {
         return "Usuario/billing-info-usuario";
     }
 
+    @GetMapping("/notificaciones")
+    @ResponseBody
+    public List<Notificacion> obtenerNotificaciones(@RequestParam("usuarioId") int usuarioId) {
+        Usuario usuario = usuarioRepository.findById(usuarioId).get();
+        return notificationService.getUnreadNotifications(usuario);
+    }
+
     //Guardar los datos de pago
     @PostMapping("/savePayment")
     private String showSavePayment(@RequestParam("nombre") String nombre,

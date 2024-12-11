@@ -541,6 +541,10 @@
 <!-- JAVASCRIPT -->
 <span th:replace="~{Common/jsBase :: js_Base}"></span>
 
+<!--JAVASCRIPT NOTIFICACIONES-->
+<span th:replace="~{Usuario/fragments/notificaciones-scripts :: js_Notificaciones}"></span>
+<!-- End JAVASCRIPT NOTIFICACIONES-->
+
 <script>
     function descargarPDF() {
         const { jsPDF } = window.jspdf; // Acceso a jsPDF desde el espacio global
