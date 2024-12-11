@@ -12,8 +12,12 @@
                 .then(data => {
                     const notificationContainer = document.getElementById("notification-container");
                     data.forEach(notif => {
-                        const notification = document.createElement("div");
-                        notification.className = "dropdown-item text-wrap";
+                        // Actualizar el href del contenedor para redirigir a la URL de la orden
+                        //notificationContainer.href = `/agente/detailsOrder?idOrden=${notif.orderIdReal}&idUsuario=${notif.idImportador}`;
+                        const notification = document.createElement("a");
+                        notification.href = `/agente/detailsOrder?idOrden=${notif.orderIdReal}&idUsuario=${notif.idImportador}`; // Ruta dinámica;
+                        notification.className = "text-reset notification-item";
+                        notification.style = "pointer-events: auto;";
                         notification.innerHTML = `
                         <div class="d-flex align-items-center">
                             <div class="flex-shrink-0">
@@ -49,8 +53,9 @@
                 const notificationContainer = document.getElementById("notification-container");
 
                 // Crear una nueva notificación
-                const notification = document.createElement("div");
-                notification.className = "dropdown-item text-wrap";
+                const notification = document.createElement("a");
+                notification.href = "#";
+                notification.className = "text-reset notification-item";
                 notification.innerHTML = `
                     <div class="d-flex align-items-center">
                         <div class="flex-shrink-0">

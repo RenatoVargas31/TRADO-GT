@@ -101,6 +101,7 @@ public class AgenteComprasController {
             data.put("orderId", notif.getOrden().getCodigo());
             data.put("imageUrl", getImageUrlForOrder(notif.getOrden())); // Generar la URL de la imagen
             data.put("idImportador",notif.getOrden().getUsuarioIdusuario().getId().toString());
+            data.put("orderIdReal", notif.getOrden().getId().toString());
             return data;
         }).collect(Collectors.toList());
     }
@@ -118,6 +119,11 @@ public class AgenteComprasController {
             case 7: return "/images/notiIcons/orden-recibida-svgrepo-com.svg";
             default: return "/images/notiIcons/order-svgrepo-com.svg";
         }
+    }
+
+    @GetMapping("notificacionesTotales")
+    public String allNotifications(Model model) {
+        return "Agente/allNotifications-Agente";
     }
 
 
