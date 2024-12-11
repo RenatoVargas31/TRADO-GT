@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.io.Serializable;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Collection;
 
@@ -126,6 +127,6 @@ public class Usuario implements Serializable{
     private String motivoBaneo;
 
     @Column(name = "fechaRegistro")
-    private LocalDate fechaRegistro = LocalDate.now();
+    private LocalDateTime fechaRegistro = LocalDateTime.now();
 
 }

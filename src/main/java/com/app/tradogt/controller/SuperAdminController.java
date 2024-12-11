@@ -10,6 +10,7 @@ import com.app.tradogt.services.NotificationCorreoService;
 import com.app.tradogt.services.NotificationService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.Banner;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -405,6 +406,15 @@ public class SuperAdminController {
         //Flash attribute de confirmación
         redirectAttributes.addFlashAttribute("successMessage", "Agente de Compra reincorporado correctamente.");
         return "redirect:/superadmin/agentCompraActivos";
+    }
+    @PostMapping("/agentCompraViewPostula")
+    public String viewAgentCompraViewPostula(Integer id, Model model){
+        // Buscar proveedor por id y obtener el usuario directamente
+        Usuario usuario = usuarioRepository.findById(id).orElseThrow();
+        // Enviar a la vista
+        model.addAttribute("usuario", usuario);
+
+        return "SuperAdmin/viewPostula-SAdmin";
     }
 
     @GetMapping("/agentCompraPostulanteApto")

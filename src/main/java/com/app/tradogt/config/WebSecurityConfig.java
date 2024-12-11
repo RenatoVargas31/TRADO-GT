@@ -114,7 +114,7 @@ public class WebSecurityConfig {
                         .requestMatchers("/agente", "/agente/**").hasAnyAuthority("Agente de Compra")
                         .requestMatchers("/usuario", "/usuario/**").hasAnyAuthority("Usuario Final")
                         .requestMatchers("/loginForm", "/crearCuenta").anonymous()
-                        .requestMatchers("/api/consultarDni").permitAll()
+                        .requestMatchers("/api/consultarDni", "/infoAgente/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin((form) -> form

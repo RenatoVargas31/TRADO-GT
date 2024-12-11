@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+    
+<!-- Mirrored from themesdesign.in/nazox/layouts/form-validation.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 30 Aug 2024 19:31:50 GMT -->
+<head>
+        
+        <meta charset="utf-8" />
+        <title>Formulario de postulación</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta th:replace="~{Common/cssBase :: css_Base}">
+
+</head>
+
+    <body data-sidebar="dark">
+    
+    <!-- <body data-layout="horizontal" data-topbar="dark"> -->
+
+        <!-- Begin page -->
+        <div id="layout-wrapper">
+
+
+            <header th:replace="~{SuperAdmin/fragments/navbar :: nav_bar}"></header>
+
+            <!-- ========== Left Sidebar Start ========== -->
+            <div th:replace="~{SuperAdmin/fragments/sidebar :: side_bar}"></div>
+            <!-- Left Sidebar End -->
+
+            
+
+            <!-- ============================================================== -->
+            <!-- Start right Content here -->
+            <!-- ============================================================== -->
+            <div class="main-content">
+
+                <div class="page-content">
+                    <div class="container-fluid">
+
+                        <!-- start page title -->
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                                    <h4 class="mb-sm-0">Solicitud de Postulación</h4>
+
+                                    <div class="page-title-right">
+                                        <ol class="breadcrumb m-0">
+                                            <li class="breadcrumb-item"><a href="javascript: void(0);">Postulación Agente</a></li>
+                                            <li class="breadcrumb-item active">Formulario</li>
+                                        </ol>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end page title -->
+                        
+                        <div class="row">
+                            <div class="align-content-center-xl-6">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="mb-3 d-flex ">
+                                            <a href="/superadmin/agentCompraPostula" class="btn btn-primary d-flex align-items-center"><i class="ri-arrow-left-circle-fill ri-lg me-1"></i> Regresar</a>
+                                        </div>
+
+                                        <form id="registroForm" th:action="@{/usuario/registro}" th:object="${usuario}" method="post" class="needs-validation" novalidate>
+                                            <div class="row">
+                                                <!-- Nombres -->
+                                                <div class="col-md-6">
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Nombres</label>
+                                                        <input type="text" class="form-control" th:value="${usuario.nombre}" readonly>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Apellidos -->
+                                                <div class="col-md-6">
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Apellidos</label>
+                                                        <input type="text" class="form-control" th:value="${usuario.apellido}" readonly>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <!-- Distrito -->
+                                                <div class="col-md-6">
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Distrito</label>
+                                                        <input type="text" class="form-control" th:value="${usuario.distritoIddistrito.nombre}" readonly>
+                                                    </div>
+                                                </div>
+
+                                                <!-- DNI -->
+                                                <div class="col-md-6">
+                                                    <div class="mb-3">
+                                                        <label class="form-label">DNI</label>
+                                                        <input type="text" class="form-control" th:value="${usuario.dni}" readonly>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <!-- Dirección -->
+                                                <div class="col-md-4">
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Dirección</label>
+                                                        <input type="text" class="form-control" th:value="${usuario.direccion}" readonly>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Correo electrónico -->
+                                                <div class="col-md-4">
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Correo electrónico</label>
+                                                        <input type="email" class="form-control" th:value="${usuario.correo}" readonly>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Razón Social (Editable) -->
+                                                <div class="col-md-4">
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Razón Social</label>
+                                                        <input type="text" class="form-control" th:value="${usuario.razonSocial}" placeholder="Razón Social" readonly>
+                                                        <div th:if="${razonSocialError}" class="text-danger" th:text="${razonSocialError}"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <!-- Teléfono -->
+                                                <div class="col-md-4">
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Teléfono</label>
+                                                        <input type="text" class="form-control" th:value="${usuario.telefono}" readonly>
+                                                    </div>
+                                                </div>
+
+                                                <!-- RUC (Editable) -->
+                                                <div class="col-md-4">
+                                                    <div class="mb-3">
+                                                        <label class="form-label">RUC</label>
+                                                        <input type="text" class="form-control" th:value="${usuario.ruc}" placeholder="RUC" readonly>
+                                                        <div th:if="${rucError}" class="text-danger" th:text="${rucError}"></div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Código de Despachador (Editable) -->
+                                                <div class="col-md-4">
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Código de despachador de Aduanas</label>
+                                                        <input type="text" id="codigoDespachador" class="form-control" th:value="${usuario.codigoDespachador}" placeholder="Código">
+                                                        <!-- Mensaje de Validación -->
+                                                        <div id="validationMessage" class="mt-1"></div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+                                            <!-- Botones de acción -->
+                                            <div class="d-flex justify-content-center">
+                                                <!-- Botón Validar -->
+                                                <div id="validButton" class="justify-content-center mt-2" style="display: flex;">
+                                                    <button type="button" id="validateButton" class="btn btn-info waves-effect waves-light d-flex align-items-center me-2" title="Validar">
+                                                        <i class="ri-checkbox-circle-fill ri-lg me-1"></i> Validar
+                                                    </button>
+                                                </div>
+
+
+                                                <!-- Botones de Acción -->
+                                                <div id="actionButtons" class="justify-content-center mt-2" style="display: none;">
+                                                    <button type="button" class="btn btn-success waves-effect waves-light d-flex align-items-center me-2" title="Aprobar" data-bs-toggle="modal" th:data-bs-target="'#acceptConfirmModal-' + ${usuario.id}">
+                                                        <i class="ri-checkbox-circle-fill ri-lg me-1"></i> Aprobar
+                                                    </button>
+
+                                                    <div class="modal fade" th:id="'acceptConfirmModal-' + ${usuario.id}" tabindex="-1" aria-labelledby="acceptConfirmModalLabel" aria-hidden="true">
+                                                        <div class="modal-dialog">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title" id="acceptConfirmModalLabel">Confirmar Aceptación</h5>
+                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                </div>
+                                                                <div class="modal-body text-wrap text-break">
+                                                                    <p>¿Está seguro de aprobar la postulación de <strong th:text="${usuario.nombre} + ' ' + ${usuario.apellido}"></strong> como Agente de Compra?</p>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                                                    <a th:href="@{/superadmin/agentCompraPostulanteApto(id=${usuario.id})}" class="btn btn-success">Aprobar</a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <button type="button" class="btn btn-danger waves-effect waves-light d-flex align-items-center" title="Rechazar" data-bs-toggle="modal" th:data-bs-target="'#deleteConfirmModal-' + ${usuario.id}">
+                                                        <i class="ri-close-circle-fill ri-lg me-1"></i> Rechazar
+                                                    </button>
+
+                                                    <div class="modal fade" th:id="'deleteConfirmModal-' + ${usuario.id}" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
+                                                        <div class="modal-dialog">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title" id="deleteConfirmModalLabel">Confirmar Eliminación</h5>
+                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                </div>
+                                                                <div class="modal-body text-wrap text-break">
+                                                                    <p>¿Está seguro de rechazar la postulación de <strong th:text="${usuario.nombre} + ' ' + ${usuario.apellido}"></strong> como Agente de Compra?</p>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                                                    <a th:href="@{/superadmin/agentCompraPostulanteNoApto(id=${usuario.id})}" class="btn btn-danger">Rechazar</a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <!-- end card -->
+                            </div> <!-- end col -->
+        
+                        </div>
+                        <!-- end row -->
+                        
+
+                    </div> <!-- container-fluid -->
+                </div>
+                <!-- End Page-content -->
+                
+                <footer class="footer">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <script>document.write(new Date().getFullYear())</script> © TRADO.
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="text-sm-end d-none d-sm-block">
+                                    Crafted with <i class="mdi mdi-heart text-danger"></i> by TelesoftGT
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+                
+            </div>
+            <!-- end main content-->
+
+        </div>
+        <!-- END layout-wrapper -->
+
+        <!-- Right Sidebar -->
+        <!-- /Right-bar -->
+
+        <!-- Right bar overlay-->
+        <div class="rightbar-overlay"></div>
+
+        <!-- JAVASCRIPT -->
+        <span th:replace="~{Common/jsBase :: js_Base}"></span>
+        <script>
+            document.getElementById('validateButton').addEventListener('click', function() {
+                var codigoDespachador = document.getElementById('codigoDespachador').value;
+                fetch('/infoAgente/' + codigoDespachador)
+                    .then(response => response.json())
+                    .then(data => {
+                        var validationMessage = document.getElementById('validationMessage');
+                        var actionButtons = document.getElementById('actionButtons');
+                        var validButton = document.getElementById('validButton');
+                        if (data.result === 'success') {
+                            switch (data.data.estado) {
+                                case 'Habilitado':
+                                    validationMessage.innerHTML = '<span class="text-success fw-bold">*Código ' + data.data.estado + '</span>';
+                                    actionButtons.style.display = 'flex';
+                                    validButton.style.display = 'none';
+                                    break;
+                                case 'Cancelado':
+                                    validationMessage.innerHTML = '<span class="text-danger fw-bold">*Código ' + data.data.estado + '</span>';
+                                    actionButtons.style.display = 'flex';
+                                    validButton.style.display = 'none';
+                                    break;
+                                case 'Multado':
+                                    validationMessage.innerHTML = '<span class="text-danger fw-bold">*Código ' + data.data.estado + '</span>';
+                                    actionButtons.style.display = 'flex';
+                                    validButton.style.display = 'none';
+                                    break;
+                                case 'Anulado':
+                                    validationMessage.innerHTML = '<span class="text-danger fw-bold">*Código ' + data.data.estado + '</span>';
+                                    actionButtons.style.display = 'flex';
+                                    validButton.style.display = 'none';
+                                    break;
+                                case 'Suspendido':
+                                    validationMessage.innerHTML = '<span class="text-warning fw-bold">*Código ' + data.data.estado + '</span>';
+                                    actionButtons.style.display = 'flex';
+                                    validButton.style.display = 'none';
+                                    break;
+                            }
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        document.getElementById('validationMessage').innerHTML = '<span class="text-danger">El código no existe</span>';
+                    });
+            });
+        </script>
+        <!--JAVASCRIPT NOTIFICACIONES-->
+        <span th:replace="~{Usuario/fragments/notificaciones-scripts :: js_Notificaciones}"></span>
+        <!-- End JAVASCRIPT NOTIFICACIONES-->
+
+    </body>
+
+<!-- Mirrored from themesdesign.in/nazox/layouts/form-validation.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 30 Aug 2024 19:31:51 GMT -->
+</html>

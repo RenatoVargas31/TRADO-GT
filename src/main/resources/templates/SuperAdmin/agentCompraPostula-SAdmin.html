@@ -91,10 +91,15 @@
                                             <td th:text="${solicitud.distritoIddistrito.zonaIdzona.nombre}">Zona</td>
                                             <td th:text="${solicitud.admzonalIdusuario != null ? solicitud.admzonalIdusuario.nombre + ' ' + solicitud.admzonalIdusuario.apellido : 'Mismo Usuario'}">Postulado por:</td>
                                             <td>
+                                                <form th:action="@{/superadmin/agentCompraViewPostula}" method="post" style="display:inline;">
+                                                    <input type="hidden" name="id" th:value="${solicitud.id}" />
+                                                    <button type="submit" class="btn btn-info btn-sm waves-effect waves-light" title="Editar"><i class="ri-eye-fill"></i></button>
+                                                </form>
+                                                <!--
                                                 <button type="button" class="btn btn-success btn-sm waves-effect waves-light" title="Aceptar" data-bs-toggle="modal" th:data-bs-target="'#acceptConfirmModal-' + ${solicitud.id}">
                                                     <i class="ri-check-line"></i>
                                                 </button>
-                                                <!-- Modal de Confirmación de Aceptación-->
+
                                                 <div class="modal fade" th:id="'acceptConfirmModal-' + ${solicitud.id}" tabindex="-1" aria-labelledby="acceptConfirmModalLabel" aria-hidden="true">
                                                     <div class="modal-dialog">
                                                         <div class="modal-content">
@@ -115,7 +120,7 @@
                                                 <button type="button" class="btn btn-danger btn-sm waves-effect waves-light" title="Eliminar" data-bs-toggle="modal" th:data-bs-target="'#deleteConfirmModal-' + ${solicitud.id}">
                                                     <i class="ri-close-line"></i>
                                                 </button>
-                                                <!-- Modal de Confirmación de Eliminación -->
+
                                                 <div class="modal fade" th:id="'deleteConfirmModal-' + ${solicitud.id}" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
                                                     <div class="modal-dialog">
                                                         <div class="modal-content">
@@ -133,8 +138,8 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                                -->
                                             </td>
-
                                         </tr>
                                         </tbody>
                                     </table>

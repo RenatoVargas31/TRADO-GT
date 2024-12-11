@@ -63,7 +63,7 @@ public class SuperAdminRest {
     }
     @GetMapping("OrdenEstado")
     public Map<String, Object> getOrdenEstado(){
-        //Lista de fechs de cada estado de la orden
+        //Lista de fechas de cada estado de la orden
         List<OrdenEstadoDto> ordenes = ordenRepository.getOrdenEstado();
         //Listas para almacenar la cantidad de órdenes en cada estado
         List<Integer> ordenesCreadas = new ArrayList<>();
@@ -81,7 +81,7 @@ public class SuperAdminRest {
         int cantidadEnAduanas = 0;
         int cantidadEnRuta = 0;
         int cantidadRecibido = 0;
-        //Recorrer la lista de ordenes y contar cuántas hay en cada estado y almacenar por mes
+        //Recorrer la lista de órdenes y contar cuántas hay en cada estado y almacenar por mes
         for (int i = 1; i <= 12; i++) {
             for (OrdenEstadoDto orden : ordenes) {
                 if (orden.getFechaCreacion() != null && orden.getFechaCreacion().getMonthValue() == i) {
