@@ -375,4 +375,6 @@ SELECT
             nativeQuery = true
     )
     List<Object[]> misUltimosPedidos(@Param("idUser") Integer idUser);
+
+    List<Orden> findByEstadoordenIdestadoordenIn(List<EstadoOrden> estadoOrdens);
 }

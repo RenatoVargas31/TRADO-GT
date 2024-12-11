@@ -5,6 +5,7 @@ import com.app.tradogt.dto.OrdenCompraUserDto;
 import com.app.tradogt.dto.PasswordChangeDto;
 import com.app.tradogt.entity.*;
 import com.app.tradogt.services.NotificationCorreoService;
+import com.app.tradogt.services.NotificationService;
 import com.app.tradogt.services.StorageService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,6 +77,9 @@ public class UsuarioFinalController {
 
     @Autowired
     private NotificationCorreoService notificationCorreoService;
+
+    @Autowired
+    private NotificationService notificationService;
 
 
     final ProductosRepository productosRepository;
@@ -1419,6 +1423,11 @@ public class UsuarioFinalController {
                     System.out.println("Nuevo stock: " + newTotal);
                     if(newTotal<25){
                         tienda.get().setEstadoRepo((byte) 1);
+                        //AQUI NOTIFICACION
+                        // Mensaje de notificación
+                        String mensajeNotificacion = "El stock del producto '" + tienda.get().getProductoIdproducto().getNombre() +
+                                "' es bajo. Cantidad actual: " + newTotal;
+                        notificationService.stockNotification(mensajeNotificacion,tienda.get().getZonaIdzona());
                     }
                     tienda.get().setCantidad(newTotal);
                     productoEnZonaRepository.save(tienda.get());

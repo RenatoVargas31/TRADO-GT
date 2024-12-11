@@ -67,6 +67,8 @@
                             <div class="card-body">
 
                                 <h4 class="card-title mb-4">Stock de productos</h4>
+                                <span class="d-none d-xl-inline-block ms-1" th:text="${usuarioAutenticado.nombre}+' '+${usuarioAutenticado.apellido}" ></span>
+
                                 <div>
                                     <div id="bar_chart1_top10_3" class="apex-charts" dir="ltr"></div>
                                 </div>
@@ -288,6 +290,10 @@
 <!-- JAVASCRIPT BASE-->
 <span th:replace="~{Common/jsBase :: js_Base}"></span>
 <!-- End JAVASCRIPT BASE-->
+
+<!--JAVASCRIPT NOTIFICACIONES-->
+<span th:replace="~{AdminZonal/fragments/notificaciones-scripts :: js_Notificaciones}"></span>
+<!-- End JAVASCRIPT NOTIFICACIONES-->
 
 <!-- apexcharts -->
 <script th:src="@{../libs/apexcharts/apexcharts.min.js}"></script>

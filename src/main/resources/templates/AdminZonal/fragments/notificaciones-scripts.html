@@ -7,7 +7,7 @@
         document.addEventListener("DOMContentLoaded", function () {
             // Obtén el ID del usuario autenticado desde el backend
             const userId = /*[[${usuarioAutenticado.id}]]*/ 'default';
-            fetch(`/agente/notificaciones?usuarioId=${userId}`)
+            fetch(`/adminzonal/notificaciones?usuarioId=${userId}`)
                 .then(response => response.json())
                 .then(data => {
                     const notificationContainer = document.getElementById("notification-container");
@@ -18,7 +18,7 @@
                         <div class="d-flex align-items-center">
                             <div class="flex-grow-1">
                                 <h6 class="m-0">${notif.contenido}</h6>
-                                <small class="text-muted">Order ID: ${notif.orderId}</small>
+                                <small class="text-muted">Zona: ${notif.zonaId}</small>
                             </div>
                         </div>
                     `;
@@ -28,45 +28,38 @@
         });
 
     </script>
+
     <script th:inline="javascript"> //EL "th:inline" ES MUY IMPORTANTE PARA QUE FUNCIONE EL SCRIPT
-        // Inicializar Pusher cuando el contenido esté cargado
         document.addEventListener("DOMContentLoaded", function () {
+            const zonaId = /*[[${usuarioAutenticado.zonaIdzona.id}]]*/ 'default';
             const pusher = new Pusher("3e94d4390b9041cae871", {
                 cluster: "us2",
-                encrypted: true
+                encrypted: true,
             });
 
-            // Obtén el ID del usuario autenticado desde el backend
-            const userId = /*[[${usuarioAutenticado.id}]]*/ 'default';
-            console.log(userId);
-            const channel = pusher.subscribe("ordenes-" + userId);
+            // Suscribirse al canal basado en rol y zona
+            const channel = pusher.subscribe("stock-admin-zona-" + zonaId);
 
-            // Escuchar eventos de notificaciones
-            channel.bind("orden-actualizada", function (data) {
+            // Escuchar eventos de notificaciones de stock
+            channel.bind("reposicion-stock", function (data) {
+                console.log("Notificación recibida en el canal de administradores zonales:", data);
+
+                // Muestra la notificación en el DOM
                 const notificationContainer = document.getElementById("notification-container");
-
-                // Crear una nueva notificación
                 const notification = document.createElement("div");
                 notification.className = "dropdown-item text-wrap";
                 notification.innerHTML = `
                     <div class="d-flex align-items-center">
                         <div class="flex-grow-1">
                             <h6 class="m-0">${data.message}</h6>
-                            <small class="text-muted">Order ID: ${data.orderId}</small>
+                            <small class="text-muted">Zona: ${data.zonaId}</small>
                         </div>
                     </div>
-                `;
-
-                // Agregar la notificación al inicio del contenedor
+                 `;
                 notificationContainer.prepend(notification);
-
-                // Mostrar el punto rojo de notificación si no está visible
-                const notiDot = document.querySelector('.noti-dot');
-                if (notiDot) {
-                    notiDot.style.display = 'inline';
-                }
             });
         });
+
     </script>
 
 </body>

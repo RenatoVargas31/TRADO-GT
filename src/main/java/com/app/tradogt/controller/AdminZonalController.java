@@ -4,6 +4,7 @@ import com.app.tradogt.dto.*;
 import com.app.tradogt.entity.*;
 import com.app.tradogt.helpers.PasswordGenerator;
 import com.app.tradogt.services.NotificationCorreoService;
+import com.app.tradogt.services.NotificationService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,6 +68,9 @@ public class AdminZonalController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private NotificationService notificationService;
+
     private int getAuthenticatedUserId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Object principal = authentication.getPrincipal();
@@ -101,6 +105,13 @@ public class AdminZonalController {
         return "AdminZonal/starter-AdminZonal";
     }
 
+    @GetMapping("/notificaciones")
+    @ResponseBody
+    public List<Notificacion> obtenerNotificaciones(@RequestParam("usuarioId") int usuarioId) {
+        Usuario usuario = usuarioRepository.findById(usuarioId).get();
+        return notificationService.getUnreadNotifications(usuario);
+    }
+
     @GetMapping("/dashboard")
     public String showDashboard(Model model) {
         int zonaId = getAuthenticatedUser().getZonaIdzona().getId();
@@ -116,7 +127,6 @@ public class AdminZonalController {
 
     @GetMapping("/fechasArribo")
     public String showFechasArribo(Model model) {
-
         int idZonaAdmin = getAuthenticatedUser().getZonaIdzona().getId();
         List<Object[]> resultados = ordenRepository.getOrdersByZonaAdminZonal(idZonaAdmin);
         // Mapear los resultados al DTO directamente en el controlador

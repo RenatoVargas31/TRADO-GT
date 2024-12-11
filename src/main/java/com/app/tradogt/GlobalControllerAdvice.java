@@ -57,7 +57,9 @@ public class GlobalControllerAdvice {
         } else {
             correoUsuario = principal.toString();
         }
+
         Usuario usuario = usuarioRepository.findByCorreo(correoUsuario);
+
         model.addAttribute("usuarioAutenticado", usuario);
     }
     @ModelAttribute

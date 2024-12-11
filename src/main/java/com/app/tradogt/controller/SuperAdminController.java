@@ -7,6 +7,7 @@ import com.app.tradogt.helpers.PasswordGenerator;
 import com.app.tradogt.helpers.ProductCodeGenerator;
 import com.app.tradogt.repository.*;
 import com.app.tradogt.services.NotificationCorreoService;
+import com.app.tradogt.services.NotificationService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -44,6 +45,9 @@ public class SuperAdminController {
 
     @Autowired
     private NotificationCorreoService notificationCorreoService;
+
+    @Autowired
+    private NotificationService notificationService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -713,15 +717,31 @@ public class SuperAdminController {
 
             if (formProducto.getProductoEnZonaNorte().getCantidad() >= 25) {
                 formProducto.getProductoEnZonaNorte().setEstadoRepo((byte) 0); // Stock adecuado
+                // Mensaje de notificación
+                String mensajeNotificacionNorte = "El stock del producto '" + formProducto.getProductoEnZonaNorte().getProductoIdproducto().getNombre() +
+                        "' ha sido repuesto. Cantidad actual: " + formProducto.getProductoEnZonaNorte().getCantidad();
+                notificationService.stockNotification(mensajeNotificacionNorte,formProducto.getProductoEnZonaNorte().getZonaIdzona());
             }
             if (formProducto.getProductoEnZonaSur().getCantidad() >= 25) {
                 formProducto.getProductoEnZonaSur().setEstadoRepo((byte) 0); // Stock adecuado
+                // Mensaje de notificación
+                String mensajeNotificacionSur = "El stock del producto '" + formProducto.getProductoEnZonaSur().getProductoIdproducto().getNombre() +
+                        "' ha sido repuesto. Cantidad actual: " + formProducto.getProductoEnZonaSur().getCantidad();
+                notificationService.stockNotification(mensajeNotificacionSur,formProducto.getProductoEnZonaSur().getZonaIdzona());
             }
             if (formProducto.getProductoEnZonaEste().getCantidad() >= 25) {
                 formProducto.getProductoEnZonaEste().setEstadoRepo((byte) 0); // Stock adecuado
+                // Mensaje de notificación
+                String mensajeNotificacionEste = "El stock del producto '" + formProducto.getProductoEnZonaEste().getProductoIdproducto().getNombre() +
+                        "' ha sido repuesto. Cantidad actual: " + formProducto.getProductoEnZonaEste().getCantidad();
+                notificationService.stockNotification(mensajeNotificacionEste,formProducto.getProductoEnZonaEste().getZonaIdzona());
             }
-            if (formProducto.getProductoEnZonaSur().getCantidad() >= 25) {
-                formProducto.getProductoEnZonaSur().setEstadoRepo((byte) 0); // Stock adecuado
+            if (formProducto.getProductoEnZonaOeste().getCantidad() >= 25) {
+                formProducto.getProductoEnZonaOeste().setEstadoRepo((byte) 0); // Stock adecuado
+                // Mensaje de notificación
+                String mensajeNotificacionOeste = "El stock del producto '" + formProducto.getProductoEnZonaOeste().getProductoIdproducto().getNombre() +
+                        "' ha sido repuesto. Cantidad actual: " + formProducto.getProductoEnZonaOeste().getCantidad();
+                notificationService.stockNotification(mensajeNotificacionOeste,formProducto.getProductoEnZonaOeste().getZonaIdzona());
             }
             //Guardar los productos en zona
             productoEnZonaRepository.save(formProducto.getProductoEnZonaNorte());

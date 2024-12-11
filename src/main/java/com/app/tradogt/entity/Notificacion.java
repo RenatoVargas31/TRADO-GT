@@ -22,7 +22,6 @@ public class Notificacion {
     @JoinColumn(name = "idUsuarioNoti", nullable = false)
     private Usuario usuario;
 
-    @NotNull
     @ManyToOne
     @JoinColumn(name = "idOrdenNoti", nullable = false)
     private Orden orden;
