@@ -50,7 +50,7 @@ public class TareasProgramadasService {
         // Iterar sobre las órdenes y actualizar el estado según las fechas
         for (Orden orden : orders) {
             try {
-                System.out.println("Procesando Orden ID: " + orden.getId());
+                //System.out.println("Procesando Orden ID: " + orden.getId());
 
                 if (orden.getFechaArribo() != null && orden.getFechaArribo().isEqual(today) && orden.getEstadoordenIdestadoorden().getId() != 4) {
                     orden.setEstadoordenIdestadoorden(estadoArriboAlPais.get());
@@ -76,7 +76,6 @@ public class TareasProgramadasService {
                 } else if (orden.getFechaRecibido() != null && orden.getFechaRecibido().isEqual(today) && orden.getEstadoordenIdestadoorden().getId() != 7) {
                     orden.setEstadoordenIdestadoorden(estadoRecibido.get());
                     // Enviamos notificación a agente
-                    System.out.println("ocurre esto xddddd (ojo aqui)");
                     String messagetoAgente = "La orden #" + orden.getCodigo() + " ha sido recibida.";
                     String messagetoUser = "Tu orden #" + orden.getCodigo() + " ha sido recibida.";
                     notificationService.orderChangeNotification(messagetoAgente, orden.getAgentcompraIdusuario(), orden);

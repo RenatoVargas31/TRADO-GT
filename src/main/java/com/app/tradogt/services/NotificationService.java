@@ -32,7 +32,7 @@ public class NotificationService {
     // Crear y enviar una notificación en tiempo real
     //Esta notificación indicará el cambio de estado de la respectiva orden
     public void orderChangeNotification(String message, Usuario usuario, Orden orden) {
-        System.out.println("Creando notificación para usuario ID: " + usuario.getId() + " con mensaje: " + message);
+        //System.out.println("Creando notificación para usuario ID: " + usuario.getId() + " con mensaje: " + message);
 
         // Crear y guardar la notificación en la base de datos
         Notificacion notificacion = new Notificacion();
@@ -42,7 +42,7 @@ public class NotificationService {
         notificacion.setFechaCreacion(LocalDateTime.now());
         notificacion.setLeido(false);  // La notificación es no leída por defecto
         notificacionRepository.save(notificacion);
-        System.out.println("GUARDADO - Notificación AGENTE guardada. ID: " + notificacion.getIdNoti());
+        //System.out.println("GUARDADO - Notificación AGENTE guardada. ID: " + notificacion.getIdNoti());
 
 
         // Seleccionar una imagen dependiendo del estado de la orden
@@ -73,7 +73,7 @@ public class NotificationService {
         notificationData.put("orderIdReal", orden.getId().toString());
 
         pusher.trigger("ordenes-" + usuario.getId(), "orden-actualizada", notificationData);
-        System.out.println("Enviando notificación: " + message + " al canal ordenes-" + usuario.getId());
+        //System.out.println("Enviando notificación: " + message + " al canal ordenes-" + usuario.getId());
 
 
     }
