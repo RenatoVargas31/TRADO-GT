@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cambiar Contraseña Temporal | TRADO</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
+    <meta content="Themesdesign" name="author" />
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="/images/trado.png">
+    <!-- CSS BASE -->
+    <meta th:replace="~{Common/cssBase :: css_Base}">
+    <!-- End CSS BASE -->
+    <style>
+        /* Ensure the right image takes up the full height and width of its column */
+        .right-side-image {
+            height: 100vh; /* Full viewport height */
+            object-fit: cover; /* Maintain aspect ratio */
+            width: 100%; /* Make sure the image covers the full width */
+        }
+
+        /* Responsive for smaller screens */
+        @media (max-width: 768px) {
+            .right-side-image {
+                display: none; /* Hide the image on smaller screens */
+            }
+        }
+    </style>
+</head>
+<body class="auth-body-bg">
+<div>
+    <div class="container-fluid p-0">
+        <div class="row g-0">
+            <!-- Left side content -->
+            <div class="col-lg-4">
+                <div class="authentication-page-content p-4 d-flex align-items-center min-vh-100">
+                    <div class="w-100">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-9">
+                                <div>
+                                    <div class="text-center">
+                                        <div>
+                                            <img src="/images/trado-dark.png" alt="" height="60" class="auth-logo logo-dark mx-auto">
+                                        </div>
+                                        <h4 class="font-size-18 mt-4">¡Bienvenido a Trado Administrador Zonal!</h4>
+                                        <p class="text-muted">Por favor, cambie su contraseña temporal y comencemos esta aventura juntos.</p>
+                                    </div>
+
+                                    <div class="p-2 mt-4">
+                                        <form th:action="@{/change-temporalPass}" method="post">
+                                            <div class="auth-form-group-custom mb-4">
+                                                <i class="ri-mail-line auti-custom-input-icon"></i>
+                                                <label for="temporalPass">Contraseña temporal</label>
+                                                <input type="text" class="form-control" id="temporalPass" name="temporalPass" placeholder="Ingresa tu contraseña temporal" required>
+                                            </div>
+
+                                            <div class="auth-form-group-custom mb-4">
+                                                <i class="ri-lock-line auti-custom-input-icon"></i>
+                                                <label for="newPassword">Nueva Contraseña</label>
+                                                <input type="password" class="form-control" id="newPassword" name="newPassword"
+                                                       placeholder="Ingresar nueva contraseña" required>
+                                            </div>
+
+                                            <div class="auth-form-group-custom mb-4">
+                                                <i class="ri-lock-line auti-custom-input-icon"></i>
+                                                <label for="confirmPassword">Confirmar Contraseña</label>
+                                                <input type="password" class="form-control" id="confirmPassword" name="confirmPassword"
+                                                       placeholder="Confirmar nueva contraseña" required>
+                                            </div>
+
+                                            <div th:if="${success}" class="alert alert-success mb-4" role="alert">
+                                                <span th:text="${success}"></span>
+                                            </div>
+                                            <div th:if="${error}" class="alert alert-danger mb-4" role="alert">
+                                                <span th:text="${error}"></span>
+                                            </div>
+
+
+
+                                            <div class="mt-4 text-center">
+                                                <button class="btn btn-primary w-md waves-effect waves-light" type="submit">Confirmar </button>
+                                            </div>
+                                        </form>
+                                    </div>
+
+
+                                    <div class="mt-5 text-center">
+                                        <p>¿Ya has realizado el cambio? <a href="/loginForm" class="fw-medium text-primary"> Iniciar Sesión </a> </p>
+                                        <p>© <script>document.write(new Date().getFullYear())</script> TRADO. Creado con <i class="mdi mdi-heart text-danger"></i> por Telesoft GT</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Right side image -->
+            <div class="col-lg-8 d-none d-lg-block">
+                <img src="/images/inicio_fondo.jpeg" alt="" class="right-side-image">
+            </div>
+        </div>
+    </div>
+</div>
+<!-- JAVASCRIPT BASE-->
+<span th:replace="~{Common/jsBase :: js_Base}"></span>
+<!-- End JAVASCRIPT BASE-->
+</body>
+</html>

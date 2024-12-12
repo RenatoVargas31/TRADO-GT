@@ -384,7 +384,7 @@ public class AdminZonalController {
 
             String enlaceFeik = "holi";
 
-            notificationCorreoService.enviarCorreoCreacionCuentaAgente(usuario.getCorreo(),usuario.getNombre(),password,enlaceFeik);
+            notificationCorreoService.enviarCorreoCreacionCuentaAdministradorZonal(usuario.getCorreo(),usuario.getNombre(),password,enlaceFeik);
             return "redirect:/adminzonal/gestionAgente"; // Redirigir a la lista de agentes
         }
     }

@@ -65,6 +65,9 @@ public class LoginController {
     @Autowired
     private PasswordResetTokenRepository tokenRepository;
 
+    @Autowired
+    private  PasswordTemporalTokenRepository passwordTemporalTokenRepository;
+
 
     @Autowired
     private DniDao dniDao;
@@ -162,6 +165,10 @@ public class LoginController {
         return "PassRestoreForm"; // Redirigir a la vista del formulario de restablecimiento de contraseña
     }
 
+    @GetMapping("/change-temporal-pass")
+    public String changeTemporalPass(){
+        return "PassTemporalChange";
+    }
 
 
     @PostMapping("/crearCuenta")
@@ -388,6 +395,61 @@ public class LoginController {
 
         // Redirigir a la página de login
         return "redirect:/loginForm";
+    }
+
+    @PostMapping("/change-temporalPass")
+    public String changeTemporalPass(@RequestParam ("temporalPass") String temporalPass,
+                                     @RequestParam ("newPassword") String newPassword,
+                                     @RequestParam ("confirmPassword") String confirmPassword,
+                                     RedirectAttributes redirectAttributes){
+
+        System.out.println("Token temporal recibido: " + temporalPass );
+        // Validar que el token existe y no ha expirado
+        Optional<PasswordTemporalToken> passwordTemporalTokenOpt = passwordTemporalTokenRepository.findByTokenPass(temporalPass);
+
+        if (passwordTemporalTokenOpt.isEmpty() || passwordTemporalTokenOpt.get().getExpirationDate().isBefore(Instant.now())) {
+            redirectAttributes.addFlashAttribute("error", "La contraseña temporal es inválido o ha expirado.");
+            return "redirect:/change-temporal-pass";
+        }
+
+        // Verificar que las contraseñas coincidan
+        if (!newPassword.equals(confirmPassword)) {
+            redirectAttributes.addFlashAttribute("error", "Las contraseñas no coinciden.");
+            return "redirect:/change-temporal-pass";
+        }
+
+        // Obtener el usuario por el email almacenado en el token
+        String userEmail = passwordTemporalTokenOpt.get().getEmail();
+        Usuario usuario = usuarioRepository.findByCorreo(userEmail);
+
+        if (usuario == null) {
+            redirectAttributes.addFlashAttribute("error", "No se encontró el usuario asociado.");
+            return "redirect:/recuperarPass";
+        }
+
+        // Actualizar la contraseña del usuario
+        usuario.setContrasena(passwordEncoder.encode(newPassword));
+        usuarioRepository.save(usuario);
+
+        // Eliminar el token de reseteo de la base de datos
+        passwordTemporalTokenRepository.delete(passwordTemporalTokenOpt.get());
+
+        // Enviar correo de confirmación
+        try {
+            notificationCorreoService.enviarCorreoCambioContraseniaTemporal(usuario.getCorreo(), usuario.getNombre());
+        } catch (Exception e) {
+            // Log the error but don't stop the password reset process
+            e.printStackTrace();
+        }
+
+        // Agregar mensaje de éxito
+        redirectAttributes.addFlashAttribute("success", "Contraseña temporal cambiada con éxito. Por favor, inicia sesión con tu nueva contraseña.");
+
+        // Redirigir a la página de login
+        return "redirect:/loginForm";
+
+
+
     }
 
 

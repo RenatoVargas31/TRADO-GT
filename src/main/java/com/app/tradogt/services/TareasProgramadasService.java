@@ -26,7 +26,7 @@ public class TareasProgramadasService {
     @Autowired
     NotificationService notificationService;
 
-    @Scheduled(cron = "0 0/5 * * * *") // Ejecuta cada 5 minutos
+    @Scheduled(cron = "0 0 * * * *") // Ejecuta cada 1 hora
     public void updateOrderStatus() {
         // Obtener la fecha actual
         LocalDate today = LocalDate.now();

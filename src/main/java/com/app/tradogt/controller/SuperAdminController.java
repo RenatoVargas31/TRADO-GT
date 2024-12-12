@@ -27,6 +27,8 @@ import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 @Controller
@@ -53,6 +55,9 @@ public class SuperAdminController {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private PasswordTemporalTokenRepository passwordTemporalTokenRepository;
 
     public SuperAdminController(DataSource dataSource, ProveedorRepository proveedorRepository, UsuarioRepository usuarioRepository, ZonaRepository zonaRepository, RolRepository rolRepository, DistritoRepository distritoRepository, ProductosRepository productosRepository, ProductoEnZonaRepository productoEnZonaRepository, SubCategoriaRepository subCategoriaRepository, CategoriaRepository categoriaRepository) {
         this.proveedorRepository = proveedorRepository;
@@ -230,17 +235,26 @@ public class SuperAdminController {
             redirectAttributes.addFlashAttribute("errorMessage", "Todos los campos son obligatorios.");
             return "redirect:/superadmin/admZonalNuevoForm";
         }
+        // Guardar usuario sin contrasña final
+        usuarioRepository.save(usuario);
 
         // Asignar una contraseña por random de 10 dígitos y que combine número y letras
         String password = PasswordGenerator.generateRandomPassword();
         System.out.println(password);
         // Encriptar la contraseña con BCrypt de 10 rondas
         String passwordEncrypted = BCrypt.hashpw(password, BCrypt.gensalt(10));
-        usuario.setContrasena(passwordEncrypted);
-        // Guardar usuario
-        usuarioRepository.save(usuario);
-        String enlaceFeik = "holi";
-        notificationCorreoService.enviarCorreoCreacionCuentaAgente(usuario.getCorreo(),usuario.getNombre(),password,enlaceFeik);
+        //usuario.setContrasena(passwordEncrypted);
+        PasswordTemporalToken passwordTemporalToken = new PasswordTemporalToken();
+
+        passwordTemporalToken.setEmail(usuario.getCorreo());
+        passwordTemporalToken.setTokenPass(passwordEncrypted);
+        passwordTemporalToken.setExpirationDate(Instant.now().plus(12, ChronoUnit.HOURS));
+        passwordTemporalToken.setCreatedAt(Instant.now());
+
+        passwordTemporalTokenRepository.save(passwordTemporalToken);
+
+        String enlaceFeik = "http://localhost:8080/change-temporal-pass";
+        notificationCorreoService.enviarCorreoCreacionCuentaAdministradorZonal(usuario.getCorreo(),usuario.getNombre(),password,enlaceFeik);
         // Flash attribute de confirmación
         redirectAttributes.addFlashAttribute("successMessage", "Administrador Zonal creado correctamente.");
 

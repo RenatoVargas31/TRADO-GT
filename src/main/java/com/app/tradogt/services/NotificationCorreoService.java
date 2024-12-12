@@ -127,45 +127,40 @@ public class NotificationCorreoService {
         }
     }
 
-    public void enviarCorreoCreacionCuentaAgente(String destinatario, String nombreUsuario, String contrasenaTemporal, String enlaceCambioContrasena) {
-        String asunto = "Tu Cuenta Ha Sido Creada Exitosamente";
+    public void enviarCorreoCreacionCuentaAdministradorZonal(String destinatario, String nombreUsuario, String contrasenaTemporal, String enlaceCambioContrasena) {
+        String asunto = "Bienvenido a Nuestro Sistema - Tu Cuenta Ha Sido Creada";
 
-        // Mensaje HTML con la contraseña temporal y el enlace para cambiarla
         String mensajeHtml = "<!DOCTYPE html>" +
                 "<html lang='es'>" +
                 "<head>" +
                 "    <meta charset='UTF-8'>" +
                 "    <meta name='viewport' content='width=device-width, initial-scale=1.0'>" +
+                "    <style>" +
+                "        body { margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f4f4f4; color: #333333; }" +
+                "        .header { background-color: #4CAF50; color: white; padding: 20px; text-align: center; }" +
+                "        .container { max-width: 600px; margin: 20px auto; background: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); }" +
+                "        .btn { display: inline-block; padding: 12px 24px; margin: 20px 0; background-color: #4CAF50; color: white; text-decoration: none; border-radius: 5px; font-size: 16px; }" +
+                "        .footer { text-align: center; font-size: 12px; color: #888888; margin-top: 20px; }" +
+                "    </style>" +
                 "</head>" +
-                "<body style='margin:0; padding:0; font-family: Arial, sans-serif; background-color: #f4f4f4;'>" +
-                "    <table width='100%' border='0' cellspacing='0' cellpadding='0'>" +
-                "        <tr>" +
-                "            <td align='center' style='padding: 40px 0; background-color: #800080; color: #ffffff;'>" +
-                "                <h1 style='margin: 0; font-size: 24px;'>Hola " + nombreUsuario + ",</h1>" +
-                "            </td>" +
-                "        </tr>" +
-                "        <tr>" +
-                "            <td align='center' style='padding: 20px;'>" +
-                "                <table width='600' border='0' cellspacing='0' cellpadding='0' style='background-color: #ffffff; border-radius: 8px; padding: 40px;'>" +
-                "                    <tr>" +
-                "                        <td align='center' style='padding: 20px; color: #333333;'>" +
-                "                            <p style='font-size: 16px; line-height: 1.5;'>Tu cuenta ha sido creada exitosamente.</p>" +
-                "                            <p style='font-size: 16px; line-height: 1.5;'>Tu contraseña temporal es: <strong>" + contrasenaTemporal + "</strong></p>" +
-                "                            <p style='font-size: 16px; line-height: 1.5;'>Por favor, haz clic en el siguiente enlace para cambiar tu contraseña:</p>" +
-                "                            <a href='" + enlaceCambioContrasena + "' style='display: inline-block; margin-top: 20px; padding: 12px 24px; background-color: #800080; color: #ffffff; text-decoration: none; border-radius: 5px; font-size: 16px;'>Cambiar mi Contraseña</a>" +
-                "                        </td>" +
-                "                    </tr>" +
-                "                </table>" +
-                "            </td>" +
-                "        </tr>" +
-                "        <tr>" +
-                "            <td align='center' style='padding: 20px; color: #888888; font-size: 12px;'>" +
-                "                <p>Saludos,<br>El equipo de soporte</p>" +
-                "            </td>" +
-                "        </tr>" +
-                "    </table>" +
+                "<body>" +
+                "    <div class='header'>" +
+                "        <h1>Bienvenido, " + nombreUsuario + "!</h1>" +
+                "    </div>" +
+                "    <div class='container'>" +
+                "        <p>Nos complace informarte que tu cuenta ha sido creada exitosamente en nuestro sistema.</p>" +
+                "        <p>Por motivos de seguridad, hemos generado una contraseña temporal para ti:</p>" +
+                "        <p style='font-size: 18px; font-weight: bold;'>" + contrasenaTemporal + "</p>" +
+                "        <p>Te recomendamos cambiar tu contraseña lo antes posible. Para hacerlo, haz clic en el siguiente botón:</p>" +
+                "        <a href='" + enlaceCambioContrasena + "' class='btn'>Cambiar mi Contraseña</a>" +
+                "        <p>Si no solicitaste la creación de esta cuenta, por favor contacta a nuestro equipo de soporte de inmediato.</p>" +
+                "    </div>" +
+                "    <div class='footer'>" +
+                "        <p>Gracias por confiar en nosotros.<br>El equipo de soporte</p>" +
+                "    </div>" +
                 "</body>" +
                 "</html>";
+
 
         try {
             MimeMessage message = mailSender.createMimeMessage();
@@ -181,6 +176,56 @@ public class NotificationCorreoService {
         } catch (MessagingException e) {
             e.printStackTrace();
             throw new RuntimeException("Error al enviar el correo de creación de cuenta", e);
+        }
+    }
+
+    public void enviarCorreoCambioContraseniaTemporal(String destinatario, String nombreUsuario) {
+        String asunto = "Cambio de Contraseña Temporal Exitoso";
+
+        String mensajeHtml = "<!DOCTYPE html>" +
+                "<html lang='es'>" +
+                "<head>" +
+                "    <meta charset='UTF-8'>" +
+                "    <meta name='viewport' content='width=device-width, initial-scale=1.0'>" +
+                "    <style>" +
+                "        body { margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f4f4f4; color: #333333; }" +
+                "        .header { background-color: #4CAF50; color: white; padding: 20px; text-align: center; }" +
+                "        .container { max-width: 600px; margin: 20px auto; background: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); }" +
+                "        .footer { text-align: center; font-size: 12px; color: #888888; margin-top: 20px; }" +
+                "    </style>" +
+                "</head>" +
+                "<body>" +
+                "    <div class='header'>" +
+                "        <h1>¡Cambio de Contraseña Exitoso!</h1>" +
+                "    </div>" +
+                "    <div class='container'>" +
+                "        <p>Hola <strong>" + nombreUsuario + "</strong>,</p>" +
+                "        <p>Te confirmamos que tu contraseña temporal ha sido cambiada exitosamente.</p>" +
+                "        <p>Ahora puedes acceder al sistema utilizando tu nueva contraseña. Por favor, asegúrate de recordarla y no compartirla con nadie para mantener la seguridad de tu cuenta.</p>" +
+                "        <p>Si no realizaste este cambio o crees que alguien más lo hizo, por favor contacta inmediatamente a nuestro equipo de soporte para proteger tu cuenta.</p>" +
+                "    </div>" +
+                "    <div class='footer'>" +
+                "        <p>Gracias por confiar en nosotros.<br>El equipo de soporte</p>" +
+                "    </div>" +
+                "</body>" +
+                "</html>";
+
+
+
+        try {
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true);
+
+            // Configuración del correo
+            helper.setSubject(asunto);
+            helper.setTo(destinatario);
+            helper.setText(mensajeHtml, true); // true permite contenido HTML
+
+            // Enviar el correo (el remitente se toma de spring.mail.username automáticamente)
+            mailSender.send(message);
+        } catch (MessagingException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Error al enviar el correo de cambio de contraseña", e);
         }
     }
 }
