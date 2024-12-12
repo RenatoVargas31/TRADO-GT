@@ -10,6 +10,10 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -320,12 +324,33 @@ public class AgenteComprasController {
     }
 
 
+    @GetMapping("/agenteFoto/{id}")
+    @ResponseBody
+    public ResponseEntity<byte[]> getAgenteFoto(@PathVariable("id") Integer id) {
+        Optional<Usuario> usuarioOpt = usuarioRepository.findById(id);
+
+        if (usuarioOpt.isPresent() && usuarioOpt.get().getFoto() != null) {
+            byte[] foto = usuarioOpt.get().getFoto();
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.IMAGE_JPEG); // Cambiar si usas otro formato
+            return new ResponseEntity<>(foto, headers, HttpStatus.OK);
+        }
+
+        // Retornar una imagen predeterminada si no hay foto
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
     @PostMapping("/subirFoto")
     public String viewSubirFoto(@RequestParam("foto") MultipartFile file, Model model, RedirectAttributes redirectAttributes) {
         if (file.isEmpty()) {
             redirectAttributes.addFlashAttribute("message", "Por favor, selecciona una foto.");
             return "redirect:/agente/perfil";
         }
+
+
+        /*
+
 
         try {
             // Ruta dinámica donde se guardarán las imágenes (fuera de static)
@@ -355,6 +380,26 @@ public class AgenteComprasController {
         } catch (IOException e) {
             e.printStackTrace();
             redirectAttributes.addFlashAttribute("message", "Error al cargar la foto '" + file.getOriginalFilename() + "'");
+        }
+
+         */
+
+        try {
+            // Obtener el usuario autenticado
+            Usuario usuario = usuarioRepository.findById(getAuthenticatedUserId()).orElse(null);
+            if (usuario == null) {
+                redirectAttributes.addFlashAttribute("error", "Usuario no encontrado.");
+                return "redirect:/agente/perfil";
+            }
+
+            // Guardar la foto como byte array
+            usuario.setFoto(file.getBytes());
+            usuarioRepository.save(usuario);
+
+            redirectAttributes.addFlashAttribute("success", "Foto de perfil actualizada con éxito.");
+        } catch (IOException e) {
+            e.printStackTrace();
+            redirectAttributes.addFlashAttribute("error", "Ocurrió un error al subir la foto.");
         }
 
         // Redirigir al perfil

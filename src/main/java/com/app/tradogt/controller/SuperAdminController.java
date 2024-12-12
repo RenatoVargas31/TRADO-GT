@@ -11,6 +11,10 @@ import com.app.tradogt.services.NotificationService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.Banner;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -93,13 +97,31 @@ public class SuperAdminController {
         return "redirect:/superadmin/perfil";
     }
 
+    @GetMapping("/superadminFoto/{id}")
+    @ResponseBody
+    public ResponseEntity<byte[]> getSuperadminFoto(@PathVariable("id") Integer id) {
+        Optional<Usuario> usuarioOpt = usuarioRepository.findById(id);
+
+        if (usuarioOpt.isPresent() && usuarioOpt.get().getFoto() != null) {
+            byte[] foto = usuarioOpt.get().getFoto();
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.IMAGE_JPEG); // Cambiar si usas otro formato
+            return new ResponseEntity<>(foto, headers, HttpStatus.OK);
+        }
+
+        // Retornar una imagen predeterminada si no hay foto
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+
     @PostMapping("/subirFoto")
     public String viewSubirFoto(@RequestParam("foto") MultipartFile file, Model model, RedirectAttributes redirectAttributes) {
         if (file.isEmpty()) {
             redirectAttributes.addFlashAttribute("message", "Por favor, seleecciona una foto");
             return "redirect:/superadmin/perfil";
         }
-
+        /*
         try {
             // Ruta dinámica donde se guardarán las imágenes (fuera de static)
             String uploadDir = "uploads/fotosUsuarios/";
@@ -130,7 +152,31 @@ public class SuperAdminController {
             redirectAttributes.addFlashAttribute("message", "Error al cargar '" + file.getOriginalFilename() + "'");
         }
 
+
+         */
         // Redirigir al perfil
+
+        try {
+            // Obtener el usuario autenticado desde el modelo
+            Usuario usuarioActual = (Usuario) model.getAttribute("usuarioAutenticado");
+            if (usuarioActual == null) {
+                redirectAttributes.addFlashAttribute("error", "Usuario no autenticado.");
+                return "redirect:/superadmin/perfil";
+            }
+
+            // Guardar la foto como byte array
+            usuarioActual.setFoto(file.getBytes());
+            usuarioRepository.save(usuarioActual);
+
+            redirectAttributes.addFlashAttribute("success", "Foto de perfil actualizada con éxito.");
+        } catch (IOException e) {
+            e.printStackTrace();
+            redirectAttributes.addFlashAttribute("error", "Ocurrió un error al subir la foto.");
+        }
+
+
+
+
         return "redirect:/superadmin/perfil";
     }
     @GetMapping("/changePassForm")
@@ -460,7 +506,7 @@ public class SuperAdminController {
     }
 
     @GetMapping("/agentCompraPostulanteNoApto")
-    public String viewAgentCompraPostulanteNoApto(Integer id) {
+    public String viewAgentCompraPostulanteNoApto(Integer id, RedirectAttributes redirectAttributes) {
         //Borrar la postulación
         Usuario usuario = usuarioRepository.findById(id).get();
         usuario.setIsPostulated((byte) 0);
@@ -469,6 +515,8 @@ public class SuperAdminController {
         usuario.setRuc(null);
         usuario.setAdmzonalIdusuario(null);
         usuarioRepository.save(usuario);
+        //Flash attribute de confirmación
+        redirectAttributes.addFlashAttribute("successMessage", "Postulante rechazado correctamente.");
         return "redirect:/superadmin/agentCompraPostula";
     }
     //</editor-fold>

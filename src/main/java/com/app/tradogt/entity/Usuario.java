@@ -44,9 +44,10 @@ public class Usuario implements Serializable{
     @JoinColumn(name = "distrito_idDistrito")
     private Distrito distritoIddistrito;
 
-    @Size(max = 45)
-    @Column(name = "foto", length = 45)
-    private String foto;
+    @Lob
+    @Basic(fetch = FetchType.LAZY) // Opcional: si prefieres cargarlo bajo demanda
+    @Column(name = "foto")
+    private byte[] foto;
 
     @Size(max = 45)
     @NotNull
