@@ -289,19 +289,19 @@ public class SuperAdminController {
         //System.out.println(password);
         // Encriptar la contraseña con BCrypt de 10 rondas
         //String passwordEncrypted = BCrypt.hashpw(password, BCrypt.gensalt(10));
-        String passwordEncrypted = UUID.randomUUID().toString();
+        String passwordTemporal = UUID.randomUUID().toString();
         //usuario.setContrasena(passwordEncrypted);
         PasswordTemporalToken passwordTemporalToken = new PasswordTemporalToken();
 
         passwordTemporalToken.setEmail(usuario.getCorreo());
-        passwordTemporalToken.setTokenPass(passwordEncrypted);
+        passwordTemporalToken.setTokenPass(passwordTemporal);
         passwordTemporalToken.setExpirationDate(Instant.now().plus(12, ChronoUnit.HOURS));
         passwordTemporalToken.setCreatedAt(Instant.now());
 
         passwordTemporalTokenRepository.save(passwordTemporalToken);
 
         String enlaceFeik = "http://localhost:8080/change-temporal-pass";
-        notificationCorreoService.enviarCorreoCreacionCuentaAdministradorZonal(usuario.getCorreo(),usuario.getNombre(),passwordEncrypted,enlaceFeik);
+        notificationCorreoService.enviarCorreoCreacionCuentaAdministradorZonal(usuario.getCorreo(),usuario.getNombre(),passwordTemporal,enlaceFeik);
         // Flash attribute de confirmación
         redirectAttributes.addFlashAttribute("successMessage", "Administrador Zonal creado correctamente.");
 

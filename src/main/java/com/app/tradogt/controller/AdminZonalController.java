@@ -39,7 +39,9 @@ import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -75,6 +77,9 @@ public class AdminZonalController {
 
     @Autowired
     private NotificationService notificationService;
+
+    @Autowired
+    private  PasswordTemporalTokenRepository passwordTemporalTokenRepository;
 
     private int getAuthenticatedUserId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -419,11 +424,15 @@ public class AdminZonalController {
             return "AdminZonal/nuevoAgente-AdminZonal";
         }else {
             //Asignar una contraseña por random de 10 dígitos y que combine número y letras
-            String password = PasswordGenerator.generateRandomPassword();
-            System.out.println(password);
-            usuario.setContrasena(passwordEncoder.encode(password));
+            String passwordTemporal = UUID.randomUUID().toString();
+            PasswordTemporalToken passwordTemporalToken = new PasswordTemporalToken();
 
+            passwordTemporalToken.setEmail(usuario.getCorreo());
+            passwordTemporalToken.setTokenPass(passwordTemporal);
+            passwordTemporalToken.setExpirationDate(Instant.now().plus(12, ChronoUnit.HOURS));
+            passwordTemporalToken.setCreatedAt(Instant.now());
 
+            passwordTemporalTokenRepository.save(passwordTemporalToken);
 
 
             // Si no hay errores, proceder con el guardado del usuario
@@ -437,7 +446,7 @@ public class AdminZonalController {
 
             String enlaceFeik = "holi";
 
-            notificationCorreoService.enviarCorreoCreacionCuentaAdministradorZonal(usuario.getCorreo(),usuario.getNombre(),password,enlaceFeik);
+            notificationCorreoService.enviarCorreoCreacionCuentaAdministradorZonal(usuario.getCorreo(),usuario.getNombre(),passwordTemporal,enlaceFeik);
             return "redirect:/adminzonal/gestionAgente"; // Redirigir a la lista de agentes
         }
     }
