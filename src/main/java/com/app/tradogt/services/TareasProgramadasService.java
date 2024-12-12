@@ -52,28 +52,28 @@ public class TareasProgramadasService {
             try {
                 System.out.println("Procesando Orden ID: " + orden.getId());
 
-                if (orden.getFechaArribo() != null && orden.getFechaArribo().isEqual(today)) {
+                if (orden.getFechaArribo() != null && orden.getFechaArribo().isEqual(today) && orden.getEstadoordenIdestadoorden().getId() != 4) {
                     orden.setEstadoordenIdestadoorden(estadoArriboAlPais.get());
                     // Enviamos notificación a agente
                     String messagetoAgente = "La orden #" + orden.getCodigo() + " ha llegado al país.";
                     String messagetoUser = "Tu orden #" + orden.getCodigo() + " ha llegado al país.";
                     notificationService.orderChangeNotification(messagetoAgente, orden.getAgentcompraIdusuario(), orden);
                     notificationService.orderChangeNotification(messagetoUser, orden.getUsuarioIdusuario(), orden);
-                } else if (orden.getFechaEnAduanas() != null && orden.getFechaEnAduanas().isEqual(today)) {
+                } else if (orden.getFechaEnAduanas() != null && orden.getFechaEnAduanas().isEqual(today) && orden.getEstadoordenIdestadoorden() != estadoEnAduanas.get()) {
                     orden.setEstadoordenIdestadoorden(estadoEnAduanas.get());
                     // Enviamos notificación a agente
                     String messagetoAgente = "La orden #" + orden.getCodigo() + " está actualmente en aduanas.";
                     String messagetoUser = "Tu orden #" + orden.getCodigo() + " está actualmente en aduanas.";
                     notificationService.orderChangeNotification(messagetoAgente, orden.getAgentcompraIdusuario(), orden);
                     notificationService.orderChangeNotification(messagetoUser, orden.getUsuarioIdusuario(), orden);
-                } else if (orden.getFechaEnRuta() != null && orden.getFechaEnRuta().isEqual(today)) {
+                } else if (orden.getFechaEnRuta() != null && orden.getFechaEnRuta().isEqual(today) && orden.getEstadoordenIdestadoorden().getId() != 6) {
                     orden.setEstadoordenIdestadoorden(estadoEnRuta.get());
                     // Enviamos notificación a agente
                     String messagetoAgente = "La orden #" + orden.getCodigo() + " está en ruta hacia el destino.";
                     String messagetoUser = "Tu orden #" + orden.getCodigo() + " está en ruta hacia el destino.";
                     notificationService.orderChangeNotification(messagetoAgente, orden.getAgentcompraIdusuario(), orden);
                     notificationService.orderChangeNotification(messagetoUser, orden.getUsuarioIdusuario(), orden);
-                } else if (orden.getFechaRecibido() != null && orden.getFechaRecibido().isEqual(today)) {
+                } else if (orden.getFechaRecibido() != null && orden.getFechaRecibido().isEqual(today) && orden.getEstadoordenIdestadoorden().getId() != 7) {
                     orden.setEstadoordenIdestadoorden(estadoRecibido.get());
                     // Enviamos notificación a agente
                     System.out.println("ocurre esto xddddd (ojo aqui)");

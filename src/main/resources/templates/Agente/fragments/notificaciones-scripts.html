@@ -54,8 +54,9 @@
 
                 // Crear una nueva notificación
                 const notification = document.createElement("a");
-                notification.href = "#";
+                notification.href = `/agente/detailsOrder?idOrden=${data.orderIdReal}&idUsuario=${data.idImportador}`;
                 notification.className = "text-reset notification-item";
+                notification.style = "pointer-events: auto;";
                 notification.innerHTML = `
                     <div class="d-flex align-items-center">
                         <div class="flex-shrink-0">

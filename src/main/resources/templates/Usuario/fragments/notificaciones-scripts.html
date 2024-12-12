@@ -12,10 +12,15 @@
                 .then(data => {
                     const notificationContainer = document.getElementById("notification-container");
                     data.forEach(notif => {
-                        const notification = document.createElement("div");
-                        notification.className = "dropdown-item text-wrap";
+                        const notification = document.createElement("a");
+                        notification.href = `/usuario/tracking?id=${notif.orderId}`;
+                        notification.className = "text-reset notification-item";
+                        notification.style = "pointer-events: auto;";
                         notification.innerHTML = `
                         <div class="d-flex align-items-center">
+                            <div class="flex-shrink-0">
+                                <img src="${notif.imageUrl}" alt="Notification" class="rounded-circle" style="width: 40px; height: 40px; margin-right: 10px;">
+                            </div>
                             <div class="flex-grow-1">
                                 <h6 class="m-0">${notif.contenido}</h6>
                                 <small class="text-muted">Order ID: ${notif.orderId}</small>
@@ -47,10 +52,15 @@
             const notificationContainer = document.getElementById("notification-container");
 
             // Crear una nueva notificación
-            const notification = document.createElement("div");
-            notification.className = "dropdown-item text-wrap";
+            const notification = document.createElement("a");
+            notification.href = `/usuario/tracking?id=${data.orderId}`;
+            notification.className = "text-reset notification-item";
+            notification.style = "pointer-events: auto;";
             notification.innerHTML = `
                     <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0">
+                            <img src="${data.imageUrl}" alt="Notification" class="rounded-circle" style="width: 40px; height: 40px; margin-right: 10px;">
+                        </div>
                         <div class="flex-grow-1">
                             <h6 class="m-0">${data.message}</h6>
                             <small class="text-muted">Order ID: ${data.orderId}</small>
