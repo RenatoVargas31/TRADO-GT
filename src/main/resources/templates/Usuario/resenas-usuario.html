@@ -115,7 +115,7 @@
                                                 <div class="card product-box">
                                                     <a th:href="@{/usuario/verresena/{id}(id=${resena.id})}" class="text-decoration-none">
                                                        <div class="product-img">
-                                                            <img th:src="@{'/uploads/resenasUsuarios/' + ${resena.foto}}" alt="Imagen de la resena"
+                                                            <img th:src="@{/usuario/resenaFoto/{id}(id=${resena.id})}"  alt="Imagen de la resena"
                                                                  src="/images/error.jpg"
                                                                  onerror="this.onerror=null;this.src='/images/error.jpg';"
                                                                  class="img-fluid mx-auto d-block">

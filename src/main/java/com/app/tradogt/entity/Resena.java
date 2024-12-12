@@ -26,10 +26,11 @@ public class Resena {
     @JoinColumn(name = "Usuario_idUsuario", nullable = false)
     private Usuario usuarioIdusuario;
 
-    @Size(max = 150)
+    @Lob
+    @Basic(fetch = FetchType.LAZY) // Opcional: si prefieres cargarlo bajo demanda
+    @Column(name = "foto")
+    private byte[] foto;
 
-    @Column(name = "foto", length = 150)
-    private String foto;
 
     @NotNull
     @Lob
