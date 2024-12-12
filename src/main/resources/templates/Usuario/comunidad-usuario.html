@@ -96,6 +96,19 @@
                                                     <div class="col-md-10">
                                                         <h5 th:text="${publicacion[1]}">Título de la Publicación</h5>
                                                         <p class="mt-2" style="font-size: 10px;">Fecha de Creación: <span th:text="${#dates.format(publicacion[3], 'dd MMM yyyy')}"></span></p>
+
+                                                        <ul class="list-inline product-review-link mb-0">
+                                                            <li class="list-inline-item">
+                                                                <!-- Formulario para dar like -->
+                                                                <form th:action="@{/usuario/publicacion/{id}/like(id=${publicacion[0]})}" method="post" style="display: inline;">
+                                                                    <button type="submit" class="btn btn-link" style="border: none; padding: 0; color: inherit;">
+                                                                        <i class="mdi mdi-thumb-up align-middle me-1"></i>
+                                                                        <b th:text="${publicacion[6]}"></b> Likes
+                                                                    </button>
+                                                                </form>
+                                                            </li>
+                                                        </ul>
+
                                                     </div>
                                                     <div class="col-md-2">
                                                         <div class="provider-info d-flex align-items-center justify-content-center">

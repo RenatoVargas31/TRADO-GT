@@ -35,4 +35,7 @@ public class Publicacion {
     @JoinColumn(name = "Usuario_idUsuario", nullable = false)
     private Usuario usuarioIdusuario;
 
+    @Column(name = "likes", nullable = false)
+    private Integer likes = 0; // Valor predeterminado como 0
+
 }

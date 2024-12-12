@@ -9,7 +9,7 @@ import java.util.List;
 @Repository
 public interface PublicacionRepository extends JpaRepository<Publicacion, Integer> {
 
-    @Query(value = "SELECT p.idPublicacion, p.titulo, p.cuerpo, p.fechaCreacion, u.nombre, u.apellido " +
+    @Query(value = "SELECT p.idPublicacion, p.titulo, p.cuerpo, p.fechaCreacion, u.nombre, u.apellido, p.likes " +
             "FROM Publicacion p " +
             "INNER JOIN Usuario u ON p.Usuario_idUsuario = u.idUsuario " +
             "WHERE u.rol_idRol = 4 " +

@@ -92,6 +92,16 @@
                                             <!-- Aquí va el contenido dinámico de la publicación -->
                                         </p>
                                     </div>
+                                    <ul class="list-inline product-review-link mb-0">
+                                        <li class="list-inline-item">
+                                            <form th:action="@{/usuario/publicacion/{id}/like(id=${publicacion.id})}" method="post" style="display: inline;">
+                                                <button type="submit" class="btn btn-link" style="border: none; padding: 0; color: inherit;">
+                                                    <i class="mdi mdi-thumb-up align-middle me-1"></i>
+                                                    <b th:text="${publicacion.likes}"></b> Likes
+                                                </button>
+                                            </form>
+                                        </li>
+                                    </ul>
                                 </div>
                             </div>
                         </div>
@@ -137,24 +147,21 @@
                                                     James
                                                 </h5>
 
+
+
+
                                                 <ul class="list-inline product-review-link mb-0">
                                                     <li class="list-inline-item">
-                                                        <a href="#" onclick="showReplyForm(event, 'reply-form-1')">
-                                                            <i class="mdi mdi-message-text align-middle me-1"></i> Comment
-                                                        </a>
+                                                        <form th:action="@{/usuario/comentario/{id}/like(id=${comentario.id})}" method="post" style="display: inline;">
+                                                            <button type="submit" class="btn btn-link" style="border: none; padding: 0; color: inherit;">
+                                                                <i class="mdi mdi-thumb-up align-middle me-1"></i>
+                                                                <b th:text="${comentario.likes}"></b> Likes
+                                                            </button>
+                                                        </form>
                                                     </li>
                                                 </ul>
 
-                                                <div id="reply-form-1" class="reply-form" style="display: none; margin-top: 10px;">
-                                                    <form>
-                                                        <div class="mb-3">
-                                                            <label for="reply-text" class="form-label">Tu respuesta:</label>
-                                                            <textarea class="form-control" id="reply-text" rows="3"></textarea>
-                                                        </div>
-                                                        <button type="submit" class="btn btn-primary">Publicar</button>
-                                                        <button type="button" class="btn btn-danger" onclick="hideReplyForm('reply-form-1')">Cancelar</button>
-                                                    </form>
-                                                </div>
+
                                             </div>
                                         </div>
 

@@ -818,9 +818,47 @@ public class UsuarioFinalController {
         return "Usuario/comunidad-usuario";
     }
 
+    @PostMapping("/comentario/{id}/like")
+    public String likeComentario(@PathVariable("id") Integer id, RedirectAttributes redirectAttributes) {
+        // Buscar el comentario por su ID
+        Comentario comentario = comentarioRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Comentario no encontrado"));
+
+        // Incrementar el contador de likes
+        comentario.setLikes(comentario.getLikes() + 1);
+
+        // Guardar el comentario actualizado en la base de datos
+        comentarioRepository.save(comentario);
+
+        // Mensaje de éxito (opcional)
+        redirectAttributes.addFlashAttribute("successMessage", "¡Like añadido al comentario!");
+
+        // Redirigir a la página anterior (puedes personalizar esto según tu necesidad)
+        return "redirect:/usuario/verPublicacion/" + comentario.getPublicacionIdpublicacion().getId();
+    }
+
     @GetMapping("/foroProblema")
     public String showForoProblema() {
         return "Usuario/problema-soluciones";
+    }
+
+    @PostMapping("/publicacion/{id}/like")
+    public String incrementarLike(@PathVariable("id") Integer id, RedirectAttributes redirectAttributes) {
+        // Buscar la publicación por su ID
+        Publicacion publicacion = publicacionRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Publicación no encontrada"));
+
+        // Incrementar el contador de likes
+        publicacion.setLikes(publicacion.getLikes() + 1);
+
+        // Guardar la publicación actualizada
+        publicacionRepository.save(publicacion);
+
+        // Añadir un mensaje de éxito
+        redirectAttributes.addFlashAttribute("successMessage", "¡Te gustó esta publicación!");
+
+        // Redirigir a la misma página
+        return "redirect:/usuario/verPublicacion/" + id;
     }
 
     @GetMapping("/verPublicacion/{id}")
