@@ -101,7 +101,7 @@
                                             </p>
                                         </div>
                                         <div >
-                                            <img th:src="@{'/uploads/fotosUsuarios/' + ${resena.usuarioIdusuario.foto}}"
+                                            <img th:src="@{/usuario/usuarioFoto/{id}(id=${resena.usuarioIdusuario.id})}"
                                                  src="/images/default.jpg"
                                                  onerror="this.onerror=null;this.src='/images/default.jpg';"
                                                  alt="Proveedor Icono" class="rounded-circle me-2" style="width: 40px; height: 40px;">

@@ -41,7 +41,7 @@
             <div class="dropdown d-inline-block user-dropdown">
                 <button type="button" class="btn header-item waves-effect" id="page-header-user-dropdown"
                         data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <img class="rounded-circle header-profile-user" th:src="'/uploads/fotosUsuarios/' + ${usuarioAutenticado.foto}"
+                    <img class="rounded-circle header-profile-user" th:src="@{/superadmin/superadminFoto/{id}(id=${usuarioAutenticado.id})}"
                          src="/images/default.jpg"
                          onerror="this.onerror=null;this.src='/images/default.jpg';"
                          alt="Header Avatar">

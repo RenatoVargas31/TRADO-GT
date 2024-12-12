@@ -66,7 +66,12 @@
                                 <div class="user-profile-header d-flex flex-column align-items-center mb-3">
                                     <hr class="opacity-0">
                                     <div class="d-flex justify-content-center">
-                                        <img id="fotoUsuario" th:src="@{'/uploads/fotosUsuarios/' + ${usuario.foto}}" alt="user image" class="d-block rounded-circle" style="width: 100px; height: 100px; object-fit: cover;">
+                                        <img id="fotoUsuario"
+                                             th:src="@{/usuario/usuarioFotos/{id}(id=${usuario.id})}"
+                                             src="/images/default.jpg"
+                                             onerror="this.onerror=null;this.src='/images/default.jpg';"
+                                             alt="user image" class="d-block rounded-circle"
+                                             style="width: 100px; height: 100px; object-fit: cover;">
                                     </div>
                                     <p class="text-muted mb-0 mt-2" th:text="${usuario.nombre} + ' ' + ${usuario.apellido}">Jesús Andrés Luján</p>
                                     <p class="text-muted mb-0">Importador</p>

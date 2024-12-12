@@ -59,7 +59,7 @@
                                 <div class="user-profile-header d-flex flex-column align-items-center mt-3 mb-3 px-4">
                                     <hr class="opacity-0">
                                     <div class="flex-shrink-0">
-                                        <img th:src="@{'/uploads/fotosUsuarios/' + ${usuarioAutenticado.foto}}"
+                                        <img th:src="@{/superadmin/superadminFoto/{id}(id=${usuarioAutenticado.id})}"
                                              src="/images/default.jpg"
                                              onerror="this.onerror=null;this.src='/images/default.jpg';"
                                              alt="user image" class="d-block rounded-circle" style="border: 5px solid #0b0b5a; width: 150px; height: 150px; object-fit: cover;">
