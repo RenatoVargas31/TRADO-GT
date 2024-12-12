@@ -11,7 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -192,13 +197,32 @@ public class AdminZonalController {
         return "AdminZonal/faq";
     }
 
+    @GetMapping("/usuarioFoto/{id}")
+    @ResponseBody
+    public ResponseEntity<byte[]> getUsuarioFoto(@PathVariable("id") Integer id) {
+        Optional<Usuario> usuarioOpt = usuarioRepository.findById(id);
+
+        if (usuarioOpt.isPresent() && usuarioOpt.get().getFoto() != null) {
+            byte[] foto = usuarioOpt.get().getFoto();
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.IMAGE_JPEG); // Cambiar según el tipo de imagen
+            return new ResponseEntity<>(foto, headers, HttpStatus.OK);
+        }
+
+        // Retorna una imagen predeterminada si no hay foto
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+
     @PostMapping("/subirFoto")
-    public String viewSubirFoto(@RequestParam("foto") MultipartFile file, Model model, RedirectAttributes redirectAttributes) {
+    public String viewSubirFoto(@RequestParam("foto") MultipartFile file, Model model,  RedirectAttributes redirectAttributes) {
         if (file.isEmpty()) {
             redirectAttributes.addFlashAttribute("message", "Por favor, selecciona una foto");
             return "redirect:/adminzonal/perfil";
         }
 
+        /*
         try {
             // Ruta dinámica donde se guardarán las imágenes (fuera de static)
             String uploadDir = "uploads/fotosUsuarios/";
@@ -231,6 +255,35 @@ public class AdminZonalController {
             e.printStackTrace();
             redirectAttributes.addFlashAttribute("message", "Error al cargar '" + file.getOriginalFilename() + "'");
         }
+
+         */
+
+        try {
+            if (file.getSize() > 2 * 1024 * 1024) { // 2 MB
+                redirectAttributes.addFlashAttribute("error", "La imagen no debe exceder los 2 MB.");
+                return "redirect:/adminzonal/perfil";
+            }
+
+            // Obtener el usuario autenticado
+            Optional<Usuario> usuarioOpt = usuarioRepository.findById(getAuthenticatedUserId());
+            if (usuarioOpt.isEmpty()) {
+                redirectAttributes.addFlashAttribute("error", "Usuario no autenticado.");
+                return "redirect:/adminzonal/perfil";
+            }
+
+            Usuario usuario = usuarioOpt.get();
+
+            // Guardar la foto como bytes en la base de datos
+            usuario.setFoto(file.getBytes());
+            usuarioRepository.save(usuario);
+
+            redirectAttributes.addFlashAttribute("successMessage", "Foto subida correctamente.");
+        } catch (IOException e) {
+            e.printStackTrace();
+            redirectAttributes.addFlashAttribute("error", "Error al cargar la foto.");
+        }
+
+
 
         // Redirigir al perfil
         return "redirect:/adminzonal/perfil";

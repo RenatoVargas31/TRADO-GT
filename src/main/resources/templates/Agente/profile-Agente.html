@@ -68,7 +68,7 @@
                       <!-- Imagen actual del usuario que será reemplazada por la previsualización -->
                       <div class="text-center">
                         <div class="d-flex justify-content-center">
-                          <img id="fotoUsuario" th:src="@{'/uploads/fotosUsuarios/' + ${usuarioAutenticado.foto}}"
+                          <img id="fotoUsuario" th:src="@{/agente/agenteFoto/{id}(id=${usuario.id})}"
                                alt="user image" class="d-block rounded-circle"
                                src="/images/default.jpg"
                                onerror="this.onerror=null;this.src='/images/default.jpg';"

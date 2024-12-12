@@ -324,6 +324,23 @@ public class UsuarioFinalController {
 
     }
 
+    @GetMapping("/usuarioFoto/{id}")
+    @ResponseBody
+    public ResponseEntity<byte[]> getUsuarioFoto(@PathVariable("id") Integer id) {
+        Optional<Usuario> usuarioOpt = usuarioRepository.findById(id);
+
+        if (usuarioOpt.isPresent() && usuarioOpt.get().getFoto() != null) {
+            byte[] foto = usuarioOpt.get().getFoto();
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.IMAGE_JPEG); // Cambiar si usas otro formato
+            return new ResponseEntity<>(foto, headers, HttpStatus.OK);
+        }
+
+        // Retornar una imagen predeterminada si no hay foto
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
 
     @PostMapping("/subirFoto")
     public String viewSubirFoto(@RequestParam("foto") MultipartFile file, Model model, RedirectAttributes redirectAttributes) {
@@ -331,7 +348,7 @@ public class UsuarioFinalController {
             redirectAttributes.addFlashAttribute("message", "Por favor, selecciona una foto.");
             return "redirect:/usuario/perfil";
         }
-
+/*
         try {
             // Ruta dinámica donde se guardarán las imágenes (fuera de static)
             String uploadDir = "uploads/fotosUsuarios/";
@@ -361,6 +378,26 @@ public class UsuarioFinalController {
             e.printStackTrace();
             redirectAttributes.addFlashAttribute("message", "Error al cargar la foto '" + file.getOriginalFilename() + "'");
         }
+
+ */
+        try {
+            // Obtener el usuario autenticado
+            Usuario usuario = usuarioRepository.findById(getAuthenticatedUserId()).orElse(null);
+            if (usuario == null) {
+                redirectAttributes.addFlashAttribute("error", "Usuario no encontrado.");
+                return "redirect:/usuario/perfil";
+            }
+
+            // Guardar la foto como byte array
+            usuario.setFoto(file.getBytes());
+            usuarioRepository.save(usuario);
+
+            redirectAttributes.addFlashAttribute("success", "Foto de perfil actualizada con éxito.");
+        } catch (IOException e) {
+            e.printStackTrace();
+            redirectAttributes.addFlashAttribute("error", "Ocurrió un error al subir la foto.");
+        }
+
 
         // Redirigir al perfil
         return "redirect:/usuario/perfil";
