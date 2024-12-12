@@ -492,7 +492,7 @@ public class SuperAdminController {
     }
 
     @GetMapping("/agentCompraPostulanteNoApto")
-    public String viewAgentCompraPostulanteNoApto(Integer id) {
+    public String viewAgentCompraPostulanteNoApto(Integer id, RedirectAttributes redirectAttributes) {
         //Borrar la postulación
         Usuario usuario = usuarioRepository.findById(id).get();
         usuario.setIsPostulated((byte) 0);
@@ -501,6 +501,8 @@ public class SuperAdminController {
         usuario.setRuc(null);
         usuario.setAdmzonalIdusuario(null);
         usuarioRepository.save(usuario);
+        //Flash attribute de confirmación
+        redirectAttributes.addFlashAttribute("successMessage", "Postulante rechazado correctamente.");
         return "redirect:/superadmin/agentCompraPostula";
     }
     //</editor-fold>

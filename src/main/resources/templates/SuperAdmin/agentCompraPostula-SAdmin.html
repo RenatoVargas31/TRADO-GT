@@ -95,50 +95,6 @@
                                                     <input type="hidden" name="id" th:value="${solicitud.id}" />
                                                     <button type="submit" class="btn btn-info btn-sm waves-effect waves-light" title="Editar"><i class="ri-eye-fill"></i></button>
                                                 </form>
-                                                <!--
-                                                <button type="button" class="btn btn-success btn-sm waves-effect waves-light" title="Aceptar" data-bs-toggle="modal" th:data-bs-target="'#acceptConfirmModal-' + ${solicitud.id}">
-                                                    <i class="ri-check-line"></i>
-                                                </button>
-
-                                                <div class="modal fade" th:id="'acceptConfirmModal-' + ${solicitud.id}" tabindex="-1" aria-labelledby="acceptConfirmModalLabel" aria-hidden="true">
-                                                    <div class="modal-dialog">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title" id="acceptConfirmModalLabel">Confirmar Aceptación</h5>
-                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                            </div>
-                                                            <div class="modal-body text-wrap text-break">
-                                                                <p>¿Está seguro de aprobar la postulación de <strong th:text="${solicitud.nombre} + ' ' + ${solicitud.apellido}"></strong> como Agente de Compra?</p>
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                                                <a th:href="@{/superadmin/agentCompraPostulanteApto(id=${solicitud.id})}" class="btn btn-success">Aprobar</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <button type="button" class="btn btn-danger btn-sm waves-effect waves-light" title="Eliminar" data-bs-toggle="modal" th:data-bs-target="'#deleteConfirmModal-' + ${solicitud.id}">
-                                                    <i class="ri-close-line"></i>
-                                                </button>
-
-                                                <div class="modal fade" th:id="'deleteConfirmModal-' + ${solicitud.id}" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
-                                                    <div class="modal-dialog">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title" id="deleteConfirmModalLabel">Confirmar Eliminación</h5>
-                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                            </div>
-                                                            <div class="modal-body text-wrap text-break">
-                                                                <p>¿Está seguro de rechazar la postulación de <strong th:text="${solicitud.nombre} + ' ' + ${solicitud.apellido}"></strong> como Agente de Compra?</p>
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                                                <a th:href="@{/superadmin/agentCompraPostulanteNoApto(id=${solicitud.id})}" class="btn btn-danger">Rechazar</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                -->
                                             </td>
                                         </tr>
                                         </tbody>
