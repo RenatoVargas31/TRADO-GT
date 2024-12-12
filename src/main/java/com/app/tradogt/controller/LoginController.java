@@ -19,6 +19,7 @@ import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -406,7 +407,7 @@ public class LoginController {
         System.out.println("Token temporal recibido: " + temporalPass );
         // Validar que el token existe y no ha expirado
         Optional<PasswordTemporalToken> passwordTemporalTokenOpt = passwordTemporalTokenRepository.findByTokenPass(temporalPass);
-
+        System.out.println("Imprimiendo owo: " + passwordTemporalTokenOpt.get().getTokenPass());
         if (passwordTemporalTokenOpt.isEmpty() || passwordTemporalTokenOpt.get().getExpirationDate().isBefore(Instant.now())) {
             redirectAttributes.addFlashAttribute("error", "La contraseña temporal es inválido o ha expirado.");
             return "redirect:/change-temporal-pass";

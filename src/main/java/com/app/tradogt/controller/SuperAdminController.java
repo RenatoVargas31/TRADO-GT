@@ -285,10 +285,11 @@ public class SuperAdminController {
         usuarioRepository.save(usuario);
 
         // Asignar una contraseña por random de 10 dígitos y que combine número y letras
-        String password = PasswordGenerator.generateRandomPassword();
-        System.out.println(password);
+        //String password = PasswordGenerator.generateRandomPassword();
+        //System.out.println(password);
         // Encriptar la contraseña con BCrypt de 10 rondas
-        String passwordEncrypted = BCrypt.hashpw(password, BCrypt.gensalt(10));
+        //String passwordEncrypted = BCrypt.hashpw(password, BCrypt.gensalt(10));
+        String passwordEncrypted = UUID.randomUUID().toString();
         //usuario.setContrasena(passwordEncrypted);
         PasswordTemporalToken passwordTemporalToken = new PasswordTemporalToken();
 
@@ -300,7 +301,7 @@ public class SuperAdminController {
         passwordTemporalTokenRepository.save(passwordTemporalToken);
 
         String enlaceFeik = "http://localhost:8080/change-temporal-pass";
-        notificationCorreoService.enviarCorreoCreacionCuentaAdministradorZonal(usuario.getCorreo(),usuario.getNombre(),password,enlaceFeik);
+        notificationCorreoService.enviarCorreoCreacionCuentaAdministradorZonal(usuario.getCorreo(),usuario.getNombre(),passwordEncrypted,enlaceFeik);
         // Flash attribute de confirmación
         redirectAttributes.addFlashAttribute("successMessage", "Administrador Zonal creado correctamente.");
 
