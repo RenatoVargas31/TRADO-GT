@@ -14,7 +14,7 @@ $(document).ready(function () {
 $(document).ready(function () {
     var a = $("#datatable-buttons").DataTable({
         lengthChange: !1,
-        pageLength: 7,
+        pageLength: 5,
         language: {
             paginate: {
                 previous: "<i class='mdi mdi-chevron-left'></i>",
@@ -22,9 +22,9 @@ $(document).ready(function () {
             },
             emptyTable: "No hay datos disponibles en la tabla",
             zeroRecords: "No se encontraron coincidencias",
-            info: "Mostrando de _START_ a _END_ registros de un total de _TOTAL_ registros",
-            infoEmpty: "Mostrando de 0 a 0 registros de un total de 0 registros",
-            infoFiltered: "(filtrado de _MAX_ registros totales)",
+            info: "Mostrando de _START_ a _END_ resultados de un total de _TOTAL_",
+            infoEmpty: "Mostrando de 0 a 0 resultado de un total de 0 resultados",
+            infoFiltered: "(filtrado de _MAX_ resultados totales)",
             lengthMenu: "Mostrar _MENU_ registros",
             search: "Buscar:",
             loadingRecords: "Cargando...",

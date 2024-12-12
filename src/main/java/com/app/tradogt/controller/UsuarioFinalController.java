@@ -200,7 +200,7 @@ public class UsuarioFinalController {
         return "Usuario/inicio-usuario";
     }
 
-    @PostMapping("/guardarFavorito")
+    /*@PostMapping("/guardarFavorito")
     public String guardarFavorito(Model model, @RequestParam("productId") Integer productId, RedirectAttributes attr){
 
         //Buscar producto
@@ -223,7 +223,7 @@ public class UsuarioFinalController {
         }
 
         return "redirect:/usuario/productoDetalles?id=" + miProducto.get().getId();
-    }
+    } */
 
     @GetMapping("/misPedidos")
     public String misPedidos(Model model) {
