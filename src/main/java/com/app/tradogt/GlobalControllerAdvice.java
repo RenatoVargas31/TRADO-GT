@@ -47,7 +47,7 @@ public class GlobalControllerAdvice {
         return new ModelAndView("errorPage");
     }
 
-     
+
 
     @ModelAttribute
     private void getAuthenticatedUser(Model model) {

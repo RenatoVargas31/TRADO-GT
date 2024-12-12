@@ -206,7 +206,7 @@
                             <div class="mb-2">
                               <span class="product-ribbon badge bg-warning" th:text="${product.codigo}"></span>
                             </div>
-
+<!--
                             <div class="product-like" th:if="${product.isFavorite == '0'}">
                               <form th:action="@{/usuario/guardarFavorito}" method="post">
                                 <input type="hidden" name="productId" th:value="${product.id}" />
@@ -228,7 +228,7 @@
                                 </div>
                               </div>
                             </div>
-
+                            -->
 
                           </div>
                         </div>
@@ -434,7 +434,10 @@
                     <!-- Información del proveedor -->
                     <div class="provider-info d-flex align-items-end mt-auto bg-light p-2 rounded" style="border-bottom-left-radius: 15px; border-bottom-right-radius: 15px;">
                       <span class="provider-name small">Publicado por:</span>
-                      <img th:src="@{'../uploads/fotosUsuarios/' + ${comentario[5]}}" alt="Avatar" class="rounded-circle me-2" style="width: 35px; height: 35px; object-fit: cover;">
+                      <img th:src="@{/usuario/usuarioFoto/{id}(id=${comentario[5]})}"
+                           src="/images/default.jpg"
+                           onerror="this.onerror=null;this.src='/images/default.jpg';"
+                           alt="Avatar" class="rounded-circle me-2" style="width: 35px; height: 35px; object-fit: cover;">
                       <span th:text="${comentario[4]}" class="provider-name small ms-1 text-truncate">Nombre del proveedor</span>
                     </div>
                   </div>

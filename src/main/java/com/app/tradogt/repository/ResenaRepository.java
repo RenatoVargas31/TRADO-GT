@@ -31,7 +31,7 @@ public interface ResenaRepository extends JpaRepository<Resena, Integer> {
             "r.calificacion as Calificación, " +
             "r.fechaCreacion as Fecha, " +
             "CONCAT(u.nombre, ' ', u.apellido) AS NombreCompleto, " +
-            "u.foto as Avatar " +
+            "u.idUsuario as Id " +
             "FROM Resena r " +
             "JOIN Usuario u ON u.idUsuario = r.Usuario_idUsuario " +
             "WHERE r.Producto_idProducto = :id " +

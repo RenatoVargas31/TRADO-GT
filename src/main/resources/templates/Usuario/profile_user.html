@@ -59,7 +59,7 @@
                                 <div class="card-body user-profile-header d-flex flex-column align-items-center mb-4">
                                     <div class="flex-shrink-0 mt-3 mb-3">
                                         <!-- Usar la ruta de la foto del usuario desde el modelo -->
-                                        <img th:src="@{'/uploads/fotosUsuarios/' + ${usuario.foto}}"
+                                        <img id="fotoUsuario" th:src="@{/usuario/usuarioFoto/{id}(id=${usuario.id})}"
                                              src="/images/default.jpg"
                                              onerror="this.onerror=null;this.src='/images/default.jpg';"
                                              alt="user image" class="d-block rounded-circle"

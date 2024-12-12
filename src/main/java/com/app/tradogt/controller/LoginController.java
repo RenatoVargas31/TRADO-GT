@@ -171,6 +171,11 @@ public class LoginController {
         return "PassTemporalChange";
     }
 
+    @GetMapping("/change-temporal-pass-agente")
+    public String changeTemporalPassAgente(){
+        return "PassTemporalChangeAgente";
+    }
+
 
     @PostMapping("/crearCuenta")
     public String registrarUsuario(@Valid @ModelAttribute Usuario usuario,

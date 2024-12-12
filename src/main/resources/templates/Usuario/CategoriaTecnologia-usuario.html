@@ -316,16 +316,15 @@
                             <h5 class="font-size-15">
                               <a th:text="${product.nombre}" class="text-reset">Product Name</a>
                             </h5>
-                            <!-- Banner del corazón (like) en la esquina superior derecha -->
+                            <!-- Banner del corazón (like) en la esquina superior derecha
                             <div class="product-like" th:if="${product.isFavorite == 1}">
                               <div class="product-ribbon badge" style="position: absolute; top: 10px; right: 10px; color: red">
-                                <!-- Botón para enviar el formulario -->
                                 <div class="btn btn-danger "
                                      style="border-radius: 50%; padding: 10px; width: 40px; height: 40px; display: flex; justify-content: center; align-items: center;">
                                   <i class="mdi mdi-heart-outline" style="font-size: 24px;"></i>
                                 </div>
                               </div>
-                            </div>
+                            </div>-->
                             <h5 class="mt-2" style="font-size: 14px;">
                               S/ <span th:text="${product.precio}">100</span>
                               <span style="font-size: 12px; color: #888;">por unidad</span>

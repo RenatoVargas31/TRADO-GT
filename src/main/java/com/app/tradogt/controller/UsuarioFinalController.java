@@ -200,7 +200,7 @@ public class UsuarioFinalController {
         return "Usuario/inicio-usuario";
     }
 
-    @PostMapping("/guardarFavorito")
+    /*@PostMapping("/guardarFavorito")
     public String guardarFavorito(Model model, @RequestParam("productId") Integer productId, RedirectAttributes attr){
 
         //Buscar producto
@@ -223,7 +223,7 @@ public class UsuarioFinalController {
         }
 
         return "redirect:/usuario/productoDetalles?id=" + miProducto.get().getId();
-    }
+    } */
 
     @GetMapping("/misPedidos")
     public String misPedidos(Model model) {
@@ -1141,6 +1141,24 @@ public class UsuarioFinalController {
         return "Usuario/pruebaTemp";
     }
 
+    @GetMapping("/resenaFoto/{id}")
+    @ResponseBody
+    public ResponseEntity<byte[]> getResenaFoto(@PathVariable("id") Integer id) {
+        Resena resena = resenaRepository.findById(id).orElse(null);
+
+        if (resena != null && resena.getFoto() != null) {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.IMAGE_JPEG); // Cambia según el tipo de imagen que uses
+            return new ResponseEntity<>(resena.getFoto(), headers, HttpStatus.OK);
+        }
+
+        // Devuelve un estado 404 si la reseña o la foto no existen
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+
+
+
     @PostMapping("/guardarResenha")
     public String guardarResenha(
             @RequestParam("productoId") Integer productoId,
@@ -1163,8 +1181,11 @@ public class UsuarioFinalController {
         resena.setCuerpo(cuerpo);
         resena.setFechaCreacion(LocalDate.now());
         resena.setFueRapido(fueRapido);
-        resena.setFoto("default.jpg"); // Valor inicial predeterminado
+        // resena.setFoto("default.jpg"); // Valor inicial predeterminado
         resenaRepository.save(resena); // Guardar la reseña para obtener su ID
+
+
+        /*
 
         // Si se sube una foto, guardarla en el servidor y actualizar la reseña
         if (!foto.isEmpty()) {
@@ -1199,6 +1220,23 @@ public class UsuarioFinalController {
         } else {
             redirectAttributes.addFlashAttribute("message", "Reseña creada sin imagen.");
         }
+
+
+         */
+
+        try {
+            if (foto != null && !foto.isEmpty()) {
+                resena.setFoto(foto.getBytes());
+            }
+        } catch (IOException e) {
+            redirectAttributes.addFlashAttribute("error", "Hubo un error al procesar la imagen de la reseña.");
+            return "redirect:/usuario/resenas";
+        }
+
+        // Guardar la reseña
+        resenaRepository.save(resena);
+
+        redirectAttributes.addFlashAttribute("message", "Reseña creada exitosamente.");
 
 
         return "redirect:/usuario/resenas";
