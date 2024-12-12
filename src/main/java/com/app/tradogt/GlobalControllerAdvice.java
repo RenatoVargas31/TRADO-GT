@@ -34,7 +34,7 @@ public class GlobalControllerAdvice {
         this.carritoRepository = carritoRepository;
         this.productoEnCarritoRepository = productoEnCarritoRepository;
     }
-    /*
+
     @ExceptionHandler(NoResourceFoundException.class)
     public ModelAndView handleNoResourceFoundException(NoResourceFoundException ex, Model model) {
         model.addAttribute("errorMessage", "La página que buscas no existe.||No se encontró el recurso solicitado.");
@@ -47,7 +47,7 @@ public class GlobalControllerAdvice {
         return new ModelAndView("errorPage");
     }
 
-     */
+     
 
     @ModelAttribute
     private void getAuthenticatedUser(Model model) {
