@@ -620,6 +620,29 @@ public class UsuarioFinalController {
             Usuario usuario = optionalUsuario.get();
             Optional<ProductoEnZona> productoEnZona = productoEnZonaRepository.findByIdAndZona(id, usuario.getDistritoIddistrito().getZonaIdzona().getId());
 
+            model.addAttribute("PrecioEnvio", productoEnZona.get().getCostoEnvio());
+
+            // Comprobar si el producto esta añadido a favoritos
+            MyFavoriteId myFavoriteId = new MyFavoriteId();
+
+            myFavoriteId.setUsuarioIdusuario(id2);
+            myFavoriteId.setZonaIdzona(usuario.getDistritoIddistrito().getZonaIdzona().getId());
+            myFavoriteId.setProductoIdproducto(id);
+
+            Optional<MyFavorite> myFavorite = myFavoriteRepository.findById(myFavoriteId);
+
+            if(myFavorite.isPresent()) {
+                // Ya está añadido a favoritos
+                model.addAttribute("MyFavorite", 1);
+
+            }else {
+                // No está añadido
+                model.addAttribute("MyFavorite", 0);
+            }
+
+
+
+
             if (productoEnZona.isPresent()) {
                 model.addAttribute("productoDetalles", productoEnZona.get());
             } else {

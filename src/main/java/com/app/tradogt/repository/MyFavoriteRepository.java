@@ -19,7 +19,10 @@ public interface MyFavoriteRepository extends JpaRepository<MyFavorite, MyFavori
             "pr.foto AS Foto, " +
             "pz.cantidad AS Stock, " +
             "pv.tienda AS Tienda, " +
-            "pr.precio AS Precio " +
+            "pr.precio AS Precio, " +
+            "pr.descripcion AS Descripcion, " +
+            "pr.color AS Color, " +
+            "pv.idProveedor AS ID_Pv " +
             "FROM MyFavorite m " +
             "JOIN ProductoEnZona pz ON pz.producto_idProducto = m.producto_idProducto " +
             "JOIN Zona z ON z.idZona = pz.zona_idZona " +
@@ -32,6 +35,7 @@ public interface MyFavoriteRepository extends JpaRepository<MyFavorite, MyFavori
             nativeQuery = true)
     List<Object[]> findFavorites(@Param("idUser") int idUser, @Param("idZona") int idZona);
 
+
     //Lista de productos favoritos
     @Query(value = "SELECT pr.nombre AS NombreProducto, " +
             "pr.idProducto AS ID, " +
@@ -43,7 +47,8 @@ public interface MyFavoriteRepository extends JpaRepository<MyFavorite, MyFavori
             "pv.tienda AS Tienda, " +
             "pr.precio AS Precio, " +
             "pr.descripcion AS Descripcion, " +
-            "pr.color AS Color " +
+            "pr.color AS Color, " +
+            "pv.idProveedor AS ID_Pv " +
             "FROM MyFavorite m " +
             "JOIN ProductoEnZona pz ON pz.producto_idProducto = m.producto_idProducto " +
             "JOIN Zona z ON z.idZona = pz.zona_idZona " +
@@ -54,5 +59,6 @@ public interface MyFavoriteRepository extends JpaRepository<MyFavorite, MyFavori
             "ORDER BY m.fecha DESC; ",
             nativeQuery = true)
     List<Object[]> findMyFavorites(@Param("idUser") int idUser, @Param("idZona") int idZona);
+
 
 }

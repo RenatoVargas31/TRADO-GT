@@ -203,11 +203,11 @@
                         <!-- Columna derecha: Código del producto y botón de like -->
                         <div class="col-4 col-sm-4 col-md-6 col-lg-2 d-flex justify-content-start align-items-start order-lg-2 order-2">
                           <!-- Código del producto -->
-                          <div class="product-code me-2">
+                          <div class="product-code me-2 justify-content-end">
                             <div class="mb-2">
                               <span class="product-ribbon badge bg-warning" th:text="${product.codigo}"></span>
                             </div>
-                            <div class="product-like" >
+                            <div class="product-like" th:if="${MyFavorite} == 0">
                               <form th:action="@{/usuario/guardarFavorito}" method="post">
                                 <input type="hidden" name="productId" th:value="${product.id}" />
                                 <div class="product-ribbon" style="color: red;">
@@ -219,15 +219,14 @@
                               </form>
                             </div>
 
-<!--
-                            <div class="product-like" >
+                            <div class="product-like" th:if="${MyFavorite} == 1">
                               <div class="product-ribbon" style="color: red">
-                                <div class="btn btn-outline-danger"
+                                <div class="btn btn-danger"
                                      style="border-radius: 50%; padding: 10px; width: 40px; height: 40px; display: flex; justify-content: center; align-items: center;">
-                                  <i class="mdi mdi-heart text-danger" style="font-size: 24px;"></i>
+                                  <i class="mdi mdi-heart " style="font-size: 24px; color: white"></i>
                                 </div>
                               </div>
-                            </div>-->
+                            </div>
 
                           </div>
                         </div>
@@ -303,11 +302,15 @@
                             </div>
                             <!-- Delivery -->
                             <div class="row-cols-md-2 mt-4">
-                              <div class="d-flex align-items-center bg-light p-3 rounded" style="border: 1px solid #ddd; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+                              <div class="d-flex align-items-center bg-light p-2 rounded border" style="border-color: #ccc; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
                                 <i class="mdi mdi-truck text-primary" style="font-size: 24px; margin-right: 10px;"></i>
-                                <span class="text-muted">Entrega a domicilio</span>
+                                <div>
+                                  <small class="text-muted">Entrega a domicilio:</small>
+                                  <small class="m-0 font-weight-bold text-primary" th:text="'S./'+${PrecioEnvio}" style="display: inline;"></small>
+                                </div>
                               </div>
                             </div>
+
 
                           </div>
 

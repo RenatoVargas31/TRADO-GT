@@ -370,9 +370,9 @@
                                         </div>
                                     </div>
                                     <!-- Cara Trasera -->
-                                    <div class="card-back product-card" style="position: absolute; width: 100%; height: 100%; backface-visibility: hidden; background-color: #f8f9fa; border: none; transform: rotateY(180deg); display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                                    <div class="card-back product-card" style="position: absolute; width: 100%; height: 100%; backface-visibility: hidden; background-color: white; border: none; transform: rotateY(180deg); display: flex; flex-direction: column; justify-content: center; align-items: center;">
                                         <h6 class="text-center" th:text="${producto[1]} + ' ' + ${producto[3]} + ' ' + ${producto[2]}"> </h6>
-                                        <small th:text="${#strings.substring(producto[6], 0, 60) + '...'}"
+                                        <small th:text="${producto[6]}"
                                                style="text-align: center; padding: 0 10px; margin-bottom: 10px;"></small>
 
                                         <a th:href="@{'/usuario/productoDetalles?id=' + ${producto[0]} }" class="btn btn-primary btn-sm" type="button"><small >Ver detalles</small></a>
@@ -382,141 +382,74 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- Tarjeta bloqueada
-                        <div th:if="${productosTop.size() < 5}" th:each="i : ${#numbers.sequence(1, 5 - productosTop.size())}" class="col col-12 col-sm-6 col-md-4 col-lg-2 p-1" style="display: flex; justify-content: center;">
-                            <div class="card product-card" style="background-color: #f0f0f0; border: none; height: 300px; width: 100%; margin: 0; display: flex; justify-content: center; align-items: center;">
-                                <div class="card-body" style="text-align: center; color: #ccc; flex-grow: 1; display: flex; justify-content: center; align-items: center;">
-                                    Contenido no disponible
-                                </div>
-                            </div>
-                        </div>-->
                         <div th:if="${#lists.isEmpty(productosTop)}" class="alert alert-warning" role="alert">
                             <p>No hay productos disponibles</p>
                         </div>
                     </div>
-                    <script>
-                        document.addEventListener("DOMContentLoaded", () => {
-                            const cards = document.querySelectorAll(".card-container");
-
-                            cards.forEach(card => {
-                                card.addEventListener("click", () => {
-                                    // Alternar la clase `active` para activar el giro
-                                    card.classList.toggle("active");
-                                });
-                            });
-                        });
-
-                    </script>
-                    <!-- Tarjeta 2
-                        <div class="col col-12 col-sm-6 col-md-4 col-lg-2 p-1" style="display: flex; justify-content: center;">
-                            <div class="card product-card" style="background-color: white; border: none; height: 300px; width: 100%; margin: 0;">
-                                <div class="card-header" style="text-align: center;">Producto 2</div>
-                                <div class="card-body" style="text-align: center;">Descripción breve</div>
-                                <div class="card-footer" style="text-align: center;">Calificación: 4.3</div>
-                            </div>
-                        </div>
-                        <div class="col col-12 col-sm-6 col-md-4 col-lg-2 p-1" style="display: flex; justify-content: center;">
-                            <div class="card product-card" style="background-color: white; border: none; height: 300px; width: 100%; margin: 0;">
-                                <div class="card-header" style="text-align: center;">Producto 3</div>
-                                <div class="card-body" style="text-align: center;">Descripción breve</div>
-                                <div class="card-footer" style="text-align: center;">Calificación: 4.8</div>
-                            </div>
-                        </div>
-                        <div class="col col-12 col-sm-6 col-md-4 col-lg-2 p-1" style="display: flex; justify-content: center;">
-                            <div class="card product-card" style="background-color: white; border: none; height: 300px; width: 100%; margin: 0;">
-                                <div class="card-header" style="text-align: center;">Producto 4</div>
-                                <div class="card-body" style="text-align: center;">Descripción breve</div>
-                                <div class="card-footer" style="text-align: center;">Calificación: 4.7</div>
-                            </div>
-                        </div>
-                        <div class="col col-12 col-sm-6 col-md-4 col-lg-2 p-1" style="display: flex; justify-content: center;">
-                            <div class="card product-card"
-                                 onclick="showProductDetails('Producto 1', 'Descripción completa del producto', 4.5)"
-                                 style="background-color: white; border: none; height: 300px; width: 100%; margin: 0; cursor: pointer;">
-                                <div class="card-header" style="text-align: center;">Producto 1</div>
-                                <div class="card-body" style="text-align: center;">Descripción breve</div>
-                                <div class="card-footer" style="text-align: center;">Calificación: 4.5</div>
-                            </div>
-                        </div> -->
                 </div>
 
                 <!-- Productos Recomendados -->
+
                 <br>
-                <div class="row">
-                    <div class="col-12 col-lg-6">
-                        <h5>Mis últimos hallazgos favoritos</h5>
-                        <hr>
-                        <div class="card" style="background-color: white">
-                            <div class="card-body">
-                                <div class="col-12">
-                                    <div class="table-responsive">
-                                        <table class="table mb-0">
-                                            <thead class="table-light">
-                                            <tr>
-                                                <th><small>Imagen</small></th>
-                                                <th><small>Producto</small></th>
-                                                <th><small>Marca</small></th>
-                                                <th><small>Código</small></th>
-                                                <th><small> <a th:href="@{/usuario/favoritos}">Ver más</a> </small></th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            <tr th:if="${#lists.isEmpty(misFavoritos)}">
-                                                <td colspan="5" class="text-center">
-                                                    <small>No tienes productos favoritos.</small>
-                                                </td>
-                                            </tr>
-                                                <tr th:each="producto :${misFavoritos}">
-                                                <th ><small th:text="${producto[1]}"></small></th>
-                                                <th ><small th:text="${producto[0]}"></small></th>
-                                                <th ><small th:text="${producto[2]}"></small></th>
-                                                <th ><small th:text="${producto[3]}"></small></th>
-                                            </tr>
-                                            </tbody>
-                                        </table>
+                <h5>Nuevas adiciones a Mis Favoritos</h5>
+                <hr>
+                <div class="container-fluid" style="display: flex; justify-content: center; flex-wrap: wrap;">
+                    <div class="row" style="display: flex; justify-content: center; width: 100%; margin-bottom: 15px; gap: 10px;">
+                        <div th:each="product :${misFavoritos}" class="col col-12 col-sm-6 col-md-4 col-lg-2 p-0" style="display: flex; justify-content: center;">
+                            <div class="card-container" style="perspective: 1000px; height: 350px; width: 100%;">
+                                <div class="card-inner" style="position: relative; width: 100%; height: 100%; transform-style: preserve-3d; transition: transform 0.6s;">
+                                    <!-- Cara Frontal (Código Original) -->
+                                    <div class="card-front" style="position: absolute; width: 100%; height: 100%; backface-visibility: hidden;">
+                                        <div class="card product-card" style="background-color: white; border: none; height: 350px; width: 100%; margin: 0; position: relative;">
+                                            <!-- Imagen -->
+                                            <div class="card-img-top" style="width: 100%; height: 200px; overflow: hidden; display: flex; justify-content: center; align-items: center;">
+                                                <img th:src="@{'/usuario/productoFoto/' + ${product[1]}}" alt="img-${product[0]]}" class="img-fluid" style="width: 100%; height: 100%; object-fit: cover;"
+                                                     onerror="this.onerror=null; this.src='../images/error.jpg';"
+                                                >
+                                            </div>
+                                            <div class="card-body" style="padding: 0; position: relative; overflow: hidden;">
+                                                <hr>
+                                                <div class="text-center">
+                                                    <div class="flex-1">
+                                                        <h6 class="text-center"><a href="#" class="text-reset" th:text="${product[0]} + ' ' + ${product[2]}">Nedick's</a></h6>
+                                                        <div class="product-ribbon badge bg-warning">
+                                                            <!-- Mostrar el código de producto -->
+                                                            <span th:text="${product[3]}"></span>
+                                                        </div>
+                                                        <div class="d-flex align-items-center justify-content-center">
+                                                            <img th:src="@{/usuario/proveedorImagen/{id}(id=${product[11]})}"
+                                                                 src="/images/product/iconoProvedor.png"
+                                                                 onerror="this.onerror=null;this.src='/images/product/iconoProvedor.png';"
+                                                                 alt="Proveedor Icono" class="me-2" style="width: 25px; height: 25px;">
+                                                            <p class="text-muted mb-0">
+                                                                <small th:text="${product[7]}"></small>
+                                                            </p>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
+                                    <!-- Cara Trasera -->
+                                    <div class="card-back product-card" style="position: absolute; width: 100%; height: 100%; backface-visibility: hidden; background-color: white; border: none; transform: rotateY(180deg); display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                                        <h6 class="text-center" th:text="${product[0]} + ' ' + ${product[10]} + ' ' + ${product[2]}"> </h6>
+                                        <small th:text="${product[9]}"
+                                               style="text-align: center; padding: 0 10px; margin-bottom: 10px;"></small>
+
+                                        <a th:href="@{'/usuario/productoDetalles?id=' + ${product[1]} }" class="btn btn-primary btn-sm" type="button"><small >Ver detalles</small></a>
+                                    </div>
+
+
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-12 col-lg-6">
-                        <h5>Mis últimos pedidos</h5>
-                        <hr>
-                        <div class="card" style="background-color: white">
-                            <div class="card-body">
-                                <div class="col-12">
-                                    <div class="table-responsive">
-                                        <table class="table mb-0">
-                                            <thead class="table-light">
-                                            <tr>
-                                                <th><small>Código</small></th>
-                                                <th><small>Fecha de creación</small></th>
-                                                <th><small>Estado</small></th>
-                                                <th><small>Agente</small></th>
-                                                <th><small> <a th:href="@{/usuario/misPedidos}">Ver más</a> </small></th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            <!-- Condicional para mostrar un mensaje si la lista está vacía -->
-                                            <tr th:if="${#lists.isEmpty(misUltimosPedidos)}">
-                                                <td colspan="5" class="text-center">
-                                                    <small>No tienes pedidos recientes.</small>
-                                                </td>
-                                            </tr>
-                                            <tr th:each="orden :${misUltimosPedidos}">
-                                                <th ><small th:text="${orden[0]}"></small></th>
-                                                <th ><small th:text="${orden[1]}"></small></th>
-                                                <th ><small th:text="${orden[2]}"></small></th>
-                                                <th ><small th:text="${orden[3]}"></small></th>
-                                            </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
+                        <div th:if="${#lists.isEmpty(productosTop)}" class="alert alert-warning" role="alert">
+                            <p>No hay productos disponibles</p>
                         </div>
                     </div>
                 </div>
+
             </div>
 
             <!-- End Page-content -->
@@ -535,6 +468,20 @@
                 </div>
             </footer>
         </div>
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                const cards = document.querySelectorAll(".card-container");
+
+                cards.forEach(card => {
+                    card.addEventListener("click", () => {
+                        // Alternar la clase `active` para activar el giro
+                        card.classList.toggle("active");
+                    });
+                });
+            });
+        </script>
+
+
         <!-- end main content-->
         <!-- Chatbot -->
         <div id="chatbot-container" class="chatbot-container">
