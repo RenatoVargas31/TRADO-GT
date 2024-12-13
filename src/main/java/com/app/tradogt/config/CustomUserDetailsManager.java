@@ -12,32 +12,56 @@ import java.util.List;
 
 public class CustomUserDetailsManager extends JdbcUserDetailsManager {
 
-    public CustomUserDetailsManager(DataSource dataSource) {
+    private boolean filterByActivate;
+
+    public CustomUserDetailsManager(DataSource dataSource, boolean filterByActivate) {
         super.setDataSource(dataSource);
+        this.filterByActivate = filterByActivate;
     }
 
     @Override
     protected List<UserDetails> loadUsersByUsername(String username) {
-        return getJdbcTemplate().query(
-                "SELECT correo, contrasena, isActivated, nombre, apellido, codigoDespachador FROM Usuario WHERE correo = ? OR codigoDespachador = ?",
-                new Object[]{username, username},
-                (ResultSet rs, int rowNum) -> {
-                    String correo = rs.getString("correo");
-                    String contrasena = rs.getString("contrasena");
-                    boolean isActivated = rs.getBoolean("isActivated");
-                    String nombre = rs.getString("nombre");
-                    String apellido = rs.getString("apellido");
-                    String codigoDespachador = rs.getString("codigoDespachador");
-                    return new CustomUserDetails(correo, contrasena, isActivated, nombre, apellido, codigoDespachador, new ArrayList<>());
-                }
-        );
+        String query;
+        if(filterByActivate){
+            query = "SELECT correo, contrasena, isActivated, nombre, apellido, codigoDespachador FROM Usuario WHERE (correo = ? OR codigoDespachador = ?) AND isActivated = 1";
+            return getJdbcTemplate().query(query, new Object[]{username, username},
+                    (ResultSet rs, int rowNum) -> {
+                        String correo = rs.getString("correo");
+                        String contrasena = rs.getString("contrasena");
+                        boolean isActivated = rs.getBoolean("isActivated");
+                        String nombre = rs.getString("nombre");
+                        String apellido = rs.getString("apellido");
+                        String codigoDespachador = rs.getString("codigoDespachador");
+                        return new CustomUserDetails(correo, contrasena, isActivated, nombre, apellido, codigoDespachador, new ArrayList<>());
+                    }
+            );
+        }else{
+            query = "SELECT correo, contrasena, nombre, apellido, codigoDespachador FROM Usuario WHERE correo = ? OR codigoDespachador = ?";
+            return getJdbcTemplate().query(
+                    query, new Object[]{username, username},
+                    (ResultSet rs, int rowNum) -> {
+                        String correo = rs.getString("correo");
+                        String contrasena = rs.getString("contrasena");
+                        String nombre = rs.getString("nombre");
+                        String apellido = rs.getString("apellido");
+                        String codigoDespachador = rs.getString("codigoDespachador");
+                        return new CustomUserDetails(correo, contrasena, true, nombre, apellido, codigoDespachador, new ArrayList<>());
+                    }
+            );
+        }
+
     }
 
     @Override
     protected List<GrantedAuthority> loadUserAuthorities(String username) {
+        String query;
+        if(filterByActivate){
+            query = "SELECT U.correo, R.nombre FROM Usuario U INNER JOIN Rol R ON U.rol_idRol = R.idRol WHERE (U.correo = ? OR U.codigoDespachador = ?) AND U.isActivated = 1";
+        }else{
+            query = "SELECT U.correo, R.nombre FROM Usuario U INNER JOIN Rol R ON U.rol_idRol = R.idRol WHERE U.correo = ? OR U.codigoDespachador = ?";
+        }
         return getJdbcTemplate().query(
-                "SELECT U.correo, R.nombre FROM Usuario U INNER JOIN Rol R ON U.rol_idRol = R.idRol WHERE (U.correo = ? OR U.codigoDespachador = ?) AND U.isActivated = 1",
-                new Object[]{username, username},
+                query, new Object[]{username, username},
                 (ResultSet rs, int rowNum) -> {
                     String authority = rs.getString("nombre");
                     return (GrantedAuthority) () -> authority;
