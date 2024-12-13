@@ -23,6 +23,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.sql.DataSource;
@@ -1001,12 +1002,40 @@ public class SuperAdminController {
         return "SuperAdmin/proveedorNuevo-SAdmin";
     }
 
+
+    @GetMapping("/proveedorImagen/{id}")
+    @ResponseBody
+    public ResponseEntity<byte[]> obtenerImagenProveedor(@PathVariable Integer id) {
+        Proveedor proveedor = proveedorRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Proveedor no encontrado"));
+
+        if (proveedor.getImagen() == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.IMAGE_JPEG);
+        return new ResponseEntity<>(proveedor.getImagen(), headers, HttpStatus.OK);
+    }
+
     @PostMapping("/proveedorNuevo")
-    public String viewProveedorNuevo(Proveedor proveedor, RedirectAttributes redirectAttributes) {
+    public String viewProveedorNuevo(
+            @RequestParam("imagenProveedor") MultipartFile imagen,
+            @ModelAttribute Proveedor proveedor,
+            RedirectAttributes redirectAttributes) {
         //Guardar proveedor
-        proveedorRepository.save(proveedor);
-        //Flash attribute de confirmación
-        redirectAttributes.addFlashAttribute("successMessage", "Proveedor registrado correctamente.");
+        try {
+            if (!imagen.isEmpty()) {
+                proveedor.setImagen(imagen.getBytes());
+            }
+            System.out.println("Nombre: " + proveedor.getNombre());
+            System.out.println("Apellido: " + proveedor.getApellido());
+
+            proveedorRepository.save(proveedor);
+            redirectAttributes.addFlashAttribute("successMessage", "Proveedor registrado correctamente.");
+        } catch (IOException e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Error al cargar la imagen.");
+        }
         return "redirect:/superadmin/proveedorLista";
     }
     //</editor-fold>
