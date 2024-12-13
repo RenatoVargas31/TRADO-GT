@@ -1,11 +1,9 @@
 package com.app.tradogt.config;
 
-import com.app.tradogt.entity.EstadoOrden;
-import com.app.tradogt.entity.Orden;
-import com.app.tradogt.repository.EstadoOrdenRepository;
-import com.app.tradogt.repository.OrdenRepository;
 import com.app.tradogt.repository.UsuarioRepository;
 import jakarta.servlet.http.HttpSession;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,27 +18,24 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.switchuser.SwitchUserFilter;
 import org.springframework.security.web.savedrequest.DefaultSavedRequest;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import javax.sql.DataSource;
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
+import java.io.IOException;
 
 @Configuration
 public class WebSecurityConfig {
 
+    private static final Logger logger = LoggerFactory.getLogger(WebSecurityConfig.class);
+
     final DataSource dataSource;
     final UsuarioRepository usuarioRepository;
     final CustomAccessDeniedHandler customAccessDeniedHandler;
-    final EstadoOrdenRepository estadoOrdenRepository;
-    final OrdenRepository ordenRepository;
 
-    public WebSecurityConfig(DataSource dataSource, UsuarioRepository usuarioRepository, CustomAccessDeniedHandler customAccessDeniedHandler, EstadoOrdenRepository estadoOrdenRepository, OrdenRepository ordenRepository) {
+    public WebSecurityConfig(DataSource dataSource, UsuarioRepository usuarioRepository, CustomAccessDeniedHandler customAccessDeniedHandler) {
         this.dataSource = dataSource;
         this.usuarioRepository = usuarioRepository;
         this.customAccessDeniedHandler = customAccessDeniedHandler;
-        this.estadoOrdenRepository = estadoOrdenRepository;
-        this.ordenRepository = ordenRepository;
     }
 
     @Bean
@@ -50,29 +45,16 @@ public class WebSecurityConfig {
 
     @Bean
     public UserDetailsManager usersLogin(DataSource dataSource) {
-        return new CustomUserDetailsManager(dataSource);
-    }
-    @Bean
-    public UserDetailsManager userSwitch(DataSource dataSource) {
-        return new SwitchUserDetailsManager(dataSource);
+        return new CustomUserDetailsManager(dataSource, true);
     }
 
-    @Bean
-    public CustomAuthenticationFilter customAuthenticationFilter(AuthenticationManager authenticationManager) {
-        CustomAuthenticationFilter filter = new CustomAuthenticationFilter();
-        filter.setAuthenticationManager(authenticationManager);
-        return filter;
-    }
+    //Impersonate///////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    @Bean
-    public AuthenticationManager authenticationManagerBean(AuthenticationConfiguration configuration) throws Exception {
-        return configuration.getAuthenticationManager();
-    }
     @Bean
     public SwitchUserFilter switchUserFilter() {
         // Create a new instance of CustomSwitchUserFilter constructor con parámetros
         SwitchUserFilter filter = new SwitchUserFilter();
-        filter.setUserDetailsService(userSwitch(dataSource));
+        filter.setUserDetailsService(new CustomUserDetailsManager(dataSource, false));
         filter.setSwitchUserUrl("/superadmin/impersonate");
         filter.setExitUserUrl("/superadmin/exit");
         filter.setSuccessHandler((request, response, authentication) -> {
@@ -86,13 +68,13 @@ public class WebSecurityConfig {
                 break;
             }
             switch (rol) {
-                case "SuperAdmin" -> response.sendRedirect("inicio");
-                case "Administrador Zonal" -> response.sendRedirect("adminzonal/dashboard");
+                case "SuperAdmin" -> response.sendRedirect("/superadmin/inicio");
+                case "Administrador Zonal" -> response.sendRedirect("/adminzonal/dashboard");
                 case "Agente de Compra" -> {
-                    response.sendRedirect("agente/allOrders");
+                    response.sendRedirect("/agente/allOrders");
                 }
                 case "Usuario Final" -> {
-                    response.sendRedirect("usuario/inicio");
+                    response.sendRedirect("/usuario/inicio");
                 }
                 default -> response.sendRedirect("/default");
             }
@@ -100,15 +82,21 @@ public class WebSecurityConfig {
         return filter;
     }
 
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http, CustomAuthenticationFilter customAuthenticationFilter, UsuarioRepository usuarioRepository) throws Exception {
+    public AuthenticationManager authenticationManagerBean(AuthenticationConfiguration configuration) throws Exception {
+        return configuration.getAuthenticationManager();
+    }
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .userDetailsService(usersLogin(dataSource))
                 .addFilterBefore(switchUserFilter(), UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(customAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers("/css/**", "/js/**", "/images/**", "/fonts/**", "/libs/**").permitAll()
-                        .requestMatchers("/loginForm", "/processLogin", "/crearCuenta","/recuperarPass","/request-password-reset","/verificarCode","/verify-codE","/reset-password-form/**","/reset-password","/change-temporal-pass","/change-temporalPass","/change-temporal-pass-agente").permitAll()
+                        .requestMatchers("/loginForm", "/processLogin", "/crearCuenta", "/recuperarPass", "/request-password-reset", "/verificarCode", "/verify-codE", "/reset-password-form/**", "/reset-password", "/change-temporal-pass", "/change-temporalPass", "/change-temporal-pass-agente").permitAll()
                         .requestMatchers("/superadmin", "/superadmin/**").hasAnyAuthority("SuperAdmin")
                         .requestMatchers("/adminzonal", "/adminzonal/**").hasAnyAuthority("Administrador Zonal")
                         .requestMatchers("/agente", "/agente/**").hasAnyAuthority("Agente de Compra")
@@ -131,6 +119,7 @@ public class WebSecurityConfig {
 
                             if (defaultSavedRequest != null) {
                                 String targetURL = defaultSavedRequest.getRedirectUrl();
+                                logger.info("Redirecting to saved request URL: {}", targetURL);
                                 new DefaultRedirectStrategy().sendRedirect(request, response, targetURL);
                             } else {
                                 String rol = "";
@@ -139,16 +128,28 @@ public class WebSecurityConfig {
                                     break;
                                 }
                                 switch (rol) {
-                                    case "SuperAdmin" -> response.sendRedirect("superadmin/inicio");
-                                    case "Administrador Zonal" -> response.sendRedirect("adminzonal/dashboard");
+                                    case "SuperAdmin" -> {
+                                        logger.info("Redirecting to SuperAdmin home");
+                                        response.sendRedirect("superadmin/inicio");
+                                    }
+                                    case "Administrador Zonal" -> {
+                                        logger.info("Redirecting to Administrador Zonal dashboard");
+                                        response.sendRedirect("adminzonal/dashboard");
+                                    }
                                     case "Agente de Compra" -> {
+                                        logger.info("Redirecting to Agente de Compra orders");
                                         response.sendRedirect("agente/allOrders");
                                     }
                                     case "Usuario Final" -> {
+                                        logger.info("Redirecting to Usuario Final home");
                                         response.sendRedirect("usuario/inicio");
                                     }
                                 }
                             }
+                        })
+                        .failureHandler((request, response, exception) -> {
+                            logger.error("Login failed: {}", exception.getMessage());
+                            response.sendRedirect("/loginForm?error=true");
                         })
                 )
                 .logout(logout -> logout
@@ -156,10 +157,8 @@ public class WebSecurityConfig {
                         .deleteCookies("JSESSIONID")
                         .invalidateHttpSession(true)
                         .permitAll()
-
                 )
-                .exceptionHandling((exceptions) -> exceptions.accessDeniedHandler(customAccessDeniedHandler));
+                .exceptionHandling((exceptions) -> exceptions.accessDeniedHandler(customAccessDeniedHandler));;
         return http.build();
     }
-
 }

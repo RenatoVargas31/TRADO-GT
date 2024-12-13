@@ -237,8 +237,7 @@
               <div class="col">
                 <div class="card" style="max-height: 250px; overflow-y: auto;">
                   <div class="card-body">
-                    <p>Holaaa
-                      :D </p>
+                    <p> </p>
 
                   </div>
                 </div>
@@ -333,15 +332,34 @@
                 <div class="row mt-4">
                   <div class="col-sm-6">
                     <div>
-                      <p class="mb-sm-0 mt-2">Página <span id="current-page" class="fw-bold">1</span> de <span id="total-pages" class="fw-bold">1</span></p>
-                    </div>
+                      <p class="mb-sm-0 mt-2">Página <span class="fw-bold" th:text="${currentPage}"></span> de <span class="fw-bold" th:text="${partes}"></span></p>
+                      </div>
                   </div>
                   <div class="col-sm-6">
                     <div class="float-sm-end">
-                      <ul id="pagination" class="pagination pagination-rounded mb-sm-0">
-                        <li class="page-item" id="prev-page"><a class="page-link"><i class="mdi mdi-chevron-left"></i></a></li>
-                        <li class="page-item active"><a class="page-link" id="current-page-num">1</a></li>
-                        <li class="page-item" id="next-page"><a class="page-link"><i class="mdi mdi-chevron-right"></i></a></li>
+                      <ul class="pagination pagination-rounded mb-sm-0">
+                        <!-- Botón para ir a la página anterior -->
+                        <li class="page-item">
+                          <a class="page-link" th:href="@{|?query=${query}&page=${currentPage - 1}|}"
+                             th:classappend="${currentPage == 1} ? 'disabled'">
+                            <i class="mdi mdi-chevron-left"></i>
+                          </a>
+                        </li>
+
+                        <!-- Números de las páginas -->
+                        <li class="page-item"
+                            th:each="i : ${#numbers.sequence(1, partes)}"
+                            th:classappend="${currentPage == i} ? 'active'">
+                          <a class="page-link" th:href="@{|?query=${query}&page=${i}|}">[[${i}]]</a>
+                        </li>
+
+                        <!-- Botón para ir a la página siguiente -->
+                        <li class="page-item">
+                          <a class="page-link" th:href="@{|?query=${query}&page=${currentPage + 1}|}"
+                             th:classappend="${currentPage == partes} ? 'disabled'">
+                            <i class="mdi mdi-chevron-right"></i>
+                          </a>
+                        </li>
                       </ul>
                     </div>
                   </div>

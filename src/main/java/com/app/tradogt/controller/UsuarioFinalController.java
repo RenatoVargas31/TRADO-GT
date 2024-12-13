@@ -9,6 +9,9 @@ import com.app.tradogt.services.NotificationService;
 import com.app.tradogt.services.StorageService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -611,7 +614,10 @@ public class UsuarioFinalController {
     }*/
 
     @GetMapping("/productoDetalles")
-    public String showProductoDetalles(@RequestParam("id") int id, Model model, RedirectAttributes redirectAttributes ) {
+    public String showProductoDetalles(@RequestParam("id") int id,
+                                       @RequestParam(value = "page", defaultValue = "1") int currentPage,
+                                       Model model,
+                                       RedirectAttributes redirectAttributes) {
 
         // Buscar el producto por id
         int id2 = getAuthenticatedUserId();
@@ -652,55 +658,64 @@ public class UsuarioFinalController {
             // Manejar el caso en que no se encuentra el usuario
             return "redirect:/usuario/inicio";
         }
+
         Optional<Producto> productoOpt = productosRepository.findById(id);
-
-
 
         if (productoOpt.isPresent()) {
             Producto producto = productoOpt.get();
             // Si el producto existe, agregarlo al modelo
-            model.addAttribute("product",producto);
+            model.addAttribute("product", producto);
             model.addAttribute("rating", resenaRepository.findRating(id));
             model.addAttribute("conteoRating", resenaRepository.countResena(id));
-            model.addAttribute("currentId",id);
-            // En tu controlador
+            model.addAttribute("currentId", id);
+
             List<Object[]> comentarios = resenaRepository.comentarioProducto(id);
 
-            // Verificamos si los comentarios están vacíos
             if (comentarios.isEmpty()) {
-                // Si está vacío, agregar un atributo para la alerta
                 model.addAttribute("alerta", "No hay comentarios para este producto.");
             } else {
-                // Si hay comentarios, agregarlos al modelo
                 model.addAttribute("comentarios", comentarios);
             }
 
-            switch(producto.getSubcategoriaIdsubcategoria().getCategoriaIdcategoria().getId()) {
+            // Configura la paginación (si es necesario)
+            Pageable pageable = PageRequest.of(0, 4);
+            Page<Producto> productoPage = null;
+
+            // Según la categoría del producto, se obtienen productos relacionados
+            switch (producto.getSubcategoriaIdsubcategoria().getCategoriaIdcategoria().getId()) {
                 case 1:
-                    model.addAttribute("productList", productosRepository.findProductRopaMujer(zonaId));
+                    productoPage = productosRepository.findProductRopaMujer(zonaId, pageable);
                     break;
                 case 2:
-                    model.addAttribute("productList", productosRepository.findProductRopaHombre(zonaId));
+                    productoPage = productosRepository.findProductRopaHombre(zonaId, pageable);
                     break;
                 case 3:
-                    model.addAttribute("productList", productosRepository.findProductElectronico(zonaId));
+                    productoPage = productosRepository.findProductElectronico(zonaId, pageable);
                     break;
                 case 4:
-                    model.addAttribute("productList", productosRepository.findProductMuebles(zonaId));
+                    productoPage = productosRepository.findProductMuebles(zonaId, pageable);
                     break;
                 default:
-                    model.addAttribute("productList", productosRepository.findAll());
+                    productoPage = productosRepository.findAll(pageable);
                     break;
             }
-            //Mostrar aviso al inico que solo puede comprar como minimo 12 productos
+
+            // Si hay productos relacionados, se agregan al modelo
+            if (productoPage != null) {
+                model.addAttribute("productList", productoPage.getContent());
+                model.addAttribute("currentPage", currentPage);
+                model.addAttribute("sizeList", productoPage.getTotalElements());
+                model.addAttribute("partes", productoPage.getTotalPages());
+            }
+
+            // Mostrar aviso de la cantidad mínima de compra
             redirectAttributes.addFlashAttribute("MensajeAlerta", "La cantidad mínima de compra es de 12 productos");
             return "Usuario/producto-detalles";
-            // Devuelve la vista con el producto
         } else {
-            // Si no se encuentra el producto, redirige o muestra una página de error
-            return "redirect:/usuario/inicio"; // Podrías crear una página de error personalizada
+            return "redirect:/usuario/inicio"; // Si no se encuentra el producto, redirige a inicio
         }
     }
+
 
     //Seleción de producto al carrito
    @PostMapping("/selecionarProducto")
@@ -1177,14 +1192,20 @@ public class UsuarioFinalController {
     }
 
     @GetMapping("/nuevaresena")
-    public String nuevaResenha(@RequestParam(value = "productoId", required = false) Integer productoId, Model model){
+    public String nuevaResenha(@RequestParam(value = "productoId", required = false) Integer productoId, Model model) {
         int userId = getAuthenticatedUserId();
 
-        // Obtenemos los productos que el usuario ha recibido
-        List<Producto> productosRecibidos = productosRepository.findProductosRecibidos(userId);
+        // Obtenemos los IDs de los productos ya reseñados por el usuario
+        List<Integer> productosResenhados = resenaRepository.findProductosResenhadosPorUsuario(userId);
 
-        // Añadimos la lista de productos al modelo
-        model.addAttribute("productosRecibidos", productosRecibidos);
+        // Obtenemos los productos recibidos y excluimos los que ya fueron reseñados
+        List<Producto> productosDisponibles = productosRepository.findProductosRecibidos(userId)
+                .stream()
+                .filter(producto -> !productosResenhados.contains(producto.getId()))
+                .toList();
+
+        // Añadimos los productos disponibles al modelo
+        model.addAttribute("productosRecibidos", productosDisponibles);
 
         // Si se pasa un productoId, lo agregamos al modelo para seleccionar el producto automáticamente
         if (productoId != null) {
@@ -1276,42 +1297,162 @@ public class UsuarioFinalController {
         return fileName.substring(fileName.lastIndexOf("."));
     }
     @GetMapping("/categoriaMujer")
-    public String showMujerCategoria(Model model) {
-        model.addAttribute("productList", productosRepository.findProductRopaMujer(zonaId));
+    public String showMujerCategoria(Model model,
+                                     @RequestParam(value = "page", required = false) String pageStr) {
+        int currentPage = 1; // Valor por defecto
+
+        // Si el parámetro 'page' no es un número entero, redirigimos sin él
+        if (pageStr != null && !pageStr.matches("\\d+")) {
+            return "redirect:/usuario/categoriaMujer"; // Redirige sin el parámetro 'page'
+        }
+
+        // Si el 'page' es válido, entonces lo convertimos a entero
+        if (pageStr != null && pageStr.matches("\\d+")) {
+            currentPage = Integer.parseInt(pageStr);
+        }
+
+        // Verificar si el número de página es válido (mayor o igual a 1)
+        currentPage = Math.max(currentPage, 1);
+
+        // Calcular el número total de páginas
+        Pageable pageable = PageRequest.of(currentPage - 1, 12);
+        Page<Producto> productoPage = productosRepository   .findProductRopaMujer(zonaId, pageable);
+
+        // Si la página está fuera de rango, redirigir a la primera página
+        if (currentPage > productoPage.getTotalPages()) {
+            return "redirect:/usuario/categoriaMujer?page=1";
+        }
+
+        // Añadir atributos al modelo
+        model.addAttribute("productList", productoPage.getContent());
+        model.addAttribute("currentPage", currentPage);
+        model.addAttribute("sizeList", productoPage.getTotalElements()); // Total de productos
+        model.addAttribute("partes", productoPage.getTotalPages()); // Total de páginas
+
         model.addAttribute("tallasList", productosRepository.findDistinctTallas(1));
         model.addAttribute("marcaList", productosRepository.findDistinctMarca(1));
-
         model.addAttribute("coloresList", productosRepository.findDistinctColores(1));
-        model.addAttribute("categoriasList",subCategoriaRepository.findSubcategorias(1));
+        model.addAttribute("categoriasList", subCategoriaRepository.findSubcategorias(1));
 
         return "Usuario/CategoriaMujer-usuario";
     }
     @GetMapping("/categoriaHombre")
-    public String showHombreCategoria(Model model) {
-        model.addAttribute("productList", productosRepository.findProductRopaHombre(zonaId));
+    public String showHombreCategoria(Model model,
+                                      @RequestParam(value = "page", required = false) String pageStr) {
+        int currentPage = 1; // Valor por defecto
+
+        // Si el parámetro 'page' no es un número entero, redirigimos sin él
+        if (pageStr != null && !pageStr.matches("\\d+")) {
+            return "redirect:/usuario/categoriaHombre"; // Redirige sin el parámetro 'page'
+        }
+
+        // Si el 'page' es válido, entonces lo convertimos a entero
+        if (pageStr != null && pageStr.matches("\\d+")) {
+            currentPage = Integer.parseInt(pageStr);
+        }
+
+        // Verificar si el número de página es válido (mayor o igual a 1)
+        currentPage = Math.max(currentPage, 1);
+
+        // Calcular el número total de páginas
+        Pageable pageable = PageRequest.of(currentPage - 1, 12);
+        Page<Producto> productoPage = productosRepository.findProductRopaHombre(zonaId, pageable);
+
+        // Si la página está fuera de rango, redirigir a la primera página
+        if (currentPage > productoPage.getTotalPages()) {
+            return "redirect:/usuario/categoriaHombre?page=1";
+        }
+
+        // Añadir atributos al modelo
+        model.addAttribute("productList", productoPage.getContent());
+        model.addAttribute("currentPage", currentPage);
+        model.addAttribute("sizeList", productoPage.getTotalElements()); // Total de productos
+        model.addAttribute("partes", productoPage.getTotalPages()); // Total de páginas
+
         model.addAttribute("tallasList", productosRepository.findDistinctTallas(2));
         model.addAttribute("coloresList", productosRepository.findDistinctColores(2));
         model.addAttribute("marcaList", productosRepository.findDistinctMarca(2));
-        model.addAttribute("categoriasList",subCategoriaRepository.findSubcategorias(2));
+        model.addAttribute("categoriasList", subCategoriaRepository.findSubcategorias(2));
+
         return "Usuario/CategoriaHombre-usuario";
     }
+
     @GetMapping("/categoriaTecnologia")
-    public String showTecnologiaCategoria(Model model) {
-        model.addAttribute("productList", productosRepository.findProductElectronico(zonaId));
-        model.addAttribute("almacenamientoList", productosRepository.findDistinctAlmacenamiento(3));
-        model.addAttribute("ramList", productosRepository.findDistinctRam(3));
+    public String showTecnologiaCategoria(Model model,
+                                          @RequestParam(value = "page", required = false) String pageStr) {
+        int currentPage = 1; // Valor por defecto
+
+        // Si el parámetro 'page' no es un número entero, redirigimos sin él
+        if (pageStr != null && !pageStr.matches("\\d+")) {
+            return "redirect:/usuario/categoriaTecnologia"; // Redirige sin el parámetro 'page'
+        }
+
+        // Si el 'page' es válido, entonces lo convertimos a entero
+        if (pageStr != null && pageStr.matches("\\d+")) {
+            currentPage = Integer.parseInt(pageStr);
+        }
+
+        // Verificar si el número de página es válido (mayor o igual a 1)
+        currentPage = Math.max(currentPage, 1);
+
+        // Calcular el número total de páginas
+        Pageable pageable = PageRequest.of(currentPage - 1, 12      );
+        Page<Producto> productoPage = productosRepository.findProductElectronico(zonaId, pageable);
+
+        // Si la página está fuera de rango, redirigir a la primera página
+        if (currentPage > productoPage.getTotalPages()) {
+            return "redirect:/usuario/categoriaTecnologia?page=1";
+        }
+
+        // Añadir atributos al modelo
+        productList(model, currentPage, productoPage);
         model.addAttribute("marcaList", productosRepository.findDistinctMarca(3));
-        model.addAttribute("categoriasList",subCategoriaRepository.findSubcategorias(3));
+        model.addAttribute("categoriasList", subCategoriaRepository.findSubcategorias(3));
+
         return "Usuario/CategoriaTecnologia-usuario";
     }
+
+
     @GetMapping("/categoriaMuebles")
-    public String showMuebleCategoria(Model model) {
-        model.addAttribute("productList", productosRepository.findProductMuebles(zonaId));
+    public String showMuebleCategoria(Model model,
+                                      @RequestParam(value = "page", required = false) String pageStr) {
+        int currentPage = 1; // Valor por defecto
+
+        // Si el parámetro 'page' no es un número entero, redirigimos sin él
+        if (pageStr != null && !pageStr.matches("\\d+")) {
+            return "redirect:/usuario/categoriaMuebles"; // Redirige sin el parámetro 'page'
+        }
+
+        // Si el 'page' es válido, entonces lo convertimos a entero
+        if (pageStr != null && pageStr.matches("\\d+")) {
+            currentPage = Integer.parseInt(pageStr);
+        }
+
+        // Verificar si el número de página es válido (mayor o igual a 1)
+        currentPage = Math.max(currentPage, 1);
+
+        // Calcular el número total de páginas
+        Pageable pageable = PageRequest.of(currentPage - 1, 12);
+        Page<Producto> productoPage = productosRepository.findProductMuebles(zonaId, pageable);
+
+        // Si la página está fuera de rango, redirigir a la primera página
+        if (currentPage > productoPage.getTotalPages()) {
+            return "redirect:/usuario/categoriaMuebles?page=1";
+        }
+
+        // Añadir atributos al modelo
+        model.addAttribute("productList", productoPage.getContent());
+        model.addAttribute("currentPage", currentPage);
+        model.addAttribute("sizeList", productoPage.getTotalElements()); // Total de productos
+        model.addAttribute("partes", productoPage.getTotalPages()); // Total de páginas
+
         model.addAttribute("materialesList", productosRepository.findDistinctMaterials(4));
         model.addAttribute("marcaList", productosRepository.findDistinctMarca(4));
-        model.addAttribute("categoriasList",subCategoriaRepository.findSubcategorias(4));
+        model.addAttribute("categoriasList", subCategoriaRepository.findSubcategorias(4));
+
         return "Usuario/CategoriaMuebles-usuario";
     }
+
 
     @GetMapping("/productoFoto/{id}")
     @ResponseBody
@@ -1333,114 +1474,361 @@ public class UsuarioFinalController {
 
     @GetMapping("/categoriaMueblesFilter")
     public String showMuebleCategoriaFilter(Model model,
+                                            @RequestParam(value = "page", required = false) String pageStr,
                                             @RequestParam(value = "categoria", required = false) List<Integer> categoria,
                                             @RequestParam(value = "material", required = false) List<String> material,
                                             @RequestParam(value = "marca", required = false) List<String> marca,
                                             @RequestParam(value = "precioMin", required = false) Double precioMin,
                                             @RequestParam(value = "precioMax", required = false) Double precioMax) {
-        model.addAttribute("productList", productosRepository.findProductMueblesFilter(zonaId,categoria, material, marca, precioMin, precioMax));
+        int currentPage = 1; // Valor por defecto
+
+        // Si el parámetro 'page' no es un número entero, redirigimos sin él
+        if (pageStr != null && !pageStr.matches("\\d+")) {
+            return "redirect:/usuario/categoriaMueblesFilter"; // Redirige sin el parámetro 'page'
+        }
+
+        // Si el 'page' es válido, entonces lo convertimos a entero
+        if (pageStr != null && pageStr.matches("\\d+")) {
+            currentPage = Integer.parseInt(pageStr);
+        }
+
+        // Verificar si el número de página es válido (mayor o igual a 1)
+        currentPage = Math.max(currentPage, 1);
+
+        // Calcular el número total de páginas
+        Pageable pageable = PageRequest.of(currentPage - 1, 12);
+        Page<Producto> productoPage = productosRepository.findProductMueblesFilter(zonaId, categoria, material, marca, precioMin, precioMax, pageable);
+
+        // Si la página está fuera de rango, redirigir a la primera página
+        if (currentPage > productoPage.getTotalPages()) {
+            return "redirect:/usuario/categoriaMueblesFilter?page=1";
+        }
+
+        // Añadir atributos al modelo
+        model.addAttribute("productList", productoPage.getContent());
+        model.addAttribute("currentPage", currentPage);
+        model.addAttribute("sizeList", productoPage.getTotalElements()); // Total de productos
+        model.addAttribute("partes", productoPage.getTotalPages()); // Total de páginas
+
         model.addAttribute("materialesList", productosRepository.findDistinctMaterials(4));
-        model.addAttribute("categoriasList",subCategoriaRepository.findSubcategorias(4));
+        model.addAttribute("categoriasList", subCategoriaRepository.findSubcategorias(4));
         model.addAttribute("marcaList", productosRepository.findDistinctMarca(4));
+
         return "Usuario/CategoriaMuebles-usuario";
     }
 
     @GetMapping("/categoriaHombreFilter")
     public String showHombreCategoriaFilter(Model model,
+                                            @RequestParam(value = "page", required = false) String pageStr,
                                             @RequestParam(value = "categoria", required = false) List<Integer> categoria,
                                             @RequestParam(value = "material", required = false) List<String> material,
                                             @RequestParam(value = "color", required = false) List<String> color,
                                             @RequestParam(value = "marca", required = false) List<String> marca,
                                             @RequestParam(value = "precioMin", required = false) Double precioMin,
                                             @RequestParam(value = "precioMax", required = false) Double precioMax) {
-        model.addAttribute("productList", productosRepository.findProductHombresFilter(zonaId,categoria, material,marca,color, precioMin, precioMax));
+        int currentPage = 1; // Valor por defecto
+
+        // Validar el parámetro 'page'
+        if (pageStr != null && !pageStr.matches("\\d+")) {
+            return "redirect:/usuario/categoriaHombreFilter"; // Redirige sin el parámetro 'page'
+        }
+
+        if (pageStr != null && pageStr.matches("\\d+")) {
+            currentPage = Integer.parseInt(pageStr);
+        }
+
+        currentPage = Math.max(currentPage, 1);
+
+        // Paginación
+        Pageable pageable = PageRequest.of(currentPage - 1, 12);
+        Page<Producto> productoPage = productosRepository.findProductHombresFilter(
+                zonaId, categoria, material, marca, color, precioMin, precioMax, pageable);
+
+        // Verificar si la página solicitada es válida
+        if (currentPage > productoPage.getTotalPages()) {
+            return "redirect:/usuario/categoriaHombreFilter?page=1";
+        }
+
+        // Añadir atributos al modelo
+        model.addAttribute("productList", productoPage.getContent());
+        model.addAttribute("currentPage", currentPage);
+        model.addAttribute("sizeList", productoPage.getTotalElements()); // Total de productos
+        model.addAttribute("partes", productoPage.getTotalPages()); // Total de páginas
+
         model.addAttribute("tallasList", productosRepository.findDistinctTallas(2));
         model.addAttribute("coloresList", productosRepository.findDistinctColores(2));
-        model.addAttribute("categoriasList",subCategoriaRepository.findSubcategorias(2));
+        model.addAttribute("categoriasList", subCategoriaRepository.findSubcategorias(2));
         model.addAttribute("marcaList", productosRepository.findDistinctMarca(2));
+
         return "Usuario/CategoriaHombre-usuario";
     }
 
 
 
+
     @GetMapping("/categoriaMujerFilter")
     public String showMujerCategoriaFilter(Model model,
+                                           @RequestParam(value = "page", required = false) String pageStr,
                                            @RequestParam(value = "categoria", required = false) List<Integer> categoria,
                                            @RequestParam(value = "talla", required = false) List<String> talla,
                                            @RequestParam(value = "color", required = false) List<String> color,
                                            @RequestParam(value = "marca", required = false) List<String> marca,
                                            @RequestParam(value = "precioMin", required = false) Double precioMin,
                                            @RequestParam(value = "precioMax", required = false) Double precioMax) {
-        model.addAttribute("productList", productosRepository.findProductMujerFilter(zonaId,categoria, talla,marca, color,precioMin, precioMax));
+        int currentPage = 1; // Valor por defecto
+
+        // Validar el parámetro 'page'
+        if (pageStr != null && !pageStr.matches("\\d+")) {
+            return "redirect:/usuario/categoriaMujerFilter"; // Redirige sin el parámetro 'page'
+        }
+
+        if (pageStr != null && pageStr.matches("\\d+")) {
+            currentPage = Integer.parseInt(pageStr);
+        }
+
+        currentPage = Math.max(currentPage, 1);
+
+        // Paginación
+        Pageable pageable = PageRequest.of(currentPage - 1, 12);
+        Page<Producto> productoPage = productosRepository.findProductMujerFilter(
+                zonaId, categoria, talla, marca, color, precioMin, precioMax, pageable);
+
+        // Verificar si la página solicitada es válida
+        if (currentPage > productoPage.getTotalPages()) {
+            return "redirect:/usuario/categoriaMujerFilter?page=1";
+        }
+
+        // Añadir atributos al modelo
+        model.addAttribute("productList", productoPage.getContent());
+        model.addAttribute("currentPage", currentPage);
+        model.addAttribute("sizeList", productoPage.getTotalElements()); // Total de productos
+        model.addAttribute("partes", productoPage.getTotalPages()); // Total de páginas
+
         model.addAttribute("tallasList", productosRepository.findDistinctTallas(1));
         model.addAttribute("coloresList", productosRepository.findDistinctColores(1));
+        model.addAttribute("categoriasList", subCategoriaRepository.findSubcategorias(1));
         model.addAttribute("marcaList", productosRepository.findDistinctMarca(1));
-        model.addAttribute("categoriasList",subCategoriaRepository.findSubcategorias(1));
 
         return "Usuario/CategoriaMujer-usuario";
     }
 
+
     @GetMapping("/categoriaTecnologiaFilter")
     public String showTecnologiaCategoriaFilter(Model model,
+                                                @RequestParam(value = "page", required = false) String pageStr,
                                                 @RequestParam(value = "categoria", required = false) List<Integer> categoria,
                                                 @RequestParam(value = "almacenamiento", required = false) List<String> almacenamiento,
                                                 @RequestParam(value = "ram", required = false) List<String> ram,
                                                 @RequestParam(value = "marca", required = false) List<String> marca,
                                                 @RequestParam(value = "precioMin", required = false) Double precioMin,
                                                 @RequestParam(value = "precioMax", required = false) Double precioMax) {
-        model.addAttribute("productList", productosRepository.findProductElectroFilter(zonaId,categoria, almacenamiento,ram,marca,        precioMin, precioMax));
-        model.addAttribute("almacenamientoList", productosRepository.findDistinctAlmacenamiento(3));
-        model.addAttribute("ramList", productosRepository.findDistinctRam(3));
-        model.addAttribute("categoriasList",subCategoriaRepository.findSubcategorias(3));
+        int currentPage = 1; // Valor por defecto
+
+        // Validar el parámetro 'page'
+        if (pageStr != null && !pageStr.matches("\\d+")) {
+            return "redirect:/usuario/categoriaTecnologiaFilter"; // Redirige sin el parámetro 'page'
+        }
+
+        if (pageStr != null && pageStr.matches("\\d+")) {
+            currentPage = Integer.parseInt(pageStr);
+        }
+
+        currentPage = Math.max(currentPage, 1);
+
+        // Paginación
+        Pageable pageable = PageRequest.of(currentPage - 1, 12);
+        Page<Producto> productoPage = productosRepository.findProductElectroFilter(
+                zonaId, categoria, almacenamiento, ram, marca, precioMin, precioMax, pageable);
+
+        // Verificar si la página solicitada es válida
+        if (currentPage > productoPage.getTotalPages()) {
+            return "redirect:/usuario/categoriaTecnologiaFilter?page=1";
+        }
+
+        // Añadir atributos al modelo
+        productList(model, currentPage, productoPage);
+        model.addAttribute("categoriasList", subCategoriaRepository.findSubcategorias(3));
         model.addAttribute("marcaList", productosRepository.findDistinctMarca(3));
+
         return "Usuario/CategoriaTecnologia-usuario";
     }
 
+    private void productList(Model model, int currentPage, Page<Producto> productoPage) {
+        model.addAttribute("productList", productoPage.getContent());
+        model.addAttribute("currentPage", currentPage);
+        model.addAttribute("sizeList", productoPage.getTotalElements()); // Total de productos
+        model.addAttribute("partes", productoPage.getTotalPages()); // Total de páginas
+
+        model.addAttribute("almacenamientoList", productosRepository.findDistinctAlmacenamiento(3));
+        model.addAttribute("ramList", productosRepository.findDistinctRam(3));
+    }
+
+
     @GetMapping("/categoriaHombreSearch")
     public String showHombreCategoriaBuscar(Model model,
-
-
+                                            @RequestParam(value = "page", required = false) String pageStr,
                                             @RequestParam(value = "query", required = false) String query) {
-        model.addAttribute("productList", productosRepository.findProductQuery(zonaId,query,2));
+        int currentPage = 1; // Valor por defecto
+
+        // Validar el parámetro 'page'
+        if (pageStr != null && !pageStr.matches("\\d+")) {
+            return "redirect:/usuario/categoriaHombreSearch"; // Redirige sin el parámetro 'page'
+        }
+
+        if (pageStr != null && pageStr.matches("\\d+")) {
+            currentPage = Integer.parseInt(pageStr);
+        }
+
+        currentPage = Math.max(currentPage, 1);
+
+        // Paginación
+        Pageable pageable = PageRequest.of(currentPage - 1, 12);
+        Page<Producto> productoPage = productosRepository.findProductQuery(zonaId, query, 2, pageable);
+
+        // Verificar si la página solicitada es válida
+        if (currentPage > productoPage.getTotalPages()) {
+            return "redirect:/usuario/categoriaHombreSearch?page=1";
+        }
+
+        // Añadir atributos al modelo
+        model.addAttribute("productList", productoPage.getContent());
+        model.addAttribute("currentPage", currentPage);
+        model.addAttribute("sizeList", productoPage.getTotalElements()); // Total de productos
+        model.addAttribute("partes", productoPage.getTotalPages()); // Total de páginas
+        model.addAttribute("query", query);
         model.addAttribute("tallasList", productosRepository.findDistinctTallas(2));
         model.addAttribute("coloresList", productosRepository.findDistinctColores(2));
-        model.addAttribute("categoriasList",subCategoriaRepository.findSubcategorias(2));
+        model.addAttribute("categoriasList", subCategoriaRepository.findSubcategorias(2));
         model.addAttribute("marcaList", productosRepository.findDistinctMarca(2));
+
         return "Usuario/CategoriaHombre-usuario";
     }
     @GetMapping("/categoriaMujerSearch")
     public String showMujerCategoriaBuscar(Model model,
-                                            @RequestParam(value = "query", required = false) String query) {
-        model.addAttribute("productList", productosRepository.findProductQuery(zonaId,query,1));
+                                           @RequestParam(value = "page", required = false) String pageStr,
+                                           @RequestParam(value = "query", required = false) String query) {
+        int currentPage = 1; // Valor por defecto
+
+        // Validar el parámetro 'page'
+        if (pageStr != null && !pageStr.matches("\\d+")) {
+            return "redirect:/usuario/categoriaMujerSearch"; // Redirige sin el parámetro 'page'
+        }
+
+        if (pageStr != null && pageStr.matches("\\d+")) {
+            currentPage = Integer.parseInt(pageStr);
+        }
+
+        currentPage = Math.max(currentPage, 1);
+
+        // Paginación
+        Pageable pageable = PageRequest.of(currentPage - 1, 12);
+        Page<Producto> productoPage = productosRepository.findProductQuery(zonaId, query, 1, pageable);
+
+        // Verificar si la página solicitada es válida
+        if (currentPage > productoPage.getTotalPages()) {
+            return "redirect:/usuario/categoriaMujerSearch?page=1";
+        }
+
+        // Añadir atributos al modelo
+        model.addAttribute("productList", productoPage.getContent());
+        model.addAttribute("currentPage", currentPage);
+        model.addAttribute("sizeList", productoPage.getTotalElements()); // Total de productos
+        model.addAttribute("partes", productoPage.getTotalPages()); // Total de páginas
+        model.addAttribute("query", query);
         model.addAttribute("tallasList", productosRepository.findDistinctTallas(1));
         model.addAttribute("coloresList", productosRepository.findDistinctColores(1));
-        model.addAttribute("categoriasList",subCategoriaRepository.findSubcategorias(1));
+        model.addAttribute("categoriasList", subCategoriaRepository.findSubcategorias(1));
         model.addAttribute("marcaList", productosRepository.findDistinctMarca(1));
+
         return "Usuario/CategoriaMujer-usuario";
     }
+
     @GetMapping("/categoriaTecnologiaSearch")
     public String showTecnologiaCategoriaBuscar(Model model,
+                                                @RequestParam(value = "page", required = false) String pageStr,
+                                                @RequestParam(value = "query", required = false) String query) {
+        int currentPage = 1; // Valor por defecto
 
+        // Validar el parámetro 'page'
+        if (pageStr != null && !pageStr.matches("\\d+")) {
+            return "redirect:/usuario/categoriaTecnologiaSearch"; // Redirige sin el parámetro 'page'
+        }
 
-                                            @RequestParam(value = "query", required = false) String query) {
-        model.addAttribute("productList", productosRepository.findProductQuery(zonaId,query,3));
+        if (pageStr != null && pageStr.matches("\\d+")) {
+            currentPage = Integer.parseInt(pageStr);
+        }
+
+        currentPage = Math.max(currentPage, 1);
+
+        // Asigna un valor predeterminado (vacío) a 'query' si es null
+        if (query == null) {
+            query = "";
+        }
+
+        // Paginación
+        Pageable pageable = PageRequest.of(currentPage - 1, 12);
+        Page<Producto> productoPage = productosRepository.findProductQuery(zonaId, query, 3, pageable);
+
+        // Verificar si la página solicitada es válida
+        if (currentPage > productoPage.getTotalPages()) {
+            return "redirect:/usuario/categoriaTecnologiaSearch?page=1";
+        }
+
+        // Añadir atributos al modelo
+        model.addAttribute("productList", productoPage.getContent());
+        model.addAttribute("currentPage", currentPage);
+        model.addAttribute("sizeList", productoPage.getTotalElements()); // Total de productos
+        model.addAttribute("partes", productoPage.getTotalPages()); // Total de páginas
+        model.addAttribute("query", query);
+
         model.addAttribute("almacenamientoList", productosRepository.findDistinctAlmacenamiento(3));
         model.addAttribute("ramList", productosRepository.findDistinctRam(3));
-        model.addAttribute("categoriasList",subCategoriaRepository.findSubcategorias(3));
+        model.addAttribute("categoriasList", subCategoriaRepository.findSubcategorias(3));
         model.addAttribute("marcaList", productosRepository.findDistinctMarca(3));
+
         return "Usuario/CategoriaTecnologia-usuario";
     }
+
+
     @GetMapping("/categoriaMuebleSearch")
     public String showMuebleCategoriaBuscar(Model model,
-
-
+                                            @RequestParam(value = "page", required = false) String pageStr,
                                             @RequestParam(value = "query", required = false) String query) {
-        model.addAttribute("productList", productosRepository.findProductQuery(zonaId,query,4));
+        int currentPage = 1; // Valor por defecto
+
+        // Validar el parámetro 'page'
+        if (pageStr != null && !pageStr.matches("\\d+")) {
+            return "redirect:/usuario/categoriaMuebleSearch"; // Redirige sin el parámetro 'page'
+        }
+
+        if (pageStr != null && pageStr.matches("\\d+")) {
+            currentPage = Integer.parseInt(pageStr);
+        }
+
+        currentPage = Math.max(currentPage, 1);
+
+        // Paginación
+        Pageable pageable = PageRequest.of(currentPage - 1, 12);
+        Page<Producto> productoPage = productosRepository.findProductQuery(zonaId, query, 4, pageable);
+
+        // Verificar si la página solicitada es válida
+        if (currentPage > productoPage.getTotalPages()) {
+            return "redirect:/usuario/categoriaMuebleSearch?page=1";
+        }
+
+        // Añadir atributos al modelo
+        model.addAttribute("productList", productoPage.getContent());
+        model.addAttribute("currentPage", currentPage);
+        model.addAttribute("sizeList", productoPage.getTotalElements()); // Total de productos
+        model.addAttribute("partes", productoPage.getTotalPages()); // Total de páginas
+        model.addAttribute("query", query);
         model.addAttribute("materialesList", productosRepository.findDistinctMaterials(4));
-        model.addAttribute("categoriasList",subCategoriaRepository.findSubcategorias(4));
+        model.addAttribute("categoriasList", subCategoriaRepository.findSubcategorias(4));
         model.addAttribute("marcaList", productosRepository.findDistinctMarca(4));
+
         return "Usuario/CategoriaMuebles-usuario";
     }
+
     @GetMapping("/checkout-info")
     public String showcheckout(Model model, RedirectAttributes Attr) {
 
