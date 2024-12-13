@@ -11,17 +11,21 @@ import java.time.Instant;
 @Entity
 @Table(name = "MyFavorite")
 public class MyFavorite {
+
     @EmbeddedId
     private MyFavoriteId id;
 
-    @MapsId
+    @MapsId("usuarioIdusuario")
     @ManyToOne
     @JoinColumn(name = "usuario_idUsuario", nullable = false)
     private Usuario usuarioIdusuario;
 
-    @MapsId
+    @MapsId("productoEnZona")
     @ManyToOne
-    @JoinColumn(name = "productoEnZona_id", nullable = false, referencedColumnName = "producto_idProducto")
+    @JoinColumns({
+            @JoinColumn(name = "producto_idProducto", referencedColumnName = "producto_idProducto", nullable = false),
+            @JoinColumn(name = "zona_idZona", referencedColumnName = "zona_idZona", nullable = false)
+    })
     private ProductoEnZona productoEnZona;
 
     @Column(name = "fecha")

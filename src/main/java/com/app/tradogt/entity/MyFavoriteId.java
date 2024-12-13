@@ -19,7 +19,11 @@ public class MyFavoriteId implements java.io.Serializable {
     private Integer usuarioIdusuario;
 
     @NotNull
-    @Column(name = "productoEnZona_id", nullable = false)
-    private Integer productoenzonaId;
+    @Column(name = "producto_idProducto", nullable = false)
+    private Integer productoIdproducto;
+
+    @NotNull
+    @Column(name = "zona_idZona", nullable = false)
+    private Integer zonaIdzona;
 
 }
