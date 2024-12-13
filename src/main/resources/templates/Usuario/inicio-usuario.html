@@ -372,7 +372,9 @@
                                     <!-- Cara Trasera -->
                                     <div class="card-back product-card" style="position: absolute; width: 100%; height: 100%; backface-visibility: hidden; background-color: #f8f9fa; border: none; transform: rotateY(180deg); display: flex; flex-direction: column; justify-content: center; align-items: center;">
                                         <h6 class="text-center" th:text="${producto[1]} + ' ' + ${producto[3]} + ' ' + ${producto[2]}"> </h6>
-                                        <small th:text="${producto[6]}" style="text-align: center; padding: 0 10px; margin-bottom: 10px;"></small>
+                                        <small th:text="${#strings.substring(producto[6], 0, 60) + '...'}"
+                                               style="text-align: center; padding: 0 10px; margin-bottom: 10px;"></small>
+
                                         <a th:href="@{'/usuario/productoDetalles?id=' + ${producto[0]} }" class="btn btn-primary btn-sm" type="button"><small >Ver detalles</small></a>
                                     </div>
 
@@ -388,7 +390,7 @@
                                 </div>
                             </div>
                         </div>-->
-                        <div th:if="${#lists.isEmpty(productosTop)}">
+                        <div th:if="${#lists.isEmpty(productosTop)}" class="alert alert-warning" role="alert">
                             <p>No hay productos disponibles</p>
                         </div>
                     </div>
@@ -454,14 +456,21 @@
                                                 <th><small>Imagen</small></th>
                                                 <th><small>Producto</small></th>
                                                 <th><small>Marca</small></th>
-                                                <th><small>Ver más</small></th>
+                                                <th><small>Código</small></th>
+                                                <th><small> <a th:href="@{/usuario/favoritos}">Ver más</a> </small></th>
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            <tr>
-                                                <th scope="row">1</th>
-                                                <td>Mark</td>
-                                                <td>Otto</td>
+                                            <tr th:if="${#lists.isEmpty(misFavoritos)}">
+                                                <td colspan="5" class="text-center">
+                                                    <small>No tienes productos favoritos.</small>
+                                                </td>
+                                            </tr>
+                                                <tr th:each="producto :${misFavoritos}">
+                                                <th ><small th:text="${producto[1]}"></small></th>
+                                                <th ><small th:text="${producto[0]}"></small></th>
+                                                <th ><small th:text="${producto[2]}"></small></th>
+                                                <th ><small th:text="${producto[3]}"></small></th>
                                             </tr>
                                             </tbody>
                                         </table>

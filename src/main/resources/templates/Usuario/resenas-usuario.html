@@ -108,11 +108,11 @@
                                         <div class="row g-0 mt-5">
                                             <!-- Mensaje cuando no hay resenas -->
                                             <div th:if="${resenas.isEmpty()}" style="text-align: center; color: #000000; font-size: 18px; margin-top: 20px;">
-                                                <p >resena no encontrada</p>
+                                                <p >Todavía no hay reseñas publicadas.</p>
                                             </div>
-
+                                            <strong th:text="'Resultados: '+${resenas.size()}"></strong>
                                             <div th:each="resena : ${resenas}" class="col-xl-3 col-sm-6">
-                                                <div class="card product-box">
+                                                <div class="card product-box mt-2">
                                                     <a th:href="@{/usuario/verresena/{id}(id=${resena.id})}" class="text-decoration-none">
                                                        <div class="product-img">
                                                             <img th:src="@{/usuario/resenaFoto/{id}(id=${resena.id})}"  alt="Imagen de la resena"
@@ -131,16 +131,21 @@
                                                                     <span class="mdi mdi-star text-warning" th:if="${resena.calificacion >= 4}"></span>
                                                                     <span class="mdi mdi-star text-warning" th:if="${resena.calificacion >= 5}"></span>
                                                                 </div>
-                                                                <div class="text-muted" style="font-size: 12px;" th:text="${resena.calificacion}"></div>
+                                                                <div class="text-muted" style="font-size: 12px;" th:text="${resena.calificacion} + '/5.0'"></div>
                                                             </div>
                                                             <span class="product-ribbon badge bg-warning" th:text="${resena.productoIdproducto.codigo}">NK128</span><br>
                                                             <div class="provider-info d-flex align-items-center justify-content-center">
-                                                                <span class="provider-name" th:text="${resena.productoIdproducto.proveedorIdproveedor.nombre} + ' ' + ${resena.productoIdproducto.proveedorIdproveedor.apellido}" style="font-size: 12px;"></span>
+                                                                <span class="provider-name text-dark" th:text=" 'Vendendor: '+ ${resena.productoIdproducto.proveedorIdproveedor.nombre} + ' ' + ${resena.productoIdproducto.proveedorIdproveedor.apellido}" style="font-size: 12px;"></span>
                                                             </div>
                                                         </div>
                                                         <div class="provider-info d-flex flex-column align-items-center justify-content-center">
-                                                            <span class="provider-name" style="font-size: 12px;">Creado por <strong th:text="${resena.usuarioIdusuario.nombre} + ' ' + ${resena.usuarioIdusuario.apellido}" ></strong></span>
-                                                            <span style="font-size: 12px;" th:text="${#temporals.format(resena.fechaCreacion , 'dd-MM-yyyy')}">11 de Octubre de 2024</span>
+                                                            <div>
+                                                                <img th:src="@{/usuario/usuarioFoto/{id}(id=${resena.usuarioIdusuario.id})}"
+                                                                     src="/images/default.jpg"
+                                                                     onerror="this.onerror=null;this.src='/images/default.jpg';"
+                                                                     alt="Avatar" class="rounded-circle me-2" style="width: 20px; height: 20px; object-fit: cover;"><small class="text-dark" th:text="${resena.usuarioIdusuario.nombre} + ' ' + ${resena.usuarioIdusuario.apellido}" ></small>
+                                                            </div>
+                                                            <small class="text-dark justify-content-end" style="font-size: 12px;" th:text="${#temporals.format(resena.fechaCreacion , 'dd-MM-yyyy')}">11 de Octubre de 2024</small>
                                                         </div>
                                                     </a>
                                                 </div>
@@ -150,7 +155,7 @@
                                         <div class="row mt-4">
                                             <div class="col-sm-6">
                                                 <div>
-                                                    <p class="mb-sm-0 mt-2">Page <span id="current-page" class="fw-bold">1</span> Of <span id="total-pages" class="fw-bold"></span></p>
+                                                    <p class="mb-sm-0 mt-2">Página <span id="current-page" class="fw-bold">1</span> de <span id="total-pages" class="fw-bold"></span></p>
                                                 </div>
                                             </div>
                                             <div class="col-sm-6">
@@ -197,7 +202,7 @@
 
             <script>
                 document.addEventListener("DOMContentLoaded", function () {
-                    const itemsPerPage = 4; // Número de productos por página
+                    const itemsPerPage = 12; // Número de productos por página
                     let currentPage = 1;
 
                     const productCards = document.querySelectorAll('.product-box'); // Selecciona todas las tarjetas de producto
@@ -301,7 +306,7 @@
 
             <script>
                 document.addEventListener("DOMContentLoaded", function() {
-                    const itemsPerPage = 4; // Número de productos por página
+                    const itemsPerPage = 12; // Número de productos por página
                     let currentPage = 1;
 
                     const productCards = document.querySelectorAll('.product-box'); // Selecciona todas las tarjetas de producto

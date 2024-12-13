@@ -132,7 +132,8 @@
               <div th:if="${mensajeProductNuevo != null}" class="alert alert-success" th:text="${mensajeProductNuevo}"></div>
               <div th:if="${msgError != null}" class="alert alert-danger" th:text="${msgError}"></div>
               <div th:if="${MensajeAlerta != null}" class="alert alert-warning" th:text="${MensajeAlerta}"></div>
-              <div th:if="${ProductoGuardado != null}" class="alert alert-warning" th:text="${ProductoGuardado}"></div>
+              <div th:if="${ProductoGuardadoError != null}" class="alert alert-warning" th:text="${ProductoGuardadoError}"></div>
+              <div th:if="${ProductoGuardado != null}" class="alert alert-success" th:text="${ProductoGuardado}"></div>
               <div class="card-body">
                 <div class="row">
 
@@ -206,8 +207,7 @@
                             <div class="mb-2">
                               <span class="product-ribbon badge bg-warning" th:text="${product.codigo}"></span>
                             </div>
-<!--
-                            <div class="product-like" th:if="${product.isFavorite == '0'}">
+                            <div class="product-like" >
                               <form th:action="@{/usuario/guardarFavorito}" method="post">
                                 <input type="hidden" name="productId" th:value="${product.id}" />
                                 <div class="product-ribbon" style="color: red;">
@@ -219,16 +219,15 @@
                               </form>
                             </div>
 
-
-                            <div class="product-like" th:if="${product.isFavorite == '1'}">
+<!--
+                            <div class="product-like" >
                               <div class="product-ribbon" style="color: red">
                                 <div class="btn btn-outline-danger"
                                      style="border-radius: 50%; padding: 10px; width: 40px; height: 40px; display: flex; justify-content: center; align-items: center;">
                                   <i class="mdi mdi-heart text-danger" style="font-size: 24px;"></i>
                                 </div>
                               </div>
-                            </div>
-                            -->
+                            </div>-->
 
                           </div>
                         </div>
@@ -432,8 +431,7 @@
                     <!-- Comentario -->
                     <p th:text="${comentario[1]}" class="mb-2 text-wrap"></p>
                     <!-- Información del proveedor -->
-                    <div class="provider-info d-flex align-items-end mt-auto bg-light p-2 rounded" style="border-bottom-left-radius: 15px; border-bottom-right-radius: 15px;">
-                      <span class="provider-name small">Publicado por:</span>
+                    <div class="provider-info d-flex align-items-end mt-auto bg-light p-2 rounded justify-content-start" style="border-bottom-left-radius: 15px; border-bottom-right-radius: 15px;">
                       <img th:src="@{/usuario/usuarioFoto/{id}(id=${comentario[5]})}"
                            src="/images/default.jpg"
                            onerror="this.onerror=null;this.src='/images/default.jpg';"
@@ -464,14 +462,12 @@
                        class="col-xl-3 col-sm-4">
                     <div class="card product-box" style="max-height: 340px; height: 340px">
                       <a th:href="@{'/usuario/productoDetalles?id='+${producto.id}}" class="text-decoration-none">
-                        <div th:if="${producto.id >= 1 and producto.id <= 10}">
-                          <img th:src="@{'/usuario/productoFoto/' + ${producto.id}}"
-                                  alt="img-${producto.id}"
-                                  class="img-fluid mx-auto d-block"
-                                  style="width: 250px; max-height: 160px; object-fit: cover;height: 160px;"
-                                  onerror="this.onerror=null; this.src='../images/error.jpg';"
-                          >
-                        </div>
+                        <img th:src="@{'/usuario/productoFoto/' + ${producto.id}}"
+                                alt="img-${producto.id}"
+                                class="img-fluid mx-auto d-block"
+                                style="width: 250px; max-height: 160px; object-fit: cover;height: 160px;"
+                                onerror="this.onerror=null; this.src='../images/error.jpg';"
+                        >
                         <div class="text-center mt-3">
                           <p class="font-size-12 mb-1 text-primary">
                             <span th:text="${producto.subcategoriaIdsubcategoria.nombre}">Categoría, Subcategoría</span>

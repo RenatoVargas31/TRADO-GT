@@ -13,6 +13,7 @@ import java.util.List;
 
 @Repository
 public interface ResenaRepository extends JpaRepository<Resena, Integer> {
+
     List<Resena> findAll();
 
     // Filtrar resenas de usuarios que no están baneados

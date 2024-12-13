@@ -380,10 +380,10 @@ SELECT
                             "LEFT JOIN \n" +
                             "    Usuario ag ON ag.idUsuario = o.agentCompra_idUsuario\n" +
                             "WHERE \n" +
-                            "    u.idUsuario = 17 \n" +
+                            "    u.idUsuario = :idUser \n" +
                             "ORDER BY \n" +
                             "    o.fechaCreacion DESC\n" +
-                            "LIMIT 3;",
+                            "LIMIT 5;",
             nativeQuery = true
     )
     List<Object[]> misUltimosPedidos(@Param("idUser") Integer idUser);

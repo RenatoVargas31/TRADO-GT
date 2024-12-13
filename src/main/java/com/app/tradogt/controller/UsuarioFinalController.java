@@ -96,11 +96,11 @@ public class UsuarioFinalController {
     final ProductoEnCarritoRepository productoEnCarritoRepository;
     final AutenticacionRepository autenticacionRepository;
     final EstadoOrdenRepository estadoOrdenRepository;
+    final MyFavoriteRepository myFavoriteRepository;
 
 
 
-
-    public UsuarioFinalController(DistritoRepository distritoRepository, ProductosRepository productosRepository, OrdenRepository ordenRepository, UsuarioRepository usuarioRepository, ProductoEnZonaRepository productoEnZonaRepository, PublicacionRepository publicacionRepository, ComentarioRepository comentarioRepository, SubCategoriaRepository subCategoriaRepository, CarritoRepository carritoRepository, PagoRepository pagoRepository, ResenaRepository resenaRepository, ProductoEnCarritoRepository productoEnCarritoRepository, AutenticacionRepository autenticacionRepository, EstadoOrdenRepository estadoOrdenRepository) {
+    public UsuarioFinalController(DistritoRepository distritoRepository, ProductosRepository productosRepository, OrdenRepository ordenRepository, UsuarioRepository usuarioRepository, ProductoEnZonaRepository productoEnZonaRepository, PublicacionRepository publicacionRepository, ComentarioRepository comentarioRepository, SubCategoriaRepository subCategoriaRepository, CarritoRepository carritoRepository, PagoRepository pagoRepository, ResenaRepository resenaRepository, ProductoEnCarritoRepository productoEnCarritoRepository, AutenticacionRepository autenticacionRepository, EstadoOrdenRepository estadoOrdenRepository, MyFavoriteRepository myFavoriteRepository) {
         this.distritoRepository = distritoRepository;
         this.productosRepository = productosRepository;
         this.ordenRepository = ordenRepository;
@@ -116,6 +116,7 @@ public class UsuarioFinalController {
         this.productoEnCarritoRepository = productoEnCarritoRepository;
         this.autenticacionRepository = autenticacionRepository;
         this.estadoOrdenRepository = estadoOrdenRepository;
+        this.myFavoriteRepository = myFavoriteRepository;
     }
 
     public void updateOrderStatus() {
@@ -195,35 +196,64 @@ public class UsuarioFinalController {
         model.addAttribute("misUltimosPedidos", misUltimosPedidos);
 
         // Listar mis productos favoritos
-
+        List<Object[]> misFavoritos = myFavoriteRepository.findFavorites(userId, IdZona);
+        model.addAttribute("misFavoritos", misFavoritos);
+        System.out.println(misFavoritos);
 
         return "Usuario/inicio-usuario";
     }
 
-    /*@PostMapping("/guardarFavorito")
+    @GetMapping("/favoritos")
+    String favoritos(Model model) {
+
+        int userId = getAuthenticatedUserId();  // Obtener el ID del usuario autenticado
+        Usuario user = usuarioRepository.findById(userId).get();
+        int IdZona = user.getDistritoIddistrito().getZonaIdzona().getId();
+
+        // Listar mis productos favoritos
+        List<Object[]> misFavoritos = myFavoriteRepository.findMyFavorites(userId, IdZona);
+        model.addAttribute("misFavoritos", misFavoritos);
+        System.out.println(misFavoritos);
+
+        return  "Usuario/favoritos-usuario";
+    }
+
+    @PostMapping("/guardarFavorito")
     public String guardarFavorito(Model model, @RequestParam("productId") Integer productId, RedirectAttributes attr){
 
         //Buscar producto
         Optional<Producto> miProducto = productosRepository.findById(productId);
+        //Obtener zona
+        int idUser = getAuthenticatedUserId();
+        Usuario user = usuarioRepository.findById(idUser).get();
+        int idZona = user.getDistritoIddistrito().getZonaIdzona().getId();
         System.out.println("Holaaa, producto favorito aqui ");
-
         if(miProducto.isPresent()){
-            System.out.println("Esto es el problema :'v -->" +miProducto.get().getIsFavorite());
-            if(miProducto.get().getIsFavorite()== "0"){
-                System.out.println("Aqui  ");
-                miProducto.get().setIsFavorite("1");
-                System.out.println("Aqui :'v ");
-                productosRepository.save(miProducto.get());
-                attr.addAttribute("ProductoGuardado", "El producto " + miProducto.get().getNombre()+ " se ha añadido a tu lista de favoritos.");
-                System.out.println("Aqui estoy ");
+            System.out.println("Estoy aqui ");
+            MyFavoriteId myFavoriteId = new MyFavoriteId();
+            myFavoriteId.setUsuarioIdusuario(idUser);
+            myFavoriteId.setProductoIdproducto(productId);
+            myFavoriteId.setZonaIdzona(idZona);
+
+            // Comprobar que el producto ha sido agregado por el usuario anteriormente
+            Optional<MyFavorite> listarTodoProductoFavorito = myFavoriteRepository.findById(myFavoriteId);
+
+            if(listarTodoProductoFavorito.isPresent()){
+                // Error
+                attr.addFlashAttribute("ProductoGuardadoError", "El producto "+ miProducto.get().getCodigo() + ' ' + miProducto.get().getNombre() + " ya ha sido agregado a Favoritos.");
             }else{
-                attr.addAttribute("ProductoGuardado", "¡Hey! Este producto ya lo tienes entre tus favoritos.");
-                System.out.println("Aqui no estoy ");
+                // Se procede a guardar el producto
+                MyFavorite myFavorite = new MyFavorite();
+                myFavorite.setId(myFavoriteId);
+                myFavorite.setUsuarioIdusuario(user);
+                myFavorite.setFecha(LocalDate.now());
+                myFavoriteRepository.save(myFavorite);
+
+                attr.addFlashAttribute("ProductoGuardado","El producto "+ miProducto.get().getCodigo() + ' ' + miProducto.get().getNombre() + " se a agregado a Favoritos.");
             }
         }
-
         return "redirect:/usuario/productoDetalles?id=" + miProducto.get().getId();
-    } */
+    }
 
     @GetMapping("/misPedidos")
     public String misPedidos(Model model) {

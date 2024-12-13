@@ -79,8 +79,8 @@ public interface ProductoEnZonaRepository extends JpaRepository<ProductoEnZona, 
             "    ca.nombre AS Categoria, \n" +
             "    p.zona_idZona AS ID_Zona, \n" +
             "    ROUND(AVG(r.calificacion), 1) AS Calificacion_Promedio, \n" +
-            "    p.contar AS Cantidad ,\n" +
-            "    count(r.Producto_idProducto) as NumeroResena\n" +
+            "    p.contar AS Cantidad, \n" +
+            "    COUNT(r.Producto_idProducto) AS NumeroResena\n" +
             "FROM \n" +
             "    ProductoEnZona p\n" +
             "JOIN \n" +
@@ -106,10 +106,13 @@ public interface ProductoEnZonaRepository extends JpaRepository<ProductoEnZona, 
             "    p.zona_idZona, \n" +
             "    p.contar\n" +
             "ORDER BY \n" +
+            "    Calificacion_Promedio DESC, \n" +
             "    p.contar DESC\n" +
             "LIMIT 5;",
             nativeQuery = true)
     List<Object[]> productosTop(@Param("idZona") int idZona);
+
+
 
 
 

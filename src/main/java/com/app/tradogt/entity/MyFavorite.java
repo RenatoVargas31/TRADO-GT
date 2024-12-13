@@ -6,6 +6,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.Instant;
+import java.time.LocalDate;
 
 @Data
 @Entity
@@ -29,6 +30,6 @@ public class MyFavorite {
     private ProductoEnZona productoEnZona;
 
     @Column(name = "fecha")
-    private Instant fecha;
+    private LocalDate fecha;
 
 }

@@ -1,0 +1,251 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+
+<!-- Mirrored from themesdesign.in/nazox/layouts/ecommerce-orders.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 30 Aug 2024 19:31:25 GMT -->
+<head>
+
+    <meta charset="utf-8" />
+    <title>Productos Favoritos</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- DataTables -->
+    <link th:href="@{../libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css}" rel="stylesheet" type="text/css" />
+    <link th:href="@{../libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css}" rel="stylesheet" type="text/css" />
+    <link th:href="@{../libs/datatables.net-select-bs4/css/select.bootstrap4.min.css}" rel="stylesheet" type="text/css" />
+
+    <!-- Responsive datatable examples -->
+    <link th:href="@{../libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css}" rel="stylesheet" type="text/css" />
+
+    <meta th:replace="~{Common/cssBase :: css_Base}">
+
+    <!-- App favicon -->
+    <style>
+        .product-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease; /* Transición suave */
+        }
+
+        .product-card:hover {
+            transform: scale(1.1); /* Agranda el card al 110% */
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Añade una sombra */
+            z-index: 10; /* Asegura que el card esté encima de otros elementos */
+        }
+        /* Estilo del modal */
+        .card-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            perspective: 1000px;
+        }
+
+        .card-inner {
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            transition: transform 0.6s;
+        }
+
+        /* Animación de giro para pantallas grandes */
+        .card-container:hover .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        /* Caras de la tarjeta */
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+        }
+
+        .card-back {
+            transform: rotateY(180deg);
+        }
+
+        /* Estilos responsivos para pantallas pequeñas */
+        @media (max-width: 768px) {
+            .card-container {
+                perspective: 800px;
+            }
+
+            .card-container .card-inner {
+                transform: rotateY(0deg);
+            }
+
+            .card-container.active .card-inner {
+                transform: rotateY(180deg);
+            }
+        }
+    </style>
+
+
+</head>
+
+<body data-sidebar="dark">
+
+<!-- <body data-layout="horizontal" data-topbar="dark"> -->
+
+<!-- Begin page -->
+<div id="layout-wrapper">
+
+
+    <header th:replace="~{Usuario/fragments/navbar :: nav_bar}"></header>
+
+    <!-- ========== Left Sidebar Start ========== -->
+    <div th:replace="~{Usuario/fragments/sidebar :: side_bar}"></div>
+    <!-- Left Sidebar End -->
+
+
+
+    <!-- ============================================================== -->
+    <!-- Start right Content here -->
+    <!-- ============================================================== -->
+    <div class="main-content">
+
+        <div class="page-content">
+            <div class="container-fluid">
+                <!-- start page title -->
+                <div class="row">
+                    <div class="col-12">
+                        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                            <h4 class="mb-sm-0">Productos favoritos</h4>
+
+                            <div class="page-title-right">
+                                <ol class="breadcrumb m-0">
+                                    <li class="breadcrumb-item"><a href="javascript: void(0);">Tienda</a></li>
+                                    <li class="breadcrumb-item active">Productos favoritos</li>
+                                </ol>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <!-- Cuerpo -->
+                <h5>Mis productos favoritos</h5>
+                <hr>
+                <div class="row">
+                    <div class="card">
+                        <!-- Empty cart message -->
+                        <div th:if="${misFavoritos.isEmpty()}" style="text-align: center; margin-top: 50px;" class="mb-5">
+                            <h2 style="font-weight: bold; font-size: 24px;">Su lista de favoritos está vacía</h2>
+                            <div class="mb-5 mt-5 justify-content-center">
+                                <img th:src="@{../images/favorite.png}" style="width: 300px; height: 300px; display: block; margin: 0 auto;">
+                            </div>
+                            <a th:href="@{/usuario/inicio}" class="btn btn-primary mb-5" style="padding: 10px 20px; border-radius: 20px; font-size: 16px; font-weight: bold; cursor: pointer; text-decoration: none;" >
+                                ¡Comienza a comprar!
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="container-fluid" style="display: flex; justify-content: start; flex-wrap: wrap;">
+                    <div class="row" style="display: flex; justify-content: start; width: 100%; margin-bottom: 15px; gap: 10px;">
+                        <div class="col-xl-3 col-sm-6" th:each="product :${misFavoritos}" style="display: flex; justify-content: start;">
+                            <div class="card-container" style="perspective: 1000px; height: 400px; width: 100%;">
+                                <div class="card-inner" style="position: relative; width: 100%; height: 100%; transform-style: preserve-3d; transition: transform 0.6s;">
+                                    <!-- Cara Frontal (Código Original) -->
+                                    <div class="card-front" style="position: absolute; width: 100%; height: 100%; backface-visibility: hidden;">
+                                        <div class="card product-card" style="background-color: white; border: none; height: 400px; width: 100%; margin: 0; position: relative;">
+                                            <div class="card-img-top" style="width: 100%; height: 200px; overflow: hidden; display: flex; justify-content: start; align-items: start;">
+                                                <img th:src="@{'/usuario/productoFoto/' + ${product[1]}}" alt="img-${product[0]]}" class="img-fluid" style="width: 100%; height: 100%; object-fit: cover;"
+                                                     onerror="this.onerror=null; this.src='../images/error.jpg';"
+                                                >
+                                            </div>
+                                            <div class="card-body" style="padding: 0; position: relative; overflow: hidden;">
+                                                <hr>
+                                                <div class="text-center">
+                                                    <div class="flex-1">
+                                                        <h5><a href="#" class="text-reset" th:text="${product[0]} + ' ' + ${product[2]}">Nedick's</a></h5>
+                                                        <div class="product-ribbon badge bg-warning">
+                                                            <!-- Mostrar el código de producto -->
+                                                            <span th:text="${product[3]}"></span>
+                                                        </div>
+                                                        <p class="text-muted">
+                                                            <i class="mdi mdi-shopping me-1"></i> <small th:text="${product[7]}"></small>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <hr >
+                                                <div class="row text-center">
+                                                    <div class="col-6">
+                                                        <p class="text-muted mb-2">Stock</p>
+                                                        <h6 th:text="${product[6] == 0 ? 'No hay stock' : product[6] + ' unidades'}"></h6>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <p class="text-muted mb-2">Precio unitario</p>
+                                                        <h6 th:text="'S/. ' + ${product[8]}">$12,456</h6>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Cara Trasera -->
+                                    <div class="card-back product-card" style="position: absolute; width: 100%; height: 100%; backface-visibility: hidden; background-color: #f8f9fa; border: none; transform: rotateY(180deg); display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                                        <h6 class="text-center" th:text="${product[0]} + ' ' + ${product[10]} + ' ' + ${product[2]}"> </h6>
+                                        <small th:text="${#strings.substring(product[9], 0, 100) + '...'}"
+                                               style="text-align: center; padding: 0 10px; margin-bottom: 10px;"></small>
+
+                                        <a th:href="@{'/usuario/productoDetalles?id=' + ${product[1]} }" class="btn btn-primary btn-sm" type="button"><small >Ver detalles</small></a>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- End Page-content -->
+        <footer class="footer">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <script>document.write(new Date().getFullYear())</script> © TRADO.
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="text-sm-end d-none d-sm-block">
+                            Crafted with <i class="mdi mdi-heart text-danger"></i> by TelesoftGT
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <!-- end main content-->
+</div>
+
+
+<!-- JAVASCRIPT BASE-->
+<span th:replace="~{Common/jsBase :: js_Base}"></span>
+<!-- End JAVASCRIPT BASE-->
+
+<!--JAVASCRIPT NOTIFICACIONES-->
+<span th:replace="~{Usuario/fragments/notificaciones-scripts :: js_Notificaciones}"></span>
+<!-- End JAVASCRIPT NOTIFICACIONES-->
+
+<!-- Required datatable js -->
+<script th:src="@{../libs/datatables.net/js/jquery.dataTables.min.js}"></script>
+<script th:src="@{../libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js}"></script>
+<!-- Buttons examples -->
+<script th:src="@{../libs/datatables.net-buttons/js/dataTables.buttons.min.js}"></script>
+<script th:src="@{../libs/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js}"></script>
+<script th:src="@{../libs/jszip/jszip.min.js}"></script>
+<script th:src="@{../libs/pdfmake/build/pdfmake.min.js}"></script>
+<script th:src="@{../libs/pdfmake/build/vfs_fonts.js}"></script>
+
+<script th:src="@{../libs/datatables.net-keytable/js/dataTables.keyTable.min.js}"></script>
+<script th:src="@{../libs/datatables.net-select/js/dataTables.select.min.js}"></script>
+
+<!-- Responsive examples -->
+<script th:src="@{../libs/datatables.net-responsive/js/dataTables.responsive.min.js}"></script>
+<script th:src="@{../libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js}"></script>
+
+<!-- Datatable init js -->
+<script th:src="@{../js/pages/datatables.init.js}"></script>
