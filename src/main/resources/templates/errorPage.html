@@ -71,11 +71,6 @@
         <img src="/images/maintenance-bg.png" alt="Maintenance Background">
     </div>
 
-    <div class="maintenance-message">
-        <h3 th:text="${#strings.arraySplit(errorMessage, '||')[0]}">Site is Under Maintenance</h3>
-        <p th:text="${#strings.arraySplit(errorMessage, '||')[1]}"></p>
-    </div>
-
     <div class="return-buttons">
         <a class="btn btn-danger" th:if="${session.usuarioAutenticado.rolIdrol.nombre == 'SuperAdmin'}" th:href="@{/superadmin/inicio}">Regresar a Inicio</a>
         <a class="btn btn-danger" th:if="${session.usuarioAutenticado.rolIdrol.nombre == 'Administrador Zonal'}" th:href="@{/adminzonal/dashboard}">Regresar a Inicio</a>
