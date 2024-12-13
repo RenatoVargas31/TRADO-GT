@@ -118,7 +118,10 @@
                                                 <div class="col-md-4">
                                                     <div class="mb-3">
                                                         <label class="form-label">Razón Social</label>
-                                                        <input type="text" class="form-control" th:field="*{razonSocial}" placeholder="Razón Social" required>
+                                                        <input type="text" class="form-control"
+                                                               th:field="*{razonSocial}"
+                                                               th:readonly="${usuario.isPostulated == 1}"
+                                                               placeholder="Razón Social" required>
                                                         <div th:if="${razonSocialError}" class="text-danger" th:text="${razonSocialError}"></div>
                                                     </div>
                                                 </div>
@@ -137,7 +140,10 @@
                                                 <div class="col-md-4">
                                                     <div class="mb-3">
                                                         <label class="form-label">RUC</label>
-                                                        <input type="text" class="form-control" th:field="*{ruc}" placeholder="RUC" required>
+                                                        <input type="text" class="form-control"
+                                                               th:field="*{ruc}"
+                                                               th:readonly="${usuario.isPostulated == 1}"
+                                                               placeholder="RUC" required>
                                                         <div th:if="${rucError}" class="text-danger" th:text="${rucError}"></div>
                                                     </div>
                                                 </div>
@@ -146,16 +152,27 @@
                                                 <div class="col-md-4">
                                                     <div class="mb-3">
                                                         <label class="form-label">Código de despachador de Aduanas</label>
-                                                        <input type="text" class="form-control" th:field="*{codigoDespachador}" placeholder="Código" required>
+                                                        <input type="text" class="form-control"
+                                                               th:field="*{codigoDespachador}"
+                                                               th:readonly="${usuario.isPostulated == 1}"
+                                                               placeholder="Código" required>
                                                         <div th:if="${codigoDespachadorError}" class="text-danger" th:text="${codigoDespachadorError}"></div>
                                                     </div>
                                                 </div>
                                             </div>
 
                                             <!-- Botones de acción -->
-                                            <div>
-                                                <button type="submit" class="btn btn-primary">Enviar</button>
-                                                <a href="/usuario/solicitud" class="btn btn-danger">Cancelar</a>
+                                            <div class="mt-4">
+                                                <!-- Mostrar mensaje si está postulado -->
+                                                <div th:if="${usuario.isPostulated == 1}" class="alert alert-success">
+                                                    Su postulación ha sido registrada.
+                                                </div>
+
+                                                <!-- Mostrar botones solo si no está postulado -->
+                                                <div th:unless="${usuario.isPostulated == 1}">
+                                                    <button type="submit" class="btn btn-primary">Enviar</button>
+                                                    <a href="/usuario/solicitud" class="btn btn-danger">Cancelar</a>
+                                                </div>
                                             </div>
                                         </form>
                                     </div>
