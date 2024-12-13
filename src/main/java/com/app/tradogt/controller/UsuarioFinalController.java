@@ -25,6 +25,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import com.app.tradogt.repository.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.ByteArrayOutputStream;
@@ -81,7 +82,7 @@ public class UsuarioFinalController {
     @Autowired
     private NotificationService notificationService;
 
-
+    final ProveedorRepository proveedorRepository;
     final ProductosRepository productosRepository;
     final OrdenRepository ordenRepository;
     final UsuarioRepository usuarioRepository;
@@ -100,7 +101,8 @@ public class UsuarioFinalController {
 
 
 
-    public UsuarioFinalController(DistritoRepository distritoRepository, ProductosRepository productosRepository, OrdenRepository ordenRepository, UsuarioRepository usuarioRepository, ProductoEnZonaRepository productoEnZonaRepository, PublicacionRepository publicacionRepository, ComentarioRepository comentarioRepository, SubCategoriaRepository subCategoriaRepository, CarritoRepository carritoRepository, PagoRepository pagoRepository, ResenaRepository resenaRepository, ProductoEnCarritoRepository productoEnCarritoRepository, AutenticacionRepository autenticacionRepository, EstadoOrdenRepository estadoOrdenRepository, MyFavoriteRepository myFavoriteRepository) {
+    public UsuarioFinalController(ProveedorRepository proveedorRepository,DistritoRepository distritoRepository, ProductosRepository productosRepository, OrdenRepository ordenRepository, UsuarioRepository usuarioRepository, ProductoEnZonaRepository productoEnZonaRepository, PublicacionRepository publicacionRepository, ComentarioRepository comentarioRepository, SubCategoriaRepository subCategoriaRepository, CarritoRepository carritoRepository, PagoRepository pagoRepository, ResenaRepository resenaRepository, ProductoEnCarritoRepository productoEnCarritoRepository, AutenticacionRepository autenticacionRepository, EstadoOrdenRepository estadoOrdenRepository, MyFavoriteRepository myFavoriteRepository) {
+        this.proveedorRepository = proveedorRepository;
         this.distritoRepository = distritoRepository;
         this.productosRepository = productosRepository;
         this.ordenRepository = ordenRepository;
@@ -1152,14 +1154,20 @@ public class UsuarioFinalController {
     }
 
     @GetMapping("/nuevaresena")
-    public String nuevaResenha(@RequestParam(value = "productoId", required = false) Integer productoId, Model model){
+    public String nuevaResenha(@RequestParam(value = "productoId", required = false) Integer productoId, Model model) {
         int userId = getAuthenticatedUserId();
 
-        // Obtenemos los productos que el usuario ha recibido
-        List<Producto> productosRecibidos = productosRepository.findProductosRecibidos(userId);
+        // Obtenemos los IDs de los productos ya reseñados por el usuario
+        List<Integer> productosResenhados = resenaRepository.findProductosResenhadosPorUsuario(userId);
 
-        // Añadimos la lista de productos al modelo
-        model.addAttribute("productosRecibidos", productosRecibidos);
+        // Obtenemos los productos recibidos y excluimos los que ya fueron reseñados
+        List<Producto> productosDisponibles = productosRepository.findProductosRecibidos(userId)
+                .stream()
+                .filter(producto -> !productosResenhados.contains(producto.getId()))
+                .toList();
+
+        // Añadimos los productos disponibles al modelo
+        model.addAttribute("productosRecibidos", productosDisponibles);
 
         // Si se pasa un productoId, lo agregamos al modelo para seleccionar el producto automáticamente
         if (productoId != null) {
@@ -1186,7 +1194,20 @@ public class UsuarioFinalController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+    @GetMapping("/proveedorImagen/{id}")
+    @ResponseBody
+    public ResponseEntity<byte[]> obtenerImagenProveedor(@PathVariable Integer id) {
+        Proveedor proveedor = proveedorRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Proveedor no encontrado"));
 
+        if (proveedor.getImagen() == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.IMAGE_JPEG);
+        return new ResponseEntity<>(proveedor.getImagen(), headers, HttpStatus.OK);
+    }
 
 
     @PostMapping("/guardarResenha")
@@ -1213,46 +1234,6 @@ public class UsuarioFinalController {
         resena.setFueRapido(fueRapido);
         // resena.setFoto("default.jpg"); // Valor inicial predeterminado
         resenaRepository.save(resena); // Guardar la reseña para obtener su ID
-
-
-        /*
-
-        // Si se sube una foto, guardarla en el servidor y actualizar la reseña
-        if (!foto.isEmpty()) {
-            try {
-                // Ruta dinámica para guardar las imágenes de las reseñas
-                String uploadDir = "uploads/resenasUsuarios/";
-
-                // Crear el directorio si no existe
-                Path uploadPath = Paths.get(uploadDir);
-                if (!Files.exists(uploadPath)) {
-                    Files.createDirectories(uploadPath);
-                }
-
-                // Generar un nombre de archivo único basado en el ID de la reseña
-                String nombreArchivo = "resena_" + resena.getId() + "_" + System.currentTimeMillis() + ".jpg";
-
-                // Guardar el archivo en el sistema de archivos
-                Path path = uploadPath.resolve(nombreArchivo);
-                Files.write(path, foto.getBytes());
-
-                // Actualizar el campo `foto` de la reseña con el nombre del archivo
-                resena.setFoto(nombreArchivo);
-                resenaRepository.save(resena); // Guardar la actualización en la base de datos
-
-                // Mensaje de éxito
-                redirectAttributes.addFlashAttribute("message", "Reseña creada exitosamente con imagen.");
-            } catch (IOException e) {
-                e.printStackTrace();
-                // Manejo de errores al guardar el archivo
-                redirectAttributes.addFlashAttribute("error", "Hubo un error al subir la imagen de la reseña.");
-            }
-        } else {
-            redirectAttributes.addFlashAttribute("message", "Reseña creada sin imagen.");
-        }
-
-
-         */
 
         try {
             if (foto != null && !foto.isEmpty()) {

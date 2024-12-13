@@ -41,6 +41,9 @@ public interface ResenaRepository extends JpaRepository<Resena, Integer> {
             nativeQuery = true)
     List<Object[]> comentarioProducto(@Param("id") Integer id);
 
+    @Query("SELECT r.productoIdproducto.id FROM Resena r WHERE r.usuarioIdusuario.id = :userId")
+    List<Integer> findProductosResenhadosPorUsuario(@Param("userId") int userId);
+
 
 
 }

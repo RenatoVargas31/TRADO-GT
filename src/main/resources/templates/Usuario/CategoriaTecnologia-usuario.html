@@ -332,7 +332,10 @@
 
                           </div>
                           <div class="provider-info d-flex align-items-center justify-content-center" style="margin-top: auto;">
-                            <img th:src="@{../images/product/iconoProvedor.png}" alt="Proveedor Icono" class="rounded-circle me-2" style="width: 25px; height: 25px;">
+                            <img th:src="@{/usuario/proveedorImagen/{id}(id=${product.proveedorIdproveedor.id})}"
+                                 src="/images/product/iconoProvedor.png"
+                                 onerror="this.onerror=null;this.src='/images/product/iconoProvedor.png';"
+                                 alt="Proveedor Icono" class="rounded-circle me-2" style="width: 25px; height: 25px;">
                             <span th:text="${product.proveedorIdproveedor.tienda}" class="provider-name small">Nombre del proveedor</span>
                           </div>
 
