@@ -53,4 +53,9 @@ public class Proveedor {
     @Column(name = "apellido", nullable = false, length = 45)
     private String apellido;
 
+    @Lob
+    @Basic(fetch = FetchType.LAZY) // Opcional: si prefieres cargarlo bajo demanda
+    @Column(name = "imagen")
+    private byte[] imagen;
+
 }
