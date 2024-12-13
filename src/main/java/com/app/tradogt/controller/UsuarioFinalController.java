@@ -1154,14 +1154,20 @@ public class UsuarioFinalController {
     }
 
     @GetMapping("/nuevaresena")
-    public String nuevaResenha(@RequestParam(value = "productoId", required = false) Integer productoId, Model model){
+    public String nuevaResenha(@RequestParam(value = "productoId", required = false) Integer productoId, Model model) {
         int userId = getAuthenticatedUserId();
 
-        // Obtenemos los productos que el usuario ha recibido
-        List<Producto> productosRecibidos = productosRepository.findProductosRecibidos(userId);
+        // Obtenemos los IDs de los productos ya reseñados por el usuario
+        List<Integer> productosResenhados = resenaRepository.findProductosResenhadosPorUsuario(userId);
 
-        // Añadimos la lista de productos al modelo
-        model.addAttribute("productosRecibidos", productosRecibidos);
+        // Obtenemos los productos recibidos y excluimos los que ya fueron reseñados
+        List<Producto> productosDisponibles = productosRepository.findProductosRecibidos(userId)
+                .stream()
+                .filter(producto -> !productosResenhados.contains(producto.getId()))
+                .toList();
+
+        // Añadimos los productos disponibles al modelo
+        model.addAttribute("productosRecibidos", productosDisponibles);
 
         // Si se pasa un productoId, lo agregamos al modelo para seleccionar el producto automáticamente
         if (productoId != null) {
