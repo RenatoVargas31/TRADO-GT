@@ -209,18 +209,31 @@ public class UsuarioFinalController {
 
     // Añadir favoritos
     @GetMapping("/favoritos")
-    String favoritos(Model model) {
+    public String favoritos(
+            @RequestParam(value = "page", defaultValue = "1") int page,
+            @RequestParam(value = "query", defaultValue = "") String query,
+            Model model) {
 
-        int userId = getAuthenticatedUserId();  // Obtener el ID del usuario autenticado
-        Usuario user = usuarioRepository.findById(userId).get();
+        int size=12;
+        int userId = getAuthenticatedUserId(); // Obtener el ID del usuario autenticado
+        Usuario user = usuarioRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
         int IdZona = user.getDistritoIddistrito().getZonaIdzona().getId();
 
-        // Listar mis productos favoritos
-        List<Object[]> misFavoritos = myFavoriteRepository.findMyFavorites(userId, IdZona);
-        model.addAttribute("misFavoritos", misFavoritos);
+        // Crear el objeto Pageable
+        Pageable pageable = PageRequest.of(page - 1, size);
 
-        return  "Usuario/favoritos-usuario";
+        // Consultar los productos favoritos con paginación
+        Page<Object[]> misFavoritosPage = myFavoriteRepository.findFavoritePageable(userId, IdZona,query, pageable);
+
+        // Añadir los atributos al modelo
+        model.addAttribute("misFavoritos", misFavoritosPage.getContent());
+        model.addAttribute("currentPage", misFavoritosPage.getNumber() + 1);
+        model.addAttribute("totalPages", misFavoritosPage.getTotalPages());
+        model.addAttribute("totalElements", misFavoritosPage.getTotalElements());
+
+        return "Usuario/favoritos-usuario";
     }
+
 
     // Borrar favoritos
     @PostMapping("/DeleteFavorito")
