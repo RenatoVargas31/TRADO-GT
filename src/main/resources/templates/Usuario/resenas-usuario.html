@@ -110,9 +110,13 @@
                                             <div th:if="${resenas.isEmpty()}" style="text-align: center; color: #000000; font-size: 18px; margin-top: 20px;">
                                                 <p >Todavía no hay reseñas publicadas.</p>
                                             </div>
+
+                                            <strong id="result-count" th:text="'Resultados: '+${resenas.size()}"></strong>
+
+
                                             <strong th:text="'Resultados: '+${resenas.size()}"></strong>
-                                            <div th:each="resena : ${resenas}" class="col-xl-3 col-sm-6">
-                                                <div class="card product-box mt-2">
+                                            <div th:each="resena : ${resenas}" class="col-xl-3 col-sm-6 resena-item"
+                                                 th:attr="data-nombre=${resena.productoIdproducto.nombre}, data-proveedor=${resena.productoIdproducto.proveedorIdproveedor.nombre}, data-categoria=${resena.productoIdproducto.subcategoriaIdsubcategoria.categoriaIdcategoria.nombre}">                                                <div class="card product-box mt-2">
                                                     <a th:href="@{/usuario/verresena/{id}(id=${resena.id})}" class="text-decoration-none">
                                                        <div class="product-img">
                                                             <img th:src="@{/usuario/resenaFoto/{id}(id=${resena.id})}"  alt="Imagen de la resena"
@@ -188,6 +192,54 @@
                                                 </div>
                                             </div>
                                         </div>
+
+                                        <script>
+                                            document.addEventListener("DOMContentLoaded", () => {
+                                                const searchInput = document.getElementById("search-input");
+                                                const clearButton = document.getElementById("clear-btn");
+                                                const reseñasContainer = document.getElementById("reseñas-container");
+                                                const reseñasItems = document.querySelectorAll(".resena-item");
+                                                const noResults = document.getElementById("no-results");
+                                                const resultCount = document.getElementById("result-count");
+
+                                                function filterReseñas() {
+                                                    const searchText = searchInput.value.toLowerCase();
+                                                    let visibleCount = 0;
+
+                                                    reseñasItems.forEach(item => {
+                                                        const nombre = item.getAttribute("data-nombre").toLowerCase();
+                                                        const proveedor = item.getAttribute("data-proveedor").toLowerCase();
+                                                        const categoria = item.getAttribute("data-categoria").toLowerCase();
+
+                                                        if (nombre.includes(searchText) || proveedor.includes(searchText) || categoria.includes(searchText)) {
+                                                            item.style.display = "block";
+                                                            visibleCount++;
+                                                        } else {
+                                                            item.style.display = "none";
+                                                        }
+                                                    });
+
+                                                    // Actualiza el contador de resultados y el mensaje de "sin resultados"
+                                                    resultCount.textContent = `Resultados: ${visibleCount}`;
+                                                    noResults.style.display = visibleCount === 0 ? "block" : "none";
+                                                }
+
+                                                // Evento de búsqueda
+                                                searchInput.addEventListener("input", filterReseñas);
+
+                                                // Botón para limpiar el buscador
+                                                clearButton.addEventListener("click", () => {
+                                                    searchInput.value = "";
+                                                    filterReseñas();
+                                                });
+
+                                                // Filtrar inicialmente si hay un valor prellenado
+                                                filterReseñas();
+                                            });
+                                        </script>
+
+
+
                                     </div>
                                 </div>
                             </div>
