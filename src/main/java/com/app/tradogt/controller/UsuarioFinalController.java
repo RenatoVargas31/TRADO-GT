@@ -806,8 +806,10 @@ public class UsuarioFinalController {
         Usuario usuario = usuarioRepository.findById(user).get();
         model.addAttribute("usuario", usuario);
 
+        // Lista de los productos en carrito
         Carrito miCarrito = carritoRepository.findByusuarioIdusuarioAndIsDelete(usuario, (byte) 0);
         List<ProductoEnCarrito> misProductos = productoEnCarritoRepository.findBycarritoIdcarrito( miCarrito);
+
 
         if (miCarrito != null) {
             model.addAttribute("carrito", misProductos);
@@ -817,9 +819,16 @@ public class UsuarioFinalController {
                 model.addAttribute("mensaje", "El carrito se encuentra vacío.");
             }else {
 
-                ProductoEnCarrito item = misProductos.get(0);
-                BigDecimal costoEnvio = item.getProductoEnZona().getCostoEnvio();
-                model.addAttribute("costoEnvio", costoEnvio);
+                //Obtener la lista de los precios de envio del carrito
+                BigDecimal sumaCostoEnvioTotal = BigDecimal.ZERO;
+                for(ProductoEnCarrito productoEnCarrito : misProductos) {
+                    BigDecimal costoDeEnvio = productoEnCarrito.getProductoEnZona().getCostoEnvio();
+                    sumaCostoEnvioTotal = sumaCostoEnvioTotal.add(costoDeEnvio);
+                }
+                model.addAttribute("costoDeEnvio", sumaCostoEnvioTotal);
+                miCarrito.setCostoEnvio(sumaCostoEnvioTotal);
+
+
             }
 
         }else {
@@ -1840,17 +1849,17 @@ public class UsuarioFinalController {
         //Ingresar los datos de nuestro carrito actual
         Carrito miCarrito = carritoRepository.findByusuarioIdusuarioAndIsDelete(myuser, (byte) 0);
         BigDecimal total = miCarrito.getCostoTotal();
+        BigDecimal costoEnvio = miCarrito.getCostoEnvio();
         model.addAttribute("total", total); //Se obtiene el costo total
 
         if (miCarrito != null) {
             List<ProductoEnCarrito> misProductos = productoEnCarritoRepository.findBycarritoIdcarrito( miCarrito);
+
             if(misProductos.isEmpty()) {
                 Attr.addAttribute("mensajeCarritoEmpty", "El carrito se encuentra vacío");
             }else {
                 model.addAttribute("carrito", misProductos);
 
-                ProductoEnCarrito item = misProductos.get(0);
-                BigDecimal costoEnvio = item.getProductoEnZona().getCostoEnvio();
                 model.addAttribute("distritos", distritoRepository.findAll());
                 model.addAttribute("usuario", usuarioRepository.findByIdUsuario(user));
                 System.out.println(distritoRepository.findAll());
@@ -1903,6 +1912,70 @@ public class UsuarioFinalController {
         return "Usuario/allNotifications-usuario";
     }
 
+    public class CreditCardValidator {
+
+        // Método para validar el número de tarjeta
+        public static boolean isValidCardNumber(String cardNumber, String cardType) {
+            switch (cardType) {
+                case "Visa":
+                    return cardNumber.startsWith("4") && cardNumber.length() == 16 && luhnCheck(cardNumber);
+                case "MasterCard":
+                    return (cardNumber.startsWith("51") || cardNumber.startsWith("52") || cardNumber.startsWith("53") || cardNumber.startsWith("54") || cardNumber.startsWith("55") ||
+                            (Integer.parseInt(cardNumber.substring(0, 4)) >= 2221 && Integer.parseInt(cardNumber.substring(0, 4)) <= 2720))
+                            && cardNumber.length() == 16 && luhnCheck(cardNumber);
+                case "American Express":
+                    return (cardNumber.startsWith("34") || cardNumber.startsWith("37")) && cardNumber.length() == 15 && luhnCheck(cardNumber);
+                default:
+                    return false;
+            }
+        }
+
+        // Método para validar el CVV
+        public static boolean isValidCVV(String cvv, String cardType) {
+            switch (cardType) {
+                case "American Express":
+                    return cvv.length() == 4 && cvv.matches("\\d{4}");
+                case "Visa":
+                case "MasterCard":
+                    return cvv.length() == 3 && cvv.matches("\\d{3}");
+                default:
+                    return false;
+            }
+        }
+
+        // Implementación del Algoritmo de Luhn
+        public static boolean luhnCheck(String cardNumber) {
+            int nDigits = cardNumber.length();
+            int nSum = 0;
+            boolean isSecond = false;
+            for (int i = nDigits - 1; i >= 0; i--) {
+                int d = cardNumber.charAt(i) - '0';
+                if (isSecond)
+                    d *= 2;
+                nSum += d / 10;
+                nSum += d % 10;
+                isSecond = !isSecond;
+            }
+            return (nSum % 10 == 0);
+        }
+
+        public static void main(String[] args) {
+            // Ejemplo de uso
+            String cardNumber = "4111111111111111"; // Ejemplo de tarjeta Visa válida
+            String cvv = "123";
+            String cardType = "Visa";
+
+            boolean isCardNumberValid = isValidCardNumber(cardNumber, cardType);
+            boolean isCVVValid = isValidCVV(cvv, cardType);
+
+            System.out.println("Número de tarjeta válido: " + isCardNumberValid);
+            System.out.println("CVV válido: " + isCVVValid);
+        }
+    }
+
+
+
+
     //Guardar los datos de pago
     @PostMapping("/savePayment")
     private String showSavePayment(@RequestParam("nombre") String nombre,
@@ -1919,8 +1992,18 @@ public class UsuarioFinalController {
                                    @RequestParam("codigoCVV") String codigoCVV,
                                    @RequestParam("monto") BigDecimal monto,
                                    @RequestParam("LugarEntrega") String LugarEntrega,
-                                   Model model,  RedirectAttributes attr) {
+                                   Model model, RedirectAttributes attr) {
 
+        // Validar número de tarjeta y código CVV
+        if (!CreditCardValidator.isValidCardNumber(numeroTarjeta, metodo)) {
+            attr.addFlashAttribute("error", "Número de tarjeta inválido.");
+            return "redirect:/usuario/checkout-info";
+        }
+
+        if (!CreditCardValidator.isValidCVV(codigoCVV, metodo)) {
+            attr.addFlashAttribute("error", "Código CVV inválido.");
+            return "redirect:/usuario/checkout-info";
+        }
 
         Autenticacion facturacion = new Autenticacion();
         facturacion.setNombre(nombre);
@@ -1950,88 +2033,68 @@ public class UsuarioFinalController {
         pago.setId(listaPago.size() + 1);
         pagoRepository.save(pago);
 
-        //Reducir la cantidad en la tienda por los productos ya pagado
-        //Busco mi carrito actual
+        // Busco mi carrito actual
         Carrito miCarrito = carritoRepository.findByusuarioIdusuarioAndIsDelete(myuser, (byte) 0);
-
-        List<ProductoEnCarrito> misProductos = productoEnCarritoRepository.findBycarritoIdcarrito(miCarrito);//la cantidad de cada producto está aqui
+        List<ProductoEnCarrito> misProductos = productoEnCarritoRepository.findBycarritoIdcarrito(miCarrito);
 
         int salvavida = 0;
         ProductoEnCarrito productoError = new ProductoEnCarrito();
 
-        if(misProductos.isEmpty()) {
-            //No debería estar aquí
+        if (misProductos.isEmpty()) {
             attr.addFlashAttribute("error", "No hay productos en el carrito.");
-        }else {
-            for(ProductoEnCarrito item : misProductos) {
-
-                //Creamos un ProductoEnZonaId
+            return "redirect:/usuario/carrito";
+        } else {
+            for (ProductoEnCarrito item : misProductos) {
                 ProductoEnZonaId itemTienda = new ProductoEnZonaId();
                 itemTienda.setProductoIdproducto(item.getProductoEnZona().getProductoIdproducto().getId());
-                System.out.println("ID producto en tienda (zona):" + itemTienda.getProductoIdproducto());
                 itemTienda.setZonaIdzona(myuser.getDistritoIddistrito().getZonaIdzona().getId());
-                System.out.println("Id distrito: " + itemTienda.getZonaIdzona());
 
-                //busco el producto en la tienda
-                Optional<ProductoEnZona> tienda =productoEnZonaRepository.findById(itemTienda);
+                Optional<ProductoEnZona> tienda = productoEnZonaRepository.findById(itemTienda);
                 if (!tienda.isPresent()) {
                     attr.addFlashAttribute("error", "El producto no se encontró en la tienda.");
                     return "redirect:/usuario/carrito";
                 }
-                //Contabilizar el producto
+
                 int i = tienda.get().getContar();
                 tienda.get().setContar(i + 1);
 
-                //Obtengo el total de stock en tienda
                 int Stock = tienda.get().getCantidad();
                 int cantidadSelecionada = item.getCantidad();
-
                 int newTotal = Stock - cantidadSelecionada;
                 salvavida = newTotal;
-                productoError= item;
+                productoError = item;
 
-                if(newTotal<0){
+                if (newTotal < 0) {
                     break;
-
-                }else {
-                    System.out.println("Nuevo stock: " + newTotal);
-                    if(newTotal<25){
+                } else {
+                    if (newTotal < 25) {
                         tienda.get().setEstadoRepo((byte) 1);
-                        //AQUI NOTIFICACION
-                        // Mensaje de notificación
                         String mensajeNotificacion = "El stock del producto '" + tienda.get().getProductoIdproducto().getNombre() +
                                 "' es bajo. Cantidad actual: " + newTotal;
-                        notificationService.stockNotification(mensajeNotificacion,tienda.get().getZonaIdzona());
+                        notificationService.stockNotification(mensajeNotificacion, tienda.get().getZonaIdzona());
                     }
                     tienda.get().setCantidad(newTotal);
                     productoEnZonaRepository.save(tienda.get());
                 }
-
             }
         }
 
-        if(salvavida<0){
-            attr.addFlashAttribute("error", "No hay stock suficiente para el producto "
-                    + productoError.getProductoEnZona().getProductoIdproducto().getNombre()
-                    + ". Stock actual: "
-                    + productoError.getProductoEnZona().getCantidad());
+        if (salvavida < 0) {
+            attr.addFlashAttribute("error", "No hay stock suficiente para el producto " +
+                    productoError.getProductoEnZona().getProductoIdproducto().getNombre() +
+                    ". Stock actual: " +
+                    productoError.getProductoEnZona().getCantidad());
 
             return "redirect:/usuario/carrito";
-        }else {
-            //Se genera una nueva orden
+        } else {
             Orden orden = new Orden();
             List<EstadoOrden> listaEstadoOrden = estadoOrdenRepository.findAll();
             EstadoOrden primerEstadoOrden = listaEstadoOrden.get(0);
-            System.out.println("se creó una orden :DDDDDDDDDD");
 
-            //Cambio al id de orden del carrito a null -> k
-            Carrito carrito = carritoRepository.findByusuarioIdusuarioAndIsDelete(myuser, (byte) 0 );
+            Carrito carrito = carritoRepository.findByusuarioIdusuarioAndIsDelete(myuser, (byte) 0);
 
-
-            //Generamos una nueva orden
             orden.setEstadoordenIdestadoorden(primerEstadoOrden);
             orden.setFechaCreacion(LocalDate.now());
-            //orden.setFechaArribo(LocalDate.now().plusWeeks(3));
             orden.setIsDeleted((byte) 0);
             orden.setCodigo(RandomCodeGenerator.generateRandomCode(5));
             orden.setCostoTotal(monto);
@@ -2040,21 +2103,19 @@ public class UsuarioFinalController {
             orden.setCarritoIdcarrito(carrito);
             orden.setLugarEntrega(LugarEntrega);
 
-
-            // Guardar la orden
             ordenRepository.save(orden);
             Integer idOrden = orden.getId();
-            attr.addFlashAttribute("exito", "Se ha guardado de forma exitosa la orden " +orden.getCodigo() + " .");
+            attr.addFlashAttribute("exito", "Se ha guardado de forma exitosa la orden " + orden.getCodigo() + " .");
             model.addAttribute("orden", orden);
+
             if (carrito != null) {
                 carrito.setIsDelete((byte) 1);
                 carritoRepository.save(carrito);
             }
-            System.out.println("ID de la orden generada: " + idOrden);
+
             return "redirect:/usuario/misPedidos";
         }
-
-
     }
+
 
 }

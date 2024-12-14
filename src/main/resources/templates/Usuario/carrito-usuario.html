@@ -81,7 +81,8 @@
                                                     <th>Imagen</th>
                                                     <th>Detalles</th>
                                                     <th>Cantidad</th>
-                                                    <th>Total</th>
+                                                    <th>Tarífa de los productos</th>
+                                                    <th>Tarífa de envío</th>
                                                     <th></th>
                                                 </tr>
                                                 </thead>
@@ -98,7 +99,7 @@
                                                         <small class="mb-0">Vendido por: <span class="fw-medium" th:text="${producto.productoEnZona.productoIdproducto.proveedorIdproveedor.tienda}"></span></small>
                                                     </td>
 
-                                                    <td  th:id="'precio-'+ ${iterStat.index + 1}"   th:text="'S/. '+ ${producto.productoEnZona.productoIdproducto.precio}" style="display: none;"></td>
+                                                    <td class="justify-content-center align-items-center" th:id="'precio-'+ ${iterStat.index + 1}"   th:text="'S/. '+ ${producto.productoEnZona.productoIdproducto.precio}" style="display: none;"></td>
 
                                                     <!-- Guardar la cantidad de producto -->
                                                     <td>
@@ -112,6 +113,10 @@
                                                     </td>
 
                                                     <td th:id="'total-'+ ${iterStat.index + 1}"  th:text="'S/. ' + (${producto.productoEnZona.productoIdproducto.precio} * ${producto.cantidad})"></td>
+                                                    <td
+                                                            th:text="'S/. ' + (${producto.productoEnZona.costoEnvio})">
+
+                                                    </td>
                                                     <script>
                                                         let totales = []; // Array para almacenar los totales
                                                         let subtotal =0;
@@ -275,11 +280,11 @@
                                                         </tr>
                                                         <tr class="bg-light text-end">
                                                             <th scope="row" colspan="1">Costo de envío:</th>
-                                                            <td id="envio" th:text="'S/. ' + (${costoEnvio != null ? costoEnvio : 0.00})"></td>
+                                                            <td id="envio" th:text="'S/. ' + (${costoDeEnvio != null ? costoDeEnvio : 0.00})"></td>
                                                         </tr>
                                                         <tr class="bg-light text-end">
                                                             <th scope="row" colspan="1">Monto final:</th>
-                                                            <td id="total"  th:text="'S/. ' + ((${costoTotal != null ? costoTotal : 0.00}) + (${costoEnvio != null ? costoEnvio : 0.00}))">
+                                                            <td id="total"  th:text="'S/. ' + ((${costoTotal != null ? costoTotal : 0.00}) + (${costoDeEnvio != null ? costoDeEnvio : 0.00}))">
                                                         </tr>
                                                         <tr class="bg-light text-end">
                                                             <th scope="row" colspan="1"></th>

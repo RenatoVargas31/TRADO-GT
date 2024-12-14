@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
+import java.math.BigDecimal;
+
 @Data
 @Entity
 @Table(name = "ProductoEnCarrito")
@@ -27,5 +29,6 @@ public class ProductoEnCarrito {
     @NotNull
     @Column(name = "cantidad", nullable = false)
     private Integer cantidad;
+
 
 }

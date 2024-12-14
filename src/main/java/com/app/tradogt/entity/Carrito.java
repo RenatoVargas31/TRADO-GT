@@ -31,4 +31,7 @@ public class Carrito {
     @Column(name = "costoTotal", precision = 10, scale = 2)
     private BigDecimal costoTotal;
 
+    @Column(name = "costoEnvio")
+    private BigDecimal costoEnvio;
+
 }
