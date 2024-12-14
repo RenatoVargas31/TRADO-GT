@@ -63,10 +63,10 @@
                             <div class="card-body">
                                 <div class="row">
                                     <!-- Sección del usuario -->
-                                    <div class="col-md-2 text-center">
+                                    <div class="col-md-2 text-center order order-2">
                                         <div class="mb-2">
                                             <!-- Mostrar el nombre del usuario que publicó la publicación -->
-                                            <span class="provider-name fw-bold" th:text="${publicacion.usuarioIdusuario.nombre} + ', ' + ${publicacion.usuarioIdusuario.apellido}" >Nombre del Usuario</span>
+                                            <span class="provider-name fw-bold" th:text="${publicacion.usuarioIdusuario.nombre} + ' ' + ${publicacion.usuarioIdusuario.apellido}" >Nombre del Usuario</span>
                                         </div>
 
                                         <!-- Mostrar una imagen del usuario o un ícono genérico -->
@@ -74,33 +74,37 @@
                                             <img th:src="@{/usuario/usuarioFoto/{id}(id=${publicacion.usuarioIdusuario.id})}"
                                                  src="/images/default.jpg"
                                                  onerror="this.onerror=null;this.src='/images/default.jpg';"
-                                                 alt="Proveedor Icono" class="rounded-circle me-2" style="width: 100px; height: 100px;">
+                                                 alt="Proveedor Icono" class="rounded-circle me-2" style="width: 80px; height: 80px;">
                                         </div>
 
                                         <!-- Mostrar la fecha de creación de la publicación -->
                                         <div class="mb-2">
                                             <p class="mt-2 card-title-desc" style="font-size: 12px;">
-                                                <span th:text="${publicacion.fechaCreacion}">11 de Octubre de 2024</span>
+                                                <span th:text="'Publicado el ' + ${#temporals.format(publicacion.fechaCreacion, 'dd/MM/yy')}"></span>
                                             </p>
                                         </div>
                                     </div>
 
                                     <!-- Sección de la publicación -->
-                                    <div class="col-md-10 justify-content-center">
+                                    <div class="col-md-10 justify-content-center order order-1">
                                         <!-- Mostrar el título de la publicación -->
-                                        <h5 class="text-center" th:text="${publicacion.titulo}">Mi Experiencia con TRADO</h5>
+                                        <h4 class="text-center" th:text="${publicacion.titulo}">Mi Experiencia con TRADO</h4>
+                                        <hr>
 
                                         <!-- Mostrar el contenido de la publicación -->
                                         <p class="text-justify" th:text="${publicacion.cuerpo}" >
                                             <!-- Aquí va el contenido dinámico de la publicación -->
                                         </p>
                                     </div>
+                                </div>
+                                <div class="row">
+                                    <hr>
                                     <ul class="list-inline product-review-link mb-0">
                                         <li class="list-inline-item">
                                             <form th:action="@{/usuario/publicacion/{id}/like(id=${publicacion.id})}" method="post" style="display: inline;">
                                                 <button type="submit" class="btn btn-link" style="border: none; padding: 0; color: inherit;">
-                                                    <i class="mdi mdi-thumb-up align-middle me-1"></i>
-                                                    <b th:text="${publicacion.likes}"></b> Likes
+                                                    <i class="mdi mdi-thumb-up align-middle me-1" style="color: rebeccapurple"></i>
+                                                    <b th:text="${publicacion.likes}"></b> Me gustas
                                                 </button>
                                             </form>
                                         </li>
@@ -109,75 +113,72 @@
                             </div>
                         </div>
                         <!-- Sección para añadir comentarios -->
+                        <h6>Añadir comentario</h6>
+                        <hr>
                         <div class="card mt-4">
                             <div class="card-body">
-                                <h6>Añadir un Comentario</h6>
                                 <!-- Formulario para enviar un comentario -->
                                 <form th:action="@{/usuario/agregarComentario}" method="post">
                                     <div class="mb-3">
-                                        <label for="comment-text" class="form-label">Comentario:</label>
                                         <!-- Campo de texto para ingresar el comentario -->
                                         <textarea class="form-control" id="comment-text" name="cuerpo" rows="3" placeholder="Escribe tu comentario aquí..." required></textarea>
                                     </div>
                                     <!-- Campo oculto para enviar el ID de la publicación -->
                                     <input type="hidden" name="publicacionId" th:value="${publicacion.id}" />
                                     <!-- Botón para enviar el comentario -->
-                                    <button type="submit" class="btn btn-primary">Enviar</button>
+                                    <div class="d-flex justify-content-end">
+                                        <button type="submit" class="btn btn-primary">Enviar</button>
+                                    </div>
+
                                 </form>
                             </div>
                         </div>
 
 
-
+                        <div class="d-flex align-items-center">
+                            <h6 class="mb-0">Ver comentarios:</h6>
+                            <p class="mb-0 ms-2" th:text=" '('+${comentarios.size()} + ')'"></p>
+                        </div>
+                        <hr>
                         <div class="card mt-4">
                             <div class="card-body">
-                                <h6>Ver comentarios</h6>
-
                                 <!-- Verifica si la lista de comentarios está vacía -->
-                                <div th:if="${#lists.isEmpty(comentarios)}" class="text-center">
-                                    <p>Aún no hay comentarios</p>
+                                <div th:if="${#lists.isEmpty(comentarios)}" class="text-center alert alert-warning">
+                                    <p>No hay comentarios disponibles.</p>
                                 </div>
-
                                 <!-- Mostrar comentarios si la lista no está vacía -->
                                 <div th:if="${!#lists.isEmpty(comentarios)}">
                                     <div class="border p-4 rounded" th:each="comentario : ${comentarios}">
                                         <div class="d-flex border-bottom pb-3">
                                             <div class="flex-1">
-                                                <p class="text-muted mb-2" th:text="${comentario.cuerpo}">
-                                                    To an English person, it will seem like simplified English, as a skeptical Cambridge
-                                                </p>
-                                                <h5 class="font-size-15 mb-3" th:text="${comentario.usuarioIdusuario.nombre} + ', ' + ${comentario.usuarioIdusuario.apellido}">
-                                                    James
-                                                </h5>
-
-
-
-
-                                                <ul class="list-inline product-review-link mb-0">
-                                                    <li class="list-inline-item">
-                                                        <form th:action="@{/usuario/comentario/{id}/like(id=${comentario.id})}" method="post" style="display: inline;">
-                                                            <button type="submit" class="btn btn-link" style="border: none; padding: 0; color: inherit;">
-                                                                <i class="mdi mdi-thumb-up align-middle me-1"></i>
-                                                                <b th:text="${comentario.likes}"></b> Likes
-                                                            </button>
-                                                        </form>
-                                                    </li>
-                                                </ul>
+                                                <p class="text-muted mb-2" th:text="${comentario.cuerpo}"></p>
                                             </div>
-
                                             <div style="width: 60px; height: 60px; margin-left: 15px;">
                                                 <img th:src="@{/usuario/usuarioFoto/{id}(id=${comentario.usuarioIdusuario.id})}"
                                                      src="/images/default.jpg"
                                                      onerror="this.onerror=null;this.src='/images/default.jpg';"
                                                      alt="Foto de perfil"
                                                      class="img-fluid rounded-circle"
-                                                     style="width: 100%; height: 100%; object-fit: cover;">
+                                                     style="width: 35px; height: 35px; object-fit: cover;">
+                                                <p class="font-size-12 mb-3" th:text="${comentario.usuarioIdusuario.nombre} + ' ' + ${comentario.usuarioIdusuario.apellido}">
+                                                    James
+                                                </p>
                                             </div>
-
+                                        </div>
+                                        <div class="justify-content-between ">
+                                            <ul class="list-inline product-review-link mb-0">
+                                                <li class="list-inline-item">
+                                                    <form th:action="@{/usuario/comentario/{id}/like(id=${comentario.id})}" method="post" style="display: inline;">
+                                                        <button type="submit" class="btn btn-link" style="border: none; padding: 0; color: inherit;">
+                                                            <i class="mdi mdi-thumb-up align-middle me-1" style="color: rebeccapurple"></i>
+                                                            <b th:text="${comentario.likes}"></b> Me gustas
+                                                        </button>
+                                                    </form>
+                                                </li>
+                                            </ul>
+                                            <p class="float-sm-end font-size-12" th:text="'Publicado el ' + ${#temporals.format(comentario.fechaCreacion, 'dd/MM/yy')}">11 Feb, 2020</p>
 
                                         </div>
-
-                                        <p class="float-sm-end font-size-12" th:text="${comentario.fechaCreacion}">11 Feb, 2020</p>
                                     </div>
                                 </div>
                             </div>

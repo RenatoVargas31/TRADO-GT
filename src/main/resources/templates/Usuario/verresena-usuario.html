@@ -57,10 +57,10 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-md-9 justify-content-center">
-                                        <h5 class="text-center" th:text="${resena.titulo}">Amo esta Camisa Azul</h5>
-                                        <p class="text-justify" th:text="${resena.cuerpo}">
-                                            Descripción de la resena.
-                                        </p>
+                                        <h4 class="text-center" th:text="${resena.titulo}"></h4>
+                                        <hr>
+                                        <br>
+                                        <p class="text-justify" th:text="${resena.cuerpo}"></p>
                                     </div>
 
                                     <div class="col-md-3 text-center d-flex flex-column align-items-center">
@@ -71,9 +71,9 @@
                                                  class="img-fluid"
                                                  style="width: 100%; height: 100%; object-fit: cover;">
                                         </div>
-                                        <div class="text-center">
-                                            <p class="font-size-12 mb-1" th:text="${resena.productoIdproducto.subcategoriaIdsubcategoria.categoriaIdcategoria.nombre} + ', ' + ${resena.productoIdproducto.subcategoriaIdsubcategoria.nombre}">Categoría, Subcategoría</p>
-                                            <h5 class="font-size-15"><a href="#" class="text-reset" th:text="${resena.productoIdproducto.nombre}">Nombre del producto</a></h5>
+                                        <div class="text-center mb-2">
+                                            <p class="font-size-12 mb-1 text-primary" th:text="${resena.productoIdproducto.subcategoriaIdsubcategoria.categoriaIdcategoria.nombre} + ', ' + ${resena.productoIdproducto.subcategoriaIdsubcategoria.nombre}">Categoría, Subcategoría</p>
+                                            <h5 class="font-size-15"><a class="text-reset" th:text="${resena.productoIdproducto.nombre}">Nombre del producto</a></h5>
                                             <span class="product-ribbon badge bg-warning" th:text="${resena.productoIdproducto.codigo}">NK128</span><br>
                                             <div class="d-inline-flex align-items-center mb-2">
                                                 <div class="text-muted me-2" style="font-size: 12px;">
@@ -82,6 +82,7 @@
                                                     <span class="mdi mdi-star text-warning" th:if="${resena.calificacion >= 3}"></span>
                                                     <span class="mdi mdi-star text-warning" th:if="${resena.calificacion >= 4}"></span>
                                                     <span class="mdi mdi-star text-warning" th:if="${resena.calificacion >= 5}"></span>
+                                                    <span th:text="${resena.calificacion} + '/5'"></span>
                                                 </div>
                                             </div>
                                             <div class="provider-info d-flex align-items-center justify-content-center">
@@ -89,28 +90,27 @@
                                                      src="/images/product/iconoProvedor.png"
                                                      onerror="this.onerror=null;this.src='/images/product/iconoProvedor.png';"
                                                      alt="Proveedor Icono" class="rounded-circle me-2" style="width: 30px; height: 30px;">
-                                                <span class="provider-name" th:text="${resena.productoIdproducto.proveedorIdproveedor.nombre} + ', ' + ${resena.productoIdproducto.proveedorIdproveedor.apellido}">Nombre del proveedor</span>
+                                                <span class="provider-name" th:text="${resena.productoIdproducto.proveedorIdproveedor.tienda}">Nombre del proveedor</span>
                                             </div>
+                                            <p class="provider-name" th:text="'Distribuido por ' +${resena.productoIdproducto.proveedorIdproveedor.nombre} + ' ' + ${resena.productoIdproducto.proveedorIdproveedor.apellido}">Nombre del proveedor</p>
+
                                         </div>
                                     </div>
                                     <hr>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-12  mt-2">
-                                        <div class="d-flex ">
-                                            <p class="mt-2 card-title-desc me-2" style="font-size: 12px;">
-                                                <span>Publicado el </span>
-                                                <span th:text="${#temporals.format(resena.fechaCreacion , 'dd-MM-yyyy')}">Fecha de publicación</span>
-                                                <span> por </span>
+                                        <div class="d-flex align-items-center">
+                                            <p class="mt-2 card-title-desc me-2 mb-0" style="font-size: 12px;">
+                                                <span th:text="'Publicado en ' + ${#temporals.format(resena.fechaCreacion , 'dd/MM/yyyy') + ' por '}">Fecha de publicación</span>
                                             </p>
-                                        </div>
-                                        <div >
                                             <img th:src="@{/usuario/usuarioFoto/{id}(id=${resena.usuarioIdusuario.id})}"
                                                  src="/images/default.jpg"
                                                  onerror="this.onerror=null;this.src='/images/default.jpg';"
-                                                 alt="Proveedor Icono" class="rounded-circle me-2" style="width: 40px; height: 40px;">
-                                            <span class="provider-name" th:text="${resena.usuarioIdusuario.nombre} + ', ' + ${resena.usuarioIdusuario.apellido}"  >Nombre del Usuario</span>
+                                                 alt="Proveedor Icono" class="rounded-circle me-2" style="width: 25px; height: 25px;">
+                                            <span class="provider-name" th:text="${resena.usuarioIdusuario.nombre} + ' ' + ${resena.usuarioIdusuario.apellido}">Nombre del Usuario</span>
                                         </div>
+
                                     </div>
 
                                 </div>
