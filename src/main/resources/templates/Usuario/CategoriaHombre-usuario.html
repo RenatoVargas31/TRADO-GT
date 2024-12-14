@@ -359,8 +359,13 @@
                 <div class="row mt-4">
                   <div class="col-sm-6">
                     <div>
-                      <p class="mb-sm-0 mt-2">Página <span class="fw-bold" th:text="${currentPage}"></span> de <span class="fw-bold" th:text="${partes}"></span></p>
-                      <p class="mb-sm-0 mt-2">Página <span class="fw-bold" th:text="${currentPage}"></span> de <span class="fw-bold" th:text="${partes}"></span></p>
+                      <p class="mb-sm-0 mt-2">
+                        Página
+                        <span class="fw-bold"
+                              th:text="${currentPage > partes ? 1 : currentPage}"></span>
+                        de
+                        <span class="fw-bold" th:text="${partes}"></span>
+                      </p>
                     </div>
                   </div>
                   <div class="col-sm-6">
