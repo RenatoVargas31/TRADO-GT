@@ -207,6 +207,7 @@ public class UsuarioFinalController {
         return "Usuario/inicio-usuario";
     }
 
+    // Añadir favoritos
     @GetMapping("/favoritos")
     String favoritos(Model model) {
 
@@ -219,6 +220,41 @@ public class UsuarioFinalController {
         model.addAttribute("misFavoritos", misFavoritos);
 
         return  "Usuario/favoritos-usuario";
+    }
+
+    // Borrar favoritos
+    @PostMapping("/DeleteFavorito")
+    String DeleteFavorito(Model model, @RequestParam("productId") Integer productId, RedirectAttributes attr) {
+
+        //Buscar producto
+        Optional<Producto> miProducto = productosRepository.findById(productId);
+        //Obtener zona
+        int idUser = getAuthenticatedUserId();
+        Usuario user = usuarioRepository.findById(idUser).get();
+        int idZona = user.getDistritoIddistrito().getZonaIdzona().getId();
+
+        if(miProducto.isPresent()){
+            //Buscamos el producto en la lista de favoritos
+            MyFavoriteId myFavoriteId = new MyFavoriteId();
+            myFavoriteId.setUsuarioIdusuario(idUser);
+            myFavoriteId.setProductoIdproducto(productId);
+            myFavoriteId.setZonaIdzona(idZona);
+            // Bucamos si el producto se encuentra dentro de favoritos
+            Optional<MyFavorite> productoPresenteEnFavoritos = myFavoriteRepository.findById(myFavoriteId);
+
+            if(productoPresenteEnFavoritos.isPresent()){
+                // Borramos de Favoritos
+                myFavoriteRepository.deleteById(myFavoriteId);
+                attr.addFlashAttribute("exito", "Producto eliminado de favoritos.");
+
+            }else {
+                attr.addFlashAttribute("error", "El producto no se encuentra en favoritos.");
+            }
+
+        }else{
+            attr.addFlashAttribute("error", "Producto no encontrado.");
+        }
+        return "redirect:/usuario/productoDetalles?id=" + miProducto.get().getId();
     }
 
     @PostMapping("/guardarFavorito")

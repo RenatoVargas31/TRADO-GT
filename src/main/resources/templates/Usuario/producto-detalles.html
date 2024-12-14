@@ -134,6 +134,8 @@
               <div th:if="${MensajeAlerta != null}" class="alert alert-warning" th:text="${MensajeAlerta}"></div>
               <div th:if="${ProductoGuardadoError != null}" class="alert alert-warning" th:text="${ProductoGuardadoError}"></div>
               <div th:if="${ProductoGuardado != null}" class="alert alert-success" th:text="${ProductoGuardado}"></div>
+              <div th:if="${exito != null}" class="alert alert-success" th:text="${exito}"></div>
+              <div th:if="${error != null}" class="alert alert-danger" th:text="${error}"></div>
               <div class="card-body">
                 <div class="row">
 
@@ -220,13 +222,18 @@
                             </div>
 
                             <div class="product-like" th:if="${MyFavorite} == 1">
-                              <div class="product-ribbon" style="color: red">
-                                <div class="btn btn-danger"
-                                     style="border-radius: 50%; padding: 10px; width: 40px; height: 40px; display: flex; justify-content: center; align-items: center;">
-                                  <i class="mdi mdi-heart " style="font-size: 24px; color: white"></i>
+                              <form th:action="@{/usuario/DeleteFavorito}" method="post">
+                                <input type="hidden" name="productId" th:value="${product.id}" />
+                                <div class="product-ribbon" style="color: red;">
+                                  <button type="submit" class="btn btn-danger"
+                                          style="border-radius: 50%; padding: 10px; width: 40px; height: 40px; display: flex; justify-content: center; align-items: center;">
+                                    <i class="mdi mdi-heart" style="font-size: 24px;color: white"></i>
+                                  </button>
                                 </div>
-                              </div>
+                              </form>
+
                             </div>
+
 
                           </div>
                         </div>
@@ -249,7 +256,7 @@
                           </p>
                           <label class="font-size-14"><strong>Marca:</strong></label> <label th:text="${product.marca}"></label><br>
                           <label class="font-size-14"><strong>Color disponible:</strong></label> <label th:text="${product.color}"></label><br>
-                          <div class="product-color mt-3 " th:if="${product.talla != null}">
+                          <div class="product-color " th:if="${product.talla != null and product.talla != ''} ">
                             <label class="font-size-14"><strong>Talla disponible:</strong></label>
                             <label
                                     th:if="${product.talla == 'S'}">
@@ -263,11 +270,21 @@
                               L
                             </label>
                           </div>
-                          <div class="provider-info mt-3">
-                            <div class="provider-label mb-1">
-                              <label class="font-size-14"><strong>Vendido por:</strong></label>
-                            </div>
-                            <div class="d-flex align-items-center">
+
+                          <!-- Para equipos tecnológicos -->
+                          <div class="product-color " th:if="${product.almacenamiento != null and product.almacenamiento != ''} ">
+                            <label class="font-size-14"><strong>Almacenamiento: </strong></label> <label th:text="${product.almacenamiento}"></label><br>
+                          </div>
+                          <div class="product-color " th:if="${product.ram != null and product.ram != ''} ">
+                            <label class="font-size-14"><strong>RAM: </strong></label> <label th:text="${product.ram}"></label><br>
+                          </div>
+                          <div class="product-color " th:if="${product.resolucion != null and product.resolucion != ''} ">
+                            <label class="font-size-14"><strong>Resolución: </strong></label> <label th:text="${product.resolucion}"></label><br>
+                          </div>
+
+                          <div class="provider-info ">
+                            <div class="provider-label">
+                              <label class="font-size-14"><strong>Distribuido por:</strong></label>
                               <img th:src="@{/usuario/proveedorImagen/{id}(id=${product.proveedorIdproveedor.id})}"
                                    src="/images/product/iconoProvedor.png"
                                    onerror="this.onerror=null;this.src='/images/product/iconoProvedor.png';"
@@ -345,7 +362,7 @@
           <div class="col-lg-12 col-12 ">
             <div class="card" >
               <div class="card-body">
-                <div class="mt-4">
+                <div class="mt-2">
                   <div class="product-desc">
                     <ul class="nav nav-tabs nav-tabs-custom" role="tablist">
                       <li class="nav-item">
@@ -364,30 +381,35 @@
                           <table class="table table-nowrap mb-0">
                             <tbody>
                             <tr>
-                              <th scope="row" style="width: 400px;">Categoría</th>
+                              <th scope="row">Categoría</th>
                               <td th:text="${product.subcategoriaIdsubcategoria.categoriaIdcategoria.nombre}"></td>
-                            </tr>
-
-                            <tr>
                               <th scope="row">Subcategoría</th>
                               <td th:text="${product.subcategoriaIdsubcategoria.nombre}"></td>
                             </tr>
                             <tr>
                               <th scope="row">Marca</th>
                               <td th:text="${product.marca}"></td>
-                            </tr>
-                            <tr>
                               <th scope="row">Color</th>
                               <td th:text="${product.color}"></td>
-
                             </tr>
                             <tr>
                               <th scope="row">Material</th>
                               <td th:text="${product.material}"></td>
-                            </tr>
-                            <tr>
                               <th scope="row">Peso</th>
                               <td th:text="${product.peso} + ' kg'"></td>
+                            </tr>
+                            <tr>
+                              <th scope="row">Largo</th>
+                              <td th:text="${product.alto}"></td>
+                              <th scope="row">Ancho</th>
+                              <td th:text="${product.ancho}"></td>
+                            </tr>
+                            <!-- Si es tecnologia -->
+                            <tr th:if="${product.subcategoriaIdsubcategoria.categoriaIdcategoria} == 3">
+                              <th scope="row">Largo</th>
+                              <td th:text="${product.ram}"></td>
+                              <th scope="row">Ancho</th>
+                              <td th:text="${product.almacenamiento}"></td>
                             </tr>
                             </tbody>
                           </table>
@@ -402,10 +424,58 @@
             </div>
           </div>
         </div>
+        <!-- Productos recomendados-->
+        <h6>Productos recomendados</h6>
+        <hr>
+        <div class="row">
+          <div class="card" >
+            <div class="card-body">
+              <div class="mt-4 " th:if="${productList.size() != 1}">
+                <div class="row">
+                  <!-- Iterar sobre productList y mostrar productos excluyendo el actual -->
+                  <div th:each="producto, iterStat : ${productList}"
+                       th:if="${iterStat.index < 4 and producto.id != currentId}"
+                       class="col-xl-3 col-sm-4">
+                    <div class="card product-box" style="max-height: 340px; height: 340px">
+                      <a th:href="@{'/usuario/productoDetalles?id='+${producto.id}}" class="text-decoration-none">
+                        <img th:src="@{'/usuario/productoFoto/' + ${producto.id}}"
+                             alt="img-${producto.id}"
+                             class="img-fluid mx-auto d-block"
+                             style="width: 250px; max-height: 160px; object-fit: cover;height: 160px;"
+                             onerror="this.onerror=null; this.src='../images/error.jpg';"
+                        >
+                        <div class="text-center mt-3">
+                          <p class="font-size-12 mb-1 text-primary">
+                            <span th:text="${producto.subcategoriaIdsubcategoria.nombre}">Categoría, Subcategoría</span>
+                          </p>
+                          <h5 class="font-size-15">
+                            <a th:text="${producto.nombre}" class="text-reset">Product Name</a>
+                          </h5>
+
+                          <h5 class="mt-2" style="font-size: 14px;">
+                            S/ <span th:text="${producto.precio}">100</span>
+                            <span style="font-size: 12px; color: #888;">por unidad</span>
+                          </h5>
+                        </div>
+                        <div class="provider-info d-flex align-items-center justify-content-center" style="margin-top: auto;">
+                          <img th:src="@{/usuario/proveedorImagen/{id}(id=${product.proveedorIdproveedor.id})}"
+                               src="/images/product/iconoProvedor.png"
+                               onerror="this.onerror=null;this.src='/images/product/iconoProvedor.png';"
+                               alt="Proveedor Icono" class="rounded-circle me-2" style="width: 25px; height: 25px;">
+                          <span th:text="${product.proveedorIdproveedor.tienda}" class="provider-name small">Nombre del proveedor</span>
+                        </div>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <h6>Comentarios del producto</h6>
+        <hr>
         <div class="row">
           <div class="col-lg-12 col-12 ">
-            <h6>Comentarios del producto</h6>
-            <hr>
             <div class="row">
               <div class="col-lg-3" th:each="comentario :${comentarios}">
                 <div class="card d-flex flex-column shadow-sm" style="min-height: 250px; max-height: 350px; overflow: hidden; border-radius: 15px;">
@@ -454,57 +524,9 @@
             </div>
           </div>
         </div>
-        <!-- Productos recomendados-->
-        <div class="row">
-          <h6>Productos recomendados</h6>
-          <hr>
-          <div class="card" >
-            <div class="card-body">
-              <div class="mt-4 " th:if="${productList.size() != 1}">
-                <div class="row">
-                  <!-- Iterar sobre productList y mostrar productos excluyendo el actual -->
-                  <div th:each="producto, iterStat : ${productList}"
-                       th:if="${iterStat.index < 4 and producto.id != currentId}"
-                       class="col-xl-3 col-sm-4">
-                    <div class="card product-box" style="max-height: 340px; height: 340px">
-                      <a th:href="@{'/usuario/productoDetalles?id='+${producto.id}}" class="text-decoration-none">
-                        <img th:src="@{'/usuario/productoFoto/' + ${producto.id}}"
-                                alt="img-${producto.id}"
-                                class="img-fluid mx-auto d-block"
-                                style="width: 250px; max-height: 160px; object-fit: cover;height: 160px;"
-                                onerror="this.onerror=null; this.src='../images/error.jpg';"
-                        >
-                        <div class="text-center mt-3">
-                          <p class="font-size-12 mb-1 text-primary">
-                            <span th:text="${producto.subcategoriaIdsubcategoria.nombre}">Categoría, Subcategoría</span>
-                          </p>
-                          <h5 class="font-size-15">
-                            <a th:text="${producto.nombre}" class="text-reset">Product Name</a>
-                          </h5>
-
-                          <h5 class="mt-2" style="font-size: 14px;">
-                            S/ <span th:text="${producto.precio}">100</span>
-                            <span style="font-size: 12px; color: #888;">por unidad</span>
-                          </h5>
-                        </div>
-                        <div class="provider-info d-flex align-items-center justify-content-center" style="margin-top: auto;">
-                          <img th:src="@{/usuario/proveedorImagen/{id}(id=${product.proveedorIdproveedor.id})}"
-                               src="/images/product/iconoProvedor.png"
-                               onerror="this.onerror=null;this.src='/images/product/iconoProvedor.png';"
-                               alt="Proveedor Icono" class="rounded-circle me-2" style="width: 25px; height: 25px;">
-                          <span th:text="${product.proveedorIdproveedor.tienda}" class="provider-name small">Nombre del proveedor</span>
-                        </div>
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-        </div>
       </div>
     </div>
+
     <!-- End Page-content -->
     <footer class="footer">
       <div class="container-fluid">

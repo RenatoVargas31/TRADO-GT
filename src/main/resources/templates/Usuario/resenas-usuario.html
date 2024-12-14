@@ -122,7 +122,10 @@
                                                         </div>
                                                         <div class="text-center p-3">
                                                             <p class="font-size-12 mb-1" th:text="${resena.productoIdproducto.subcategoriaIdsubcategoria.categoriaIdcategoria.nombre} + ', ' + ${resena.productoIdproducto.subcategoriaIdsubcategoria.nombre} ">Categoría, Subcategoría</p>
-                                                            <h5 class="font-size-15" th:text="${resena.productoIdproducto.nombre}"><b class="text-reset">Nombre del producto</b></h5>
+                                                            <div class="d-flex align-items-center justify-content-center">
+                                                                <h6 class="font-size-15 mb-0 me-2" th:text="${resena.productoIdproducto.nombre}"><b class="text-reset">Nombre del producto</b></h6>
+                                                                <p class="product-ribbon badge bg-warning mb-0" th:text="${resena.productoIdproducto.codigo}"></p>
+                                                            </div>
                                                             <div class="d-inline-flex align-items-center mb-2">
                                                                 <div class="text-muted me-2" style="font-size: 12px;">
                                                                     <span class="mdi mdi-star text-warning" th:if="${resena.calificacion >= 1}"></span>
@@ -133,19 +136,32 @@
                                                                 </div>
                                                                 <div class="text-muted" style="font-size: 12px;" th:text="${resena.calificacion} + '/5.0'"></div>
                                                             </div>
-                                                            <span class="product-ribbon badge bg-warning" th:text="${resena.productoIdproducto.codigo}">NK128</span><br>
-                                                            <div class="provider-info d-flex align-items-center justify-content-center">
-                                                                <span class="provider-name text-dark" th:text=" 'Vendendor: '+ ${resena.productoIdproducto.proveedorIdproveedor.nombre} + ' ' + ${resena.productoIdproducto.proveedorIdproveedor.apellido}" style="font-size: 12px;"></span>
+                                                            <div class="provider-label">
+                                                                <img th:src="@{/usuario/proveedorImagen/{id}(id=${resena.productoIdproducto.proveedorIdproveedor.id})}"
+                                                                     src="/images/product/iconoProvedor.png"
+                                                                     onerror="this.onerror=null;this.src='/images/product/iconoProvedor.png';"
+                                                                     alt="Proveedor Icono" class="me-2" style="width: 25px; height: 25px;">
+                                                                <small class="provider-name text-dark" th:text="${resena.productoIdproducto.proveedorIdproveedor.tienda}">Nombre del Proveedor</small>
+                                                                <br><span class="provider-name text-dark" th:text=" 'Distribuido por: '+ ${resena.productoIdproducto.proveedorIdproveedor.nombre} + ' ' + ${resena.productoIdproducto.proveedorIdproveedor.apellido}" style="font-size: 12px;"></span>
                                                             </div>
                                                         </div>
-                                                        <div class="provider-info d-flex flex-column align-items-center justify-content-center">
-                                                            <div>
-                                                                <img th:src="@{/usuario/usuarioFoto/{id}(id=${resena.usuarioIdusuario.id})}"
-                                                                     src="/images/default.jpg"
-                                                                     onerror="this.onerror=null;this.src='/images/default.jpg';"
-                                                                     alt="Avatar" class="rounded-circle me-2" style="width: 20px; height: 20px; object-fit: cover;"><small class="text-dark" th:text="${resena.usuarioIdusuario.nombre} + ' ' + ${resena.usuarioIdusuario.apellido}" ></small>
+                                                        <div class="provider-info d-flex flex-column align-items-center justify-content-center position-relative">
+                                                            <div class="row">
+                                                                <div class="col-lg-6 col-12 ">
+                                                                    <div class="w-100 d-flex justify-content-start">
+                                                                        <img th:src="@{/usuario/usuarioFoto/{id}(id=${resena.usuarioIdusuario.id})}"
+                                                                             src="/images/default.jpg"
+                                                                             onerror="this.onerror=null;this.src='/images/default.jpg';"
+                                                                             alt="Avatar" class="rounded-circle me-2" style="width: 20px; height: 20px; object-fit: cover;">
+                                                                        <small class="text-dark" th:text="${resena.usuarioIdusuario.nombre} + ' ' + ${resena.usuarioIdusuario.apellido}" ></small>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-6 col-12">
+                                                                    <div class="w-100 d-flex justify-content-end">
+                                                                        <small class="text-dark justify-content-end" style="font-size: 12px;" th:text="${#temporals.format(resena.fechaCreacion , 'dd/MM/yyyy')}">11 de Octubre de 2024</small>
+                                                                    </div>
+                                                                </div>
                                                             </div>
-                                                            <small class="text-dark justify-content-end" style="font-size: 12px;" th:text="${#temporals.format(resena.fechaCreacion , 'dd-MM-yyyy')}">11 de Octubre de 2024</small>
                                                         </div>
                                                     </a>
                                                 </div>
