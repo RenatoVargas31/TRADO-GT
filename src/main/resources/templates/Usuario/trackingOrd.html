@@ -425,51 +425,102 @@
 
                                 <div class="card mb-8" th:if="${orden.agentcompraIdusuario != null}">
                                     <div class="card-header bg-light">
-                                        <h5>Chatea con tu Agente</h5>
+                                        <h5>Chat</h5>
+                                        <ul class="nav nav-tabs" id="chatTabs" role="tablist">
+                                            <li class="nav-item" role="presentation">
+                                                <button class="nav-link active" id="agent-tab" data-bs-toggle="tab" data-bs-target="#agent-chat" type="button" role="tab" aria-controls="agent-chat" aria-selected="true">
+                                                    Chat con el Agente
+                                                </button>
+                                            </li>
+                                            <li class="nav-item" role="presentation">
+                                                <button class="nav-link" id="chatbot-tab" data-bs-toggle="tab" data-bs-target="#chatbot" type="button" role="tab" aria-controls="chatbot" aria-selected="false">
+                                                    Chatbot
+                                                </button>
+                                            </li>
+                                        </ul>
                                     </div>
                                     <!-- Contenedor para los mensajes del chat -->
-                                    <div data-simplebar class="card-body" id="barra" style="max-height: 500px; overflow-y: auto;">
-                                        <div class="chat-messages" id="conteiner-chat">
-                                            <!-- Mensaje del agente -->
-                                            <div class="d-flex mb-3">
-                                                <div class="avatar me-3">
-                                                    <span class="avatar-title bg-primary-subtle text-primary rounded-circle" style="width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; border-radius: 50%;">
+                                    <div class="tab-content" id="chatTabsContent">
+                                        <!-- Chat con el agente -->
+                                        <div class="tab-pane fade show active" id="agent-chat" role="tabpanel" aria-labelledby="agent-tab">
+                                            <div data-simplebar class="card-body" id="barra" style="max-height: 500px; overflow-y: auto;">
+                                                <div class="chat-messages" id="conteiner-chat">
+                                                    <!-- Mensaje del agente (derecha) -->
+                                                    <div class="d-flex justify-content-end mb-3">
+                                                        <div>
+                                                            <h6 class="mb-1 text-end">
+                                                                <span th:text="${usuarioAutenticado.nombre} + ' ' + ${usuarioAutenticado.apellido}"></span>
+                                                                <small class="text-muted">10:15 AM</small>
+                                                            </h6>
+                                                            <p class="bg-primary text-white p-2 rounded">Hola, el pedido ya está en aduanas. ¿Tienes alguna pregunta?</p>
+                                                        </div>
+                                                        <div class="avatar ms-3">
+                                                    <span class="avatar-title bg-primary text-white rounded-circle" style="width: 50px; height: 50px; display: flex; justify-content: center; align-items: center;">
                                                         <i class="ri-user-fill"></i>
                                                     </span>
-                                                </div>
+                                                        </div>
+                                                    </div>
 
-                                                <div>
-                                                    <h6 class="mb-1" th:text="${orden.agentcompraIdusuario.nombre} + ' ' + ${orden.agentcompraIdusuario.apellido}"><small class="text-muted">10:15 AM</small></h6>
-                                                    <p class="bg-light p-2 rounded">Hola, el pedido ya está en aduanas. ¿Tienes alguna pregunta?</p>
-                                                </div>
-                                            </div>
-                                            <!-- Mensaje del importador -->
-                                            <div class="d-flex justify-content-end mb-3">
-                                                <div>
-                                                    <h6 class="mb-1 text-end" th:text="${orden.usuarioIdusuario.nombre} + ' ' + ${orden.usuarioIdusuario.apellido}" ><small class="text-muted">10:18 AM</small></h6>
-                                                    <p class="bg-primary text-white p-2 rounded">Gracias por la información. ¿Cuándo se espera la entrega?</p>
-                                                </div>
-
-                                                <div class="avatar ms-3">
-                                                    <span class="avatar-title bg-primary text-white rounded-circle" style="width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; border-radius: 50%;">
+                                                    <!-- Mensaje del importador (izquierda) -->
+                                                    <div class="d-flex mb-3">
+                                                        <div class="avatar me-3">
+                                                    <span class="avatar-title bg-primary-subtle text-primary rounded-circle" style="width: 50px; height: 50px; display: flex; justify-content: center; align-items: center;">
                                                         <i class="ri-user-fill"></i>
                                                     </span>
+                                                        </div>
+                                                        <div>
+                                                            <h6 class="mb-1">
+                                                                <span th:text="${usuario.nombre} + ' ' + ${usuario.apellido}"></span>
+                                                                <small class="text-muted">10:18 AM</small>
+                                                            </h6>
+                                                            <p class="bg-light p-2 rounded">Gracias por la información. ¿Cuándo se espera la entrega?</p>
+                                                        </div>
+                                                    </div>
                                                 </div>
-
                                             </div>
-
+                                            <div class="card-footer">
+                                                <form id="messageForm" name="messageForm">
+                                                    <div class="form-group">
+                                                        <input type="text" id="message" class="form-control" placeholder="Escribe un mensaje...">
+                                                        <button type="submit" class="btn">
+                                                            <i class="fa-solid fa-paper-plane"></i>Enviar
+                                                        </button>
+                                                    </div>
+                                                </form>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <!-- Pie del chat para enviar mensajes -->
-                                    <div class="card-footer">
-                                        <form id="messageForm" name="messageForm" nameForm="messageForm">
-                                            <div class="form-group">
-                                                <input type="text" id="message" class="form-control" placeholder="Escribe un mensaje...">
-                                                <button type="submit" class="btn">
-                                                    <i class="fa-solid fa-paper-plane"></i>Enviar
-                                                </button>
+
+                                        <!-- Chatbot -->
+                                        <div class="tab-pane fade" id="chatbot" role="tabpanel" aria-labelledby="chatbot-tab">
+                                            <div data-simplebar class="card-body" id="chatbot-barra" style="max-height: 500px; overflow-y: auto;">
+                                                <div class="chatbot-messages" id="conteiner-chatbot">
+                                                    <!-- Mensajes del chatbot -->
+                                                    <div class="d-flex mb-3">
+                                                        <div class="avatar me-3">
+                                                    <span class="avatar-title bg-info text-white rounded-circle" style="width: 50px; height: 50px; display: flex; justify-content: center; align-items: center;">
+                                                        <i class="ri-robot-fill"></i>
+                                                    </span>
+                                                        </div>
+                                                        <div>
+                                                            <h6 class="mb-1">
+                                                                Chatbot
+                                                                <small class="text-muted">10:20 AM</small>
+                                                            </h6>
+                                                            <p class="bg-light p-2 rounded">Hola, ¿en qué puedo ayudarte hoy?</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </form>
+                                            <div class="card-footer">
+                                                <form id="chatbotMessageForm">
+                                                    <div class="form-group">
+                                                        <input type="text" id="chatbotMessage" class="form-control" placeholder="Escribe un mensaje para el chatbot...">
+                                                        <button type="submit" class="btn btn-primary mt-2">Enviar</button>
+                                                    </div>
+                                                </form>
+                                                <!--<button id="newChatBtn" class="btn btn-secondary mt-2">Iniciar Nueva Conversación</button>-->
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="card mb-8" th:if="${orden.agentcompraIdusuario == null}">
@@ -637,6 +688,203 @@
             progressBar.classList.remove('progress-bar-striped', 'progress-bar-animated');
         }
     });
+</script>
+
+
+<!-- Inserción del orderId en el JavaScript -->
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var currentOrderId = [[${orden.id}]];
+    /*]]>*/
+</script>
+
+<!-- Script del Chatbot -->
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    // Función para generar un UUID (Identificador Único Universal)
+    function generateUUID() { // Public Domain/MIT
+        var d = new Date().getTime();//Timestamp
+        var d2 = (performance && performance.now && (performance.now()*1000)) || 0;//Time in microseconds since page-load or 0 if unsupported
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+            var r = Math.random() * 16;//random number between 0 and 16
+            if(d > 0){
+                r = (d + r)%16 | 0;
+                d = Math.floor(d/16);
+            } else {
+                r = (d2 + r)%16 | 0;
+                d2 = Math.floor(d2/16);
+            }
+            return (c==='x' ? r : (r&0x3|0x8)).toString(16);
+        });
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const form = document.getElementById("chatbotMessageForm");
+        const input = document.getElementById("chatbotMessage");
+        const chatContainer = document.getElementById("conteiner-chatbot");
+        const newChatBtn = document.getElementById("newChatBtn");
+
+        // Obtener o generar el sessionId
+        let sessionId = localStorage.getItem('chatbotSessionId');
+        if (!sessionId) {
+            sessionId = generateUUID();
+            localStorage.setItem('chatbotSessionId', sessionId);
+        }
+
+        const orderId = currentOrderId || 'default'; // 'currentOrderId' ya está definido arriba
+
+        // Función para cargar el historial de conversación desde el servidor
+        function loadConversation() {
+            fetch(`/chatBotGPT/history?sessionId=${encodeURIComponent(sessionId)}&orderId=${encodeURIComponent(orderId)}`)
+                .then(response => response.json())
+                .then(data => {
+                    // Limpiar el contenedor de mensajes
+                    chatContainer.innerHTML = "";
+
+                    // Iterar sobre los mensajes y agregarlos al contenedor
+                    data.forEach(message => {
+                        const messageDiv = document.createElement("div");
+                        if (message.role === "user") {
+                            messageDiv.className = "d-flex justify-content-end mb-3";
+                            messageDiv.innerHTML = `
+                                    <div>
+                                        <h6 class="mb-1 text-end">Tú</h6>
+                                        <p class="bg-primary text-white p-2 rounded">${message.content}</p>
+                                    </div>
+                                `;
+                        } else if (message.role === "assistant" || message.role === "system") {
+                            messageDiv.className = "d-flex mb-3";
+                            messageDiv.innerHTML = `
+                                    <div class="avatar me-3">
+                                        <span class="avatar-title bg-info text-white rounded-circle">
+                                            <i class="ri-robot-fill"></i>
+                                        </span>
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-1">Chatbot</h6>
+                                        <p class="bg-light p-2 rounded">${message.content}</p>
+                                    </div>
+                                `;
+                        }
+                        chatContainer.appendChild(messageDiv);
+                    });
+
+                    chatContainer.scrollTop = chatContainer.scrollHeight; // Desplazar al último mensaje
+                })
+                .catch(error => {
+                    console.error("Error al cargar el historial de conversación:", error);
+                    // Opcional: Mostrar un mensaje de error al usuario
+                    const errorDiv = document.createElement("div");
+                    errorDiv.className = "d-flex mb-3";
+                    errorDiv.innerHTML = `
+                            <div class="avatar me-3">
+                                <span class="avatar-title bg-danger text-white rounded-circle">
+                                    <i class="ri-error-warning-line"></i>
+                                </span>
+                            </div>
+                            <div>
+                                <h6 class="mb-1">Error</h6>
+                                <p class="bg-danger text-white p-2 rounded">Hubo un problema al cargar la conversación. Por favor, intenta nuevamente.</p>
+                            </div>
+                        `;
+                    chatContainer.appendChild(errorDiv);
+                    chatContainer.scrollTop = chatContainer.scrollHeight;
+                });
+        }
+
+        // Cargar el historial de conversación al cargar la página
+        loadConversation();
+
+        form.addEventListener("submit", function (event) {
+            event.preventDefault();
+
+            const userMessage = input.value.trim();
+            if (!userMessage) return;
+
+            // Mostrar el mensaje del usuario en la vista
+            const userDiv = document.createElement("div");
+            userDiv.className = "d-flex justify-content-end mb-3";
+            userDiv.innerHTML = `
+                    <div>
+                        <h6 class="mb-1 text-end">Tú</h6>
+                        <p class="bg-primary text-white p-2 rounded">${userMessage}</p>
+                    </div>
+                `;
+            chatContainer.appendChild(userDiv);
+            input.value = "";
+            chatContainer.scrollTop = chatContainer.scrollHeight; // Desplazar al último mensaje
+
+            // Enviar el mensaje al backend con el sessionId y orderId
+            fetch(`/chatBotGPT/chat?prompt=${encodeURIComponent(userMessage)}&sessionId=${encodeURIComponent(sessionId)}&orderId=${encodeURIComponent(orderId)}`)
+                .then(response => response.text())
+                .then(reply => {
+                    // Mostrar la respuesta del chatbot en la vista
+                    const botDiv = document.createElement("div");
+                    botDiv.className = "d-flex mb-3";
+                    botDiv.innerHTML = `
+                            <div class="avatar me-3">
+                                <span class="avatar-title bg-info text-white rounded-circle">
+                                    <i class="ri-robot-fill"></i>
+                                </span>
+                            </div>
+                            <div>
+                                <h6 class="mb-1">Chatbot</h6>
+                                <p class="bg-light p-2 rounded">${reply}</p>
+                            </div>
+                        `;
+                    chatContainer.appendChild(botDiv);
+                    chatContainer.scrollTop = chatContainer.scrollHeight; // Desplazar al último mensaje
+                })
+                .catch(error => {
+                    console.error("Error al procesar el mensaje:", error);
+                    // Opcional: Mostrar un mensaje de error al usuario
+                    const errorDiv = document.createElement("div");
+                    errorDiv.className = "d-flex mb-3";
+                    errorDiv.innerHTML = `
+                            <div class="avatar me-3">
+                                <span class="avatar-title bg-danger text-white rounded-circle">
+                                    <i class="ri-error-warning-line"></i>
+                                </span>
+                            </div>
+                            <div>
+                                <h6 class="mb-1">Error</h6>
+                                <p class="bg-danger text-white p-2 rounded">Hubo un problema al procesar tu mensaje. Por favor, intenta nuevamente.</p>
+                            </div>
+                        `;
+                    chatContainer.appendChild(errorDiv);
+                    chatContainer.scrollTop = chatContainer.scrollHeight;
+                });
+        });
+
+        // Manejar el botón de nueva conversación
+        /*if (newChatBtn) {
+            newChatBtn.addEventListener("click", function() {
+                // Eliminar el sessionId actual
+                localStorage.removeItem('chatbotSessionId');
+
+                // Generar un nuevo sessionId
+                sessionId = generateUUID();
+                localStorage.setItem('chatbotSessionId', sessionId);
+
+                // Limpiar el historial en el frontend
+                chatContainer.innerHTML = "";
+
+                // Limpiar el historial en el backend
+                fetch(`/chatBotGPT/history?sessionId=${encodeURIComponent(sessionId)}&orderId=${encodeURIComponent(orderId)}`, {
+                    method: 'DELETE'
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            console.log("Historial eliminado exitosamente.");
+                        } else {
+                            console.error("Error al eliminar el historial.");
+                        }
+                    })
+                    .catch(error => console.error("Error al eliminar el historial:", error));
+            });
+        }*/
+    });
+    /*]]>*/
 </script>
 
 
