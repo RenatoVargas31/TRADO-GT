@@ -4,6 +4,7 @@ package com.app.tradogt.controller;
 import com.app.tradogt.dto.OrdenCompraUserDto;
 import com.app.tradogt.dto.PasswordChangeDto;
 import com.app.tradogt.entity.*;
+import com.app.tradogt.helpers.CreditCardValidator;
 import com.app.tradogt.services.NotificationCorreoService;
 import com.app.tradogt.services.NotificationService;
 import com.app.tradogt.services.StorageService;
@@ -134,7 +135,6 @@ public class UsuarioFinalController {
         Optional<EstadoOrden> recibido = estadoOrdenRepository.findById(7);
         List<Orden> ordensInProcess = ordenRepository.findByEstadoordenIdestadoorden(estadoactual);
         for (Orden orden : ordensInProcess) {
-            System.out.println("Orden ID: " + orden.getId());
             // Cambiar el estado de acuerdo a la fecha actual
             if (orden.getFechaArribo() != null && orden.getFechaArribo().isEqual(today)) {
                 orden.setEstadoordenIdestadoorden(arriboAlPais.get());
@@ -203,7 +203,6 @@ public class UsuarioFinalController {
         // Listar mis productos favoritos
         List<Object[]> misFavoritos = myFavoriteRepository.findFavorites(userId, IdZona);
         model.addAttribute("misFavoritos", misFavoritos);
-        System.out.println(misFavoritos);
 
         return "Usuario/inicio-usuario";
     }
@@ -218,7 +217,6 @@ public class UsuarioFinalController {
         // Listar mis productos favoritos
         List<Object[]> misFavoritos = myFavoriteRepository.findMyFavorites(userId, IdZona);
         model.addAttribute("misFavoritos", misFavoritos);
-        System.out.println(misFavoritos);
 
         return  "Usuario/favoritos-usuario";
     }
@@ -232,9 +230,7 @@ public class UsuarioFinalController {
         int idUser = getAuthenticatedUserId();
         Usuario user = usuarioRepository.findById(idUser).get();
         int idZona = user.getDistritoIddistrito().getZonaIdzona().getId();
-        System.out.println("Holaaa, producto favorito aqui ");
         if(miProducto.isPresent()){
-            System.out.println("Estoy aqui ");
             MyFavoriteId myFavoriteId = new MyFavoriteId();
             myFavoriteId.setUsuarioIdusuario(idUser);
             myFavoriteId.setProductoIdproducto(productId);
@@ -493,7 +489,7 @@ public class UsuarioFinalController {
             model.addAttribute("costoEnvio", costoEnvio);
 
         }else {
-            System.out.println("Orden no encontrada"); }
+           }
 
         //Aqui haré el cambio de estado por fecha
 
@@ -532,7 +528,7 @@ public class UsuarioFinalController {
             model.addAttribute("costoEnvio", costoEnvio);
 
         }else {
-            System.out.println("Orden no encontrada"); }
+           }
 
         return "Usuario/trackingOrdEdit";
     }
@@ -556,7 +552,6 @@ public class UsuarioFinalController {
             ord.setEstadoordenIdestadoorden(newEstado.get());
             //Se guarda la fecha del cambio de estado
             ord.setFechaValidacion(LocalDate.now());
-            System.out.println("fecha de validacion: " + ord.getFechaValidacion());
             ordenRepository.save(ord);
             attr.addFlashAttribute("msjAgente", "Se le ha asignado el agente " + agente.getNombre() + " " + agente.getApellido() + " en la orden " + code);
             return "redirect:/usuario/misPedidos";
@@ -574,9 +569,6 @@ public class UsuarioFinalController {
         //Buscamos la orden por id
         Optional<Orden> orden = ordenRepository.findById(idOrden);
         String code = orden.get().getCodigo();
-
-        System.out.println("-----------");
-        System.out.println("codigo: " + code);
 
 
         if(orden.isPresent()) {
@@ -725,9 +717,7 @@ public class UsuarioFinalController {
         //Busco un carrito creado a mi id
         int idUser= getAuthenticatedUserId();
         Usuario usuario = usuarioRepository.findById(idUser).get();
-       System.out.println("usuario: " + usuario.getNombre());
         int zonaid = usuario.getDistritoIddistrito().getZonaIdzona().getId();
-       System.out.println("zonaid: " + zonaid);
        int cantidadP = Integer.parseInt(cantidadOculta);
 
 
@@ -735,7 +725,6 @@ public class UsuarioFinalController {
            Producto producto = productosRepository.findById(productoId).get();
 
            Carrito hayCarrito = carritoRepository.findByUsuarioIdusuarioAndIsDelete(usuario, (byte) 0);
-           System.out.println("hay carrito?: " + hayCarrito);
            //Añadimos el producto al carrito nuevo
            ProductoEnCarrito misProductoEnCarrito = new ProductoEnCarrito();
            //Producto en Zona (TIENDA)
@@ -892,8 +881,6 @@ public class UsuarioFinalController {
 
         //Busco el id del producto en ProductoEnZona
         Optional<ProductoEnZona> tienda = productoEnZonaRepository.findByIdAndZona(productoId, myUser.get().getDistritoIddistrito().getZonaIdzona().getId());
-        System.out.println("----------------------------");
-        System.out.println("producto en zona id: " + tienda.get().getId());
 
         ProductoEnCarritoId item = new ProductoEnCarritoId();
         item.setCarritoIdcarrito(miCarrito.getId());
@@ -902,7 +889,6 @@ public class UsuarioFinalController {
         //Obtenego el producto
         Optional<ProductoEnCarrito> itemDelete = productoEnCarritoRepository.findById(item);
         productoEnCarritoRepository.delete(itemDelete.get());
-        System.out.println("Se ha borrado el producto :D");
         // Añade un mensaje de éxito
         redirectAttributes.addFlashAttribute("message", "El producto " + myProduct.get().getCodigo()+" ha sido eliminado de forma exitosa.");
         return "redirect:/usuario/carrito";
@@ -920,7 +906,6 @@ public class UsuarioFinalController {
             model.addAttribute("resenas", listaResena);
         }else {
             model.addAttribute("resenas", listaResena);
-            System.out.println("Lista de resenas:");
         }
 
         return "Usuario/resenas-usuario";
@@ -1862,7 +1847,6 @@ public class UsuarioFinalController {
 
                 model.addAttribute("distritos", distritoRepository.findAll());
                 model.addAttribute("usuario", usuarioRepository.findByIdUsuario(user));
-                System.out.println(distritoRepository.findAll());
                 model.addAttribute("costoEnvio", costoEnvio);
             }
 
@@ -1912,70 +1896,6 @@ public class UsuarioFinalController {
         return "Usuario/allNotifications-usuario";
     }
 
-    public class CreditCardValidator {
-
-        // Método para validar el número de tarjeta
-        public static boolean isValidCardNumber(String cardNumber, String cardType) {
-            switch (cardType) {
-                case "Visa":
-                    return cardNumber.startsWith("4") && cardNumber.length() == 16 && luhnCheck(cardNumber);
-                case "MasterCard":
-                    return (cardNumber.startsWith("51") || cardNumber.startsWith("52") || cardNumber.startsWith("53") || cardNumber.startsWith("54") || cardNumber.startsWith("55") ||
-                            (Integer.parseInt(cardNumber.substring(0, 4)) >= 2221 && Integer.parseInt(cardNumber.substring(0, 4)) <= 2720))
-                            && cardNumber.length() == 16 && luhnCheck(cardNumber);
-                case "American Express":
-                    return (cardNumber.startsWith("34") || cardNumber.startsWith("37")) && cardNumber.length() == 15 && luhnCheck(cardNumber);
-                default:
-                    return false;
-            }
-        }
-
-        // Método para validar el CVV
-        public static boolean isValidCVV(String cvv, String cardType) {
-            switch (cardType) {
-                case "American Express":
-                    return cvv.length() == 4 && cvv.matches("\\d{4}");
-                case "Visa":
-                case "MasterCard":
-                    return cvv.length() == 3 && cvv.matches("\\d{3}");
-                default:
-                    return false;
-            }
-        }
-
-        // Implementación del Algoritmo de Luhn
-        public static boolean luhnCheck(String cardNumber) {
-            int nDigits = cardNumber.length();
-            int nSum = 0;
-            boolean isSecond = false;
-            for (int i = nDigits - 1; i >= 0; i--) {
-                int d = cardNumber.charAt(i) - '0';
-                if (isSecond)
-                    d *= 2;
-                nSum += d / 10;
-                nSum += d % 10;
-                isSecond = !isSecond;
-            }
-            return (nSum % 10 == 0);
-        }
-
-        public static void main(String[] args) {
-            // Ejemplo de uso
-            String cardNumber = "4111111111111111"; // Ejemplo de tarjeta Visa válida
-            String cvv = "123";
-            String cardType = "Visa";
-
-            boolean isCardNumberValid = isValidCardNumber(cardNumber, cardType);
-            boolean isCVVValid = isValidCVV(cvv, cardType);
-
-            System.out.println("Número de tarjeta válido: " + isCardNumberValid);
-            System.out.println("CVV válido: " + isCVVValid);
-        }
-    }
-
-
-
-
     //Guardar los datos de pago
     @PostMapping("/savePayment")
     private String showSavePayment(@RequestParam("nombre") String nombre,
@@ -1997,13 +1917,24 @@ public class UsuarioFinalController {
         // Validar número de tarjeta y código CVV
         if (!CreditCardValidator.isValidCardNumber(numeroTarjeta, metodo)) {
             attr.addFlashAttribute("error", "Número de tarjeta inválido.");
+
+            System.out.println("El errror esta aqui :D");
             return "redirect:/usuario/checkout-info";
         }
 
         if (!CreditCardValidator.isValidCVV(codigoCVV, metodo)) {
             attr.addFlashAttribute("error", "Código CVV inválido.");
+            System.out.println("El errror esta aqui D:");
+
             return "redirect:/usuario/checkout-info";
         }
+
+        if (!CreditCardValidator.isValidExpiryDate(fechaTarjeta)) {
+            attr.addFlashAttribute("error", "Fecha de tarjeta inválida.");
+            System.out.println("El errror esta aqui D':");
+            return "redirect:/usuario/checkout-info";
+        }
+
 
         Autenticacion facturacion = new Autenticacion();
         facturacion.setNombre(nombre);
