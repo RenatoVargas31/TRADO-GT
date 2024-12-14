@@ -162,7 +162,7 @@
                                                                 </div>
                                                                 <div class="col-lg-6 col-12">
                                                                     <div class="w-100 d-flex justify-content-end">
-                                                                        <small class="text-dark justify-content-end" style="font-size: 12px;" th:text="${#temporals.format(resena.fechaCreacion , 'dd/MM/yyyy')}">11 de Octubre de 2024</small>
+                                                                        <small class="text-dark justify-content-end" style="font-size: 12px;" th:text=" 'Publicado '+${#temporals.format(resena.fechaCreacion , 'dd/MM/yyyy')}">11 de Octubre de 2024</small>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -284,7 +284,7 @@
 
             <script>
                 document.addEventListener("DOMContentLoaded", function () {
-                    const itemsPerPage = 12; // Número de productos por página
+                    const itemsPerPage = 8; // Número de productos por página
                     let currentPage = 1;
 
                     const productCards = document.querySelectorAll('.product-box'); // Selecciona todas las tarjetas de producto
@@ -388,7 +388,7 @@
 
             <script>
                 document.addEventListener("DOMContentLoaded", function() {
-                    const itemsPerPage = 12; // Número de productos por página
+                    const itemsPerPage = 8; // Número de productos por página
                     let currentPage = 1;
 
                     const productCards = document.querySelectorAll('.product-box'); // Selecciona todas las tarjetas de producto
