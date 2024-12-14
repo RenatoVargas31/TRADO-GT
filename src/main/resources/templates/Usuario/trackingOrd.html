@@ -518,7 +518,7 @@
                                                         <button type="submit" class="btn btn-primary mt-2">Enviar</button>
                                                     </div>
                                                 </form>
-                                                <!--<button id="newChatBtn" class="btn btn-secondary mt-2">Iniciar Nueva Conversación</button>-->
+                                                <button id="newChatBtn" class="btn btn-secondary mt-2">Iniciar Nueva Conversación</button>
                                             </div>
                                         </div>
                                     </div>
@@ -735,8 +735,14 @@
 
         // Función para cargar el historial de conversación desde el servidor
         function loadConversation() {
-            fetch(`/chatBotGPT/history?sessionId=${encodeURIComponent(sessionId)}&orderId=${encodeURIComponent(orderId)}`)
-                .then(response => response.json())
+            // **Modificación Importante:** Elimina 'orderId' de la solicitud de historial
+            fetch(`/chatBotGPT/history?sessionId=${encodeURIComponent(sessionId)}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
                 .then(data => {
                     // Limpiar el contenedor de mensajes
                     chatContainer.innerHTML = "";
@@ -814,9 +820,30 @@
             input.value = "";
             chatContainer.scrollTop = chatContainer.scrollHeight; // Desplazar al último mensaje
 
+            // **Nueva Lógica:** Detectar si el último mensaje del chatbot solicita confirmación de la dirección de envío
+            // Para esto, revisamos el último mensaje del chatContainer
+            const messageElements = chatContainer.getElementsByClassName("d-flex mb-3");
+            let lastBotMessage = null;
+            if (messageElements.length > 0) {
+                lastBotMessage = messageElements[messageElements.length - 1].querySelector("p").textContent;
+            }
+
+            // Verificar si el último mensaje del chatbot solicita confirmación de la dirección de envío
+            if (lastBotMessage && lastBotMessage.toLowerCase().includes("confirma si estás conforme con la dirección de envío")) {
+                // Enviar la respuesta del usuario directamente al backend para manejar la confirmación
+                // No enviar este mensaje al endpoint de chat
+                handleUserConfirmation(userMessage, orderId, sessionId);
+                return; // Salir para evitar enviar el mensaje al endpoint de chat
+            }
+
             // Enviar el mensaje al backend con el sessionId y orderId
             fetch(`/chatBotGPT/chat?prompt=${encodeURIComponent(userMessage)}&sessionId=${encodeURIComponent(sessionId)}&orderId=${encodeURIComponent(orderId)}`)
-                .then(response => response.text())
+                .then(response => {
+                    if (!response.ok) {
+                        return response.text().then(text => { throw new Error(text) });
+                    }
+                    return response.text();
+                })
                 .then(reply => {
                     // Mostrar la respuesta del chatbot en la vista
                     const botDiv = document.createElement("div");
@@ -848,7 +875,7 @@
                             </div>
                             <div>
                                 <h6 class="mb-1">Error</h6>
-                                <p class="bg-danger text-white p-2 rounded">Hubo un problema al procesar tu mensaje. Por favor, intenta nuevamente.</p>
+                                <p class="bg-danger text-white p-2 rounded">${error.message || "Hubo un problema al procesar tu mensaje. Por favor, intenta nuevamente."}</p>
                             </div>
                         `;
                     chatContainer.appendChild(errorDiv);
@@ -856,8 +883,57 @@
                 });
         });
 
+        // **Nueva Función:** Manejar la Confirmación del Usuario
+        function handleUserConfirmation(userResponse, orderId, sessionId) {
+            // Enviar la confirmación al backend para procesarla
+            fetch(`/chatBotGPT/chat?prompt=${encodeURIComponent(userResponse)}&sessionId=${encodeURIComponent(sessionId)}&orderId=${encodeURIComponent(orderId)}`)
+                .then(response => {
+                    if (!response.ok) {
+                        return response.text().then(text => { throw new Error(text) });
+                    }
+                    return response.text();
+                })
+                .then(reply => {
+                    // Mostrar la respuesta del chatbot en la vista
+                    const botDiv = document.createElement("div");
+                    botDiv.className = "d-flex mb-3";
+                    botDiv.innerHTML = `
+                            <div class="avatar me-3">
+                                <span class="avatar-title bg-info text-white rounded-circle">
+                                    <i class="ri-robot-fill"></i>
+                                </span>
+                            </div>
+                            <div>
+                                <h6 class="mb-1">Chatbot</h6>
+                                <p class="bg-light p-2 rounded">${reply}</p>
+                            </div>
+                        `;
+                    chatContainer.appendChild(botDiv);
+                    chatContainer.scrollTop = chatContainer.scrollHeight; // Desplazar al último mensaje
+                })
+                .catch(error => {
+                    console.error("Error al procesar la confirmación:", error);
+                    // Mostrar un mensaje de error al usuario
+                    const errorDiv = document.createElement("div");
+                    errorDiv.className = "d-flex mb-3";
+                    errorDiv.innerHTML = `
+                            <div class="avatar me-3">
+                                <span class="avatar-title bg-danger text-white rounded-circle">
+                                    <i class="ri-error-warning-line"></i>
+                                </span>
+                            </div>
+                            <div>
+                                <h6 class="mb-1">Error</h6>
+                                <p class="bg-danger text-white p-2 rounded">Hubo un problema al procesar tu confirmación. Por favor, intenta nuevamente.</p>
+                            </div>
+                        `;
+                    chatContainer.appendChild(errorDiv);
+                    chatContainer.scrollTop = chatContainer.scrollHeight;
+                });
+        }
+
         // Manejar el botón de nueva conversación
-        /*if (newChatBtn) {
+        if (newChatBtn) {
             newChatBtn.addEventListener("click", function() {
                 // Eliminar el sessionId actual
                 localStorage.removeItem('chatbotSessionId');
@@ -869,8 +945,8 @@
                 // Limpiar el historial en el frontend
                 chatContainer.innerHTML = "";
 
-                // Limpiar el historial en el backend
-                fetch(`/chatBotGPT/history?sessionId=${encodeURIComponent(sessionId)}&orderId=${encodeURIComponent(orderId)}`, {
+                // **Modificación Importante:** Elimina 'orderId' de la solicitud de historial
+                fetch(`/chatBotGPT/history?sessionId=${encodeURIComponent(sessionId)}`, {
                     method: 'DELETE'
                 })
                     .then(response => {
@@ -882,10 +958,12 @@
                     })
                     .catch(error => console.error("Error al eliminar el historial:", error));
             });
-        }*/
+        }
     });
     /*]]>*/
 </script>
+
+
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.6.1/sockjs.min.js"></script>
