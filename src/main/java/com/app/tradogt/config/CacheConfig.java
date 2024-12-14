@@ -15,8 +15,16 @@ public class CacheConfig {
     @Bean
     public Cache<String, List<MessageGPTDto>> conversationCache() {
         return Caffeine.newBuilder()
-                .expireAfterWrite(10, TimeUnit.MINUTES)
+                .expireAfterWrite(15, TimeUnit.MINUTES)
                 .maximumSize(1000) // Ajusta según tus necesidades
+                .build();
+    }
+
+    @Bean
+    public Cache<String, String> sessionStateCache() {
+        return Caffeine.newBuilder()
+                .expireAfterWrite(15, TimeUnit.MINUTES)
+                .maximumSize(1000)
                 .build();
     }
 }
