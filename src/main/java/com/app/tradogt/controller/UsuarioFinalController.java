@@ -733,7 +733,8 @@ public class UsuarioFinalController {
                 model.addAttribute("productList", productoPage.getContent());
                 model.addAttribute("currentPage", currentPage);
                 model.addAttribute("sizeList", productoPage.getTotalElements());
-                model.addAttribute("partes", productoPage.getTotalPages());
+                int totalPages = productoPage.getTotalPages();
+                model.addAttribute("partes", totalPages == 0 ? 1 : totalPages);
             }
 
             // Mostrar aviso de la cantidad mínima de compra
@@ -1348,16 +1349,15 @@ public class UsuarioFinalController {
         Pageable pageable = PageRequest.of(currentPage - 1, 12);
         Page<Producto> productoPage = productosRepository   .findProductRopaMujer(zonaId, pageable);
 
-        // Si la página está fuera de rango, redirigir a la primera página
-        if (currentPage > productoPage.getTotalPages()) {
-            return "redirect:/usuario/categoriaMujer?page=1";
-        }
+
 
         // Añadir atributos al modelo
         model.addAttribute("productList", productoPage.getContent());
         model.addAttribute("currentPage", currentPage);
         model.addAttribute("sizeList", productoPage.getTotalElements()); // Total de productos
-        model.addAttribute("partes", productoPage.getTotalPages()); // Total de páginas
+        int totalPages = productoPage.getTotalPages();
+        model.addAttribute("partes", totalPages == 0 ? 1 : totalPages);
+
 
         model.addAttribute("tallasList", productosRepository.findDistinctTallas(1));
         model.addAttribute("marcaList", productosRepository.findDistinctMarca(1));
@@ -1397,7 +1397,8 @@ public class UsuarioFinalController {
         model.addAttribute("productList", productoPage.getContent());
         model.addAttribute("currentPage", currentPage);
         model.addAttribute("sizeList", productoPage.getTotalElements()); // Total de productos
-        model.addAttribute("partes", productoPage.getTotalPages()); // Total de páginas
+        int totalPages = productoPage.getTotalPages();
+        model.addAttribute("partes", totalPages == 0 ? 1 : totalPages); // Total de páginas
 
         model.addAttribute("tallasList", productosRepository.findDistinctTallas(2));
         model.addAttribute("coloresList", productosRepository.findDistinctColores(2));
@@ -1429,10 +1430,6 @@ public class UsuarioFinalController {
         Pageable pageable = PageRequest.of(currentPage - 1, 12      );
         Page<Producto> productoPage = productosRepository.findProductElectronico(zonaId, pageable);
 
-        // Si la página está fuera de rango, redirigir a la primera página
-        if (currentPage > productoPage.getTotalPages()) {
-            return "redirect:/usuario/categoriaTecnologia?page=1";
-        }
 
         // Añadir atributos al modelo
         productList(model, currentPage, productoPage);
@@ -1465,16 +1462,14 @@ public class UsuarioFinalController {
         Pageable pageable = PageRequest.of(currentPage - 1, 12);
         Page<Producto> productoPage = productosRepository.findProductMuebles(zonaId, pageable);
 
-        // Si la página está fuera de rango, redirigir a la primera página
-        if (currentPage > productoPage.getTotalPages()) {
-            return "redirect:/usuario/categoriaMuebles?page=1";
-        }
+
 
         // Añadir atributos al modelo
         model.addAttribute("productList", productoPage.getContent());
         model.addAttribute("currentPage", currentPage);
         model.addAttribute("sizeList", productoPage.getTotalElements()); // Total de productos
-        model.addAttribute("partes", productoPage.getTotalPages()); // Total de páginas
+        int totalPages = productoPage.getTotalPages();
+        model.addAttribute("partes", totalPages == 0 ? 1 : totalPages); // Total de páginas
 
         model.addAttribute("materialesList", productosRepository.findDistinctMaterials(4));
         model.addAttribute("marcaList", productosRepository.findDistinctMarca(4));
@@ -1538,11 +1533,17 @@ public class UsuarioFinalController {
         model.addAttribute("productList", productoPage.getContent());
         model.addAttribute("currentPage", currentPage);
         model.addAttribute("sizeList", productoPage.getTotalElements()); // Total de productos
-        model.addAttribute("partes", productoPage.getTotalPages()); // Total de páginas
-
+        int totalPages = productoPage.getTotalPages();
+        model.addAttribute("partes", totalPages == 0 ? 1 : totalPages);
+        model.addAttribute("categoria", categoria);
+        model.addAttribute("material", material);
+        model.addAttribute("marca", marca);
+        model.addAttribute("precioMin", precioMin);
+        model.addAttribute("precioMax", precioMax);
         model.addAttribute("materialesList", productosRepository.findDistinctMaterials(4));
         model.addAttribute("categoriasList", subCategoriaRepository.findSubcategorias(4));
         model.addAttribute("marcaList", productosRepository.findDistinctMarca(4));
+        model.addAttribute("categoria", productosRepository.findDistinctMarca(4));
 
         return "Usuario/CategoriaMuebles-usuario";
     }
@@ -1583,7 +1584,14 @@ public class UsuarioFinalController {
         model.addAttribute("productList", productoPage.getContent());
         model.addAttribute("currentPage", currentPage);
         model.addAttribute("sizeList", productoPage.getTotalElements()); // Total de productos
-        model.addAttribute("partes", productoPage.getTotalPages()); // Total de páginas
+        int totalPages = productoPage.getTotalPages();
+        model.addAttribute("partes", totalPages == 0 ? 1 : totalPages);
+        model.addAttribute("categoria", categoria);
+        model.addAttribute("material", material);
+        model.addAttribute("color", color);
+        model.addAttribute("marca", marca);
+        model.addAttribute("precioMin", precioMin);
+        model.addAttribute("precioMax", precioMax);
 
         model.addAttribute("tallasList", productosRepository.findDistinctTallas(2));
         model.addAttribute("coloresList", productosRepository.findDistinctColores(2));
@@ -1623,22 +1631,24 @@ public class UsuarioFinalController {
         Page<Producto> productoPage = productosRepository.findProductMujerFilter(
                 zonaId, categoria, talla, marca, color, precioMin, precioMax, pageable);
 
-        // Verificar si la página solicitada es válida
-        if (currentPage > productoPage.getTotalPages()) {
-            return "redirect:/usuario/categoriaMujerFilter?page=1";
-        }
+
 
         // Añadir atributos al modelo
         model.addAttribute("productList", productoPage.getContent());
         model.addAttribute("currentPage", currentPage);
         model.addAttribute("sizeList", productoPage.getTotalElements()); // Total de productos
-        model.addAttribute("partes", productoPage.getTotalPages()); // Total de páginas
-
+        int totalPages = productoPage.getTotalPages();
+        model.addAttribute("partes", totalPages == 0 ? 1 : totalPages);
+        model.addAttribute("categoria", categoria);
+        model.addAttribute("talla", talla);
+        model.addAttribute("color", color);
+        model.addAttribute("marca", marca);
+        model.addAttribute("precioMin", precioMin);
+        model.addAttribute("precioMax", precioMax);
         model.addAttribute("tallasList", productosRepository.findDistinctTallas(1));
         model.addAttribute("coloresList", productosRepository.findDistinctColores(1));
         model.addAttribute("categoriasList", subCategoriaRepository.findSubcategorias(1));
         model.addAttribute("marcaList", productosRepository.findDistinctMarca(1));
-
         return "Usuario/CategoriaMujer-usuario";
     }
 
@@ -1679,7 +1689,12 @@ public class UsuarioFinalController {
         productList(model, currentPage, productoPage);
         model.addAttribute("categoriasList", subCategoriaRepository.findSubcategorias(3));
         model.addAttribute("marcaList", productosRepository.findDistinctMarca(3));
-
+        model.addAttribute("categoria", categoria);
+        model.addAttribute("almacenamiento", almacenamiento);
+        model.addAttribute("ram", ram);
+        model.addAttribute("marca", marca);
+        model.addAttribute("precioMin", precioMin);
+        model.addAttribute("precioMax", precioMax);
         return "Usuario/CategoriaTecnologia-usuario";
     }
 
@@ -1687,7 +1702,8 @@ public class UsuarioFinalController {
         model.addAttribute("productList", productoPage.getContent());
         model.addAttribute("currentPage", currentPage);
         model.addAttribute("sizeList", productoPage.getTotalElements()); // Total de productos
-        model.addAttribute("partes", productoPage.getTotalPages()); // Total de páginas
+        int totalPages = productoPage.getTotalPages();
+        model.addAttribute("partes", totalPages == 0 ? 1 : totalPages);
 
         model.addAttribute("almacenamientoList", productosRepository.findDistinctAlmacenamiento(3));
         model.addAttribute("ramList", productosRepository.findDistinctRam(3));
@@ -1724,7 +1740,8 @@ public class UsuarioFinalController {
         model.addAttribute("productList", productoPage.getContent());
         model.addAttribute("currentPage", currentPage);
         model.addAttribute("sizeList", productoPage.getTotalElements()); // Total de productos
-        model.addAttribute("partes", productoPage.getTotalPages()); // Total de páginas
+        int totalPages = productoPage.getTotalPages();
+        model.addAttribute("partes", totalPages == 0 ? 1 : totalPages);
         model.addAttribute("query", query);
         model.addAttribute("tallasList", productosRepository.findDistinctTallas(2));
         model.addAttribute("coloresList", productosRepository.findDistinctColores(2));
@@ -1763,8 +1780,10 @@ public class UsuarioFinalController {
         model.addAttribute("productList", productoPage.getContent());
         model.addAttribute("currentPage", currentPage);
         model.addAttribute("sizeList", productoPage.getTotalElements()); // Total de productos
-        model.addAttribute("partes", productoPage.getTotalPages()); // Total de páginas
+        int totalPages = productoPage.getTotalPages();
+        model.addAttribute("partes", totalPages == 0 ? 1 : totalPages);
         model.addAttribute("query", query);
+        model.addAttribute("categoria", query);
         model.addAttribute("tallasList", productosRepository.findDistinctTallas(1));
         model.addAttribute("coloresList", productosRepository.findDistinctColores(1));
         model.addAttribute("categoriasList", subCategoriaRepository.findSubcategorias(1));
@@ -1808,7 +1827,8 @@ public class UsuarioFinalController {
         model.addAttribute("productList", productoPage.getContent());
         model.addAttribute("currentPage", currentPage);
         model.addAttribute("sizeList", productoPage.getTotalElements()); // Total de productos
-        model.addAttribute("partes", productoPage.getTotalPages()); // Total de páginas
+        int totalPages = productoPage.getTotalPages();
+        model.addAttribute("partes", totalPages == 0 ? 1 : totalPages);
         model.addAttribute("query", query);
 
         model.addAttribute("almacenamientoList", productosRepository.findDistinctAlmacenamiento(3));
@@ -1850,7 +1870,8 @@ public class UsuarioFinalController {
         model.addAttribute("productList", productoPage.getContent());
         model.addAttribute("currentPage", currentPage);
         model.addAttribute("sizeList", productoPage.getTotalElements()); // Total de productos
-        model.addAttribute("partes", productoPage.getTotalPages()); // Total de páginas
+        int totalPages = productoPage.getTotalPages();
+        model.addAttribute("partes", totalPages == 0 ? 1 : totalPages);
         model.addAttribute("query", query);
         model.addAttribute("materialesList", productosRepository.findDistinctMaterials(4));
         model.addAttribute("categoriasList", subCategoriaRepository.findSubcategorias(4));

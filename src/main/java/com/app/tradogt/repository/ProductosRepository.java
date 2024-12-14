@@ -82,15 +82,16 @@ public interface ProductosRepository extends JpaRepository<Producto, Integer> {
     @Query("SELECT DISTINCT p.ram FROM Producto p " +
             "JOIN p.subcategoriaIdsubcategoria s " +
             "JOIN s.categoriaIdcategoria c " +
-            "WHERE c.id = :tipo AND p.ram IS NOT NULL " +
+            "WHERE c.id = :tipo AND p.ram IS NOT NULL AND p.ram != '' " +
             "ORDER BY p.ram ASC")
     List<String> findDistinctRam(@Param("tipo") int tipo);
+
 
 
     @Query("SELECT DISTINCT p.almacenamiento FROM Producto p " +
             "JOIN p.subcategoriaIdsubcategoria s " +
             "JOIN s.categoriaIdcategoria c " +
-            "WHERE c.id = :tipo AND p.almacenamiento IS NOT NULL " +
+            "WHERE c.id = :tipo AND p.almacenamiento IS NOT NULL AND p.almacenamiento!='' " +
             "ORDER BY p.ram ASC")
     List<String> findDistinctAlmacenamiento(@Param("tipo") int tipo);
 
