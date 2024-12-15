@@ -305,6 +305,21 @@ public class UsuarioFinalController {
         return "redirect:/usuario/productoDetalles?id=" + miProducto.get().getId();
     }
 
+    @GetMapping("/libroReclamacion")
+    public String libroReclamacion (Model model){
+
+        int Iduser = getAuthenticatedUserId();
+        Usuario user = usuarioRepository.findById(Iduser).get();
+        // Obtener información del Usuario
+        model.addAttribute("usuario", user);
+
+        //Obtener lista de todo los Agentes de compra
+
+        //Obtener lista de todo los productos del Usuario
+
+        return "Usuario/libroReclamacion-usuario";
+    }
+
     @GetMapping("/misPedidos")
     public String misPedidos(Model model) {
         int idUsuario = getAuthenticatedUserId();
