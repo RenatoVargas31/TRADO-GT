@@ -254,8 +254,8 @@
                                                 <div class="col-lg-4 col-sm-6">
                                                     <div class="mb-3 mb-lg-0">
                                                         <label class="form-label" for="codigoCVV">Código CVV</label>
-                                                        <input type="text" class="form-control" id="codigoCVV" name="codigoCVV" placeholder="Ingrese código CVV" required oninput="validateCVV(this)" maxlength="3">
-                                                        <small id="cvvError" class="text-danger" style="display:none;">El CVV debe ser un número de 3 dígitos.</small>
+                                                        <input type="text" class="form-control" id="codigoCVV" name="codigoCVV" placeholder="Ingrese código CVV" required oninput="validateCVV(this)" maxlength="4">
+                                                        <small id="cvvError" class="text-danger" style="display:none;">El CVV debe ser un número de 3 o 4 dígitos.</small>
                                                         <div th:if="${error != null}" class="text-danger" th:text="${error}"></div>
                                                     </div>
                                                 </div>

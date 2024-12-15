@@ -46,7 +46,7 @@
                     <hr>
                     <!-- Grafica de actividad -->
                     <div class="row">
-                        <div class="col-lg-4 col-4">
+                        <div class="col-lg-4 col-12">
                             <div class="card shadow-sm border-0">
                                 <div class="card-body">
                                     <div class="d-flex align-items-center">
@@ -61,7 +61,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-4 col-4">
+                        <div class="col-lg-4 col-12">
                             <div class="card shadow-sm border-0 ">
                                 <div class="card-body">
                                     <div class="d-flex align-items-center">
@@ -76,7 +76,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-4 col-4">
+                        <div class="col-lg-4 col-12">
                             <div class="card shadow-sm border-0 ">
                                 <div class="card-body">
                                     <div class="d-flex align-items-center">
@@ -111,7 +111,7 @@
                                     <div class="col-sm-4">
                                         <div class="mt-4">
                                             <p class="mb-2 text-muted text-truncate" style="font-size: 12px;">
-                                                <i class="mdi mdi-circle text-danger font-size-10 me-1"></i>Producto cpn menor stock:
+                                                <i class="mdi mdi-circle text-danger font-size-10 me-1"></i>Producto con menor stock:
                                             </p>
                                             <h6 class="mb-0 text-muted" style="font-size: 12px;" th:text="${productoStockMenor.nombre}"></h6>
                                             <p class="mb-0 text-muted" style="font-size: 12px;" th:text="'(' + ${productoStockMenor.stock} + ' unidades)'"></p>
@@ -133,56 +133,6 @@
                             </div>
                         </div>
                     </div>
-                    <!-- Grafica de actividad del usuario
-                    <div class="col-xl-3 order-1 order-xl-2">
-                        <div class="row">
-                            <div class="col-lg-12 col-4">
-                                <div class="card shadow-sm border-0">
-                                    <div class="card-body">
-                                        <div class="d-flex align-items-center">
-                                            <div class="flex-1 overflow-hidden">
-                                                <p class="text-truncate font-size-14 text-muted mb-2">Usuarios activos</p>
-                                                <h4 class="mb-0 text-success" th:text="${active}"></h4>
-                                            </div>
-                                            <div class="icon-box bg-light-primary text-success ms-auto rounded-circle d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
-                                                <i class="ri-emotion-fill font-size-24"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-12 col-4">
-                                <div class="card shadow-sm border-0 ">
-                                    <div class="card-body">
-                                        <div class="d-flex align-items-center">
-                                            <div class="flex-1 overflow-hidden">
-                                                <p class="text-truncate font-size-14 text-muted mb-2">Usuarios inactivos</p>
-                                                <h4 class="mb-0 text-danger" th:text="${inactive}"></h4>
-                                            </div>
-                                            <div class="icon-box bg-light-primary text-danger ms-auto rounded-circle d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
-                                                <i class="ri-emotion-unhappy-fill font-size-24"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-12 col-4">
-                                <div class="card shadow-sm border-0 ">
-                                    <div class="card-body">
-                                        <div class="d-flex align-items-center">
-                                            <div class="flex-1 overflow-hidden">
-                                                <p class="text-truncate font-size-14 text-muted mb-2">Usuarios registrados</p>
-                                                <h4 class="mb-0 text-info" th:text="${usuariosTotal}"></h4>
-                                            </div>
-                                            <div class="icon-box bg-light-primary text-info ms-auto rounded-circle d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
-                                                <i class="ri-team-fill font-size-24"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>-->
                 </div>
 
                 <div class="row">
@@ -211,56 +161,7 @@
                         </div><!--end card-->
                     </div>
                 </div>
-                <!-- end row -->
-
-
-             <!--   <div class="row">
-                    <div class="col-lg-12">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="dropdown float-end">
-                                    <a href="#" class="dropdown-toggle arrow-none card-drop" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <i class="mdi mdi-dots-vertical"></i>
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-end">
-                                        <a href="javascript:void(0);" class="dropdown-item">Ver agentes</a>
-                                        <a href="javascript:void(0);" class="dropdown-item">Crear agentes</a>
-                                        <a href="javascript:void(0);" class="dropdown-item">Reportar agentes</a>
-                                    </div>
-                                </div>
-
-                                <h4 class="card-title mb-4">Agentes asignados</h4>
-
-                                <div class="table-responsive">
-                                    <table class="table table-centered datatable dt-responsive nowrap"
-                                           data-bs-page-length="5"
-                                           style="border-collapse: collapse; border-spacing: 0; width: 100%;">
-
-                                        <thead class="table-light">
-                                        <tr>
-                                            <th>Nombre</th>
-                                            <th>Distrito asignado</th>
-                                            <th>Usuarios asignados</th>
-                                            <th>Importaciones gestionadas</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <tr th:each="agente : ${agentes}">
-                                            <td th:text="${agente.nombres}"></td>
-                                            <td th:text="${agente.nombredistrito}"></td>
-                                            <td th:text="${agente.usasignados}"></td>
-                                            <td th:text="${agente.importafin}"></td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-                </div> -->
-
-            </div> <!-- container-fluid -->
+            </div>
         </div>
         <!-- End Page-content -->
         <footer class="footer">
