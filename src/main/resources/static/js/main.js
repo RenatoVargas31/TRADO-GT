@@ -8,8 +8,6 @@ var connectingElement = document.querySelector(".connecting");
 var stompClient = null;
 var username = null;
 var orderId = null;
-//mycode
-var password = null;
 
 var colors = [
     "#2196F3",
