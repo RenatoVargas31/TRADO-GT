@@ -106,6 +106,7 @@ public class ChatBotGPTController {
                                 "- Conversar con el usuario final para verificar el número de orden generado.\n" +
                                 "- Confirmar la dirección de delivery.\n" +
                                 "- Indicar los costos adicionales que pueden afectar luego que la importación arribe al país.\n" +
+                                "- Brindar el enlace al libro de reclamaciones siempre que el usuario lo solicite, el link es https://forms.gle/9EKiu2iSA1kN83wFA.\n" +
                                 "- Funcionará 24/7.\n\n" +
 
                                 "**Nota Importante**: La validación de la dirección solo puede realizarse cuando el estado de la orden es **EN VALIDACION**. Si la orden no está en este estado, no se puede proceder con la validación. ❗\n\n" +

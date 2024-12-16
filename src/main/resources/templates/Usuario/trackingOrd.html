@@ -227,6 +227,7 @@
 
                     <div class="col-lg-4 col-md-12 col-sm-12 j">
                         <!-- Botones de acciones alineados al lado derecho inferior -->
+                        <!--Inicio row que contiene el trackeo, asignación de agente y botones de pdf y html-->
                         <div class="row">
 
 
@@ -257,7 +258,10 @@
                                             </div>
 
                                         </div>
-                                        <div data-simplebar style="height: 600px;" id="trackingContainer">
+                                        <div
+                                                data-simplebar
+                                                th:style="'height: ' + (${orden.estadoordenIdestadoorden.nombre != 'CREADO'} ? '700px' : '400px') + ';'"
+                                                id="trackingContainer">
                                             <ul class="list-unstyled activity-wid">
 
                                                 <!-- Orden creada -->
@@ -425,17 +429,37 @@
                                 </div>
                             </div>
 
+                            <!-- Si no hay agente asignado -->
+                            <div class="card mb-8" th:if="${orden.agentcompraIdusuario == null}">
+                                <div class="card-header bg-light">
+                                    <h5>Chat con el Agente</h5>
+                                </div>
+                                <div class="card-body text-center" style="max-height: 250px">
+                                    <div class="alert alert-warning" role="alert">
+                                        <i class="ri-lock-line"></i> El chat está bloqueado
+                                    </div>
+                                    <p>Estimado usuario, si necesita asistencia de un agente para gestionar su pedido, por favor presione el botón a continuación para solicitar la asignación de uno.</p>
+                                </div>
+                                <div class="card-footer">
+                                    <form th:action="@{/usuario/asignarAgente}" method="post">
+                                        <input type="hidden" name="codigoOrden" th:value="${orden.codigo}">
+                                        <input type="hidden" name="id" th:value="${orden.id}">
+                                        <button type="submit" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#ordenModal">Solicitar Asignación de Agente</button>
+                                    </form>
+                                </div>
+                            </div>
+
                             <div class=" d-flex justify-content-center mb-2">
                                 <button type="button" class="btn btn-primary me-5 mb-2" onclick="descargarHTML()">Descargar HTML</button>
                                 <button type="button" class="btn btn-primary mb-2" onclick="descargarPDF()">Descargar PDF</button>
                             </div>
-
                         </div>
+                        <!--FIN de row que contiene el trackeo, asignación de agente y botones de pdf y html-->
 
 
 
                         <!-- Botón Flotante del Chat con el Agente -->
-                        <div id="floatingAgentChatContainer" style="position: fixed; bottom: 20px; right: 80px; z-index: 9999;">
+                        <div id="floatingAgentChatContainer" style="position: fixed; bottom: 20px; right: 80px; z-index: 9999;" th:if="${orden.estadoordenIdestadoorden.nombre != 'CREADO'}">
                             <button id="toggleAgentChatBtn" class="btn btn-secondary rounded-circle" style="width: 50px; height: 50px;">
                                 <i class="ri-user-fill" style="font-size: 1.5rem;"></i>
                             </button>
@@ -504,7 +528,7 @@
                                         <form id="messageForm" name="messageForm" class="d-flex">
                                             <input type="text" id="message" class="form-control" placeholder="Escribe un mensaje...">
                                             <button type="submit" class="btn btn-primary ms-2">
-                                                <i class="ri-send-plane-fill"></i> Enviar
+                                                <i class="ri-send-plane-fill"></i>
                                             </button>
                                         </form>
                                     </div>
@@ -514,7 +538,7 @@
 
 
                         <!-- Botón Flotante del Chatbot -->
-                        <div id="floatingChatContainer" style="position: fixed; bottom: 20px; right: 20px; z-index: 9999;">
+                        <div id="floatingChatContainer" th:if="${orden.estadoordenIdestadoorden.nombre != 'CREADO'}" style="position: fixed; bottom: 20px; right: 20px; z-index: 9999;" >
                             <button id="toggleChatBtn" class="btn btn-primary rounded-circle p-0" style="width: 50px; height: 50px; overflow: hidden; display: flex; justify-content: center; align-items: center;">
                                 <img src="/images/alexIA.jpg" alt="Bot Avatar" style="width: 100%; height: 100%; object-fit: cover;">
                             </button>
@@ -594,7 +618,7 @@
                                         <form id="chatbotMessageForm" class="d-flex">
                                             <input type="text" id="chatbotMessage" class="form-control" placeholder="Escribe un mensaje..." style="border-radius: 0.25rem 0 0 0.25rem;">
                                             <button type="submit" class="btn btn-primary" style="border-radius: 0 0.25rem 0.25rem 0;">
-                                                <i class="ri-send-plane-fill"></i> Enviar
+                                                <i class="ri-send-plane-fill"></i>
                                             </button>
                                         </form>
                                         <button id="newChatBtn" class="btn btn-secondary mt-2 w-100" style="border-radius: 0.25rem; font-weight: 500;">
@@ -646,25 +670,7 @@
 <span th:replace="~{Usuario/fragments/notificaciones-scripts :: js_Notificaciones}"></span>
 <!-- End JAVASCRIPT NOTIFICACIONES-->
 
-<!-- Si no hay agente asignado -->
-<!--<div class="card mb-8" th:if="${orden.agentcompraIdusuario == null}">
-    <form th:action="@{/usuario/asignarAgente}" method="post">
-        <div class="card-header bg-light">
-            <h5>Chat con el Agente</h5>
-        </div>
-        <div class="card-body text-center" style="max-height: 250px">
-            <div class="alert alert-warning" role="alert">
-                <i class="ri-lock-line"></i> El chat está bloqueado
-            </div>
-            <p>Estimado usuario, si necesita asistencia de un agente para gestionar su pedido, por favor presione el botón a continuación para solicitar la asignación de uno.</p>
-            <input type="hidden" name="codigoOrden" th:value="${orden.codigo}">
-            <input type="hidden" name="id" th:value="${orden.id}">
-        </div>
-        <div class="card-footer">
-            <button type="submit" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#ordenModal">Solicitar Asignación de Agente</button>
-        </div>
-    </form>
-</div>-->
+
 
 <script>
     function descargarPDF() {
