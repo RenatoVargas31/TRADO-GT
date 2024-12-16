@@ -124,7 +124,7 @@
                     </div>
                 </div>
                 <!-- Cuerpo -->
-                <h5>Mis productos favoritos</h5>
+
                 <hr>
                 <div class="row"  th:if="${misFavoritos.isEmpty()}">
                     <div class="card">
@@ -141,61 +141,139 @@
                     </div>
                 </div>
 
-
-                <div class="container-fluid">
-                    <div class="row" >
-                        <div class="col-xl-3 col-sm-6" th:each="product :${misFavoritos}" style="display: flex; justify-content: start;">
-                            <div class="card-container mt-4 mb-4" style="perspective: 1000px; height: 400px; width: 100%;">
-                                <div class="card" style="position: relative; width: 100%; height: 100%; transform-style: preserve-3d; transition: transform 0.6s;">
-                                    <!-- Cara Frontal (Código Original) -->
-                                    <a th:href="@{'/usuario/productoDetalles?id=' + ${product[1]} }" >
-                                        <div class="card product-card" style="background-color: white; border: none; height: 400px; width: 100%; margin: 0; position: relative;">
-                                            <div class="card-img-top" style="width: 100%; height: 200px; overflow: hidden; display: flex; justify-content: start; align-items: start;">
-                                                <img th:src="@{'/usuario/productoFoto/' + ${product[1]}}" alt="img-${product[0]]}" class="img-fluid" style="width: 100%; height: 100%; object-fit: cover;"
-                                                     onerror="this.onerror=null; this.src='../images/error.jpg';"
-                                                >
-                                            </div>
-                                            <div class="card-body" style="padding: 0; position: relative; overflow: hidden;">
-                                                <hr>
-                                                <div class="text-center">
-                                                    <div class="flex-1">
-                                                        <h6 class="text-center"><a href="#" class="text-reset" th:text="${product[0]} + ' ' + ${product[2]}">Nedick's</a></h6>
-                                                        <div class="product-ribbon badge bg-warning">
-                                                            <!-- Mostrar el código de producto -->
-                                                            <span th:text="${product[3]}"></span>
-                                                        </div>
-                                                        <div class="d-flex align-items-center justify-content-center">
-                                                            <img th:src="@{/usuario/proveedorImagen/{id}(id=${product[11]})}"
-                                                                 src="/images/product/iconoProvedor.png"
-                                                                 onerror="this.onerror=null;this.src='/images/product/iconoProvedor.png';"
-                                                                 alt="Proveedor Icono" class="me-2" style="width: 25px; height: 25px;">
-                                                            <p class="text-muted mb-0">
-                                                                <small th:text="${product[7]}"></small>
-                                                            </p>
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-                                                <hr >
-                                                <div class="row text-center">
-                                                    <div class="col-6">
-                                                        <p class="text-muted mb-2">Stock</p>
-                                                        <h6 th:text="${product[6] == 0 ? 'No hay stock' : product[6] + ' unidades'}"></h6>
-                                                    </div>
-                                                    <div class="col-6">
-                                                        <p class="text-muted mb-2">Precio unitario</p>
-                                                        <h6 th:text="'S/. ' + ${product[8]}">$12,456</h6>
-                                                    </div>
-                                                </div>
+                <div class="container" th:if="${!misFavoritos.isEmpty()}">
+                    <div class="card">
+                        <div class="card-body mb-5" style="background-color: white">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <!-- Texto alineado a la izquierda -->
+                                <div>
+                        <span th:if="${totalElements > 0 and currentPage <= totalPages}">
+                                     <strong th:text="'Resultados: ' + ${((currentPage - 1) * 12 + 1)} + ' - ' + ${currentPage * 12 > totalElements ? totalElements : currentPage * 12} + ' de ' + ${totalElements} + ' productos'"></strong>
+                                        </span> </div>
+                                <!-- Formulario alineado a la derecha -->
+                                <div class="d-flex justify-content-end">
+                                    <form class="d-flex" action="/usuario/favoritos" method="GET">
+                                        <!-- El action envía la búsqueda a la ruta /buscar -->
+                                        <div class="search-box me-2">
+                                            <div class="position-relative">
+                                                <input type="text" name="query" class="form-control form-control-sm rounded-pill ps-5" placeholder="Buscar...">
+                                                <i class="mdi mdi-magnify search-icon position-absolute top-50 start-0 translate-middle-y ms-3"></i>
                                             </div>
                                         </div>
-                                    </a>
+                                        <div class="form-inline me-2">
+                                            <button type="submit" class="btn btn-primary waves-effect waves-light btn-sm">Buscar</button>
+                                            <!-- Botón envía el formulario -->
+                                            <a href="/usuario/favoritos" class="btn btn-secondary me-2 btn-sm">Limpiar</a>
+                                        </div>
+                                    </form>
                                 </div>
+                            </div>
 
+
+                            <hr class="opacity-0">
+                            <div class="container-fluid">
+                                <div class="row" >
+                                    <div class="col-xl-3 col-sm-6" th:each="product :${misFavoritos}" style="display: flex; justify-content: start;">
+                                        <div class="card-container mt-4 mb-4" style="perspective: 1000px; height: 400px; width: 100%;">
+                                            <div class="card" style="   position: relative; width: 100%; height: 100%; transform-style: preserve-3d; transition: transform 0.6s;">
+
+                                                <!-- Cara Frontal (Código Original) -->
+                                                <a th:href="@{'/usuario/productoDetalles?id=' + ${product[1]} }" >
+                                                    <div class="card product-card" style="background-color: white; border: none; height: 400px; width: 100%; margin: 0; position: relative;">
+                                                        <div class="card-img-top" style="width: 100%; height: 200px; overflow: hidden; display: flex; justify-content: start; align-items: start;">
+                                                            <img th:src="@{'/usuario/productoFoto/' + ${product[1]}}" alt="img-${product[0]]}" class="img-fluid" style="width: 100%; height: 100%; object-fit: cover;"
+                                                                 onerror="this.onerror=null; this.src='../images/error.jpg';"
+                                                            >
+                                                        </div>
+                                                        <div class="card-body" style="padding: 0; position: relative; overflow: hidden;">
+                                                            <hr>
+                                                            <div class="text-center">
+                                                                <div class="flex-1">
+                                                                    <h6 class="text-center"><a href="#" class="text-reset" th:text="${product[0]} + ' ' + ${product[2]}">Nedick's</a></h6>
+                                                                    <div class="product-ribbon badge bg-warning">
+                                                                        <!-- Mostrar el código de producto -->
+                                                                        <span th:text="${product[3]}"></span>
+                                                                    </div>
+                                                                    <div class="d-flex align-items-center justify-content-center">
+                                                                        <img th:src="@{/usuario/proveedorImagen/{id}(id=${product[11]})}"
+                                                                             src="/images/product/iconoProvedor.png"
+                                                                             onerror="this.onerror=null;this.src='/images/product/iconoProvedor.png';"
+                                                                             alt="Proveedor Icono" class="me-2" style="width: 25px; height: 25px;">
+                                                                        <p class="text-muted mb-0">
+                                                                            <small th:text="${product[7]}"></small>
+                                                                        </p>
+                                                                    </div>
+
+                                                                </div>
+                                                            </div>
+                                                            <hr >
+                                                            <div class="row text-center">
+                                                                <div class="col-6">
+                                                                    <p class="text-muted mb-2">Stock</p>
+                                                                    <h6 th:text="${product[6] == 0 ? 'No hay stock' : product[6] + ' unidades'}"></h6>
+                                                                </div>
+                                                                <div class="col-6">
+                                                                    <p class="text-muted mb-2">Precio unitario</p>
+                                                                    <h6 th:text="'S/. ' + ${product[8]}">$12,456</h6>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                </div>
                             </div>
                         </div>
+                        <div class="card-footer">
+                            <!-- Paginación -->
+                            <div class="row mt-4">
+                                <div class="col-sm-6">
+                                    <div>
+                                        <p class="mb-sm-0 mt-2">
+                                            Página
+                                            <span class="fw-bold"
+                                                  th:text="${currentPage > partes ? 1 : currentPage}"></span>
+                                            de
+                                            <span class="fw-bold" th:text="${totalPages}"></span>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="float-sm-end">
+                                        <ul class="pagination pagination-rounded mb-sm-0">
+                                            <!-- Botón para ir a la página anterior -->
+                                            <li class="page-item" th:if="${currentPage > 1}" th:classappend="${currentPage == 1} ? 'disabled'">
+                                                <a class="page-link" th:href="@{|?${query != null ? 'query=' + query + '&' : ''}page=${currentPage - 1}|}">
+                                                    <i class="mdi mdi-chevron-left"></i>
+                                                </a>
+                                            </li>
 
+                                            <!-- Números de las páginas -->
+                                            <li class="page-item"
+                                                th:each="i : ${#numbers.sequence(1, totalPages)}"
+                                                th:classappend="${currentPage == i} ? 'active'">
+                                                <a class="page-link" th:href="@{|?${query != null ? 'query=' + query + '&' : ''}page=${i}|}">[[${i}]]</a>
+                                            </li>
+
+                                            <!-- Botón para ir a la página siguiente -->
+                                            <li class="page-item" th:if="${currentPage < totalPages}" th:classappend="${currentPage == totalPages} ? 'disabled'">
+                                                <a class="page-link" th:href="@{|?${query != null ? 'query=' + query + '&' : ''}page=${currentPage + 1}|}">
+                                                    <i class="mdi mdi-chevron-right"></i>
+                                                </a>
+                                            </li>
+                                        </ul>
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+
                 </div>
 
             </div>

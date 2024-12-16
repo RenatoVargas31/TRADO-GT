@@ -12,6 +12,35 @@ $(document).ready(function () {
     });
 });
 $(document).ready(function () {
+    // Inicialización del DataTable
+    var a = $("#datatable-buttons-comunidad").DataTable({
+        lengthChange: false, // Oculta la opción para cambiar la longitud de las filas mostradas
+        language: {
+            paginate: {
+                previous: "<i class='mdi mdi-chevron-left'></i>", // Icono para botón 'Anterior'
+                next: "<i class='mdi mdi-chevron-right'></i>"    // Icono para botón 'Siguiente'
+            }
+        },
+        drawCallback: function () {
+            // Agrega la clase para bordes redondeados en la paginación
+            $(".dataTables_paginate > .pagination").addClass("pagination-rounded");
+        }
+    });
+
+    // Mueve los botones de exportación generados automáticamente al contenedor especificado
+    a.buttons().container().appendTo("#datatable-buttons_wrapper .col-md-6:eq(0)");
+
+    // Aplica clases de estilo adicionales al menú de longitud de filas
+    $(".dataTables_length select").addClass("form-select form-select-sm");
+});
+
+
+
+
+
+
+
+$(document).ready(function () {
     var a = $("#datatable-buttons").DataTable({
         lengthChange: !1,
         pageLength: 5,

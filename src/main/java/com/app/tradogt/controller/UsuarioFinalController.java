@@ -4,6 +4,7 @@ package com.app.tradogt.controller;
 import com.app.tradogt.dto.OrdenCompraUserDto;
 import com.app.tradogt.dto.PasswordChangeDto;
 import com.app.tradogt.entity.*;
+import com.app.tradogt.helpers.CreditCardValidator;
 import com.app.tradogt.services.NotificationCorreoService;
 import com.app.tradogt.services.NotificationService;
 import com.app.tradogt.services.StorageService;
@@ -134,7 +135,6 @@ public class UsuarioFinalController {
         Optional<EstadoOrden> recibido = estadoOrdenRepository.findById(7);
         List<Orden> ordensInProcess = ordenRepository.findByEstadoordenIdestadoorden(estadoactual);
         for (Orden orden : ordensInProcess) {
-            System.out.println("Orden ID: " + orden.getId());
             // Cambiar el estado de acuerdo a la fecha actual
             if (orden.getFechaArribo() != null && orden.getFechaArribo().isEqual(today)) {
                 orden.setEstadoordenIdestadoorden(arriboAlPais.get());
@@ -203,24 +203,71 @@ public class UsuarioFinalController {
         // Listar mis productos favoritos
         List<Object[]> misFavoritos = myFavoriteRepository.findFavorites(userId, IdZona);
         model.addAttribute("misFavoritos", misFavoritos);
-        System.out.println(misFavoritos);
 
         return "Usuario/inicio-usuario";
     }
 
+    // Añadir favoritos
     @GetMapping("/favoritos")
-    String favoritos(Model model) {
+    public String favoritos(
+            @RequestParam(value = "page", defaultValue = "1") int page,
+            @RequestParam(value = "query", defaultValue = "") String query,
+            Model model) {
 
-        int userId = getAuthenticatedUserId();  // Obtener el ID del usuario autenticado
-        Usuario user = usuarioRepository.findById(userId).get();
+        int size=12;
+        int userId = getAuthenticatedUserId(); // Obtener el ID del usuario autenticado
+        Usuario user = usuarioRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
         int IdZona = user.getDistritoIddistrito().getZonaIdzona().getId();
 
-        // Listar mis productos favoritos
-        List<Object[]> misFavoritos = myFavoriteRepository.findMyFavorites(userId, IdZona);
-        model.addAttribute("misFavoritos", misFavoritos);
-        System.out.println(misFavoritos);
+        // Crear el objeto Pageable
+        Pageable pageable = PageRequest.of(page - 1, size);
 
-        return  "Usuario/favoritos-usuario";
+        // Consultar los productos favoritos con paginación
+        Page<Object[]> misFavoritosPage = myFavoriteRepository.findFavoritePageable(userId, IdZona,query, pageable);
+
+        // Añadir los atributos al modelo
+        model.addAttribute("misFavoritos", misFavoritosPage.getContent());
+        model.addAttribute("currentPage", misFavoritosPage.getNumber() + 1);
+        model.addAttribute("totalPages", misFavoritosPage.getTotalPages());
+        model.addAttribute("totalElements", misFavoritosPage.getTotalElements());
+
+        return "Usuario/favoritos-usuario";
+    }
+
+
+    // Borrar favoritos
+    @PostMapping("/DeleteFavorito")
+    String DeleteFavorito(Model model, @RequestParam("productId") Integer productId, RedirectAttributes attr) {
+
+        //Buscar producto
+        Optional<Producto> miProducto = productosRepository.findById(productId);
+        //Obtener zona
+        int idUser = getAuthenticatedUserId();
+        Usuario user = usuarioRepository.findById(idUser).get();
+        int idZona = user.getDistritoIddistrito().getZonaIdzona().getId();
+
+        if(miProducto.isPresent()){
+            //Buscamos el producto en la lista de favoritos
+            MyFavoriteId myFavoriteId = new MyFavoriteId();
+            myFavoriteId.setUsuarioIdusuario(idUser);
+            myFavoriteId.setProductoIdproducto(productId);
+            myFavoriteId.setZonaIdzona(idZona);
+            // Bucamos si el producto se encuentra dentro de favoritos
+            Optional<MyFavorite> productoPresenteEnFavoritos = myFavoriteRepository.findById(myFavoriteId);
+
+            if(productoPresenteEnFavoritos.isPresent()){
+                // Borramos de Favoritos
+                myFavoriteRepository.deleteById(myFavoriteId);
+                attr.addFlashAttribute("exito", "Producto eliminado de favoritos.");
+
+            }else {
+                attr.addFlashAttribute("error", "El producto no se encuentra en favoritos.");
+            }
+
+        }else{
+            attr.addFlashAttribute("error", "Producto no encontrado.");
+        }
+        return "redirect:/usuario/productoDetalles?id=" + miProducto.get().getId();
     }
 
     @PostMapping("/guardarFavorito")
@@ -232,9 +279,7 @@ public class UsuarioFinalController {
         int idUser = getAuthenticatedUserId();
         Usuario user = usuarioRepository.findById(idUser).get();
         int idZona = user.getDistritoIddistrito().getZonaIdzona().getId();
-        System.out.println("Holaaa, producto favorito aqui ");
         if(miProducto.isPresent()){
-            System.out.println("Estoy aqui ");
             MyFavoriteId myFavoriteId = new MyFavoriteId();
             myFavoriteId.setUsuarioIdusuario(idUser);
             myFavoriteId.setProductoIdproducto(productId);
@@ -258,6 +303,21 @@ public class UsuarioFinalController {
             }
         }
         return "redirect:/usuario/productoDetalles?id=" + miProducto.get().getId();
+    }
+
+    @GetMapping("/libroReclamacion")
+    public String libroReclamacion (Model model){
+
+        int Iduser = getAuthenticatedUserId();
+        Usuario user = usuarioRepository.findById(Iduser).get();
+        // Obtener información del Usuario
+        model.addAttribute("usuario", user);
+
+        //Obtener lista de todo los Agentes de compra
+
+        //Obtener lista de todo los productos del Usuario
+
+        return "Usuario/libroReclamacion-usuario";
     }
 
     @GetMapping("/misPedidos")
@@ -493,7 +553,7 @@ public class UsuarioFinalController {
             model.addAttribute("costoEnvio", costoEnvio);
 
         }else {
-            System.out.println("Orden no encontrada"); }
+           }
 
         //Aqui haré el cambio de estado por fecha
 
@@ -532,7 +592,7 @@ public class UsuarioFinalController {
             model.addAttribute("costoEnvio", costoEnvio);
 
         }else {
-            System.out.println("Orden no encontrada"); }
+           }
 
         return "Usuario/trackingOrdEdit";
     }
@@ -556,7 +616,6 @@ public class UsuarioFinalController {
             ord.setEstadoordenIdestadoorden(newEstado.get());
             //Se guarda la fecha del cambio de estado
             ord.setFechaValidacion(LocalDate.now());
-            System.out.println("fecha de validacion: " + ord.getFechaValidacion());
             ordenRepository.save(ord);
             attr.addFlashAttribute("msjAgente", "Se le ha asignado el agente " + agente.getNombre() + " " + agente.getApellido() + " en la orden " + code);
             return "redirect:/usuario/misPedidos";
@@ -574,9 +633,6 @@ public class UsuarioFinalController {
         //Buscamos la orden por id
         Optional<Orden> orden = ordenRepository.findById(idOrden);
         String code = orden.get().getCodigo();
-
-        System.out.println("-----------");
-        System.out.println("codigo: " + code);
 
 
         if(orden.isPresent()) {
@@ -705,7 +761,8 @@ public class UsuarioFinalController {
                 model.addAttribute("productList", productoPage.getContent());
                 model.addAttribute("currentPage", currentPage);
                 model.addAttribute("sizeList", productoPage.getTotalElements());
-                model.addAttribute("partes", productoPage.getTotalPages());
+                int totalPages = productoPage.getTotalPages();
+                model.addAttribute("partes", totalPages == 0 ? 1 : totalPages);
             }
 
             // Mostrar aviso de la cantidad mínima de compra
@@ -725,9 +782,7 @@ public class UsuarioFinalController {
         //Busco un carrito creado a mi id
         int idUser= getAuthenticatedUserId();
         Usuario usuario = usuarioRepository.findById(idUser).get();
-       System.out.println("usuario: " + usuario.getNombre());
         int zonaid = usuario.getDistritoIddistrito().getZonaIdzona().getId();
-       System.out.println("zonaid: " + zonaid);
        int cantidadP = Integer.parseInt(cantidadOculta);
 
 
@@ -735,7 +790,6 @@ public class UsuarioFinalController {
            Producto producto = productosRepository.findById(productoId).get();
 
            Carrito hayCarrito = carritoRepository.findByUsuarioIdusuarioAndIsDelete(usuario, (byte) 0);
-           System.out.println("hay carrito?: " + hayCarrito);
            //Añadimos el producto al carrito nuevo
            ProductoEnCarrito misProductoEnCarrito = new ProductoEnCarrito();
            //Producto en Zona (TIENDA)
@@ -892,8 +946,6 @@ public class UsuarioFinalController {
 
         //Busco el id del producto en ProductoEnZona
         Optional<ProductoEnZona> tienda = productoEnZonaRepository.findByIdAndZona(productoId, myUser.get().getDistritoIddistrito().getZonaIdzona().getId());
-        System.out.println("----------------------------");
-        System.out.println("producto en zona id: " + tienda.get().getId());
 
         ProductoEnCarritoId item = new ProductoEnCarritoId();
         item.setCarritoIdcarrito(miCarrito.getId());
@@ -902,7 +954,6 @@ public class UsuarioFinalController {
         //Obtenego el producto
         Optional<ProductoEnCarrito> itemDelete = productoEnCarritoRepository.findById(item);
         productoEnCarritoRepository.delete(itemDelete.get());
-        System.out.println("Se ha borrado el producto :D");
         // Añade un mensaje de éxito
         redirectAttributes.addFlashAttribute("message", "El producto " + myProduct.get().getCodigo()+" ha sido eliminado de forma exitosa.");
         return "redirect:/usuario/carrito";
@@ -920,7 +971,6 @@ public class UsuarioFinalController {
             model.addAttribute("resenas", listaResena);
         }else {
             model.addAttribute("resenas", listaResena);
-            System.out.println("Lista de resenas:");
         }
 
         return "Usuario/resenas-usuario";
@@ -1327,16 +1377,15 @@ public class UsuarioFinalController {
         Pageable pageable = PageRequest.of(currentPage - 1, 12);
         Page<Producto> productoPage = productosRepository   .findProductRopaMujer(zonaId, pageable);
 
-        // Si la página está fuera de rango, redirigir a la primera página
-        if (currentPage > productoPage.getTotalPages()) {
-            return "redirect:/usuario/categoriaMujer?page=1";
-        }
+
 
         // Añadir atributos al modelo
         model.addAttribute("productList", productoPage.getContent());
         model.addAttribute("currentPage", currentPage);
         model.addAttribute("sizeList", productoPage.getTotalElements()); // Total de productos
-        model.addAttribute("partes", productoPage.getTotalPages()); // Total de páginas
+        int totalPages = productoPage.getTotalPages();
+        model.addAttribute("partes", totalPages == 0 ? 1 : totalPages);
+
 
         model.addAttribute("tallasList", productosRepository.findDistinctTallas(1));
         model.addAttribute("marcaList", productosRepository.findDistinctMarca(1));
@@ -1376,7 +1425,8 @@ public class UsuarioFinalController {
         model.addAttribute("productList", productoPage.getContent());
         model.addAttribute("currentPage", currentPage);
         model.addAttribute("sizeList", productoPage.getTotalElements()); // Total de productos
-        model.addAttribute("partes", productoPage.getTotalPages()); // Total de páginas
+        int totalPages = productoPage.getTotalPages();
+        model.addAttribute("partes", totalPages == 0 ? 1 : totalPages); // Total de páginas
 
         model.addAttribute("tallasList", productosRepository.findDistinctTallas(2));
         model.addAttribute("coloresList", productosRepository.findDistinctColores(2));
@@ -1408,10 +1458,6 @@ public class UsuarioFinalController {
         Pageable pageable = PageRequest.of(currentPage - 1, 12      );
         Page<Producto> productoPage = productosRepository.findProductElectronico(zonaId, pageable);
 
-        // Si la página está fuera de rango, redirigir a la primera página
-        if (currentPage > productoPage.getTotalPages()) {
-            return "redirect:/usuario/categoriaTecnologia?page=1";
-        }
 
         // Añadir atributos al modelo
         productList(model, currentPage, productoPage);
@@ -1444,16 +1490,14 @@ public class UsuarioFinalController {
         Pageable pageable = PageRequest.of(currentPage - 1, 12);
         Page<Producto> productoPage = productosRepository.findProductMuebles(zonaId, pageable);
 
-        // Si la página está fuera de rango, redirigir a la primera página
-        if (currentPage > productoPage.getTotalPages()) {
-            return "redirect:/usuario/categoriaMuebles?page=1";
-        }
+
 
         // Añadir atributos al modelo
         model.addAttribute("productList", productoPage.getContent());
         model.addAttribute("currentPage", currentPage);
         model.addAttribute("sizeList", productoPage.getTotalElements()); // Total de productos
-        model.addAttribute("partes", productoPage.getTotalPages()); // Total de páginas
+        int totalPages = productoPage.getTotalPages();
+        model.addAttribute("partes", totalPages == 0 ? 1 : totalPages); // Total de páginas
 
         model.addAttribute("materialesList", productosRepository.findDistinctMaterials(4));
         model.addAttribute("marcaList", productosRepository.findDistinctMarca(4));
@@ -1517,11 +1561,17 @@ public class UsuarioFinalController {
         model.addAttribute("productList", productoPage.getContent());
         model.addAttribute("currentPage", currentPage);
         model.addAttribute("sizeList", productoPage.getTotalElements()); // Total de productos
-        model.addAttribute("partes", productoPage.getTotalPages()); // Total de páginas
-
+        int totalPages = productoPage.getTotalPages();
+        model.addAttribute("partes", totalPages == 0 ? 1 : totalPages);
+        model.addAttribute("categoria", categoria);
+        model.addAttribute("material", material);
+        model.addAttribute("marca", marca);
+        model.addAttribute("precioMin", precioMin);
+        model.addAttribute("precioMax", precioMax);
         model.addAttribute("materialesList", productosRepository.findDistinctMaterials(4));
         model.addAttribute("categoriasList", subCategoriaRepository.findSubcategorias(4));
         model.addAttribute("marcaList", productosRepository.findDistinctMarca(4));
+        model.addAttribute("categoria", productosRepository.findDistinctMarca(4));
 
         return "Usuario/CategoriaMuebles-usuario";
     }
@@ -1562,7 +1612,14 @@ public class UsuarioFinalController {
         model.addAttribute("productList", productoPage.getContent());
         model.addAttribute("currentPage", currentPage);
         model.addAttribute("sizeList", productoPage.getTotalElements()); // Total de productos
-        model.addAttribute("partes", productoPage.getTotalPages()); // Total de páginas
+        int totalPages = productoPage.getTotalPages();
+        model.addAttribute("partes", totalPages == 0 ? 1 : totalPages);
+        model.addAttribute("categoria", categoria);
+        model.addAttribute("material", material);
+        model.addAttribute("color", color);
+        model.addAttribute("marca", marca);
+        model.addAttribute("precioMin", precioMin);
+        model.addAttribute("precioMax", precioMax);
 
         model.addAttribute("tallasList", productosRepository.findDistinctTallas(2));
         model.addAttribute("coloresList", productosRepository.findDistinctColores(2));
@@ -1602,22 +1659,24 @@ public class UsuarioFinalController {
         Page<Producto> productoPage = productosRepository.findProductMujerFilter(
                 zonaId, categoria, talla, marca, color, precioMin, precioMax, pageable);
 
-        // Verificar si la página solicitada es válida
-        if (currentPage > productoPage.getTotalPages()) {
-            return "redirect:/usuario/categoriaMujerFilter?page=1";
-        }
+
 
         // Añadir atributos al modelo
         model.addAttribute("productList", productoPage.getContent());
         model.addAttribute("currentPage", currentPage);
         model.addAttribute("sizeList", productoPage.getTotalElements()); // Total de productos
-        model.addAttribute("partes", productoPage.getTotalPages()); // Total de páginas
-
+        int totalPages = productoPage.getTotalPages();
+        model.addAttribute("partes", totalPages == 0 ? 1 : totalPages);
+        model.addAttribute("categoria", categoria);
+        model.addAttribute("talla", talla);
+        model.addAttribute("color", color);
+        model.addAttribute("marca", marca);
+        model.addAttribute("precioMin", precioMin);
+        model.addAttribute("precioMax", precioMax);
         model.addAttribute("tallasList", productosRepository.findDistinctTallas(1));
         model.addAttribute("coloresList", productosRepository.findDistinctColores(1));
         model.addAttribute("categoriasList", subCategoriaRepository.findSubcategorias(1));
         model.addAttribute("marcaList", productosRepository.findDistinctMarca(1));
-
         return "Usuario/CategoriaMujer-usuario";
     }
 
@@ -1658,7 +1717,12 @@ public class UsuarioFinalController {
         productList(model, currentPage, productoPage);
         model.addAttribute("categoriasList", subCategoriaRepository.findSubcategorias(3));
         model.addAttribute("marcaList", productosRepository.findDistinctMarca(3));
-
+        model.addAttribute("categoria", categoria);
+        model.addAttribute("almacenamiento", almacenamiento);
+        model.addAttribute("ram", ram);
+        model.addAttribute("marca", marca);
+        model.addAttribute("precioMin", precioMin);
+        model.addAttribute("precioMax", precioMax);
         return "Usuario/CategoriaTecnologia-usuario";
     }
 
@@ -1666,7 +1730,8 @@ public class UsuarioFinalController {
         model.addAttribute("productList", productoPage.getContent());
         model.addAttribute("currentPage", currentPage);
         model.addAttribute("sizeList", productoPage.getTotalElements()); // Total de productos
-        model.addAttribute("partes", productoPage.getTotalPages()); // Total de páginas
+        int totalPages = productoPage.getTotalPages();
+        model.addAttribute("partes", totalPages == 0 ? 1 : totalPages);
 
         model.addAttribute("almacenamientoList", productosRepository.findDistinctAlmacenamiento(3));
         model.addAttribute("ramList", productosRepository.findDistinctRam(3));
@@ -1703,7 +1768,8 @@ public class UsuarioFinalController {
         model.addAttribute("productList", productoPage.getContent());
         model.addAttribute("currentPage", currentPage);
         model.addAttribute("sizeList", productoPage.getTotalElements()); // Total de productos
-        model.addAttribute("partes", productoPage.getTotalPages()); // Total de páginas
+        int totalPages = productoPage.getTotalPages();
+        model.addAttribute("partes", totalPages == 0 ? 1 : totalPages);
         model.addAttribute("query", query);
         model.addAttribute("tallasList", productosRepository.findDistinctTallas(2));
         model.addAttribute("coloresList", productosRepository.findDistinctColores(2));
@@ -1742,8 +1808,10 @@ public class UsuarioFinalController {
         model.addAttribute("productList", productoPage.getContent());
         model.addAttribute("currentPage", currentPage);
         model.addAttribute("sizeList", productoPage.getTotalElements()); // Total de productos
-        model.addAttribute("partes", productoPage.getTotalPages()); // Total de páginas
+        int totalPages = productoPage.getTotalPages();
+        model.addAttribute("partes", totalPages == 0 ? 1 : totalPages);
         model.addAttribute("query", query);
+        model.addAttribute("categoria", query);
         model.addAttribute("tallasList", productosRepository.findDistinctTallas(1));
         model.addAttribute("coloresList", productosRepository.findDistinctColores(1));
         model.addAttribute("categoriasList", subCategoriaRepository.findSubcategorias(1));
@@ -1787,7 +1855,8 @@ public class UsuarioFinalController {
         model.addAttribute("productList", productoPage.getContent());
         model.addAttribute("currentPage", currentPage);
         model.addAttribute("sizeList", productoPage.getTotalElements()); // Total de productos
-        model.addAttribute("partes", productoPage.getTotalPages()); // Total de páginas
+        int totalPages = productoPage.getTotalPages();
+        model.addAttribute("partes", totalPages == 0 ? 1 : totalPages);
         model.addAttribute("query", query);
 
         model.addAttribute("almacenamientoList", productosRepository.findDistinctAlmacenamiento(3));
@@ -1829,7 +1898,8 @@ public class UsuarioFinalController {
         model.addAttribute("productList", productoPage.getContent());
         model.addAttribute("currentPage", currentPage);
         model.addAttribute("sizeList", productoPage.getTotalElements()); // Total de productos
-        model.addAttribute("partes", productoPage.getTotalPages()); // Total de páginas
+        int totalPages = productoPage.getTotalPages();
+        model.addAttribute("partes", totalPages == 0 ? 1 : totalPages);
         model.addAttribute("query", query);
         model.addAttribute("materialesList", productosRepository.findDistinctMaterials(4));
         model.addAttribute("categoriasList", subCategoriaRepository.findSubcategorias(4));
@@ -1862,7 +1932,6 @@ public class UsuarioFinalController {
 
                 model.addAttribute("distritos", distritoRepository.findAll());
                 model.addAttribute("usuario", usuarioRepository.findByIdUsuario(user));
-                System.out.println(distritoRepository.findAll());
                 model.addAttribute("costoEnvio", costoEnvio);
             }
 
@@ -1912,70 +1981,6 @@ public class UsuarioFinalController {
         return "Usuario/allNotifications-usuario";
     }
 
-    public class CreditCardValidator {
-
-        // Método para validar el número de tarjeta
-        public static boolean isValidCardNumber(String cardNumber, String cardType) {
-            switch (cardType) {
-                case "Visa":
-                    return cardNumber.startsWith("4") && cardNumber.length() == 16 && luhnCheck(cardNumber);
-                case "MasterCard":
-                    return (cardNumber.startsWith("51") || cardNumber.startsWith("52") || cardNumber.startsWith("53") || cardNumber.startsWith("54") || cardNumber.startsWith("55") ||
-                            (Integer.parseInt(cardNumber.substring(0, 4)) >= 2221 && Integer.parseInt(cardNumber.substring(0, 4)) <= 2720))
-                            && cardNumber.length() == 16 && luhnCheck(cardNumber);
-                case "American Express":
-                    return (cardNumber.startsWith("34") || cardNumber.startsWith("37")) && cardNumber.length() == 15 && luhnCheck(cardNumber);
-                default:
-                    return false;
-            }
-        }
-
-        // Método para validar el CVV
-        public static boolean isValidCVV(String cvv, String cardType) {
-            switch (cardType) {
-                case "American Express":
-                    return cvv.length() == 4 && cvv.matches("\\d{4}");
-                case "Visa":
-                case "MasterCard":
-                    return cvv.length() == 3 && cvv.matches("\\d{3}");
-                default:
-                    return false;
-            }
-        }
-
-        // Implementación del Algoritmo de Luhn
-        public static boolean luhnCheck(String cardNumber) {
-            int nDigits = cardNumber.length();
-            int nSum = 0;
-            boolean isSecond = false;
-            for (int i = nDigits - 1; i >= 0; i--) {
-                int d = cardNumber.charAt(i) - '0';
-                if (isSecond)
-                    d *= 2;
-                nSum += d / 10;
-                nSum += d % 10;
-                isSecond = !isSecond;
-            }
-            return (nSum % 10 == 0);
-        }
-
-        public static void main(String[] args) {
-            // Ejemplo de uso
-            String cardNumber = "4111111111111111"; // Ejemplo de tarjeta Visa válida
-            String cvv = "123";
-            String cardType = "Visa";
-
-            boolean isCardNumberValid = isValidCardNumber(cardNumber, cardType);
-            boolean isCVVValid = isValidCVV(cvv, cardType);
-
-            System.out.println("Número de tarjeta válido: " + isCardNumberValid);
-            System.out.println("CVV válido: " + isCVVValid);
-        }
-    }
-
-
-
-
     //Guardar los datos de pago
     @PostMapping("/savePayment")
     private String showSavePayment(@RequestParam("nombre") String nombre,
@@ -1994,16 +1999,99 @@ public class UsuarioFinalController {
                                    @RequestParam("LugarEntrega") String LugarEntrega,
                                    Model model, RedirectAttributes attr) {
 
-        // Validar número de tarjeta y código CVV
-        if (!CreditCardValidator.isValidCardNumber(numeroTarjeta, metodo)) {
-            attr.addFlashAttribute("error", "Número de tarjeta inválido.");
+        // Eliminar espacios del número de la tarjeta
+        String cleanedCardNumber = numeroTarjeta.replaceAll("\\s", "");
+        //Validar número de tarjeta
+        if (Objects.equals(metodo, "Visa")){
+            if (cleanedCardNumber.length() == 16) {
+                if (cleanedCardNumber.startsWith("4")) {
+                } else {
+                    attr.addFlashAttribute("errorT", "Número de tarjeta debe iniciar con 4.");
+                    return "redirect:/usuario/checkout-info";
+                }
+            } else {
+                attr.addFlashAttribute("errorT", "Número de tarjeta debe tener 16 dígitos.");
+                return "redirect:/usuario/checkout-info";
+            }
+        } else if (Objects.equals(metodo, "MasterCard") ){
+
+            if (cleanedCardNumber.length() == 16) {
+                System.out.println("el numero tiene 16 digitos");
+                if (cleanedCardNumber.startsWith("51") || cleanedCardNumber.startsWith("52") ||
+                        cleanedCardNumber.startsWith("53") || cleanedCardNumber.startsWith("54") ||
+                        cleanedCardNumber.startsWith("55") ||
+                        (Integer.parseInt(cleanedCardNumber.substring(0, 4)) >= 2221 && Integer.parseInt(cleanedCardNumber.substring(0, 4)) <= 2720)) {
+                    System.out.println("el numero inicia con 51-55 o en el rango 2221-2720");
+                } else {
+                    System.out.println("Error en iniciar con 51-55 o fuera del rango 2221-2720");
+                    attr.addFlashAttribute("errorT", "Número de tarjeta debe iniciar con 51-55 o fuera del rango 2221-2720");
+                    return "redirect:/usuario/checkout-info";
+                }
+            } else {
+                System.out.println("Error en longitud igual a 16");
+                attr.addFlashAttribute("errorT", "Número de tarjeta debe tener 16 dígitos.");
+                return "redirect:/usuario/checkout-info";
+
+            }
+
+        } else if (Objects.equals(metodo, "American Express") ) {
+            if (cleanedCardNumber.length() == 15) {
+                System.out.println("el numero tiene 15 digitos");
+                if (cleanedCardNumber.startsWith("34") || cleanedCardNumber.startsWith("37")) {
+                    System.out.println("el numero inicia con 34 o 37");
+
+                } else {
+                    System.out.println("Error en iniciar con 34 o 37");
+                    attr.addFlashAttribute("errorT", "Número de tarjeta debe  iniciar con 34 o 37.");
+                    return "redirect:/usuario/checkout-info";
+                }
+            } else {
+                System.out.println("Error en longitud igual a 15");
+                attr.addFlashAttribute("errorT", "Número de tarjeta debe tener 15 dígitos.");
+                return "redirect:/usuario/checkout-info";
+            }
+
+        }else{
+            attr.addFlashAttribute("errorT", "El número de la tarjeta es inválida.");
             return "redirect:/usuario/checkout-info";
         }
 
-        if (!CreditCardValidator.isValidCVV(codigoCVV, metodo)) {
-            attr.addFlashAttribute("error", "Código CVV inválido.");
+        if (!CreditCardValidator.isValidCardNumber(numeroTarjeta, metodo)) {
+            attr.addFlashAttribute("errorT", "Número de tarjeta inválido.");
             return "redirect:/usuario/checkout-info";
         }
+
+
+        // Validación del Cvv
+        if (metodo.equals("Visa") || metodo.equals("MasterCard")){
+            if (codigoCVV.matches("\\d{3}")) {
+                System.out.println("El CVV es válido: " + codigoCVV);
+            } else {
+                System.out.println("El CVV no es válido: " + codigoCVV);
+                attr.addFlashAttribute("errorCVV", "El código CVV debe tener 3 dígitos.");
+                return "redirect:/usuario/checkout-info";
+            }
+
+        } else if (metodo.equals("American Express")) {
+            if (codigoCVV.matches("\\d{4}")) {
+                System.out.println("El CVV es válido: " + codigoCVV);
+            } else {
+                System.out.println("El CVV no es válido: " + codigoCVV);
+                attr.addFlashAttribute("errorCVV", "El código CVV debe tener 4 dígitos.");
+                return "redirect:/usuario/checkout-info";
+            }
+
+        }else {
+            attr.addFlashAttribute("errorCVV", "Tipo de tarjeta no reconocid");
+            return "redirect:/usuario/checkout-info";
+        }
+
+        // Validar fecha de la tarjeta
+        if (!CreditCardValidator.isValidExpiryDate(fechaTarjeta)) {
+            attr.addFlashAttribute("errorCVV", "La fecha de vencimiento de la tarjeta es inválida.");
+            return "redirect:/usuario/checkout-info";
+        }
+
 
         Autenticacion facturacion = new Autenticacion();
         facturacion.setNombre(nombre);

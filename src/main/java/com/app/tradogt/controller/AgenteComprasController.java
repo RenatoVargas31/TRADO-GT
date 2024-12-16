@@ -522,10 +522,10 @@ public class AgenteComprasController {
             orden.setEstadoordenIdestadoorden(estadoOrden);
             //Guardamos la fecha
             orden.setFechaEnProceso(LocalDate.now());
-            orden.setFechaArribo(LocalDate.now().plusDays(3));
-            orden.setFechaEnAduanas(LocalDate.now().plusDays(6));
-            orden.setFechaEnRuta(LocalDate.now().plusDays(9));
-            orden.setFechaRecibido(LocalDate.now().plusDays(12));
+            orden.setFechaArribo(LocalDate.now().plusDays(1));
+            orden.setFechaEnAduanas(LocalDate.now().plusDays(2));
+            orden.setFechaEnRuta(LocalDate.now().plusDays(3));
+            orden.setFechaRecibido(LocalDate.now().plusDays(4));
             // Guardar los cambios en la base de datos
             ordenRepository.save(orden);
 

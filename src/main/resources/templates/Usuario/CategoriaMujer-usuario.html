@@ -284,16 +284,21 @@
                                                 </div>
 
                                                 <div class="form-inline me-2">
-                                                    <button type="submit" class="btn btn-primary waves-effect waves-light btn-sm">Buscar</button> <!-- Botón envía el formulario -->
-                                                    <a href="/usuario/categoriaMujerFilter" class="btn btn-secondary me-2 btn-sm">Limpiar</a>
+                                                    <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center">
+                                                        <button type="submit" class="btn btn-primary waves-effect waves-light btn-sm mb-2 mb-md-0 me-md-2">Buscar</button>
+                                                        <a href="/usuario/categoriaMujerFilter" class="btn btn-secondary btn-sm mb-2 mb-md-0">Limpiar</a>
+                                                    </div>
                                                 </div>
+
                                             </form>
                                         </div>
                                     </div>
                                     <hr>
                                     <!-- Cards -->
                                     <div class="row g-0">
-                                        <strong th:text="'Resultados: '+${productList.size()}"></strong>
+                                        <span th:if="${sizeList > 0 and currentPage <= partes}">
+                                     <strong th:text="'Resultados: ' + ${((currentPage - 1) * 12 + 1)} + ' - ' + ${currentPage * 12 > sizeList ? sizeList : currentPage * 12} + ' de ' + ${sizeList} + ' productos'"></strong>
+                                        </span>
                                         <div th:if="${productList == null or #lists.isEmpty(productList)}" class="alert alert-warning text-center mt-2">
                                             No hay productos disponibles
                                         </div>
@@ -356,35 +361,45 @@
                                 <div class="row mt-4">
                                     <div class="col-sm-6">
                                         <div>
-                                            <p class="mb-sm-0 mt-2">Page <span class="fw-bold">1</span> Of <span class="fw-bold">1</span></p>
+                                            <p class="mb-sm-0 mt-2">
+                                                Página
+                                                <span class="fw-bold"
+                                                      th:text="${currentPage > partes ? 1 : currentPage}"></span>
+                                                de
+                                                <span class="fw-bold" th:text="${partes}"></span>
+                                            </p>
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="float-sm-end">
                                             <ul class="pagination pagination-rounded mb-sm-0">
                                                 <!-- Botón para ir a la página anterior -->
-                                                <li class="page-item">
-                                                    <a class="page-link" th:href="@{|?query=${query}&page=${currentPage - 1}|}"
-                                                       th:classappend="${currentPage == 1} ? 'disabled'">
+                                                <li class="page-item" th:if="${currentPage > 1}" th:classappend="${currentPage == 1} ? 'disabled'">
+                                                    <a class="page-link"
+                                                       th:href="@{|?${query != null ? 'query=' + query + '&' : ''}${categoria != null ? 'categoria=' + categoria + '&' : ''}${ram != null ? 'ram=' + ram + '&' : ''}${almacenamiento != null ? 'almacenamiento=' + almacenamiento + '&' : ''}${marca != null ? 'marca=' + marca + '&' : ''}${precio != null ? 'precio=' + precio + '&' : ''}${precioMin != null ? 'precioMin=' + precioMin + '&' : ''}${precioMax != null ? 'precioMax=' + precioMax + '&' : ''}page=${currentPage - 1}|}">
                                                         <i class="mdi mdi-chevron-left"></i>
                                                     </a>
                                                 </li>
+
 
                                                 <!-- Números de las páginas -->
                                                 <li class="page-item"
                                                     th:each="i : ${#numbers.sequence(1, partes)}"
                                                     th:classappend="${currentPage == i} ? 'active'">
-                                                    <a class="page-link" th:href="@{|?query=${query}&page=${i}|}">[[${i}]]</a>
+                                                    <a class="page-link"
+                                                       th:href="@{|?${query != null ? 'query=' + query + '&' : ''}${categoria != null ? 'categoria=' + categoria + '&' : ''}${ram != null ? 'ram=' + ram + '&' : ''}${almacenamiento != null ? 'almacenamiento=' + almacenamiento + '&' : ''}${marca != null ? 'marca=' + marca + '&' : ''}${precio != null ? 'precio=' + precio + '&' : ''}${precioMin != null ? 'precioMin=' + precioMin + '&' : ''}${precioMax != null ? 'precioMax=' + precioMax + '&' : ''}page=${i}|}">[[${i}]]</a>
                                                 </li>
 
                                                 <!-- Botón para ir a la página siguiente -->
-                                                <li class="page-item">
-                                                    <a class="page-link" th:href="@{|?query=${query}&page=${currentPage + 1}|}"
-                                                       th:classappend="${currentPage == partes} ? 'disabled'">
+                                                <li class="page-item" th:if="${currentPage < partes}" th:classappend="${currentPage == partes} ? 'disabled'">
+                                                    <a class="page-link"
+                                                       th:href="@{|?${query != null ? 'query=' + query + '&' : ''}${categoria != null ? 'categoria=' + categoria + '&' : ''}${ram != null ? 'ram=' + ram + '&' : ''}${almacenamiento != null ? 'almacenamiento=' + almacenamiento + '&' : ''}${marca != null ? 'marca=' + marca + '&' : ''}${precio != null ? 'precio=' + precio + '&' : ''}${precioMin != null ? 'precioMin=' + precioMin + '&' : ''}${precioMax != null ? 'precioMax=' + precioMax + '&' : ''}page=${currentPage + 1}|}">
                                                         <i class="mdi mdi-chevron-right"></i>
                                                     </a>
                                                 </li>
+
                                             </ul>
+
                                         </div>
                                     </div>
                                 </div>
@@ -392,36 +407,6 @@
                         </div>
                     </div>
                 </div>
-
-                <script>
-                    function guardarLike(productId) {
-                        // Configuración de la solicitud AJAX
-                        var formData = new FormData();
-                        formData.append("productId", productId);
-
-                        // Hacer la solicitud AJAX usando fetch
-                        fetch('/guardarLike', {
-                            method: 'POST',
-                            body: formData,
-                        })
-                            .then(response => response.json())  // Asumiendo que el servidor responde con JSON
-                            .then(data => {
-                                if (data.success) {
-                                    // Cambiar el icono o el color si el "like" se guardó correctamente
-                                    document.getElementById('like-button-' + productId).classList.add('btn-success');
-                                    document.getElementById('like-button-' + productId).innerHTML = '<i class="mdi mdi-heart"></i>';  // Cambiar ícono a lleno
-                                } else {
-                                    alert("Error al guardar el like.");
-                                }
-                            })
-                            .catch(error => {
-                                console.error('Error:', error);
-                                alert("Hubo un error al procesar tu solicitud.");
-                            });
-                    }
-
-                </script>
-
             </div> <!-- container-fluid -->
         </div>
         <script>

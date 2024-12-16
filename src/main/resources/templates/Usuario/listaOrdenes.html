@@ -70,9 +70,13 @@
                         <div class="card">
                             <div class="card-body">
 
-                                <h4 class="card-title">Lista de Pedidos</h4> <p class="card-title-desc"> En esta sección, podrás ver la lista de pedidos que has realizado como usuario.
-                                Aquí encontrarás información sobre el estado de cada uno de tus pedidos, así como el agente asignado que te asistirá.
-                                Además, tendrás la opción de eliminar un pedido si este aún no ha sido procesado. </p>
+                                <h4 class="card-title">Lista de Pedidos</h4>
+                                <p class="card-title-desc">
+                                    En esta sección, podrás ver la lista de pedidos que has realizado como usuario.
+                                    Aquí encontrarás información sobre el estado de cada uno de tus pedidos, la fecha de creación de cada uno (MM/dd/YY), así como el agente asignado que te asistirá.
+                                    Además, tendrás la opción de eliminar un pedido si este aún no ha sido procesado.
+                                </p>
+
 
                                 <div th:if="${saveEdit != null}" class="alert alert-success" th:text="${saveEdit}"></div>
                                 <div th:if="${exito != null}" class="alert alert-success" th:text="${exito}"></div>
@@ -99,7 +103,7 @@
                                     <tr th:each="orden : ${listaOrdenes}">
                                         <td th:text="${orden.codigoOrden}"></td>
                                         <td th:text="'S/.' + ${orden.costoTotal}"></td>
-                                        <td th:text="${#temporals.format(orden.fechaCreacion , 'dd-MM-yyyy')}"></td>
+                                        <td th:text="${#temporals.format(orden.fechaCreacion , 'MM-dd-yyyy')}"></td>
                                         <td th:text="${orden.estadoOrden}"></td>
                                         <td th:text="${orden.agente}" ></td>
                                         <td th:if="${orden.valoracion == 0}">No hay calificación</td>

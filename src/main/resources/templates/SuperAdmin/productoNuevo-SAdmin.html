@@ -1,5 +1,3 @@
-<!-- src/main/resources/templates/SuperAdmin/productoNuevo-SAdmin.html -->
-<!-- src/main/resources/templates/SuperAdmin/productoNuevo-SAdmin.html -->
 <!doctype html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
@@ -33,261 +31,75 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-lg-12">
+                    <div class="col-md-6 col-xl-3">
+
+                        <!-- Simple card -->
                         <div class="card">
+                            <img class="card-img-top img-fluid" src="/images/small/ropa-masculina.jpg" alt="Card image cap">
                             <div class="card-body">
-                                <!-- src/main/resources/templates/SuperAdmin/productoNuevo-SAdmin.html -->
-                                <form th:action="@{/superadmin/productoNuevo}" th:object="${formProducto}" method="post" enctype="multipart/form-data">
-                                    <div class="row">
-                                        <div class="col-lg-6">
-                                            <div class="mb-3">
-                                                <label class="form-label" for="basicpill-firstname-input">Nombre</label>
-                                                <input type="text" id="basicpill-firstname-input" class="form-control" th:field="*{producto.nombre}" />
-                                                <div th:if="${nombreError}" class="text-danger" th:text="${nombreError}"></div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-3">
-                                            <div class="mb-3">
-                                                <label for="category">Categoría</label>
-                                                <select id="category" class="form-select">
-                                                    <option disabled selected>--Selecciona una categoría--</option>
-                                                    <option value="1">Ropa mujer</option>
-                                                    <option value="2">Ropa hombre</option>
-                                                    <option value="3">Tecnología</option>
-                                                    <option value="4">Muebles para el hogar</option>
-                                                </select>
-                                                <div th:if="${categoriaError}" class="text-danger" th:text="${categoriaError}"></div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-3">
-                                            <div class="mb-3">
-                                                <label for="subcategoria">SubCategoría</label>
-                                                <select id="subcategoria" class="form-select" name="producto.subcategoriaIdsubcategoria">
-                                                    <option disabled selected>--Selecciona una subcategoría--</option>
-                                                </select>
-                                                <div th:if="${subcategoriaError}" class="text-danger" th:text="${subcategoriaError}"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-lg-2">
-                                            <div class="mb-3">
-                                                <label class="form-label" for="demo3">Cantidad disponible</label>
-                                                <input id="demo3" type="text" th:field="*{producto.cantidad}" />
-                                                <div th:if="${cantidadError}" class="text-danger" th:text="${cantidadError}"></div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-3">
-                                            <div class="mb-3">
-                                                <label class="form-label" for="demo2">Costo Unitario</label>
-                                                <input id="demo2" type="text" th:field="*{producto.precio}"  class="form-control"  />
-                                                <div th:if="${precioError}" class="text-danger" th:text="${precioError}"></div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-3">
-                                            <div class="mb-3">
-                                                <label class="form-label" for="demo4">Peso</label>
-                                                <input id="demo4" type="text" class="form-control" th:field="*{producto.peso}" />
-                                                <div th:if="${pesoError}" class="text-danger" th:text="${pesoError}"></div>
-
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-4">
-                                            <div class="mb-3">
-                                                <label for="proveedor">Proveedor</label>
-                                                <select id="proveedor" class="form-select" name="producto.proveedorIdproveedor">
-                                                    <option disabled selected>--Sin Asignar--</option>
-                                                    <option th:each="proveedor : ${proveedores}" th:value="${proveedor.id}" th:text="${proveedor.nombre}+' '+${proveedor.apellido}+' - '+${proveedor.tienda}"></option>
-                                                </select>
-                                                <div th:if="${proveedorError}" class="text-danger" th:text="${proveedorError}"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-lg-6">
-                                            <div class="row">
-                                                <div class="col-lg-6">
-                                                    <div class="mb-3">
-                                                        <label class="form-label" for="marca">Marca</label>
-                                                        <input type="text" id="marca" class="form-control" th:field="*{producto.marca}" />
-                                                        <div th:if="${marcaError}" class="text-danger" th:text="${marcaError}"></div>
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label class="form-label" for="color">Color</label>
-                                                        <input type="text" id="color" class="form-control" th:field="*{producto.color}" />
-                                                        <div th:if="${colorError}" class="text-danger" th:text="${colorError}"></div>
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label class="form-label" for="modelo">Modelo</label>
-                                                        <input type="text" id="modelo" class="form-control" th:field="*{producto.modelo}" />
-                                                        <div th:if="${modeloError}" class="text-danger" th:text="${modeloError}"></div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-6">
-                                                    <div class="mb-3">
-                                                        <label class="form-label" for="material">Material</label>
-                                                        <input type="text" id="material" class="form-control" th:field="*{producto.material}" />
-                                                        <div th:if="${materialError}" class="text-danger" th:text="${materialError}"></div>
-
-                                                    </div>
-                                                    <div class="mb-3" data-category="1,2">
-                                                        <label class="form-label" for="talla">Talla</label>
-                                                        <input type="text" id="talla" class="form-control" th:field="*{producto.talla}" />
-                                                        <div th:if="${tallaError}" class="text-danger" th:text="${tallaError}"></div>
-                                                    </div>
-                                                    <div class="mb-3" data-category="3,4">
-                                                        <label class="form-label" for="ancho">Ancho</label>
-                                                        <input type="text" id="ancho" class="form-control" th:field="*{producto.ancho}" />
-                                                        <div th:if="${anchoError}" class="text-danger" th:text="${anchoError}"></div>
-                                                    </div>
-                                                    <div class="mb-3" data-category="3,4">
-                                                        <label class="form-label" for="alto">Alto</label>
-                                                        <input type="text" id="alto" class="form-control" th:field="*{producto.alto}" />
-                                                        <div th:if="${altoError}" class="text-danger" th:text="${altoError}"></div>
-                                                    </div>
-                                                    <div class="mb-3" data-category="3,4">
-                                                        <label class="form-label" for="profundidad">Profundidad</label>
-                                                        <input type="text" id="profundidad" class="form-control" th:field="*{producto.profundidad}" />
-                                                        <div th:if="${profundidadError}" class="text-danger" th:text="${profundidadError}"></div>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-lg-4">
-                                                        <div class="mb-3" data-category="3">
-                                                            <label class="form-label" for="resolucion">Resolución de Pantalla</label>
-                                                            <input type="text" id="resolucion" class="form-control" th:field="*{producto.resolucion}" />
-                                                            <div th:if="${resolucionError}" class="text-danger" th:text="${resolucionError}"></div>
-
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-4">
-                                                        <div class="mb-3" data-category="3">
-                                                            <label class="form-label" for="ram">Memoria RAM</label>
-                                                            <input type="text" id="ram" class="form-control" th:field="*{producto.ram}" />
-                                                            <div th:if="${ramError}" class="text-danger" th:text="${ramError}"></div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-4">
-                                                        <div class="mb-3" data-category="3">
-                                                            <label class="form-label" for="almacenamiento">Almacenamiento</label>
-                                                            <input type="text" id="almacenamiento" class="form-control" th:field="*{producto.almacenamiento}" />
-                                                            <div th:if="${almacenamientoError}" class="text-danger" th:text="${almacenamientoError}"></div>
-
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="row">
-                                                <div class="col-lg-6">
-                                                    <div class="mb-3">
-                                                        <label class="form-label" for="demo5">ZONA NORTE</label>
-                                                        <input id="demo5" type="text" th:field="*{productoEnZonaNorte.cantidad}" />
-                                                        <div th:if="${zonaCantidadError}" class="text-danger" th:text="${zonaCantidadError}"></div>
-
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-6">
-                                                    <div class="mb-3">
-                                                        <label class="form-label" for="demo9">Costo de envío C/25 uni.</label>
-                                                        <input id="demo9" type="text" th:field="*{productoEnZonaNorte.costoEnvio}" class="form-control" />
-                                                        <div th:if="${zonaCostoEnvioError}" class="text-danger" th:text="${zonaCostoEnvioError}"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-lg-6">
-                                                    <div class="mb-3">
-                                                        <label class="form-label" for="demo6">ZONA SUR</label>
-                                                        <input id="demo6" type="text" th:field="*{productoEnZonaSur.cantidad}" />
-                                                        <div th:if="${zonaCantidadError}" class="text-danger" th:text="${zonaCantidadError}"></div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-6">
-                                                    <div class="mb-3">
-                                                        <label class="form-label" for="demo10">Costo de envío C/25 uni.</label>
-                                                        <input id="demo10" type="text" th:field="*{productoEnZonaSur.costoEnvio}" class="form-control" />
-                                                        <div th:if="${zonaCostoEnvioError}" class="text-danger" th:text="${zonaCostoEnvioError}"></div>
-
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-lg-6">
-                                                    <div class="mb-3">
-                                                        <label class="form-label" for="demo7">ZONA ESTE</label>
-                                                        <input id="demo7" type="text" th:field="*{productoEnZonaEste.cantidad}" />
-                                                        <div th:if="${zonaCantidadError}" class="text-danger" th:text="${zonaCantidadError}"></div>
-
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-6">
-                                                    <div class="mb-3">
-                                                        <label class="form-label" for="demo11">Costo de envío C/25 uni.</label>
-                                                        <input id="demo11" type="text" th:field="*{productoEnZonaEste.costoEnvio}" class="form-control" />
-                                                        <div th:if="${zonaCostoEnvioError}" class="text-danger" th:text="${zonaCostoEnvioError}"></div>
-
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-lg-6">
-                                                    <div class="mb-3">
-                                                        <label class="form-label" for="demo8">ZONA OESTE</label>
-                                                        <input id="demo8" type="text" th:field="*{productoEnZonaOeste.cantidad}" />
-                                                        <div th:if="${zonaCantidadError}" class="text-danger" th:text="${zonaCantidadError}"></div>
-
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-6">
-                                                    <div class="mb-3">
-                                                        <label class="form-label" for="demo12">Costo de envío C/25 uni.</label>
-                                                        <input id="demo12" type="text" value="0" th:field="*{productoEnZonaOeste.costoEnvio}" class="form-control" />
-                                                        <div th:if="${zonaCostoEnvioError}" class="text-danger" th:text="${zonaCostoEnvioError}"></div>
-
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6">
-                                            <div class="mb-3">
-                                                <label class="form-label" for="productdesc">Descripción</label>
-                                                <textarea class="form-control" id="productdesc" rows="5" th:field="*{producto.descripcion}"></textarea>
-                                                <div th:if="${descripcionError}" class="text-danger" th:text="${descripcionError}"></div>
-                                            </div>
-
-                                            <div class="col-md-6">
-                                                <div class="mb-4">
-                                                    <label for="foto" class="form-label">Subir Foto</label>
-                                                    <input type="file" class="form-control" id="foto" name="foto" accept="image/*" onchange="previewImage(event)" required>
-                                                    <div th:if="${fotoError}" class="text-danger" th:text="${fotoError}"></div>
-
-                                                    <div class="valid-feedback">Looks good!</div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <!-- Contenedor para la previsualización de la imagen -->
-                                                <div style="display: flex; justify-content: center; align-items: center; height: 100%; overflow: hidden;">
-                                                    <img id="fotoPreview" src="" alt="Imagen previsualizada" style="display: none; max-width: 100%; max-height: 300px; object-fit: contain;">
-                                                </div>
-                                            </div>
-                                        </div>
-
-
-
-
-
-                                    </div>
-                                    <div>
-                                        <button class="btn btn-primary" type="submit">Registrar</button>
-                                    </div>
-                                </form>
+                                <h4 class="card-title fw-bold">Ropa Masculina</h4>
+                                <p class="card-text">◉ Elija esta sección si desea registrar los siguientes productos:</p>
+                                <p class="card-text">✔ Polos</p>
+                                <p class="card-text">✔ Poleras</p>
+                                <p class="card-text">✔ Camisas</p>
+                                <p class="card-text">✔ Chompas</p>
+                                <p class="card-text">✔ Pantalones</p>
+                                <a href="/superadmin/productoNuevo-ropaM" class="btn btn-primary waves-effect waves-light">Registrar</a>
                             </div>
                         </div>
                     </div>
+                    <div class="col-md-6 col-xl-3">
+
+                        <!-- Simple card -->
+                        <div class="card">
+                            <img class="card-img-top img-fluid" src="/images/small/ropa-femenina.png" alt="Card image cap">
+                            <div class="card-body">
+                                <h4 class="card-title fw-bold">Ropa Femenina</h4>
+                                <p class="card-text">◉ Elija esta sección si desea registrar los siguientes productos:</p>
+                                <p class="card-text">✔ Blusas</p>
+                                <p class="card-text">✔Shorts</p>
+                                <p class="card-text">✔ Poleras</p>
+                                <p class="card-text">✔ Pantalones</p>
+                                <p class="card-text">✔ Vestidos</p>
+                                <a href="/superadmin/productoNuevo-ropaF" class="btn btn-primary waves-effect waves-light">Registrar</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-xl-3">
+
+                        <!-- Simple card -->
+                        <div class="card">
+                            <img class="card-img-top img-fluid" src="/images/small/tecno.jpg" alt="Card image cap">
+                            <div class="card-body">
+                                <h4 class="card-title fw-bold">Tecnología</h4>
+                                <p class="card-text">◉ Elija esta sección si desea registrar los siguientes productos:</p>
+                                <p class="card-text">✔ Computadoras</p>
+                                <p class="card-text">✔ Laptops</p>
+                                <p class="card-text">✔ Tablets</p>
+                                <p class="card-text">✔ Celulares</p>
+                                <p class="card-text">✔ Auriculares</p>
+                                <a href="/superadmin/productoNuevo-tecno" class="btn btn-primary waves-effect waves-light">Registrar</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-xl-3">
+
+                        <!-- Simple card -->
+                        <div class="card">
+                            <img class="card-img-top img-fluid" src="/images/small/muebles.jpg" alt="Card image cap">
+                            <div class="card-body">
+                                <h4 class="card-title fw-bold">Muebles</h4>
+                                <p class="card-text">◉ Elija esta sección si desea registrar los siguientes productos:</p>
+                                <p class="card-text">✔ Juego de Comedor</p>
+                                <p class="card-text">✔ Sillones</p>
+                                <p class="card-text">✔ Armarios</p>
+                                <p class="card-text">✔ Literas</p>
+                                <p class="card-text">✔ Estantes</p>
+                                <a href="/superadmin/productoNuevo-mueble" class="btn btn-primary waves-effect waves-light">Registrar</a>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
             <span th:replace="~{Common/footer :: footerCommon}"></span>
@@ -297,206 +109,7 @@
     <script th:src="@{../libs/jquery/jquery.min.js}"></script>
     <script th:src="@{../libs/bootstrap-touchspin/jquery.bootstrap-touchspin.min.js}"></script>
     <script th:src="@{../js/pages/form-advanced.init.js}"></script>
-    <script>
-        function previewImage(event) {
-            const file = event.target.files[0]; // Obtiene el archivo seleccionado
-            const preview = document.getElementById('fotoPreview'); // Elemento de imagen donde se mostrará la previsualización
-
-            if (file) {
-                const reader = new FileReader();
-
-                reader.onload = function() {
-                    preview.src = reader.result; // Establece la fuente de la imagen al resultado de FileReader
-                    preview.style.display = 'block'; // Muestra la imagen
-                };
-
-                reader.readAsDataURL(file); // Lee el archivo como URL de datos
-            } else {
-                preview.src = ""; // Si no hay archivo, limpia la imagen
-                preview.style.display = 'none'; // Oculta la imagen
-            }
-        }
-    </script>
-    <script>
-        $(document).ready(function() {
-            $('#demo3').TouchSpin({ min: 0, max: 100000 });
-            $('#demo3').attr('placeholder', '0');
-
-            $("#demo2").TouchSpin({ min: 0, max: 100000, step: 0.01, decimals: 2, boostat: 5, maxboostedstep: 10, prefix: 'S/.' });
-            $('#demo2').attr('placeholder', '0.00');
-
-            $("#demo4").TouchSpin({ min: 0, max: 100000, step: 0.01, decimals: 2, boostat: 5, maxboostedstep: 10, prefix: 'Kg.' });
-            $('#demo4').attr('placeholder', '0.00');
-
-            $('#demo5').TouchSpin({ min: 0, max: 100000 });
-            $('#demo5').attr('placeholder', '0');
-
-            $('#demo6').TouchSpin({ min: 0, max: 100000 });
-            $('#demo6').attr('placeholder', '0');
-
-            $('#demo7').TouchSpin({ min: 0, max: 100000 });
-            $('#demo7').attr('placeholder', '0');
-
-            $('#demo8').TouchSpin({ min: 0, max: 100000 });
-            $('#demo8').attr('placeholder', '0');
-
-            $("#demo9").TouchSpin({ min: 0, max: 100000, step: 0.01, decimals: 2, boostat: 5, maxboostedstep: 10, prefix: 'S/.' });
-            $('#demo9').attr('placeholder', '0.00');
-
-            $("#demo10").TouchSpin({ min: 0, max: 100000, step: 0.01, decimals: 2, boostat: 5, maxboostedstep: 10, prefix: 'S/.' });
-            $('#demo10').attr('placeholder', '0.00');
-
-            $("#demo11").TouchSpin({ min: 0, max: 100000, step: 0.01, decimals: 2, boostat: 5, maxboostedstep: 10, prefix: 'S/.' });
-            $('#demo11').attr('placeholder', '0.00');
-
-            $("#demo12").TouchSpin({ min: 0, max: 100000, step: 0.01, decimals: 2, boostat: 5, maxboostedstep: 10, prefix: 'S/.' });
-            $('#demo12').attr('placeholder', '0.00');
-
-            // Function to reset demo5, demo6, demo7, and demo8 to 0
-            function resetDemos() {
-                $('#demo5').val(0).trigger('touchspin.updatesettings', {initval: 0});
-                $('#demo6').val(0).trigger('touchspin.updatesettings', {initval: 0});
-                $('#demo7').val(0).trigger('touchspin.updatesettings', {initval: 0});
-                $('#demo8').val(0).trigger('touchspin.updatesettings', {initval: 0});
-            }
-
-            // Function to update demo3 based on changes in demo5, demo6, demo7, and demo8
-            function updateDemo3(field) {
-                var initialDemo3Value = parseInt($('#demo3').val()) || 0;
-                var previousValue = parseInt(field.data('previous')) || 0;
-                var currentValue = parseInt(field.val()) || 0;
-                var difference = currentValue - previousValue;
-
-                var newDemo3Value = initialDemo3Value - difference;
-                if (newDemo3Value < 0) {
-                    newDemo3Value = 0;
-                }
-
-                $('#demo3').val(newDemo3Value).trigger('touchspin.updatesettings', {initval: newDemo3Value});
-                field.data('previous', currentValue);
-
-                // Disable increment buttons if demo3 is 0
-                toggleIncrementButtons(newDemo3Value <= 0);
-            }
-
-            function toggleIncrementButtons(disable) {
-                $('#demo5, #demo6, #demo7, #demo8').each(function() {
-                    var $this = $(this);
-                    $this.closest('.bootstrap-touchspin').find('.bootstrap-touchspin-up').prop('disabled', disable);
-                    if (disable) {
-                        $this.closest('.bootstrap-touchspin').find('.bootstrap-touchspin-up').addClass('disabled');
-                    } else {
-                        $this.closest('.bootstrap-touchspin').find('.bootstrap-touchspin-up').removeClass('disabled');
-                    }
-                });
-            }
-
-            // Listen for changes in demo3 and reset other demos
-            $('#demo3').on('change', function() {
-                resetDemos();
-                toggleIncrementButtons(false);
-                $('#demo5, #demo6, #demo7, #demo8').each(function() {
-                    $(this).data('previous', $(this).val());
-                });
-            });
-
-            // Listen for changes in demo5, demo6, demo7, and demo8
-            $('#demo5, #demo6, #demo7, #demo8').each(function() {
-                $(this).data('previous', $(this).val());
-            }).on('change', function() {
-                updateDemo3($(this));
-            });
-
-            // Prevent increasing values if demo3 is 0
-            $('#demo5, #demo6, #demo7, #demo8').on('touchspin.on.startspin', function(e) {
-                var initialDemo3Value = parseInt($('#demo3').val()) || 0;
-                if (initialDemo3Value <= 0 && e.direction === 'up') {
-                    e.preventDefault(); // Prevent the default action
-                    return false;
-                }
-            });
-
-            // Initialize the values
-            resetDemos();
-            toggleIncrementButtons(false); // Ensure buttons are enabled initially
-        });
-    </script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const categorySelect = document.getElementById('category');
-            const subcategorySelect = document.getElementById('subcategoria');
-
-            const subcategories = {
-                '1': [
-                    { id: 1, nombre: 'Blusas' },
-                    { id: 2, nombre: 'Short' },
-                    { id: 3, nombre: 'Poleras' },
-                    { id: 4, nombre: 'Pantalones' },
-                    { id: 5, nombre: 'Vestidos' }
-                ],
-                '2': [
-                    { id: 6, nombre: 'Polos' },
-                    { id: 7, nombre: 'Poleras' },
-                    { id: 8, nombre: 'Camisas' },
-                    { id: 9, nombre: 'Chompas' },
-                    { id: 10, nombre: 'Pantalones' }
-                ],
-                '3': [
-                    { id: 11, nombre: 'Computadoras' },
-                    { id: 12, nombre: 'Laptops' },
-                    { id: 13, nombre: 'Tablets' },
-                    { id: 14, nombre: 'Celulares' },
-                    { id: 15, nombre: 'Auriculares' }
-                ],
-                '4': [
-                    { id: 16, nombre: 'Juego de comedor' },
-                    { id: 17, nombre: 'Sillones' },
-                    { id: 18, nombre: 'Armarios' },
-                    { id: 19, nombre: 'Literas' },
-                    { id: 20, nombre: 'Estantes' }
-                ]
-            };
-
-            categorySelect.addEventListener('change', function() {
-                const selectedCategory = categorySelect.value;
-                const options = subcategories[selectedCategory] || [];
-
-                // Clear previous options
-                subcategorySelect.innerHTML = '<option disabled selected>--Selecciona una subcategoría--</option>';
-
-                // Populate new options
-                options.forEach(subcategory => {
-                    const option = document.createElement('option');
-                    option.value = subcategory.id;
-                    option.textContent = subcategory.nombre;
-                    subcategorySelect.appendChild(option);
-                });
-            });
-        });
-    </script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const categorySelect = document.getElementById('category');
-            const inputs = document.querySelectorAll('[data-category]');
-
-            function updateInputsVisibility() {
-                const selectedCategory = categorySelect.value;
-                inputs.forEach(input => {
-                    const categories = input.getAttribute('data-category').split(',');
-                    if (categories.includes(selectedCategory)) {
-                        input.style.display = 'block';
-                    } else {
-                        input.style.display = 'none';
-                    }
-                });
-            }
-
-            categorySelect.addEventListener('change', updateInputsVisibility);
-
-            // Initial call to set the correct visibility on page load
-            updateInputsVisibility();
-        });
-    </script>
+    <script th:src="@{../libs/masonry-layout/masonry.pkgd.min.js}"></script>
 </div>
 </body>
 </html>

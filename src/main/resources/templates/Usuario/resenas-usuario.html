@@ -110,8 +110,12 @@
                                             <div th:if="${resenas.isEmpty()}" style="text-align: center; color: #000000; font-size: 18px; margin-top: 20px;">
                                                 <p >Todavía no hay reseñas publicadas.</p>
                                             </div>
-                                            <strong th:text="'Resultados: '+${resenas.size()}"></strong>
-                                            <div th:each="resena : ${resenas}" class="col-xl-3 col-sm-6">
+
+                                            <strong id="result-count" th:text="'Resultados: ' + ${resenas.size()} + ' reseñas'"></strong>
+
+
+                                            <div th:each="resena : ${resenas}" class="col-xl-3 col-sm-6 resena-item"
+                                                 th:attr="data-nombre=${resena.productoIdproducto.nombre}, data-codigo=${resena.productoIdproducto.codigo}, data-tienda=${resena.productoIdproducto.proveedorIdproveedor.tienda} , data-nombre-u=${resena.usuarioIdusuario.nombre} ,data-proveedor=${resena.productoIdproducto.proveedorIdproveedor.nombre}, data-categoria=${resena.productoIdproducto.subcategoriaIdsubcategoria.categoriaIdcategoria.nombre}">
                                                 <div class="card product-box mt-2">
                                                     <a th:href="@{/usuario/verresena/{id}(id=${resena.id})}" class="text-decoration-none">
                                                        <div class="product-img">
@@ -122,7 +126,10 @@
                                                         </div>
                                                         <div class="text-center p-3">
                                                             <p class="font-size-12 mb-1" th:text="${resena.productoIdproducto.subcategoriaIdsubcategoria.categoriaIdcategoria.nombre} + ', ' + ${resena.productoIdproducto.subcategoriaIdsubcategoria.nombre} ">Categoría, Subcategoría</p>
-                                                            <h5 class="font-size-15" th:text="${resena.productoIdproducto.nombre}"><b class="text-reset">Nombre del producto</b></h5>
+                                                            <div class="d-flex align-items-center justify-content-center">
+                                                                <h6 class="font-size-15 mb-0 me-2" th:text="${resena.productoIdproducto.nombre}"><b class="text-reset">Nombre del producto</b></h6>
+                                                                <p class="product-ribbon badge bg-warning mb-0" th:text="${resena.productoIdproducto.codigo}"></p>
+                                                            </div>
                                                             <div class="d-inline-flex align-items-center mb-2">
                                                                 <div class="text-muted me-2" style="font-size: 12px;">
                                                                     <span class="mdi mdi-star text-warning" th:if="${resena.calificacion >= 1}"></span>
@@ -133,19 +140,32 @@
                                                                 </div>
                                                                 <div class="text-muted" style="font-size: 12px;" th:text="${resena.calificacion} + '/5.0'"></div>
                                                             </div>
-                                                            <span class="product-ribbon badge bg-warning" th:text="${resena.productoIdproducto.codigo}">NK128</span><br>
-                                                            <div class="provider-info d-flex align-items-center justify-content-center">
-                                                                <span class="provider-name text-dark" th:text=" 'Vendendor: '+ ${resena.productoIdproducto.proveedorIdproveedor.nombre} + ' ' + ${resena.productoIdproducto.proveedorIdproveedor.apellido}" style="font-size: 12px;"></span>
+                                                            <div class="provider-label">
+                                                                <img th:src="@{/usuario/proveedorImagen/{id}(id=${resena.productoIdproducto.proveedorIdproveedor.id})}"
+                                                                     src="/images/product/iconoProvedor.png"
+                                                                     onerror="this.onerror=null;this.src='/images/product/iconoProvedor.png';"
+                                                                     alt="Proveedor Icono" class="me-2" style="width: 25px; height: 25px;">
+                                                                <small class="provider-name text-dark" th:text="${resena.productoIdproducto.proveedorIdproveedor.tienda}">Nombre del Proveedor</small>
+                                                                <br><span class="provider-name text-dark" th:text=" 'Distribuido por: '+ ${resena.productoIdproducto.proveedorIdproveedor.nombre} + ' ' + ${resena.productoIdproducto.proveedorIdproveedor.apellido}" style="font-size: 12px;"></span>
                                                             </div>
                                                         </div>
-                                                        <div class="provider-info d-flex flex-column align-items-center justify-content-center">
-                                                            <div>
-                                                                <img th:src="@{/usuario/usuarioFoto/{id}(id=${resena.usuarioIdusuario.id})}"
-                                                                     src="/images/default.jpg"
-                                                                     onerror="this.onerror=null;this.src='/images/default.jpg';"
-                                                                     alt="Avatar" class="rounded-circle me-2" style="width: 20px; height: 20px; object-fit: cover;"><small class="text-dark" th:text="${resena.usuarioIdusuario.nombre} + ' ' + ${resena.usuarioIdusuario.apellido}" ></small>
+                                                        <div class="provider-info d-flex flex-column align-items-center justify-content-center position-relative">
+                                                            <div class="row">
+                                                                <div class="col-lg-6 col-12 ">
+                                                                    <div class="w-100 d-flex justify-content-start">
+                                                                        <img th:src="@{/usuario/usuarioFoto/{id}(id=${resena.usuarioIdusuario.id})}"
+                                                                             src="/images/default.jpg"
+                                                                             onerror="this.onerror=null;this.src='/images/default.jpg';"
+                                                                             alt="Avatar" class="rounded-circle me-2" style="width: 20px; height: 20px; object-fit: cover;">
+                                                                        <small class="text-dark" th:text="${resena.usuarioIdusuario.nombre} + ' ' + ${resena.usuarioIdusuario.apellido}" ></small>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-6 col-12">
+                                                                    <div class="w-100 d-flex justify-content-end">
+                                                                        <small class="text-dark justify-content-end" style="font-size: 12px;" th:text=" 'Publicado '+${#temporals.format(resena.fechaCreacion , 'dd/MM/yyyy')}">11 de Octubre de 2024</small>
+                                                                    </div>
+                                                                </div>
                                                             </div>
-                                                            <small class="text-dark justify-content-end" style="font-size: 12px;" th:text="${#temporals.format(resena.fechaCreacion , 'dd-MM-yyyy')}">11 de Octubre de 2024</small>
                                                         </div>
                                                     </a>
                                                 </div>
@@ -172,6 +192,68 @@
                                                 </div>
                                             </div>
                                         </div>
+
+                                        <script>
+                                            document.addEventListener("DOMContentLoaded", () => {
+                                                const searchInput = document.getElementById("search-input");
+                                                const clearButton = document.getElementById("clear-btn");
+                                                const reseñasItems = document.querySelectorAll(".resena-item");
+                                                const noResults = document.getElementById("no-results");
+                                                const resultCount = document.getElementById("result-count");
+
+                                                function filterReseñas() {
+                                                    const searchText = searchInput.value.toLowerCase().trim();
+                                                    let visibleCount = 0;
+
+                                                    reseñasItems.forEach(item => {
+                                                        // Extraemos todos los atributos relevantes
+                                                        const nombre = item.getAttribute("data-nombre")?.toLowerCase() || "";
+                                                        const codigo = item.getAttribute("data-codigo")?.toLowerCase() || "";
+                                                        const tienda = item.getAttribute("data-tienda")?.toLowerCase() || "";
+                                                        const nombreUsuario = item.getAttribute("data-nombre-u")?.toLowerCase() || "";
+                                                        const proveedor = item.getAttribute("data-proveedor")?.toLowerCase() || "";
+                                                        const categoria = item.getAttribute("data-categoria")?.toLowerCase() || "";
+
+                                                        // Comparamos cada atributo con el texto de búsqueda
+                                                        if (
+                                                            nombre.includes(searchText) ||
+                                                            codigo.includes(searchText) ||
+                                                            tienda.includes(searchText) ||
+                                                            nombreUsuario.includes(searchText) ||
+                                                            proveedor.includes(searchText) ||
+                                                            categoria.includes(searchText)
+                                                        ) {
+                                                            item.style.display = "block";
+                                                            visibleCount++;
+                                                        } else {
+                                                            item.style.display = "none";
+                                                        }
+                                                    });
+
+                                                    // Actualiza el contador de resultados y muestra/oculta el mensaje de "sin resultados"
+                                                    resultCount.textContent = `Resultados: ${visibleCount} reseñas`;
+                                                    noResults.style.display = visibleCount === 0 ? "block" : "none";
+                                                }
+
+                                                // Evento de búsqueda
+                                                searchInput.addEventListener("input", filterReseñas);
+
+                                                // Botón para limpiar el buscador
+                                                clearButton.addEventListener("click", () => {
+                                                    searchInput.value = "";
+                                                    filterReseñas();
+                                                });
+
+                                                // Filtrar inicialmente si hay un valor prellenado
+                                                filterReseñas();
+                                            });
+
+
+
+                                        </script>
+
+
+
                                     </div>
                                 </div>
                             </div>
@@ -202,7 +284,7 @@
 
             <script>
                 document.addEventListener("DOMContentLoaded", function () {
-                    const itemsPerPage = 12; // Número de productos por página
+                    const itemsPerPage = 8; // Número de productos por página
                     let currentPage = 1;
 
                     const productCards = document.querySelectorAll('.product-box'); // Selecciona todas las tarjetas de producto
@@ -306,7 +388,7 @@
 
             <script>
                 document.addEventListener("DOMContentLoaded", function() {
-                    const itemsPerPage = 12; // Número de productos por página
+                    const itemsPerPage = 8; // Número de productos por página
                     let currentPage = 1;
 
                     const productCards = document.querySelectorAll('.product-box'); // Selecciona todas las tarjetas de producto

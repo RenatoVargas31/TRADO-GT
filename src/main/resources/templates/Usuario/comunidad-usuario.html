@@ -56,7 +56,7 @@
 
                             <div class="page-title-right">
                                 <ol class="breadcrumb m-0">
-                                    <li class="breadcrumb-item active">Inicio</li>
+                                    <li class="breadcrumb-item active">Social</li>
                                     <li class="breadcrumb-item active">Foro</li>
                                     <li class="breadcrumb-item"><a href="javascript: void(0);">Comunidad</a></li>
                                 </ol>
@@ -81,25 +81,24 @@
                                 Aquí encontrarás un espacio dinámico donde las personas pueden conectar, compartir ideas y aprender mutuamente.
                                 Explora las publicaciones recientes, deja tus comentarios y participa activamente en las discusiones. </p> <hr>
                                 <a th:href="@{/usuario/nuevaPublicación}" type="button" class="btn btn-primary waves-effect waves-light">Nueva Publicación</a>
-                                <table id="datatable-buttons" class="table table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                <table id="datatable-buttons-comunidad" class="table table-striped table-bordered dt-responsive nowrap"
+                                       style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                     <thead>
-                                        <tr>
-                                            <th>Publicaciones</th> <!-- Este es el encabezado que DataTables necesita -->
-                                        </tr>
+                                    <tr>
+                                        <th>Publicaciones</th> <!-- Encabezado para la primera columna -->
+                                    </tr>
                                     </thead>
                                     <tbody>
                                     <tr th:each="publicacion : ${publicaciones}">
-                                        <td>
-                                            <!-- Enlace para ver los detalles de la publicación -->
+                                        <td ><!-- Enlace para ver los detalles de la publicación -->
                                             <a th:href="@{/usuario/verPublicacion/{id}(id=${publicacion[0]})}" class="text-secondary">
                                                 <div class="row">
                                                     <div class="col-md-10">
                                                         <h5 th:text="${publicacion[1]}">Título de la Publicación</h5>
-                                                        <p class="mt-2" style="font-size: 10px;">Fecha de Creación: <span th:text="${#dates.format(publicacion[3], 'dd MMM yyyy')}"></span></p>
+                                                        <p class="mt-2" style="font-size: 10px;">Publicado  <span th:text="${#dates.format(publicacion[3], 'dd MMM yyyy')}"></span></p>
 
-                                                        <ul class="list-inline product-review-link mb-0">
+                                                      <!--  <ul class="list-inline product-review-link mb-0">
                                                             <li class="list-inline-item">
-                                                                <!-- Formulario para dar like -->
                                                                 <form th:action="@{/usuario/publicacion/{id}/like(id=${publicacion[0]})}" method="post" style="display: inline;">
                                                                     <button type="submit" class="btn btn-link" style="border: none; padding: 0; color: inherit;">
                                                                         <i class="mdi mdi-thumb-up align-middle me-1"></i>
@@ -107,7 +106,7 @@
                                                                     </button>
                                                                 </form>
                                                             </li>
-                                                        </ul>
+                                                        </ul> -->
 
                                                     </div>
                                                     <div class="col-md-2">
@@ -124,14 +123,16 @@
                                                     </div>
                                                 </div>
                                             </a>
-                                        </td>
+                                        </td> <!-- Dato de la segunda columna -->
                                     </tr>
                                     </tbody>
                                 </table>
-                        </div>
-                    </div> <!-- end col -->
-                </div> <!-- end row -->
-            </div> <!-- container-fluid -->
+
+                            </div>
+                        </div> <!-- end col -->
+                     </div> <!-- end row -->
+                </div> <!-- container-fluid -->
+             </div>
         </div>
 
         <!-- End Page-content -->
@@ -139,18 +140,18 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-sm-6">
-                        <script>document.write(new Date().getFullYear())</script> © Nazox.
+                        <script>document.write(new Date().getFullYear())</script> © TRADO.
                     </div>
                     <div class="col-sm-6">
                         <div class="text-sm-end d-none d-sm-block">
-                            Crafted with <i class="mdi mdi-heart text-danger"></i> by Themesdesign
+                            Crafted with <i class="mdi mdi-heart text-danger"></i> by TelesoftGT
                         </div>
                     </div>
                 </div>
             </div>
         </footer>
     </div>
-    <!-- end main content-->
+
 </div>
 
 

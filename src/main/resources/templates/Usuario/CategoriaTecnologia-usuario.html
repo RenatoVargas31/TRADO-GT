@@ -185,11 +185,11 @@
                       <div class="card-body border-top">
                         <div>
                           <h5 class="font-size-14 mb-0">
-                            <a href="#collapseExample8" class="text-reset d-block" data-bs-toggle="collapse" aria-expanded="false" aria-controls="collapseExample8">
+                            <a href="#collapseExample9" class="text-reset d-block" data-bs-toggle="collapse" aria-expanded="false" aria-controls="collapseExample9">
                               Almacenamiento <i class="mdi mdi-plus float-end accor-plus-icon"></i>
                             </a>
                           </h5>
-                          <div class="collapse" id="collapseExample8">
+                          <div class="collapse" id="collapseExample9">
                             <div class="mt-4">
                               <div th:each="almacenamiento, iterStat : ${almacenamientoList}" class="form-check mt-2">
                                 <input type="checkbox"
@@ -198,7 +198,7 @@
                                        class="form-check-input"
                                        th:value="${almacenamiento.toLowerCase()}"
                                        th:checked="${param.almacenamiento != null && param.almacenamiento.contains(almacenamiento.toLowerCase())}"/>
-                                <label class="form-check-label" th:for="'almacenamiento' + ${iterStat}" th:text="${almacenamiento}"></label>
+                                <label class="form-check-label" th:for="'almacenamiento_' + ${iterStat}" th:text="${almacenamiento}"></label>
                               </div>
                             </div>
                           </div>
@@ -287,7 +287,9 @@
                   <hr>
                   <!-- Cards -->
                   <div class="row g-0">
-                    <strong th:text="'Resultados: '+${productList.size()}"></strong>
+                    <span th:if="${sizeList > 0 and currentPage <= partes}">
+                                     <strong th:text="'Resultados: ' + ${((currentPage - 1) * 12 + 1)} + ' - ' + ${currentPage * 12 > sizeList ? sizeList : currentPage * 12} + ' de ' + ${sizeList} + ' productos'"></strong>
+                                        </span>
                     <div th:if="${productList == null or #lists.isEmpty(productList)}" class="alert alert-warning text-center mt-2">
                       No hay productos disponibles
                     </div>
@@ -350,36 +352,48 @@
                 <div class="row mt-4">
                   <div class="col-sm-6">
                     <div>
-                      <p class="mb-sm-0 mt-2">Página <span class="fw-bold" th:text="${currentPage}"></span> de <span class="fw-bold" th:text="${partes}"></span></p>
-
+                      <p class="mb-sm-0 mt-2">
+                        Página
+                        <span class="fw-bold"
+                              th:text="${currentPage > partes ? 1 : currentPage}"></span>
+                        de
+                        <span class="fw-bold" th:text="${partes}"></span>
+                      </p>
                     </div>
                   </div>
                   <div class="col-sm-6">
                     <div class="float-sm-end">
                       <ul class="pagination pagination-rounded mb-sm-0">
                         <!-- Botón para ir a la página anterior -->
-                        <li class="page-item">
-                          <a class="page-link" th:href="@{|?query=${query}&page=${currentPage - 1}|}"
-                             th:classappend="${currentPage == 1} ? 'disabled'">
+                        <li class="page-item" th:if="${currentPage > 1}">
+                          <a class="page-link"
+                             th:href="@{|?${query != null ? 'query=' + query + '&' : ''}${categoria != null ? 'categoria=' + categoria + '&' : ''}${ram != null ? 'ram=' + ram + '&' : ''}${almacenamiento != null ? 'almacenamiento=' + almacenamiento + '&' : ''}${marca != null ? 'marca=' + marca + '&' : ''}${precio != null ? 'precio=' + precio + '&' : ''}${precioMin != null ? 'precioMin=' + precioMin + '&' : ''}${precioMax != null ? 'precioMax=' + precioMax + '&' : ''}page=${currentPage - 1}|}">
                             <i class="mdi mdi-chevron-left"></i>
                           </a>
                         </li>
+
 
                         <!-- Números de las páginas -->
                         <li class="page-item"
                             th:each="i : ${#numbers.sequence(1, partes)}"
                             th:classappend="${currentPage == i} ? 'active'">
-                          <a class="page-link" th:href="@{|?query=${query}&page=${i}|}">[[${i}]]</a>
+                          <a class="page-link"
+                             th:href="@{|?${query != null ? 'query=' + query + '&' : ''}${categoria != null ? 'categoria=' + categoria + '&' : ''}${ram != null ? 'ram=' + ram + '&' : ''}${almacenamiento != null ? 'almacenamiento=' + almacenamiento + '&' : ''}${marca != null ? 'marca=' + marca + '&' : ''}${precio != null ? 'precio=' + precio + '&' : ''}${precioMin != null ? 'precioMin=' + precioMin + '&' : ''}${precioMax != null ? 'precioMax=' + precioMax + '&' : ''}page=${i}|}">[[${i}]]</a>
                         </li>
 
                         <!-- Botón para ir a la página siguiente -->
-                        <li class="page-item">
-                          <a class="page-link" th:href="@{|?query=${query}&page=${currentPage + 1}|}"
-                             th:classappend="${currentPage == partes} ? 'disabled'">
+                        <li class="page-item" th:if="${currentPage < partes}">
+                          <a class="page-link"
+                             th:href="@{|?${query != null ? 'query=' + query + '&' : ''}${categoria != null ? 'categoria=' + categoria + '&' : ''}${ram != null ? 'ram=' + ram + '&' : ''}${almacenamiento != null ? 'almacenamiento=' + almacenamiento + '&' : ''}${marca != null ? 'marca=' + marca + '&' : ''}${precio != null ? 'precio=' + precio + '&' : ''}${precioMin != null ? 'precioMin=' + precioMin + '&' : ''}${precioMax != null ? 'precioMax=' + precioMax + '&' : ''}page=${currentPage + 1}|}">
                             <i class="mdi mdi-chevron-right"></i>
                           </a>
                         </li>
+
                       </ul>
+
+
+
+
                     </div>
                   </div>
                 </div>
@@ -430,9 +444,17 @@
     rams.forEach(ram => {
       params.append('ram', ram);
     });
+
+    // Agregar solo las marcas seleccionadas
     const marcas = formData.getAll('marca');
     marcas.forEach(marca => {
       params.append('marca', marca);
+    });
+
+    // Agregar solo los almacenamientos seleccionados
+    const almacenamientos = formData.getAll('almacenamiento');
+    almacenamientos.forEach(almacenamiento => {
+      params.append('almacenamiento', almacenamiento);
     });
 
     // Agregar precio mínimo si no está vacío
@@ -455,6 +477,7 @@
     window.location.href = actionUrl;
   };
 </script>
+
 
 <!-- JAVASCRIPT BASE-->
 <span th:replace="~{Common/jsBase :: js_Base}"></span>
