@@ -451,14 +451,27 @@ public class AdminZonalController {
     @GetMapping("/verAgente/{id}")
     public String showVerAgente(@PathVariable("id") Integer usuarioId, Model model, RedirectAttributes redirectAttributes) {
 
+        // Buscar el usuario
         Optional<Usuario> usuario = usuarioRepository.findById(usuarioId);
         if (usuario.isPresent()) {
+            // Añadir usuario y usuarioId al modelo
             model.addAttribute("usuario", usuario.get());
             model.addAttribute("usuarioId", usuarioId);
+
+            // Obtener el resumen del agente
             List<Object[]> resumenAgente = ordenRepository.getResumenAgente(usuarioId);
-            model.addAttribute("resumenAgente", resumenAgente);
+
+            // Si hay datos, pasar el primer registro como arreglo separado
+            if (!resumenAgente.isEmpty()) {
+                Object[] resumen = resumenAgente.get(0); // Primer registro
+                model.addAttribute("resumenAgente", resumen);
+            } else {
+                model.addAttribute("resumenAgente", null); // No hay datos
+            }
+
             return "AdminZonal/verAgente-AdminZonal";
         } else {
+            // Redirigir si el usuario no existe
             redirectAttributes.addFlashAttribute("errorMessage", "Usuario no encontrado.");
             return "redirect:/adminzonal/gestionAgente";
         }
