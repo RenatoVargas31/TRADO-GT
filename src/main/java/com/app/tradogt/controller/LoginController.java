@@ -80,7 +80,7 @@ public class LoginController {
         this.ordenRepository = ordenRepository;
     }
 
-    @GetMapping("/loginForm")
+    @GetMapping("/")
     public String loginForm(HttpServletRequest request, HttpServletResponse response, Model model,
                             @RequestParam(value = "error", required = false) String error) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -259,7 +259,7 @@ public class LoginController {
                 "Saludos,\nEquipo de Trado";
 
         sendMessage(usuario.getCorreo(), mensajeBienvenida);
-        return "redirect:/loginForm";
+        return "redirect:/";
     }
 
     @PostMapping("/request-password-reset")
@@ -371,7 +371,7 @@ public class LoginController {
         redirectAttributes.addFlashAttribute("success", "Contraseña cambiada con éxito. Por favor, inicia sesión con tu nueva contraseña.");
 
         // Redirigir a la página de login
-        return "redirect:/loginForm";
+        return "redirect:/";
     }
 
     @PostMapping("/change-temporalPass")
@@ -423,7 +423,7 @@ public class LoginController {
         redirectAttributes.addFlashAttribute("success", "Contraseña temporal cambiada con éxito. Por favor, inicia sesión con tu nueva contraseña.");
 
         // Redirigir a la página de login
-        return "redirect:/loginForm";
+        return "redirect:/";
 
 
 
@@ -460,7 +460,7 @@ public class LoginController {
                     "                        <td align='center' style='padding: 20px; color: #333333;'>" +
                     "                            <h2 style='font-size: 20px; color: #800080;'>Empieza tu viaje con nosotros</h2>" +
                     "                            <p style='font-size: 16px; line-height: 1.5;'>" + messageEmail + "</p>" + // Inserta el contenido aquí
-                    "                            <a href='http://localhost:8080/loginForm' style='display: inline-block; margin-top: 20px; padding: 12px 24px; background-color: #800080; color: #ffffff; text-decoration: none; border-radius: 5px; font-size: 16px;'>Iniciar Sesión</a>" +
+                    "                            <a href='http://localhost:8080/' style='display: inline-block; margin-top: 20px; padding: 12px 24px; background-color: #800080; color: #ffffff; text-decoration: none; border-radius: 5px; font-size: 16px;'>Iniciar Sesión</a>" +
                     "                        </td>" +
                     "                    </tr>" +
                     "                </table>" +
