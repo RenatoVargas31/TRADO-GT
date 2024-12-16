@@ -1,3 +1,50 @@
+async function fetchCalificacion() {
+    try {
+        // Ensure the backticks are used for template literals
+        const response = await fetch(`/adminzonal/api/calificacion?usuarioId=${usuarioId}`);
+        const data = await response.json();
+
+        const options = {
+            chart: {
+                height: 410,
+                type: "pie"
+            },
+            series: [data.na, data.est1, data.est2, data.est3, data.est4, data.est5],
+            labels: ["Sin calificar", "1 estrella", "2 estrellas", "3 estrellas", "4 estrellas", "5 estrellas"],
+            colors: ["#FFDD57", "#FFA07A", "#5DADE2", "#58D68D", "#E74C3C", "#AF7AC5"],
+            legend: {
+                show: true,
+                position: "bottom",
+                horizontalAlign: "center",
+                verticalAlign: "middle",
+                floating: false,
+                fontSize: "14px",
+                offsetX: 0,
+                offsetY: 5
+            },
+            responsive: [{
+                breakpoint: 600,
+                options: {
+                    chart: {
+                        height: 240
+                    },
+                    legend: {
+                        show: false
+                    }
+                }
+            }]
+        };
+
+        const chart = new ApexCharts(document.querySelector("#pie_chart_2"), options);
+        chart.render();
+    } catch (error) {
+        console.error('Error al obtener datos de agentes:', error);
+    }
+}
+
+// Ejecuta fetchCalificacion cuando el DOM esté completamente cargado
+document.addEventListener("DOMContentLoaded", fetchCalificacion);
+
 
 async function ProductosStock() {
     try {

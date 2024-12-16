@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>View Agent</title>
+    <title>Ver Agent</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- CSS BASE -->
     <meta th:replace="~{Common/cssBase :: css_Base}">
@@ -152,8 +152,8 @@
                     <div class="col-lg-6">
                         <div class="card">
                             <div class="card-body">
-                                <h4 class="card-title mb-4">Raiting</h4>
-                                <div id="column_chart" class="apex-charts" dir="ltr"></div>
+                                <h4 class="card-title mb-4">Rating</h4>
+                                <div id="pie_chart_2" class="apex-charts" dir="ltr"></div>
                             </div>
                         </div><!--end card-->
                     </div>
@@ -180,11 +180,18 @@
     <!-- end main content-->
 </div>
 <!-- END layout-wrapper -->
+<script>
+    var usuarioId = [[${usuarioId}]];  // Get the usuarioId passed from the controller
+    console.log("Usuario ID:", usuarioId);
+</script>
+
+
 
 <!-- JAVASCRIPT BASE-->
 <span th:replace="~{Common/jsBase :: js_Base}"></span>
 <script th:src="@{/libs/apexcharts/apexcharts.min.js}"></script>
 <script th:src="@{/js/pages/apexcharts.init.js}"></script>
+<script th:src="@{/js/pages/adminzonal.init.js}"></script>
 <!-- End JAVASCRIPT BASE-->
 
 <!--JAVASCRIPT NOTIFICACIONES-->

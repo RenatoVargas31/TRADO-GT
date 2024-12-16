@@ -2,9 +2,11 @@ package com.app.tradogt.repository;
 
 import com.app.tradogt.dto.OrdenCompraAgtDto;
 import com.app.tradogt.dto.OrdenEstadoDto;
+import com.app.tradogt.dto.ValoracionAgente;
 import com.app.tradogt.entity.EstadoOrden;
 import com.app.tradogt.entity.Orden;
 import com.app.tradogt.entity.Usuario;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -389,4 +391,29 @@ SELECT
     List<Object[]> misUltimosPedidos(@Param("idUser") Integer idUser);
 
     List<Orden> findByEstadoordenIdestadoordenIn(List<EstadoOrden> estadoOrdens);
+
+
+
+    @Query("SELECT new com.app.tradogt.dto.ValoracionAgente(" +
+            "CASE WHEN COUNT(o) > 0 THEN (SUM(CASE WHEN o.valoracionAgente NOT IN (1, 2, 3, 4, 5) THEN 1 ELSE 0 END) * 100.0) / COUNT(o) ELSE 0 END, " +
+            "CASE WHEN COUNT(o) > 0 THEN (SUM(CASE WHEN o.valoracionAgente = 1 THEN 1 ELSE 0 END) * 100.0) / COUNT(o) ELSE 0 END, " +
+            "CASE WHEN COUNT(o) > 0 THEN (SUM(CASE WHEN o.valoracionAgente = 2 THEN 1 ELSE 0 END) * 100.0) / COUNT(o) ELSE 0 END, " +
+            "CASE WHEN COUNT(o) > 0 THEN (SUM(CASE WHEN o.valoracionAgente = 3 THEN 1 ELSE 0 END) * 100.0) / COUNT(o) ELSE 0 END, " +
+            "CASE WHEN COUNT(o) > 0 THEN (SUM(CASE WHEN o.valoracionAgente = 4 THEN 1 ELSE 0 END) * 100.0) / COUNT(o) ELSE 0 END, " +
+            "CASE WHEN COUNT(o) > 0 THEN (SUM(CASE WHEN o.valoracionAgente = 5 THEN 1 ELSE 0 END) * 100.0) / COUNT(o) ELSE 0 END) " +
+            "FROM Orden o " +
+            "WHERE o.agentcompraIdusuario.id = :idAgente")
+    ValoracionAgente countValoracionesByIdAgente(@Param("idAgente") int idAgente);
+
+
+
+
+
+
+
+
+
+
+
+
 }

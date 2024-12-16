@@ -454,11 +454,19 @@ public class AdminZonalController {
 
 
     @GetMapping("/verAgente/{id}")
-    public String showVerAgente(@PathVariable("id") Integer usuarioId, Model model) {
+    public String showVerAgente(@PathVariable("id") Integer usuarioId, Model model, RedirectAttributes redirectAttributes) {
+
         Optional<Usuario> usuario = usuarioRepository.findById(usuarioId);
-        model.addAttribute(usuario.get());
-        return "AdminZonal/verAgente-AdminZonal";
+        if (usuario.isPresent()) {
+            model.addAttribute("usuario", usuario.get());
+            model.addAttribute("usuarioId", usuarioId);
+            return "AdminZonal/verAgente-AdminZonal";
+        } else {
+            redirectAttributes.addFlashAttribute("errorMessage", "Usuario no encontrado.");
+            return "redirect:/adminzonal/gestionAgente";
+        }
     }
+
 
     @PostMapping("/editarFecha")
     public String editarFechaArribo(
@@ -559,20 +567,48 @@ public class AdminZonalController {
                 })
                 .collect(Collectors.toList());
     }
+    @GetMapping("/api/calificacion")
+    @ResponseBody
+    public Map<String, Object> calificacionAgente(@RequestParam("usuarioId") Integer usuarioId) {
+        // Obtener el porcentaje de valoraciones
+
+        ValoracionAgente resultados = ordenRepository.countValoracionesByIdAgente(usuarioId);
+
+        // Crear el mapa para la respuesta
+        Map<String, Object> response = new HashMap<>();
+
+        // Asignar cada valor al mapa usando los métodos getter correspondientes
+        response.put("na", 100 - (resultados.getValoracion1Percent() +
+                resultados.getValoracion2Percent() +
+                resultados.getValoracion3Percent() +
+                resultados.getValoracion4Percent() +
+                resultados.getValoracion5Percent())); // Porcentaje de valoraciones no definidas
+        response.put("est1", resultados.getValoracion1Percent()); // Porcentaje de valoraciones 1
+        response.put("est2", resultados.getValoracion2Percent()); // Porcentaje de valoraciones 2
+        response.put("est3", resultados.getValoracion3Percent()); // Porcentaje de valoraciones 3
+        response.put("est4", resultados.getValoracion4Percent()); // Porcentaje de valoraciones 4
+        response.put("est5", resultados.getValoracion5Percent()); // Porcentaje de valoraciones 5
+
+        return response;
+    }
+
     @GetMapping("/api/countUsuarios")
     @ResponseBody
     public Map<String, Object> getCountUsuarios() {
         // Obtener el porcentaje de usuarios activos
         double porcentajeActivos = usuarioRepository.porcentajeUsuariosActivos(getAuthenticatedUser().getZonaIdzona().getId());
 
-        System.out.println("Holaaaaa "+ porcentajeActivos);
-        // Crear el mapa de respuesta con los porcentajes
+
         Map<String, Object> response = new HashMap<>();
         response.put("active", porcentajeActivos); // Porcentaje de usuarios activos
         response.put("inactive", 100 - porcentajeActivos); // Porcentaje de usuarios inactivos
 
         return response;
     }
+
+
+
+
 
 
 
