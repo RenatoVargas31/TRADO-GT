@@ -7,8 +7,7 @@ var connectingElement = document.querySelector(".connecting");
 
 var stompClient = null;
 var username = null;
-//mycode
-var password = null;
+var orderId = null;
 
 var colors = [
     "#2196F3",
@@ -31,24 +30,22 @@ var colors = [
 
 
 username = document.body.dataset.username;
-password = document.body.dataset.password;
+orderId = document.body.dataset.codigo;
 
-var socket = new SockJS("/websocket");
+var socket = new SockJS('/websocket');
 stompClient = Stomp.over(socket);
 
 stompClient.connect({}, onConnected, onError);
 
 
-
-
 function onConnected() {
     // Subscribe to the Public Topic
-    stompClient.subscribe("/topic/public", onMessageReceived);
+    stompClient.subscribe(`/topic/public/${orderId}`, onMessageReceived);
 
     // Tell your username to the server
 
     stompClient.send(
-        "/app/chat.register",
+        `/app/chat.register/${orderId}`,
         {},
         JSON.stringify({ sender: username, type: "JOIN" })
     );
@@ -71,7 +68,7 @@ function send(event) {
             type: "CHAT",
         };
 
-        stompClient.send("/app/chat.send", {}, JSON.stringify(chatMessage));
+        stompClient.send(`/app/chat.send/${orderId}`, {}, JSON.stringify(chatMessage));
         messageInput.value = "";
     }
     event.preventDefault();
