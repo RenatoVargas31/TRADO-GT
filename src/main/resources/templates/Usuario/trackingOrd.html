@@ -29,139 +29,6 @@
             from { opacity: 0; }
             to { opacity: 1; }
         }
-        /* Estilos para los botones flotantes */
-        #floatingAgentChatContainer,
-        #floatingChatContainer {
-            position: fixed;
-            bottom: 20px;
-            z-index: 9999;
-        }
-
-        #floatingAgentChatContainer {
-            right: 80px;
-        }
-
-        #floatingChatContainer {
-            right: 20px;
-        }
-
-        /* Estilos para los paneles de chat */
-        #agentChatPanel,
-        #chatPanel {
-            position: fixed;
-            bottom: 80px;
-            background: #fff;
-            border: 1px solid #ccc;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            display: none;
-            z-index: 9999;
-            width: 500px;
-            height: 500px;
-        }
-
-        #agentChatPanel {
-            right: 80px;
-        }
-
-        #chatPanel {
-            right: 20px;
-        }
-
-        /* Estilos para los botones dentro de los contenedores de chat */
-        #toggleAgentChatBtn,
-        #toggleChatBtn {
-            width: 50px;
-            height: 50px;
-            border: none;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        #toggleChatBtn img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 50%;
-        }
-
-        /* Responsividad */
-        @media (max-width: 768px) {
-            #agentChatPanel,
-            #chatPanel {
-                width: 90%;
-                height: 80%;
-                right: 20px;
-                bottom: 80px;
-            }
-
-            #floatingAgentChatContainer {
-                right: 20px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            #agentChatPanel,
-            #chatPanel {
-                width: 95%;
-                height: 75%;
-                right: 10px;
-                bottom: 70px;
-            }
-
-            /* Posicionamiento de los botones flotantes para evitar superposición */
-            #floatingAgentChatContainer {
-                right: 20px;
-                bottom: 80px; /* Ajusta este valor según el espacio necesario */
-            }
-
-            #floatingChatContainer {
-                right: 20px;
-                bottom: 20px; /* Botón de AlexIA estará debajo del botón de Agente */
-            }
-
-            #toggleAgentChatBtn,
-            #toggleChatBtn {
-                width: 45px;
-                height: 45px;
-            }
-        }
-
-        /* Opcional: Ajustes adicionales para mejor visualización en móviles */
-        .chat-content,
-        .chatbot-messages {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .avatar {
-            width: 40px;
-            height: 40px;
-        }
-
-        .avatar .avatar-title {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        /* Ajuste de texto para pantallas pequeñas */
-        h5, h6, p, small {
-            font-size: 0.9rem;
-        }
-
-        /* Ajustes para el spinner */
-        #loadingSpinner {
-            display: none;
-            text-align: center;
-            margin-bottom: 10px;
-        }
-
 
 
     </style>
@@ -568,32 +435,72 @@
 
 
                         <!-- Botón Flotante del Chat con el Agente -->
-                        <div id="floatingAgentChatContainer">
-                            <button id="toggleAgentChatBtn" class="btn btn-secondary rounded-circle">
-                                <i class="ri-user-fill"></i>
+                        <div id="floatingAgentChatContainer" style="position: fixed; bottom: 20px; right: 80px; z-index: 9999;">
+                            <button id="toggleAgentChatBtn" class="btn btn-secondary rounded-circle" style="width: 50px; height: 50px;">
+                                <i class="ri-user-fill" style="font-size: 1.5rem;"></i>
                             </button>
                         </div>
 
                         <!-- Contenedor del Chat con el Agente -->
-                        <div id="agentChatPanel">
+                        <div id="agentChatPanel" style="
+    position: fixed;
+    bottom: 80px;
+    right: 80px;
+    width: 500px;
+    height: 500px;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    display: none;
+    z-index: 9999;
+">
                             <div class="h-100 d-flex flex-column">
                                 <div class="card h-100 mb-0 border-0 d-flex flex-column">
-                                    <div class="card-header bg-light d-flex align-items-center justify-content-between">
+                                    <div class="card-header bg-light d-flex align-items-center justify-content-between" style="border-top-left-radius: 10px; border-top-right-radius: 10px;">
                                         <h5 class="mb-0">Chat con el Agente</h5>
                                         <button class="btn btn-sm btn-link text-decoration-none" id="closeAgentChatBtn">
-                                            <i class="ri-close-line"></i>
+                                            <i class="ri-close-line" style="font-size: 1.2rem;"></i>
                                         </button>
                                     </div>
 
                                     <!-- Área de mensajes con scroll interno -->
-                                    <div class="card-body p-3 flex-grow-1" id="barra">
-                                        <div id="conteiner-chat" class="chat-content">
+                                    <div class="card-body p-3 flex-grow-1" id="barra" style="overflow-y: auto; background: #f8f9fa;">
+                                        <div id="conteiner-chat" style="display: flex; flex-direction: column; gap: 1rem;">
                                             <!-- Mensajes de ejemplo -->
-                                            <!-- ... tus mensajes aquí ... -->
+                                            <div class="d-flex justify-content-end">
+                                                <div>
+                                                    <h6 class="mb-1 text-end">
+                                                        <span>Agente</span>
+                                                        <small class="text-muted">10:15 AM</small>
+                                                    </h6>
+                                                    <p class="bg-primary text-white p-2 rounded">Hola, ¿tienes alguna pregunta?</p>
+                                                </div>
+                                                <div class="avatar ms-3">
+                                                    <span class="avatar-title bg-primary text-white rounded-circle d-flex justify-content-center align-items-center" style="width: 40px; height: 40px;">
+                                                        <i class="ri-user-fill fs-5"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+
+                                            <div class="d-flex">
+                                                <div class="avatar me-3">
+                                                    <span class="avatar-title bg-primary-subtle text-primary rounded-circle d-flex justify-content-center align-items-center" style="width: 40px; height: 40px;">
+                                                        <i class="ri-user-fill fs-5"></i>
+                                                    </span>
+                                                </div>
+                                                <div>
+                                                    <h6 class="mb-1">
+                                                        <span>Usuario</span>
+                                                        <small class="text-muted">10:18 AM</small>
+                                                    </h6>
+                                                    <p class="bg-light p-2 rounded">Gracias por la información. ¿Cuándo se espera la entrega?</p>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
 
-                                    <div class="card-footer bg-white p-2">
+                                    <div class="card-footer bg-white p-2" style="border-top: 1px solid #ddd; flex-shrink: 0;">
                                         <form id="messageForm" name="messageForm" class="d-flex">
                                             <input type="text" id="message" class="form-control" placeholder="Escribe un mensaje...">
                                             <button type="submit" class="btn btn-primary ms-2">
@@ -605,52 +512,99 @@
                             </div>
                         </div>
 
+
                         <!-- Botón Flotante del Chatbot -->
-                        <div id="floatingChatContainer">
-                            <button id="toggleChatBtn" class="btn btn-primary rounded-circle p-0">
-                                <img src="/images/alexIA.jpg" alt="Bot Avatar">
+                        <div id="floatingChatContainer" style="position: fixed; bottom: 20px; right: 20px; z-index: 9999;">
+                            <button id="toggleChatBtn" class="btn btn-primary rounded-circle p-0" style="width: 50px; height: 50px; overflow: hidden; display: flex; justify-content: center; align-items: center;">
+                                <img src="/images/alexIA.jpg" alt="Bot Avatar" style="width: 100%; height: 100%; object-fit: cover;">
                             </button>
                         </div>
 
                         <!-- Contenedor del Chatbot -->
-                        <div id="chatPanel">
+                        <div id="chatPanel" style="
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    width: 500px;
+    height: 500px;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    display: none;
+    z-index: 9999;
+">
                             <div class="h-100 d-flex flex-column">
                                 <div class="card h-100 mb-0 border-0 d-flex flex-column">
-                                    <div class="card-header bg-light d-flex align-items-center justify-content-between">
+                                    <div class="card-header bg-light d-flex align-items-center justify-content-between" style="border-top-left-radius: 10px; border-top-right-radius: 10px;">
                                         <h5 class="mb-0">AlexIA</h5>
                                         <button class="btn btn-sm btn-link text-decoration-none" id="closeChatBtn">
-                                            <i class="ri-close-line"></i>
+                                            <i class="ri-close-line" style="font-size: 1.2rem;"></i>
                                         </button>
                                     </div>
 
-                                    <div class="card-body p-3 flex-grow-1" id="chatbot-barra">
-                                        <div class="chatbot-messages" id="conteiner-chatbot">
+                                    <div class="card-body p-3 flex-grow-1" id="chatbot-barra" style="overflow-y: auto; background: #f8f9fa;">
+                                        <div class="chatbot-messages" id="conteiner-chatbot" style="display: flex; flex-direction: column; gap: 1rem;">
                                             <!-- Mensajes del chatbot y usuario -->
-                                            <!-- ... tus mensajes aquí ... -->
+                                            <div class="d-flex align-items-start">
+                                                <div class="avatar me-3">
+                            <span class="avatar-title bg-info text-white rounded-circle" style="width: 40px; height: 40px; display: flex; justify-content: center; align-items: center;">
+                                <i class="ri-robot-fill fs-5"></i>
+                            </span>
+                                                </div>
+                                                <div>
+                                                    <h6 class="mb-1" style="font-size: 0.9rem; font-weight: 600;">
+                                                        AlexIA
+                                                        <small class="text-muted fs-7 ms-2" style="font-size: 0.75rem;">10:20 AM</small>
+                                                    </h6>
+                                                    <div class="bg-white p-3 rounded" style="border: 1px solid #e9ecef;">
+                                                        <p class="mb-0" style="font-size: 0.95rem; line-height: 1.4;">Hola, ¿en qué puedo ayudarte hoy?</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="d-flex justify-content-end align-items-start">
+                                                <div>
+                                                    <h6 class="mb-1 text-end" style="font-size: 0.9rem; font-weight: 600;">
+                                                        Tú
+                                                        <small class="text-muted fs-7 ms-2" style="font-size: 0.75rem;">10:22 AM</small>
+                                                    </h6>
+                                                    <div class="bg-primary text-white p-3 rounded" style="border: 1px solid #0d6efd; word-wrap: break-word;">
+                                                        <p class="mb-0" style="font-size: 0.95rem; line-height: 1.4;">Necesito ayuda con mi orden #12345.</p>
+                                                    </div>
+                                                </div>
+                                                <div class="avatar ms-3">
+                            <span class="avatar-title bg-success text-white rounded-circle" style="width: 40px; height: 40px; display: flex; justify-content: center; align-items: center;">
+                                <i class="ri-user-fill fs-5"></i>
+                            </span>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
 
-                                    <div class="card-footer bg-white p-3">
+                                    <div class="card-footer bg-white p-3" style="border-top: 1px solid #ddd; flex-shrink: 0;">
+
                                         <!-- Spinner de carga -->
-                                        <div id="loadingSpinner">
+                                        <div id="loadingSpinner" style="display:none; text-align: center; margin-bottom: 10px;">
                                             <div class="spinner-border text-primary" role="status">
                                                 <span class="visually-hidden">Cargando...</span>
                                             </div>
                                         </div>
 
                                         <form id="chatbotMessageForm" class="d-flex">
-                                            <input type="text" id="chatbotMessage" class="form-control" placeholder="Escribe un mensaje...">
-                                            <button type="submit" class="btn btn-primary">
+                                            <input type="text" id="chatbotMessage" class="form-control" placeholder="Escribe un mensaje..." style="border-radius: 0.25rem 0 0 0.25rem;">
+                                            <button type="submit" class="btn btn-primary" style="border-radius: 0 0.25rem 0.25rem 0;">
                                                 <i class="ri-send-plane-fill"></i> Enviar
                                             </button>
                                         </form>
-                                        <button id="newChatBtn" class="btn btn-secondary mt-2 w-100">
+                                        <button id="newChatBtn" class="btn btn-secondary mt-2 w-100" style="border-radius: 0.25rem; font-weight: 500;">
                                             <i class="ri-chat-1-line"></i> Iniciar Nueva Conversación
                                         </button>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        <!-- Termina el contenedor del chatbot-->
                     </div>
                 </div>
             </div>
