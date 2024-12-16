@@ -61,8 +61,8 @@
                                     <div class="col-md-4 col-lg-3 d-flex flex-column justify-content-center align-items-center">
                                         <div class="mt-1 mb-1">
                                             <img alt="Foto"
-                                                 th:src="@{'/uploads/fotosUsuarios/' + ${usuario.foto}}"
                                                  data-holder-rendered="true"
+                                                 th:src="@{/adminzonal/usuarioFoto/{id}(id=${usuario.id})}"
                                                  class="d-block rounded-circle"
                                                  src="/images/default.jpg"
                                                  onerror="this.onerror=null;this.src='/images/default.jpg';"
@@ -77,7 +77,7 @@
 
                                         </div>
                                         <small class="text-muted d-block mt-2 text-center">Usuarios asignados</small>
-                                        <small class="text-muted mb-0 text-center" th:text="${resumenAgente[1]}"></small>
+                                        <small class="text-muted mb-0 text-center" th:text="${resumenAgente[1]}">5</small>
                                     </div>
                                     <!-- Sección de los pedidos finalizados -->
                                     <div class="col-12 col-lg-3 mb-3 mb-lg-0 d-flex flex-column justify-content-center align-items-center">
@@ -85,7 +85,7 @@
                                             <i class="ri-checkbox-circle-fill " style="font-size: 36px;"></i>
                                         </div>
                                         <small class="text-muted d-block mt-2 text-center">Pedidos finalizados</small>
-                                        <p class="text-muted mb-0 text-center" th:text="${resumenAgente[2]}">1</p>
+                                        <p class="text-muted mb-0 text-center" th:text="${resumenAgente[2]}" >5</p>
                                     </div>
                                     <!-- Sección de la calificación -->
                                     <div class="col-12 col-lg-3 mb-3 mb-lg-0 d-flex flex-column justify-content-center align-items-center">
@@ -93,8 +93,9 @@
                                             <i class="ri-star-s-fill " style="font-size: 36px;"></i>
                                         </div>
                                         <small class="text-muted d-block mt-2 text-center">Calificación</small>
-                                        <p class="text-muted mb-0 text-center" th:text="${resumenAgente[3]}">1</p>
+                                        <p class="text-muted mb-0 text-center" th:text="${resumenAgente[3]}">5</p>
                                     </div>
+
                                 </div>
                             </div>
                         </div>
