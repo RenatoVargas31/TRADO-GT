@@ -1999,24 +1999,96 @@ public class UsuarioFinalController {
                                    @RequestParam("LugarEntrega") String LugarEntrega,
                                    Model model, RedirectAttributes attr) {
 
-        // Validar número de tarjeta y código CVV
+        // Eliminar espacios del número de la tarjeta
+        String cleanedCardNumber = numeroTarjeta.replaceAll("\\s", "");
+        //Validar número de tarjeta
+        if (Objects.equals(metodo, "Visa")){
+            if (cleanedCardNumber.length() == 16) {
+                if (cleanedCardNumber.startsWith("4")) {
+                } else {
+                    attr.addFlashAttribute("errorT", "Número de tarjeta debe iniciar con 4.");
+                    return "redirect:/usuario/checkout-info";
+                }
+            } else {
+                attr.addFlashAttribute("errorT", "Número de tarjeta debe tener 16 dígitos.");
+                return "redirect:/usuario/checkout-info";
+            }
+        } else if (Objects.equals(metodo, "MasterCard") ){
+
+            if (cleanedCardNumber.length() == 16) {
+                System.out.println("el numero tiene 16 digitos");
+                if (cleanedCardNumber.startsWith("51") || cleanedCardNumber.startsWith("52") ||
+                        cleanedCardNumber.startsWith("53") || cleanedCardNumber.startsWith("54") ||
+                        cleanedCardNumber.startsWith("55") ||
+                        (Integer.parseInt(cleanedCardNumber.substring(0, 4)) >= 2221 && Integer.parseInt(cleanedCardNumber.substring(0, 4)) <= 2720)) {
+                    System.out.println("el numero inicia con 51-55 o en el rango 2221-2720");
+                } else {
+                    System.out.println("Error en iniciar con 51-55 o fuera del rango 2221-2720");
+                    attr.addFlashAttribute("errorT", "Número de tarjeta debe iniciar con 51-55 o fuera del rango 2221-2720");
+                    return "redirect:/usuario/checkout-info";
+                }
+            } else {
+                System.out.println("Error en longitud igual a 16");
+                attr.addFlashAttribute("errorT", "Número de tarjeta debe tener 16 dígitos.");
+                return "redirect:/usuario/checkout-info";
+
+            }
+
+        } else if (Objects.equals(metodo, "American Express") ) {
+            if (cleanedCardNumber.length() == 15) {
+                System.out.println("el numero tiene 15 digitos");
+                if (cleanedCardNumber.startsWith("34") || cleanedCardNumber.startsWith("37")) {
+                    System.out.println("el numero inicia con 34 o 37");
+
+                } else {
+                    System.out.println("Error en iniciar con 34 o 37");
+                    attr.addFlashAttribute("errorT", "Número de tarjeta debe  iniciar con 34 o 37.");
+                    return "redirect:/usuario/checkout-info";
+                }
+            } else {
+                System.out.println("Error en longitud igual a 15");
+                attr.addFlashAttribute("errorT", "Número de tarjeta debe tener 15 dígitos.");
+                return "redirect:/usuario/checkout-info";
+            }
+
+        }else{
+            attr.addFlashAttribute("errorT", "El número de la tarjeta es inválida.");
+            return "redirect:/usuario/checkout-info";
+        }
+
         if (!CreditCardValidator.isValidCardNumber(numeroTarjeta, metodo)) {
-            attr.addFlashAttribute("error", "Número de tarjeta inválido.");
-
-            System.out.println("El errror esta aqui :D");
+            attr.addFlashAttribute("errorT", "Número de tarjeta inválido.");
             return "redirect:/usuario/checkout-info";
         }
 
-        if (!CreditCardValidator.isValidCVV(codigoCVV, metodo)) {
-            attr.addFlashAttribute("error", "Código CVV inválido.");
-            System.out.println("El errror esta aqui D:");
 
+        // Validación del Cvv
+        if (metodo.equals("Visa") || metodo.equals("MasterCard")){
+            if (codigoCVV.matches("\\d{3}")) {
+                System.out.println("El CVV es válido: " + codigoCVV);
+            } else {
+                System.out.println("El CVV no es válido: " + codigoCVV);
+                attr.addFlashAttribute("errorCVV", "El código CVV debe tener 3 dígitos.");
+                return "redirect:/usuario/checkout-info";
+            }
+
+        } else if (metodo.equals("American Express")) {
+            if (codigoCVV.matches("\\d{4}")) {
+                System.out.println("El CVV es válido: " + codigoCVV);
+            } else {
+                System.out.println("El CVV no es válido: " + codigoCVV);
+                attr.addFlashAttribute("errorCVV", "El código CVV debe tener 4 dígitos.");
+                return "redirect:/usuario/checkout-info";
+            }
+
+        }else {
+            attr.addFlashAttribute("errorCVV", "Tipo de tarjeta no reconocid");
             return "redirect:/usuario/checkout-info";
         }
 
+        // Validar fecha de la tarjeta
         if (!CreditCardValidator.isValidExpiryDate(fechaTarjeta)) {
-            attr.addFlashAttribute("error", "Fecha de tarjeta inválida.");
-            System.out.println("El errror esta aqui D':");
+            attr.addFlashAttribute("errorCVV", "La fecha de vencimiento de la tarjeta es inválida.");
             return "redirect:/usuario/checkout-info";
         }
 
