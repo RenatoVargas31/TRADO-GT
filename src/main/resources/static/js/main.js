@@ -8,6 +8,7 @@ var connectingElement = document.querySelector(".connecting");
 var stompClient = null;
 var username = null;
 var orderId = null;
+var usuarioId = null;
 
 var colors = [
     "#2196F3",
@@ -30,7 +31,8 @@ var colors = [
 
 
 username = document.body.dataset.username;
-orderId = document.body.dataset.codigo;
+orderId = document.body.dataset.idorden;
+usuarioId = document.body.dataset.idusuario;
 
 var socket = new SockJS('/websocket');
 stompClient = Stomp.over(socket);
@@ -47,7 +49,7 @@ function onConnected() {
     stompClient.send(
         `/app/chat.register/${orderId}`,
         {},
-        JSON.stringify({ sender: username, type: "JOIN" })
+        JSON.stringify({ sender: username, type: "JOIN" , idSender: usuarioId, idOrder: orderId})
     );
 
 }
@@ -65,10 +67,13 @@ function send(event) {
         var chatMessage = {
             sender: username,
             content: messageInput.value,
+            idSender: usuarioId,
+            idOrder: orderId,
             type: "CHAT",
         };
 
         stompClient.send(`/app/chat.send/${orderId}`, {}, JSON.stringify(chatMessage));
+        stompClient.send(`/app/chat.save/${orderId}`, {}, JSON.stringify(chatMessage));
         messageInput.value = "";
     }
     event.preventDefault();
@@ -133,19 +138,8 @@ function onMessageReceived(payload) {
         }
     }
 
-    // Define el código HTML que deseas insertar
-
 
 }
 
-function getAvatarColor(messageSender) {
-    var hash = 0;
-    for (var i = 0; i < messageSender.length; i++) {
-        hash = 31 * hash + messageSender.charCodeAt(i);
-    }
-
-    var index = Math.abs(hash % colors.length);
-    return colors[index];
-}
 
 messageForm.addEventListener("submit", send, true);
