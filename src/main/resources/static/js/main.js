@@ -4,6 +4,8 @@ var messageForm = document.querySelector("#messageForm");
 var messageInput = document.querySelector("#message");
 var messageArea = document.querySelector("#messageArea");
 var connectingElement = document.querySelector(".connecting");
+const container = document.getElementById("conteiner-chat");
+const slide = document.getElementById("barra");
 
 var stompClient = null;
 var username = null;
@@ -45,7 +47,8 @@ function onConnected() {
     stompClient.subscribe(`/topic/public/${orderId}`, onMessageReceived);
 
     // Tell your username to the server
-
+    slide.scrollTop = slide.scrollHeight;
+    
     stompClient.send(
         `/app/chat.register/${orderId}`,
         {},
@@ -91,8 +94,6 @@ function onMessageReceived(payload) {
 
     // Selecciona el elemento en el que deseas insertar HTML
     if(message.type == 'CHAT'){
-        const container = document.getElementById("conteiner-chat");
-        const slide = document.getElementById("barra");
         var htmlCode;
         if(message.sender === username){
             var messageText = document.createTextNode(message.content);
@@ -130,7 +131,7 @@ function onMessageReceived(payload) {
 
         if (container) {
             container.insertAdjacentHTML("beforeend", htmlCode);
-            container.scrollTop = container.scrollHeight;
+            slide.scrollTop = slide.scrollHeight;
             console.log("Elemento encontrado.");
 
         } else {

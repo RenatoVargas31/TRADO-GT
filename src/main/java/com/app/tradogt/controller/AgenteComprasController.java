@@ -50,15 +50,17 @@ public class AgenteComprasController {
     private final ProveedorRepository proveedorRepository;
     final ProductosRepository productosRepository;
     final EstadoOrdenRepository estadoOrdenRepository;
+    final MessageRepository messageRepository;
     @Autowired
     private DistritoRepository distritoRepository;
 
-    public AgenteComprasController(UsuarioRepository usuarioRepository, OrdenRepository ordenRepository, ProveedorRepository proveedorRepository, ProductosRepository productosRepository, EstadoOrdenRepository estadoOrdenRepository) {
+    public AgenteComprasController(UsuarioRepository usuarioRepository, MessageRepository messageRepository, OrdenRepository ordenRepository, ProveedorRepository proveedorRepository, ProductosRepository productosRepository, EstadoOrdenRepository estadoOrdenRepository) {
         this.usuarioRepository = usuarioRepository;
         this.ordenRepository = ordenRepository;
         this.proveedorRepository = proveedorRepository;
         this.productosRepository = productosRepository;
         this.estadoOrdenRepository = estadoOrdenRepository;
+        this.messageRepository = messageRepository;
     }
 
     @Autowired
@@ -494,6 +496,9 @@ public class AgenteComprasController {
              model.addAttribute("listaProductos",listaProductos);
 
              BigDecimal total = subtotal.add(totalEnvio);
+
+             List<Message> mensajes = messageRepository.findByOrdenIdOrderByFechaEnvio(idOrden);
+             model.addAttribute("mensajes", mensajes);
 
              model.addAttribute("listaProductos", listaProductos);
              model.addAttribute("subtotal", subtotal);  // Pasar el subtotal a la vista

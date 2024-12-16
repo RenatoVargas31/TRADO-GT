@@ -64,6 +64,7 @@ public class UsuarioFinalController {
         private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         private static final SecureRandom RANDOM = new SecureRandom();
 
+
         public static String generateRandomCode(int length) {
             StringBuilder code = new StringBuilder(length);
             for (int i = 0; i < length; i++) {
@@ -102,10 +103,11 @@ public class UsuarioFinalController {
     final AutenticacionRepository autenticacionRepository;
     final EstadoOrdenRepository estadoOrdenRepository;
     final MyFavoriteRepository myFavoriteRepository;
+    final MessageRepository messageRepository;
 
 
 
-    public UsuarioFinalController(ProveedorRepository proveedorRepository,DistritoRepository distritoRepository, ProductosRepository productosRepository, OrdenRepository ordenRepository, UsuarioRepository usuarioRepository, ProductoEnZonaRepository productoEnZonaRepository, PublicacionRepository publicacionRepository, ComentarioRepository comentarioRepository, SubCategoriaRepository subCategoriaRepository, CarritoRepository carritoRepository, PagoRepository pagoRepository, ResenaRepository resenaRepository, ProductoEnCarritoRepository productoEnCarritoRepository, AutenticacionRepository autenticacionRepository, EstadoOrdenRepository estadoOrdenRepository, MyFavoriteRepository myFavoriteRepository) {
+    public UsuarioFinalController(ProveedorRepository proveedorRepository, MessageRepository messageRepository, DistritoRepository distritoRepository, ProductosRepository productosRepository, OrdenRepository ordenRepository, UsuarioRepository usuarioRepository, ProductoEnZonaRepository productoEnZonaRepository, PublicacionRepository publicacionRepository, ComentarioRepository comentarioRepository, SubCategoriaRepository subCategoriaRepository, CarritoRepository carritoRepository, PagoRepository pagoRepository, ResenaRepository resenaRepository, ProductoEnCarritoRepository productoEnCarritoRepository, AutenticacionRepository autenticacionRepository, EstadoOrdenRepository estadoOrdenRepository, MyFavoriteRepository myFavoriteRepository) {
         this.proveedorRepository = proveedorRepository;
         this.distritoRepository = distritoRepository;
         this.productosRepository = productosRepository;
@@ -123,6 +125,7 @@ public class UsuarioFinalController {
         this.autenticacionRepository = autenticacionRepository;
         this.estadoOrdenRepository = estadoOrdenRepository;
         this.myFavoriteRepository = myFavoriteRepository;
+        this.messageRepository = messageRepository;
     }
 
     public void updateOrderStatus() {
@@ -545,6 +548,9 @@ public class UsuarioFinalController {
             Optional<Usuario> usuario = usuarioRepository.findById(usuarioId);
             model.addAttribute("usuario", usuario.get());
 
+            //Mandar mensajes
+            List<Message> mensajes = messageRepository.findByOrdenIdOrderByFechaEnvio(ord.getId());
+            model.addAttribute("mensajes", mensajes);
 
             //Obtener el costo total
             BigDecimal monto = ord.getPagoIdpago().getMonto();
