@@ -291,7 +291,7 @@ SELECT
             "    o.usuario_idUsuario = ? \n" +
             "    AND o.isDeleted = 0\n"+
             "ORDER BY \n" +
-            "    o.fechaCreacion ASC;", nativeQuery = true)
+            "    o.fechaCreacion DESC;", nativeQuery = true)
     List<Object[]> findOrdersByUsuarioIdusuario(Integer idUsuario);
 
     Optional<Orden> findByCodigo(String codigo);
