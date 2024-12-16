@@ -1,10 +1,8 @@
 package com.app.tradogt;
 
-import com.app.tradogt.entity.Carrito;
-import com.app.tradogt.entity.CustomUserDetails;
-import com.app.tradogt.entity.ProductoEnCarrito;
-import com.app.tradogt.entity.Usuario;
+import com.app.tradogt.entity.*;
 import com.app.tradogt.repository.CarritoRepository;
+import com.app.tradogt.repository.NotificacionRepository;
 import com.app.tradogt.repository.ProductoEnCarritoRepository;
 import com.app.tradogt.repository.UsuarioRepository;
 import org.springframework.dao.DataAccessException;
@@ -28,11 +26,13 @@ public class GlobalControllerAdvice {
     final UsuarioRepository usuarioRepository;
     final CarritoRepository carritoRepository;
     final ProductoEnCarritoRepository productoEnCarritoRepository;
+    final NotificacionRepository notificacionRepository;
 
-    public GlobalControllerAdvice(UsuarioRepository usuarioRepository, CarritoRepository carritoRepository, ProductoEnCarritoRepository productoEnCarritoRepository) {
+    public GlobalControllerAdvice(UsuarioRepository usuarioRepository, CarritoRepository carritoRepository, ProductoEnCarritoRepository productoEnCarritoRepository, NotificacionRepository notificacionRepository) {
         this.usuarioRepository = usuarioRepository;
         this.carritoRepository = carritoRepository;
         this.productoEnCarritoRepository = productoEnCarritoRepository;
+        this.notificacionRepository = notificacionRepository;
     }
     @ExceptionHandler(NoResourceFoundException.class)
     public ModelAndView handleNoResourceFoundException(NoResourceFoundException ex, Model model) {
@@ -92,5 +92,35 @@ public class GlobalControllerAdvice {
             model.addAttribute("cantidadProductosEnCarrito", 0);
 
         }
+    }
+
+
+    @ModelAttribute
+    private void getCantidadNotificaciones(Model model) {
+        // Obtener la autenticación del usuario
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Object principal = authentication.getPrincipal();
+        String correoUsuario;
+
+        // Verificar si el usuario autenticado es una instancia de UserDetails
+        if (principal instanceof UserDetails) {
+            correoUsuario = ((UserDetails) principal).getUsername(); // Obtener el correo del usuario autenticado
+        } else {
+            correoUsuario = principal.toString();
+        }
+
+        // Buscar al usuario en la base de datos por correo
+        Usuario usuario = usuarioRepository.findByCorreo(correoUsuario);
+
+        if(usuario != null) {
+            //Limitar las notificaciones solo para el Usuario
+            List<Notificacion> lista =notificacionRepository.findByUsuarioNoti(usuario.getId());
+            model.addAttribute("cantidadNotificaciones", lista.size());
+            //Buscar la cantidad de notificcaiones
+        }else {
+            // Si no hay usuario autenticado o no tiene carrito, establecer la cantidad en 0
+            model.addAttribute("cantidadNotificaciones", 0);
+        }
+
     }
 }

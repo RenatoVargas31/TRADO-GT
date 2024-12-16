@@ -3,6 +3,8 @@ package com.app.tradogt.repository;
 import com.app.tradogt.entity.Notificacion;
 import com.app.tradogt.entity.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -19,5 +21,10 @@ public interface NotificacionRepository extends JpaRepository<Notificacion, Inte
 
     // Método para encontrar todas las notificaciones de un usuario
     List<Notificacion> findByUsuarioOrderByFechaCreacionDesc(Usuario usuario);
+
+    //Metodo para limitar las notificacions por usuario
+    @Query(value = "select * from Notificacion where Notificacion.idUsuarioNoti = :idUser", nativeQuery = true)
+    List<Notificacion> findByUsuarioNoti(@Param("idUser") int idUser);
+
 
 }

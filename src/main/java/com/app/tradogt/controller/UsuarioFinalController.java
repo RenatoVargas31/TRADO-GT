@@ -204,6 +204,8 @@ public class UsuarioFinalController {
         List<Object[]> misFavoritos = myFavoriteRepository.findFavorites(userId, IdZona);
         model.addAttribute("misFavoritos", misFavoritos);
 
+        model.addAttribute("usuario", user);
+
         return "Usuario/inicio-usuario";
     }
 
@@ -1978,6 +1980,9 @@ public class UsuarioFinalController {
 
     @GetMapping("notificacionesTotales")
     public String allNotifications(Model model) {
+
+
+
         return "Usuario/allNotifications-usuario";
     }
 
