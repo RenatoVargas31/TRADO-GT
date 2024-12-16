@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="utf-8" />
-    <title>Maintenance Page | Nazox</title>
+    <title>Página en Mantenimiento | TRADO</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- CSS BASE -->
     <meta th:replace="~{Common/cssBase :: css_Base}">
@@ -57,6 +57,13 @@
         .return-buttons a:hover {
             background-color: #c82333;
         }
+        body {
+            background-image: url('/images/fondo3.png');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-position: center;
+        }
     </style>
 </head>
 
@@ -69,6 +76,11 @@
 
     <div class="maintenance-img">
         <img src="/images/maintenance-bg.png" alt="Maintenance Background">
+    </div>
+
+    <div class="maintenance-message">
+        <h3>¡Lo sentimos!</h3>
+        <p>Estamos realizando tareas de mantenimiento. Por favor, inténtelo de nuevo más tarde.</p>
     </div>
 
     <div class="return-buttons">

@@ -33,7 +33,22 @@
             background-position: center;
             margin: 0;
         }
-
+        /* Ocultar imagen en pantallas más pequeñas */
+        @media (max-width: 768px) {
+            .right-side-image {
+                display: none;
+            }
+        }
+        @media (min-width: 992px) {
+            .fixed-right-side {
+                position: fixed; /* Fija la imagen del lado derecho para evitar que se corte */
+                right: 0;
+                top: 0;
+                width: 66.66%; /* Dos tercios de la pantalla (ajustable) */
+                height: 100%; /* Toda la altura */
+                z-index: -1; /* Para que no se superponga sobre el contenido */
+            }
+        }
     </style>
 </head>
 <body class="auth-body-bg">
@@ -94,8 +109,8 @@
                 </div>
             </div>
             <!-- Right side image -->
-            <div class="col-lg-8 d-none d-lg-block">
-                <img src="/images/297451387_172154511984888_7597808842372857148_n.jpg" alt="" class="right-side-image">
+            <div class="col-lg-8 d-none d-lg-block fixed-right-side">
+                <img src="/images/banner_constainers.jpg" alt="" class="right-side-image">
             </div>
         </div>
     </div>

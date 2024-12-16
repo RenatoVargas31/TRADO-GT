@@ -110,11 +110,6 @@ public class AdminZonalController {
         return usuario;
     }
 
-    @GetMapping("/vacio")
-    public String home() {
-        return "AdminZonal/starter-AdminZonal";
-    }
-
     @GetMapping("/notificaciones")
     @ResponseBody
     public List<Notificacion> obtenerNotificaciones(@RequestParam("usuarioId") int usuarioId) {
