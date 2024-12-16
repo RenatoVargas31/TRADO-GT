@@ -1950,18 +1950,18 @@ public class UsuarioFinalController {
         // Obtener las notificaciones no leídas
         List<Notificacion> notificaciones = notificationService.getUnreadNotifications(usuario);
 
-        // Transformar las notificaciones en una estructura enriquecida con URLs
+        // Transformar las notificaciones
         return notificaciones.stream().map(notif -> {
             Map<String, String> data = new HashMap<>();
             data.put("contenido", notif.getContenido());
             data.put("orderId", notif.getOrden().getCodigo());
-            data.put("imageUrl", getImageUrlForOrder(notif.getOrden())); // Generar la URL de la imagen
-            data.put("idImportador",notif.getOrden().getUsuarioIdusuario().getId().toString());
+            data.put("imageUrl", getImageUrlForOrder(notif.getOrden()));
+            data.put("idImportador", notif.getOrden().getUsuarioIdusuario().getId().toString());
+            data.put("estaUnread", notif.getLeido()==true ? "read" : "unread");
             return data;
         }).collect(Collectors.toList());
     }
 
-    // Método auxiliar para obtener la URL de la imagen según el estado de la orden
     private String getImageUrlForOrder(Orden orden) {
         if (orden == null || orden.getEstadoordenIdestadoorden() == null) {
             return "/images/notiIcons/default-notification.svg";
@@ -1980,6 +1980,8 @@ public class UsuarioFinalController {
     public String allNotifications(Model model) {
         return "Usuario/allNotifications-usuario";
     }
+
+
 
     //Guardar los datos de pago
     @PostMapping("/savePayment")

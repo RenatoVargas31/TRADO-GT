@@ -32,56 +32,49 @@ public class NotificationService {
     // Crear y enviar una notificación en tiempo real
     //Esta notificación indicará el cambio de estado de la respectiva orden
     public void orderChangeNotification(String message, Usuario usuario, Orden orden) {
-        //System.out.println("Creando notificación para usuario ID: " + usuario.getId() + " con mensaje: " + message);
-
-        // Crear y guardar la notificación en la base de datos
         Notificacion notificacion = new Notificacion();
         notificacion.setContenido(message);
         notificacion.setUsuario(usuario);
         notificacion.setOrden(orden);
         notificacion.setFechaCreacion(LocalDateTime.now());
-        notificacion.setLeido(false);  // La notificación es no leída por defecto
+        notificacion.setLeido(false);  // no leída por defecto
         notificacionRepository.save(notificacion);
-        //System.out.println("GUARDADO - Notificación AGENTE guardada. ID: " + notificacion.getIdNoti());
 
-
-        // Seleccionar una imagen dependiendo del estado de la orden
         String imageUrl;
         switch (orden.getEstadoordenIdestadoorden().getId()) {
-            case 4: // Arribo al país
+            case 4:
                 imageUrl = "/images/notiIcons/orden-arriboPais-svgrepo-com.svg";
                 break;
-            case 5: // En aduanas
+            case 5:
                 imageUrl = "/images/notiIcons/orden-aduanas-svgrepo-com.svg";
                 break;
-            case 6: // En ruta
+            case 6:
                 imageUrl = "/images/notiIcons/orden-enCamino-svgrepo-com.svg";
                 break;
-            case 7: // Recibido
+            case 7:
                 imageUrl = "/images/notiIcons/orden-recibida-svgrepo-com.svg";
                 break;
             default:
                 imageUrl = "/images/notiIcons/order-svgrepo-com.svg";
         }
 
-        // Enviar la notificación en tiempo real a través de Pusher
         Map<String, String> notificationData = new HashMap<>();
         notificationData.put("message", message);
-        notificationData.put("orderId", orden.getCodigo()); // Suponiendo que `codigo` es el identificador de la orden
-        notificationData.put("userId", usuario.getId().toString()); // Incluye el ID del usuario
-        notificationData.put("imageUrl", imageUrl); // Agrega la URL de la imagen
+        notificationData.put("orderId", orden.getCodigo());
+        notificationData.put("userId", usuario.getId().toString());
+        notificationData.put("imageUrl", imageUrl);
         notificationData.put("orderIdReal", orden.getId().toString());
+        // Nueva línea: estado de la notificación
+        notificationData.put("estaUnread", notificacion.getLeido()==true ? "read" : "unread");
 
         pusher.trigger("ordenes-" + usuario.getId(), "orden-actualizada", notificationData);
-        //System.out.println("Enviando notificación: " + message + " al canal ordenes-" + usuario.getId());
-
-
     }
+
 
     // Obtener todas las notificaciones no leídas para un usuario específico
     public List<Notificacion> getUnreadNotifications(Usuario usuario) {
 
-        return notificacionRepository.findByUsuarioAndLeidoFalseOrderByFechaCreacionAsc(usuario);
+        return notificacionRepository.findByUsuarioOrderByFechaCreacionAsc(usuario);
 
     }
 

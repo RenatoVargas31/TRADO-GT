@@ -11,7 +11,11 @@ import java.util.List;
 public interface NotificacionRepository extends JpaRepository<Notificacion, Integer> {
 
     // Método para encontrar notificaciones no leídas para un usuario específico, ordenadas por fecha de creación
-    List<Notificacion> findByUsuarioAndLeidoFalseOrderByFechaCreacionAsc(Usuario usuario);
+    //List<Notificacion> findByUsuarioAndLeidoFalseOrderByFechaCreacionAsc(Usuario usuario);
+
+    // Método para encontrar todas las notificaciones para un usuario específico, ordenadas por fecha de creación
+    List<Notificacion> findByUsuarioOrderByFechaCreacionAsc(Usuario usuario);
+
 
     // Método para encontrar todas las notificaciones de un usuario
     List<Notificacion> findByUsuarioOrderByFechaCreacionDesc(Usuario usuario);
