@@ -455,6 +455,8 @@ public class AdminZonalController {
         if (usuario.isPresent()) {
             model.addAttribute("usuario", usuario.get());
             model.addAttribute("usuarioId", usuarioId);
+            List<Object[]> resumenAgente = ordenRepository.getResumenAgente(usuarioId);
+            model.addAttribute("resumenAgente", resumenAgente);
             return "AdminZonal/verAgente-AdminZonal";
         } else {
             redirectAttributes.addFlashAttribute("errorMessage", "Usuario no encontrado.");

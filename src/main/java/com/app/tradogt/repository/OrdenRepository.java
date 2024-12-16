@@ -407,7 +407,23 @@ SELECT
 
 
 
-
+    @Query(value = "SELECT \n" +
+            "    u.nombre AS Agent, \n" +
+            "    COUNT(DISTINCT o.Usuario_idUsuario) AS Usuarios,\n" +
+            "    SUM(CASE WHEN o.estadoOrden_idEstadoOrden = 7 THEN 1 ELSE 0 END) AS OrdenesConEstado7,\n" +
+            "    ROUND(AVG(CASE \n" +
+            "        WHEN o.valoracionAgente IS NULL OR o.valoracionAgente = '' THEN 0 \n" +
+            "        ELSE o.valoracionAgente \n" +
+            "    END), 1) AS CalificaciónPromedio\n" +
+            "FROM \n" +
+            "    Orden o \n" +
+            "JOIN \n" +
+            "    Usuario u ON u.idUsuario = o.agentCompra_idUsuario\n" +
+            "WHERE \n" +
+            "    o.agentCompra_idUsuario = :idAgente\n" +
+            "GROUP BY \n" +
+            "    u.nombre;\n", nativeQuery = true)
+    List<Object[]> getResumenAgente(@Param("idAgente") int idAgente);
 
 
 

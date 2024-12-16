@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>Ver Agente | TRADO</title>
+    <title>Información del Agente</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- CSS BASE -->
     <meta th:replace="~{Common/cssBase :: css_Base}">
@@ -35,13 +35,13 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                            <h4 class="mb-sm-0">Información del Agente de Compra</h4>
+                            <h4 class="mb-sm-0">Información del Agente</h4>
 
                             <div class="page-title-right">
                                 <ol class="breadcrumb m-0">
-                                    <li class="breadcrumb-item active">Home</li>
-                                    <li class="breadcrumb-item active">Agent Management</li>
-                                    <li class="breadcrumb-item"><a href="javascript: void(0);">View</a></li>
+                                    <li class="breadcrumb-item active">Productividad</li>
+                                    <li class="breadcrumb-item active">Gestión de Agentes</li>
+                                    <li class="breadcrumb-item"><a href="javascript: void(0);">Información del Agente</a></li>
                                 </ol>
                             </div>
 
@@ -52,107 +52,124 @@
 
                 <div class="row">
                     <div class="col-lg-12">
+                        <h4 class="card-title mb-2">Resumen</h4>
+                        <hr>
                         <div class="card">
                             <div class="card-body">
-                                <h4 class="card-title mb-4">Información personal</h4>
                                 <div class="row">
-                                    <div class="col-md-4 d-flex justify-content-center align-items-center">
-                                        <div class="mt-2 mb-3">
-                                            <img class="img-thumbnail rounded-circle" alt="Foto" th:src="@{'/uploads/fotosUsuarios/' + ${usuario.foto}}" data-holder-rendered="true ">
+                                    <!-- Sección de la imagen y nombre del usuario -->
+                                    <div class="col-md-4 col-lg-3 d-flex flex-column justify-content-center align-items-center">
+                                        <div class="mt-1 mb-1">
+                                            <img alt="Foto"
+                                                 th:src="@{'/uploads/fotosUsuarios/' + ${usuario.foto}}"
+                                                 data-holder-rendered="true"
+                                                 class="d-block rounded-circle"
+                                                 src="/images/default.jpg"
+                                                 onerror="this.onerror=null;this.src='/images/default.jpg';"
+                                                 style="width: 150px; height: 150px; object-fit: cover;">
                                         </div>
+                                        <strong class="mt-2 text-center text-dark" th:text="${usuario.nombre} + ' ' + ${usuario.apellido}"></strong>
                                     </div>
-                                    <div class="col-md-4">
-                                        <div class="row mb-3">
-                                            <label class="col-sm-3 col-form-label">Nombre</label>
-                                            <div class="col-sm-9">
-                                                <input class="form-control-plaintext" type="text" th:value="${usuario.nombre}" readonly>
-                                            </div>
+                                    <!-- Sección de los usuarios asignados -->
+                                    <div class="col-12 col-lg-3 mb-3 mb-lg-0 d-flex flex-column justify-content-center align-items-center">
+                                        <div class="text-info">
+                                            <i class="ri-user-fill" style="font-size: 36px;"></i> <!-- Cambia el tamaño según sea necesario -->
+
                                         </div>
-                                        <div class="row mb-3">
-                                            <label class="col-sm-3 col-form-label">Apellidos</label>
-                                            <div class="col-sm-9">
-                                                <input class="form-control-plaintext" type="text" th:value="${usuario.apellido}" readonly>
-                                            </div>
-                                        </div>
-                                        <div class="row mb-3">
-                                            <label class="col-sm-3 col-form-label">DNI</label>
-                                            <div class="col-sm-9">
-                                                <input class="form-control-plaintext" type="text" th:value="${usuario.dni}" readonly>
-                                            </div>
-                                        </div>
-                                        <div class="row mb-3">
-                                            <label class="col-sm-3 col-form-label">Correo electrónico</label>
-                                            <div class="col-sm-9">
-                                                <input class="form-control-plaintext" type="email" th:value="${usuario.correo}" readonly>
-                                            </div>
-                                        </div>
+                                        <small class="text-muted d-block mt-2 text-center">Usuarios asignados</small>
+                                        <small class="text-muted mb-0 text-center" th:text="${resumenAgente[1]}"></small>
                                     </div>
-                                    <div class="col-md-4">
-                                        <div class="row mb-3">
-                                            <label class="col-sm-3 col-form-label">Teléfono</label>
-                                            <div class="col-sm-9">
-                                                <input class="form-control-plaintext" type="text" th:value="${usuario.telefono}" readonly>
-                                            </div>
+                                    <!-- Sección de los pedidos finalizados -->
+                                    <div class="col-12 col-lg-3 mb-3 mb-lg-0 d-flex flex-column justify-content-center align-items-center">
+                                        <div class="text-success">
+                                            <i class="ri-checkbox-circle-fill " style="font-size: 36px;"></i>
                                         </div>
-                                        <div class="row mb-3">
-                                            <label class="col-sm-3 col-form-label">Zona</label>
-                                            <div class="col-sm-9">
-                                                <input class="form-control-plaintext" type="text" th:value="${usuario.zonaIdzona.nombre}" readonly>
-                                            </div>
+                                        <small class="text-muted d-block mt-2 text-center">Pedidos finalizados</small>
+                                        <p class="text-muted mb-0 text-center" th:text="${resumenAgente[2]}">1</p>
+                                    </div>
+                                    <!-- Sección de la calificación -->
+                                    <div class="col-12 col-lg-3 mb-3 mb-lg-0 d-flex flex-column justify-content-center align-items-center">
+                                        <div class="text-warning">
+                                            <i class="ri-star-s-fill " style="font-size: 36px;"></i>
                                         </div>
-                                        <div class="row mb-3">
-                                            <label class="col-sm-3 col-form-label">Distrito</label>
-                                            <div class="col-sm-9">
-                                                <input class="form-control-plaintext" type="text" th:value="${usuario.distritoIddistrito.nombre}" readonly>
-                                            </div>
-                                        </div>
-                                        <div class="row mb-3">
-                                            <label class="col-sm-3 col-form-label">Dirección</label>
-                                            <div class="col-sm-9">
-                                                <input class="form-control-plaintext" type="text" th:value="${usuario.direccion}" readonly>
-                                            </div>
-                                        </div>
+                                        <small class="text-muted d-block mt-2 text-center">Calificación</small>
+                                        <p class="text-muted mb-0 text-center" th:text="${resumenAgente[3]}">1</p>
                                     </div>
                                 </div>
                             </div>
-                        </div><!--end card-->
+                        </div>
                     </div>
+
                 </div>
+
 
                 <!-- Información laboral -->
                 <div class="row">
                     <div class="col-lg-6">
-                        <div class="card">
-                            <div class="card-body">
-                                <h4 class="card-title mb-4">Información laboral</h4>
-                                <div class="col-md-12">
-                                    <div class="row mb-3">
-                                        <label class="col-sm-6 col-form-label">Código de despachador de aduana</label>
-                                        <div class="col-sm-6">
-                                            <input class="form-control-plaintext" type="text" th:value="${usuario.codigoDespachador}" readonly>
+                        <div class="row">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h6 class="card-title mb-1">Información personal</h6>
+                                    <hr>
+                                    <div class="col-md-12">
+                                        <div class="row mb-3">
+                                            <label class="col-sm-6 col-form-label">Documento de identidad</label>
+                                            <div class="col-sm-6">
+                                                <input class="form-control-plaintext" type="text" th:value="${usuario.dni}" readonly>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="row mb-3">
-                                        <label class="col-sm-6 col-form-label">RUC</label>
-                                        <div class="col-sm-6">
-                                            <input class="form-control-plaintext" type="text" th:value="${usuario.ruc}" readonly>
+                                        <div class="row mb-3">
+                                            <label class="col-sm-6 col-form-label">Correo electrónico</label>
+                                            <div class="col-sm-6">
+                                                <input class="form-control-plaintext" type="text" th:value="${usuario.correo}" readonly>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="row mb-3">
-                                        <label class="col-sm-6 col-form-label">Razón Social</label>
-                                        <div class="col-sm-6">
-                                            <input class="form-control-plaintext" type="text" th:value="${usuario.razonSocial}" readonly>
+                                        <div class="row mb-3">
+                                            <label class="col-sm-6 col-form-label">Districto</label>
+                                            <div class="col-sm-6">
+                                                <input class="form-control-plaintext" type="text" th:value="${usuario.distritoIddistrito.nombre}" readonly>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div><!--end card-->
+                        </div>
+                        <div class="row">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h6 class="card-title mb-1">Información laboral</h6>
+                                    <hr>
+                                    <div class="col-md-12">
+                                        <div class="row mb-3">
+                                            <label class="col-sm-6 col-form-label">Código de aduanas</label>
+                                            <div class="col-sm-6">
+                                                <input class="form-control-plaintext" type="text" th:value="${usuario.codigoDespachador}" readonly>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <label class="col-sm-6 col-form-label">Número de RUC</label>
+                                            <div class="col-sm-6">
+                                                <input class="form-control-plaintext" type="text" th:value="${usuario.ruc}" readonly>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <label class="col-sm-6 col-form-label">Razón Social</label>
+                                            <div class="col-sm-6">
+                                                <input class="form-control-plaintext" type="text" th:value="${usuario.razonSocial}" readonly>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+
+
                     <!--AQUI -->
                     <div class="col-lg-6">
                         <div class="card">
                             <div class="card-body">
-                                <h4 class="card-title mb-4">Rating</h4>
+                                <h4 class="card-title mb-4">Porcentaje de calificación</h4>
                                 <div id="pie_chart_2" class="apex-charts" dir="ltr"></div>
                             </div>
                         </div><!--end card-->
@@ -170,7 +187,7 @@
                     </div>
                     <div class="col-sm-6">
                         <div class="text-sm-end d-none d-sm-block">
-                            Creado con <i class="mdi mdi-heart text-danger"></i> by TelesoftGT
+                            Crafted with <i class="mdi mdi-heart text-danger"></i> by TelesoftGT
                         </div>
                     </div>
                 </div>

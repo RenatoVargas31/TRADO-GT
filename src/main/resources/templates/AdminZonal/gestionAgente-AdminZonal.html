@@ -115,16 +115,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- Calcular y renderizar los cards en blanco
-                            <div th:each="i : ${#numbers.sequence(agentes.size() + 1, 3)}" class="col-md-4">
-                                <div class="card agent-card">
-                                    <div class="card-body text-center">
-                                        <div class="d-flex align-items-center flex-wrap">
-                                            <p class="text-muted">Sin datos</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>-->
                             <div th:if="${agentes.size()==0}" class="alert alert-warning" role="alert">
                                 No tienes Agentes a cargo actualmente. Por favor, añade un nuevo Agente de compra. Puedes tener un máximo de 3 agentes a cargo.
                             </div>
