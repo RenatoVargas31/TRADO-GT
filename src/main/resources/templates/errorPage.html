@@ -84,10 +84,10 @@
     </div>
 
     <div class="return-buttons">
-        <a class="btn btn-danger" th:if="${session.usuarioAutenticado.rolIdrol.nombre == 'SuperAdmin'}" th:href="@{/superadmin/inicio}">Regresar a Inicio</a>
-        <a class="btn btn-danger" th:if="${session.usuarioAutenticado.rolIdrol.nombre == 'Administrador Zonal'}" th:href="@{/adminzonal/dashboard}">Regresar a Inicio</a>
-        <a class="btn btn-danger" th:if="${session.usuarioAutenticado.rolIdrol.nombre == 'Agente de Compra'}" th:href="@{/agente/allOrders}">Regresar a Inicio</a>
-        <a class="btn btn-danger" th:if="${session.usuarioAutenticado.rolIdrol.nombre == 'Usuario Final'}" th:href="@{/usuario/inicio}">Regresar a Inicio</a>
+        <a class="btn btn-danger" th:if="${session.usuarioAutenticado != null and session.usuarioAutenticado.rolIdrol != null and session.usuarioAutenticado.rolIdrol.nombre == 'SuperAdmin'}" th:href="@{/superadmin/inicio}">Regresar a Inicio</a>
+        <a class="btn btn-danger" th:if="${session.usuarioAutenticado != null and session.usuarioAutenticado.rolIdrol != null and session.usuarioAutenticado.rolIdrol.nombre == 'Administrador Zonal'}" th:href="@{/adminzonal/dashboard}">Regresar a Inicio</a>
+        <a class="btn btn-danger" th:if="${session.usuarioAutenticado != null and session.usuarioAutenticado.rolIdrol != null and session.usuarioAutenticado.rolIdrol.nombre == 'Agente de Compra'}" th:href="@{/agente/allOrders}">Regresar a Inicio</a>
+        <a class="btn btn-danger" th:if="${session.usuarioAutenticado != null and session.usuarioAutenticado.rolIdrol != null and session.usuarioAutenticado.rolIdrol.nombre == 'Usuario Final'}" th:href="@{/usuario/inicio}">Regresar a Inicio</a>
     </div>
 </div>
 
