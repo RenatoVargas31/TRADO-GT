@@ -30,7 +30,6 @@ var colors = [
 
 
 username = document.body.dataset.username;
-password = document.body.dataset.password;
 orderId = document.body.dataset.codigo;
 
 var socket = new SockJS('/websocket');
