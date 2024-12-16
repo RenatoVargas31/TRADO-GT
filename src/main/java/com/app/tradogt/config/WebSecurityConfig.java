@@ -96,17 +96,17 @@ public class WebSecurityConfig {
                 .addFilterBefore(switchUserFilter(), UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers("/css/**", "/js/**", "/images/**", "/fonts/**", "/libs/**").permitAll()
-                        .requestMatchers("/loginForm", "/processLogin", "/crearCuenta", "/recuperarPass", "/request-password-reset", "/verificarCode", "/verify-codE", "/reset-password-form/**", "/reset-password", "/change-temporal-pass", "/change-temporalPass", "/change-temporal-pass-agente").permitAll()
+                        .requestMatchers("/", "/processLogin", "/crearCuenta", "/recuperarPass", "/request-password-reset", "/verificarCode", "/verify-codE", "/reset-password-form/**", "/reset-password", "/change-temporal-pass", "/change-temporalPass", "/change-temporal-pass-agente").permitAll()
                         .requestMatchers("/superadmin", "/superadmin/**").hasAnyAuthority("SuperAdmin")
                         .requestMatchers("/adminzonal", "/adminzonal/**").hasAnyAuthority("Administrador Zonal")
                         .requestMatchers("/agente", "/agente/**").hasAnyAuthority("Agente de Compra")
                         .requestMatchers("/usuario", "/usuario/**").hasAnyAuthority("Usuario Final")
-                        .requestMatchers("/loginForm", "/crearCuenta").anonymous()
+                        .requestMatchers("/", "/crearCuenta").anonymous()
                         .requestMatchers("/api/consultarDni", "/infoAgente/**","/chatBotGPT/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin((form) -> form
-                        .loginPage("/loginForm")
+                        .loginPage("/")
                         .loginProcessingUrl("/processLogin")
                         .usernameParameter("correo")
                         .passwordParameter("password")
@@ -149,11 +149,11 @@ public class WebSecurityConfig {
                         })
                         .failureHandler((request, response, exception) -> {
                             logger.error("Login failed: {}", exception.getMessage());
-                            response.sendRedirect("/loginForm?error=true");
+                            response.sendRedirect("/?error=true");
                         })
                 )
                 .logout(logout -> logout
-                        .logoutSuccessUrl("/loginForm")
+                        .logoutSuccessUrl("/")
                         .deleteCookies("JSESSIONID")
                         .invalidateHttpSession(true)
                         .permitAll()

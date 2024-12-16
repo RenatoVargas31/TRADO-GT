@@ -1,0 +1,430 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Registro de Productos</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta th:replace="~{Common/cssBase :: css_Base}">
+  <link th:href="@{../libs/bootstrap-touchspin/jquery.bootstrap-touchspin.min.css}" rel="stylesheet">
+  <link th:href="@{../libs/select2/css/select2.min.css}" rel="stylesheet" type="text/css">
+  <link th:href="@{../libs/bootstrap-datepicker/css/bootstrap-datepicker.min.css}" rel="stylesheet">
+  <link th:href="@{../libs/spectrum-colorpicker2/spectrum.min.css}" rel="stylesheet" type="text/css">
+  <!-- twitter-bootstrap-wizard css -->
+  <link rel="stylesheet" th:href="@{../libs/twitter-bootstrap-wizard/prettify.css}">
+</head>
+<body data-sidebar="dark">
+<div id="layout-wrapper">
+  <header th:replace="~{SuperAdmin/fragments/navbar :: nav_bar}"></header>
+  <div th:replace="~{SuperAdmin/fragments/sidebar :: side_bar}"></div>
+  <div class="main-content">
+    <div class="page-content">
+      <div class="container-fluid">
+
+        <!-- start page title -->
+        <div class="row">
+          <div class="col-12">
+            <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+              <h4 class="mb-sm-0">Registro de Ropa masculina</h4>
+
+              <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                  <li class="breadcrumb-item"><a href="/superadmin/productoNuevo">Nuevo Producto</a></li>
+                  <li class="breadcrumb-item active">Registro de Ropa masculina</li>
+                </ol>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <!-- end page title -->
+
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="card">
+              <div class="card-body">
+                <div id="progrss-wizard" class="twitter-bs-wizard">
+                  <ul class="twitter-bs-wizard-nav nav-justified nav nav-pills">
+                    <li class="nav-item">
+                      <a href="#progress-seller-details" class="nav-link active" data-toggle="tab">
+                        <span class="step-number">01</span>
+                        <span class="step-title">Información</span>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a href="#progress-company-document" class="nav-link" data-toggle="tab">
+                        <span class="step-number">02</span>
+                        <span class="step-title">Imagen</span>
+                      </a>
+                    </li>
+
+                    <li class="nav-item">
+                      <a href="#progress-bank-detail" class="nav-link" data-toggle="tab">
+                        <span class="step-number">03</span>
+                        <span class="step-title">Distribución</span>
+                      </a>
+                    </li>
+                  </ul>
+
+                  <div id="bar" class="progress mt-4">
+                    <div class="progress-bar bg-success progress-bar-striped progress-bar-animated" style="width: 25%;"></div>
+                  </div>
+
+                  <form th:action="@{/superadmin/productoNuevo}" th:object="${formProducto}" method="post" enctype="multipart/form-data">
+                    <div class="tab-content twitter-bs-wizard-tab-content">
+                      <div class="tab-pane active" id="progress-seller-details">
+                        <div class="row">
+                          <div class="col-lg-9">
+                            <div class="mb-3">
+                              <label class="form-label" for="basicpill-firstname-input">Nombre</label>
+                              <input type="text" id="basicpill-firstname-input" class="form-control" th:field="*{producto.nombre}" />
+                              <div th:if="${nombreError}" class="text-danger" th:text="${nombreError}"></div>
+                            </div>
+                          </div>
+                          <div class="col-lg-3">
+                            <div class="mb-3">
+                              <label for="category">Categoría</label>
+                              <select id="category" class="form-select" name="producto.subcategoriaIdsubcategoria">
+                                <option disabled selected>--Selecciona una categoría--</option>
+                                <option value="6">Polos</option>
+                                <option value="7">Poleras</option>
+                                <option value="8">Camisas</option>
+                                <option value="9">Chompas</option>
+                                <option value="10">Pantalones</option>
+                              </select>
+                              <div th:if="${subcategoriaError}" class="text-danger" th:text="${categoriaError}"></div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-lg-3">
+                            <div class="mb-3">
+                              <label class="form-label" for="demo2">Costo Unitario</label>
+                              <input id="demo2" type="text" th:field="*{producto.precio}"  class="form-control"  />
+                              <div th:if="${precioError}" class="text-danger" th:text="${precioError}"></div>
+                            </div>
+                          </div>
+                          <div class="col-lg-3">
+                            <div class="mb-3">
+                              <label class="form-label" for="demo4">Peso</label>
+                              <input id="demo4" type="text" class="form-control" th:field="*{producto.peso}" />
+                              <div th:if="${pesoError}" class="text-danger" th:text="${pesoError}"></div>
+
+                            </div>
+                          </div>
+                          <div class="col-lg-6">
+                            <div class="mb-3">
+                              <label for="proveedor">Proveedor</label>
+                              <select id="proveedor" class="form-select" name="producto.proveedorIdproveedor">
+                                <option disabled selected>--Sin Asignar--</option>
+                                <option th:each="proveedor : ${proveedores}" th:value="${proveedor.id}" th:text="${proveedor.nombre}+' '+${proveedor.apellido}+' - '+${proveedor.tienda}"></option>
+                              </select>
+                              <div th:if="${proveedorError}" class="text-danger" th:text="${proveedorError}"></div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-lg-6">
+                            <div class="row">
+                              <div class="col-lg-6">
+                                <div class="mb-3">
+                                  <label class="form-label" for="marca">Marca</label>
+                                  <input type="text" id="marca" class="form-control" th:field="*{producto.marca}" />
+                                  <div th:if="${marcaError}" class="text-danger" th:text="${marcaError}"></div>
+                                </div>
+                                <div class="mb-3" data-category="1,2">
+                                  <label class="form-label" for="talla">Talla</label>
+                                  <input type="text" id="talla" class="form-control" th:field="*{producto.talla}" />
+                                  <div th:if="${tallaError}" class="text-danger" th:text="${tallaError}"></div>
+                                </div>
+                              </div>
+                              <div class="col-lg-6">
+                                <div class="mb-3">
+                                  <label class="form-label" for="material">Material</label>
+                                  <input type="text" id="material" class="form-control" th:field="*{producto.material}" />
+                                  <div th:if="${materialError}" class="text-danger" th:text="${materialError}"></div>
+                                </div>
+                                <div class="mb-3">
+                                  <label class="form-label" for="color">Color</label>
+                                  <input type="text" id="color" class="form-control" th:field="*{producto.color}" />
+                                  <div th:if="${colorError}" class="text-danger" th:text="${colorError}"></div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-lg-6">
+                            <div class="mb-3">
+                              <label class="form-label" for="productdesc">Descripción</label>
+                              <textarea class="form-control" id="productdesc" rows="5" th:field="*{producto.descripcion}"></textarea>
+                              <div th:if="${descripcionError}" class="text-danger" th:text="${descripcionError}"></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="tab-pane" id="progress-company-document">
+                        <div>
+                          <div class="row d-flex justify-content-center ">
+                            <div class="col-lg">
+                              <div class="col-md-6">
+                                <div class="mb-4">
+                                  <input type="file" class="form-control" id="foto" name="foto" accept="image/*" onchange="previewImage(event)" required>
+                                  <div th:if="${fotoError}" class="text-danger" th:text="${fotoError}"></div>
+
+                                  <div class="valid-feedback">Looks good!</div>
+                                </div>
+                              </div>
+                              <div class="col-md-6">
+                                <!-- Contenedor para la previsualización de la imagen -->
+                                <div style="display: flex; justify-content: center; align-items: center; height: 100%; overflow: hidden;">
+                                  <img id="fotoPreview" src="" alt="Imagen previsualizada" style="display: none; max-width: 100%; max-height: 300px; object-fit: contain;">
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="tab-pane" id="progress-bank-detail">
+                        <div>
+                          <div class="row">
+                            <div class="col-lg-2">
+                              <div class="mb-3">
+                                <label class="form-label" for="demo3">Cantidad disponible</label>
+                                <input id="demo3" type="text" th:field="*{producto.cantidad}" />
+                                <div th:if="${cantidadError}" class="text-danger" th:text="${cantidadError}"></div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-lg-6">
+                              <div class="mb-3">
+                                <label class="form-label" for="demo5">ZONA NORTE</label>
+                                <input id="demo5" type="text" th:field="*{productoEnZonaNorte.cantidad}" />
+                                <div th:if="${zonaCantidadError}" class="text-danger" th:text="${zonaCantidadError}"></div>
+
+                              </div>
+                            </div>
+                            <div class="col-lg-6">
+                              <div class="mb-3">
+                                <label class="form-label" for="demo9">Costo de envío C/25 uni.</label>
+                                <input id="demo9" type="text" th:field="*{productoEnZonaNorte.costoEnvio}" class="form-control" />
+                                <div th:if="${zonaCostoEnvioError}" class="text-danger" th:text="${zonaCostoEnvioError}"></div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-lg-6">
+                              <div class="mb-3">
+                                <label class="form-label" for="demo6">ZONA SUR</label>
+                                <input id="demo6" type="text" th:field="*{productoEnZonaSur.cantidad}" />
+                                <div th:if="${zonaCantidadError}" class="text-danger" th:text="${zonaCantidadError}"></div>
+                              </div>
+                            </div>
+                            <div class="col-lg-6">
+                              <div class="mb-3">
+                                <label class="form-label" for="demo10">Costo de envío C/25 uni.</label>
+                                <input id="demo10" type="text" th:field="*{productoEnZonaSur.costoEnvio}" class="form-control" />
+                                <div th:if="${zonaCostoEnvioError}" class="text-danger" th:text="${zonaCostoEnvioError}"></div>
+
+                              </div>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-lg-6">
+                              <div class="mb-3">
+                                <label class="form-label" for="demo7">ZONA ESTE</label>
+                                <input id="demo7" type="text" th:field="*{productoEnZonaEste.cantidad}" />
+                                <div th:if="${zonaCantidadError}" class="text-danger" th:text="${zonaCantidadError}"></div>
+
+                              </div>
+                            </div>
+                            <div class="col-lg-6">
+                              <div class="mb-3">
+                                <label class="form-label" for="demo11">Costo de envío C/25 uni.</label>
+                                <input id="demo11" type="text" th:field="*{productoEnZonaEste.costoEnvio}" class="form-control" />
+                                <div th:if="${zonaCostoEnvioError}" class="text-danger" th:text="${zonaCostoEnvioError}"></div>
+
+                              </div>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-lg-6">
+                              <div class="mb-3">
+                                <label class="form-label" for="demo8">ZONA OESTE</label>
+                                <input id="demo8" type="text" th:field="*{productoEnZonaOeste.cantidad}" />
+                                <div th:if="${zonaCantidadError}" class="text-danger" th:text="${zonaCantidadError}"></div>
+
+                              </div>
+                            </div>
+                            <div class="col-lg-6">
+                              <div class="mb-3">
+                                <label class="form-label" for="demo12">Costo de envío C/25 uni.</label>
+                                <input id="demo12" type="text" value="0" th:field="*{productoEnZonaOeste.costoEnvio}" class="form-control" />
+                                <div th:if="${zonaCostoEnvioError}" class="text-danger" th:text="${zonaCostoEnvioError}"></div>
+
+                              </div>
+                            </div>
+                          </div>
+                          <div class="row">
+
+                          </div>
+                        </div>
+                        <div class="text-center mt-4">
+                          <button type="submit" class="btn btn-success me-2 waves-effect waves-light">Registrar</button>
+                          <a href="/superadmin/productoNuevo" class="btn btn-danger waves-effect">Cancelar</a>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+
+                  <ul class="pager wizard twitter-bs-wizard-pager-link">
+                    <li class="previous disabled"><a href="javascript: void(0);">Retroceder</a></li>
+                    <li class="next"><a href="javascript: void(0);">Avanzar</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- end row -->
+
+      </div>
+      <span th:replace="~{Common/footer :: footerCommon}"></span>
+    </div>
+  </div>
+  <span th:replace="~{Common/jsBase :: js_Base}"></span>
+  <script th:src="@{../libs/jquery/jquery.min.js}"></script>
+  <script th:src="@{../libs/bootstrap-touchspin/jquery.bootstrap-touchspin.min.js}"></script>
+  <script th:src="@{../js/pages/form-advanced.init.js}"></script>
+  <!-- twitter-bootstrap-wizard js -->
+  <script th:src="@{../libs/twitter-bootstrap-wizard/jquery.bootstrap.wizard.min.js}"></script>
+
+  <script th:src="@{../libs/twitter-bootstrap-wizard/prettify.js}"></script>
+
+  <!-- form wizard init -->
+  <script th:src="@{../js/pages/form-wizard.init.js}"></script>
+  <script>
+    function previewImage(event) {
+      const file = event.target.files[0]; // Obtiene el archivo seleccionado
+      const preview = document.getElementById('fotoPreview'); // Elemento de imagen donde se mostrará la previsualización
+
+      if (file) {
+        const reader = new FileReader();
+
+        reader.onload = function() {
+          preview.src = reader.result; // Establece la fuente de la imagen al resultado de FileReader
+          preview.style.display = 'block'; // Muestra la imagen
+        };
+
+        reader.readAsDataURL(file); // Lee el archivo como URL de datos
+      } else {
+        preview.src = ""; // Si no hay archivo, limpia la imagen
+        preview.style.display = 'none'; // Oculta la imagen
+      }
+    }
+  </script>
+  <script>
+    $(document).ready(function() {
+      $('#demo3').TouchSpin({ min: 0, max: 100000 });
+      $('#demo3').attr('placeholder', '0');
+
+      $("#demo2").TouchSpin({ min: 0, max: 100000, step: 0.01, decimals: 2, boostat: 5, maxboostedstep: 10, prefix: 'S/.' });
+      $('#demo2').attr('placeholder', '0.00');
+
+      $("#demo4").TouchSpin({ min: 0, max: 100000, step: 0.01, decimals: 2, boostat: 5, maxboostedstep: 10, prefix: 'Kg.' });
+      $('#demo4').attr('placeholder', '0.00');
+
+      $('#demo5').TouchSpin({ min: 0, max: 100000 });
+      $('#demo5').attr('placeholder', '0');
+
+      $('#demo6').TouchSpin({ min: 0, max: 100000 });
+      $('#demo6').attr('placeholder', '0');
+
+      $('#demo7').TouchSpin({ min: 0, max: 100000 });
+      $('#demo7').attr('placeholder', '0');
+
+      $('#demo8').TouchSpin({ min: 0, max: 100000 });
+      $('#demo8').attr('placeholder', '0');
+
+      $("#demo9").TouchSpin({ min: 0, max: 100000, step: 0.01, decimals: 2, boostat: 5, maxboostedstep: 10, prefix: 'S/.' });
+      $('#demo9').attr('placeholder', '0.00');
+
+      $("#demo10").TouchSpin({ min: 0, max: 100000, step: 0.01, decimals: 2, boostat: 5, maxboostedstep: 10, prefix: 'S/.' });
+      $('#demo10').attr('placeholder', '0.00');
+
+      $("#demo11").TouchSpin({ min: 0, max: 100000, step: 0.01, decimals: 2, boostat: 5, maxboostedstep: 10, prefix: 'S/.' });
+      $('#demo11').attr('placeholder', '0.00');
+
+      $("#demo12").TouchSpin({ min: 0, max: 100000, step: 0.01, decimals: 2, boostat: 5, maxboostedstep: 10, prefix: 'S/.' });
+      $('#demo12').attr('placeholder', '0.00');
+
+      // Function to reset demo5, demo6, demo7, and demo8 to 0
+      function resetDemos() {
+        $('#demo5').val(0).trigger('touchspin.updatesettings', {initval: 0});
+        $('#demo6').val(0).trigger('touchspin.updatesettings', {initval: 0});
+        $('#demo7').val(0).trigger('touchspin.updatesettings', {initval: 0});
+        $('#demo8').val(0).trigger('touchspin.updatesettings', {initval: 0});
+      }
+
+      // Function to update demo3 based on changes in demo5, demo6, demo7, and demo8
+      function updateDemo3(field) {
+        var initialDemo3Value = parseInt($('#demo3').val()) || 0;
+        var previousValue = parseInt(field.data('previous')) || 0;
+        var currentValue = parseInt(field.val()) || 0;
+        var difference = currentValue - previousValue;
+
+        var newDemo3Value = initialDemo3Value - difference;
+        if (newDemo3Value < 0) {
+          newDemo3Value = 0;
+        }
+
+        $('#demo3').val(newDemo3Value).trigger('touchspin.updatesettings', {initval: newDemo3Value});
+        field.data('previous', currentValue);
+
+        // Disable increment buttons if demo3 is 0
+        toggleIncrementButtons(newDemo3Value <= 0);
+      }
+
+      function toggleIncrementButtons(disable) {
+        $('#demo5, #demo6, #demo7, #demo8').each(function() {
+          var $this = $(this);
+          $this.closest('.bootstrap-touchspin').find('.bootstrap-touchspin-up').prop('disabled', disable);
+          if (disable) {
+            $this.closest('.bootstrap-touchspin').find('.bootstrap-touchspin-up').addClass('disabled');
+          } else {
+            $this.closest('.bootstrap-touchspin').find('.bootstrap-touchspin-up').removeClass('disabled');
+          }
+        });
+      }
+
+      // Listen for changes in demo3 and reset other demos
+      $('#demo3').on('change', function() {
+        resetDemos();
+        toggleIncrementButtons(false);
+        $('#demo5, #demo6, #demo7, #demo8').each(function() {
+          $(this).data('previous', $(this).val());
+        });
+      });
+
+      // Listen for changes in demo5, demo6, demo7, and demo8
+      $('#demo5, #demo6, #demo7, #demo8').each(function() {
+        $(this).data('previous', $(this).val());
+      }).on('change', function() {
+        updateDemo3($(this));
+      });
+
+      // Prevent increasing values if demo3 is 0
+      $('#demo5, #demo6, #demo7, #demo8').on('touchspin.on.startspin', function(e) {
+        var initialDemo3Value = parseInt($('#demo3').val()) || 0;
+        if (initialDemo3Value <= 0 && e.direction === 'up') {
+          e.preventDefault(); // Prevent the default action
+          return false;
+        }
+      });
+
+      // Initialize the values
+      resetDemos();
+      toggleIncrementButtons(false); // Ensure buttons are enabled initially
+    });
+  </script>
+</div>
+</body>
+</html>
