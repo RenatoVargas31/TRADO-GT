@@ -292,6 +292,9 @@
                                     validButton.style.display = 'none';
                                     break;
                             }
+                        } else {
+                            validationMessage.innerHTML = '<span class="text-danger">El código no existe</span>';
+                            actionButtons.style.display = 'flex';
                         }
                     })
                     .catch(error => {

@@ -110,6 +110,22 @@ public class SuperAdminController {
         // Retornar una imagen predeterminada si no hay foto
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+    @GetMapping("/productoFoto/{id}")
+    @ResponseBody
+    public ResponseEntity<byte[]> getProductoFoto(@PathVariable("id") Integer id) {
+        Optional<Producto> productoOpt = productosRepository.findById(id);
+
+        if (productoOpt.isPresent() && productoOpt.get().getFoto() != null) {
+            byte[] foto = productoOpt.get().getFoto();
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.IMAGE_JPEG); // Cambiar si usas otro formato
+            return new ResponseEntity<>(foto, headers, HttpStatus.OK);
+        }
+
+        // Retornar una imagen predeterminada si no hay foto
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
 
 
     @PostMapping("/subirFoto")
@@ -914,7 +930,7 @@ public class SuperAdminController {
 
         // Redirigir al formulario de nuevo producto
 
-        redirectAttributes.addFlashAttribute("successMessage", "Producto creado exitosamente.");
+        redirectAttributes.addFlashAttribute("successMessage", "Product "+producto.getCodigo()+ " creado exitosamente.");
         return "redirect:/superadmin/productoLista";
     }
 
@@ -966,82 +982,256 @@ public class SuperAdminController {
         formProducto.setProductoEnZonaSur(productoEnZonaSur);
         formProducto.setProductoEnZonaEste(productoEnZonaEste);
         formProducto.setProductoEnZonaOeste(productoEnZonaOeste);
+        //Verificar la categoría
+        boolean esTecnologia = producto.getSubcategoriaIdsubcategoria().getCategoriaIdcategoria().getNombre().equals("Tecnologia");
+        boolean esRopaFemenina = producto.getSubcategoriaIdsubcategoria().getCategoriaIdcategoria().getNombre().equals("Moda femenina");
+        boolean esRopaMasculina = producto.getSubcategoriaIdsubcategoria().getCategoriaIdcategoria().getNombre().equals("Moda masculina");
+        boolean esMueble = producto.getSubcategoriaIdsubcategoria().getCategoriaIdcategoria().getNombre().equals("Muebles");
         //Enviar a la vista
         model.addAttribute("formProducto", formProducto);
-        //Enviar subcategorias
-        model.addAttribute("subcategorias", subCategoriaRepository.findAll());
         //Enviar Proveedores
         model.addAttribute("proveedores", proveedorRepository.findAll());
-        return "SuperAdmin/productoEditar-SAdmin";
+        if(esMueble){
+            return "SuperAdmin/productoEditar-Mueble";
+        } else if (esTecnologia) {
+            return "SuperAdmin/productoEditar-Tecno";
+        } else if (esRopaFemenina) {
+            return "SuperAdmin/productoEditar-RopaF";
+        } else{
+            return "SuperAdmin/productoEditar-RopaM";
+        }
     }
     @PostMapping("/productoEditar")
-    public String viewProductoEditar(FormProducto formProducto,RedirectAttributes redirectAttributes) {
-        //Validar que se estén guardando los datos correctos por categoria de producto
+    public String viewProductoEditar(@ModelAttribute FormProducto formProducto,
+                                     @RequestParam(value = "foto", required = false) MultipartFile foto,
+                                     RedirectAttributes redirectAttributes,
+                                     Model model) throws IOException {
         Producto producto = formProducto.getProducto();
-        //Los unicos atributos que no deben tener valor son los siguientes: ram, almacenamiento, resolucion, ancho, alto y profundidad
-        Boolean guardaRopa = ((producto.getSubcategoriaIdsubcategoria().getCategoriaIdcategoria().getId() == 1 || (producto.getSubcategoriaIdsubcategoria().getCategoriaIdcategoria().getId() == 2) && producto.getRam().isEmpty() && producto.getAlmacenamiento().isEmpty() && producto.getResolucion().isEmpty() && producto.getAncho().isEmpty() && producto.getAlto().isEmpty() && producto.getProfundidad().isEmpty()));
-        //Para muebles deben estar vacíos los campos de talla, material, resolucion, ram y almacenamiento
-        Boolean guardaMuebles = (producto.getSubcategoriaIdsubcategoria().getCategoriaIdcategoria().getId() == 4 && producto.getTalla().isEmpty() && producto.getResolucion().isEmpty() && producto.getRam().isEmpty() && producto.getAlmacenamiento().isEmpty());
-        //Para tecnología deben estar vacíos los siguientes atributos: talla y material
-        Boolean guardaTecnologia = (producto.getSubcategoriaIdsubcategoria().getCategoriaIdcategoria().getId() == 5 && producto.getTalla().isEmpty());
-        System.out.println(formProducto.getProducto());
-        System.out.println(formProducto.getProductoEnZonaNorte());
-        System.out.println(guardaTecnologia);
-        System.out.println(guardaMuebles);
-        System.out.println(guardaRopa);
-        if(guardaRopa || guardaMuebles || guardaTecnologia){
+        boolean hasErrors = false;
 
-            //Actualizar producto
-            Producto productoEdit = formProducto.getProducto();
-            productosRepository.save(productoEdit);
-            //Determinar los ProductoZonaID
-            formProducto.getProductoEnZonaNorte().setProductoyZona(productoEdit,zonaRepository.findById(1).get());
-            formProducto.getProductoEnZonaSur().setProductoyZona(productoEdit,zonaRepository.findById(2).get());
-            formProducto.getProductoEnZonaEste().setProductoyZona(productoEdit,zonaRepository.findById(3).get());
-            formProducto.getProductoEnZonaOeste().setProductoyZona(productoEdit,zonaRepository.findById(4).get());
+        boolean esTecnologia = producto.getSubcategoriaIdsubcategoria().getCategoriaIdcategoria().getNombre().equals("Tecnologia");
+        boolean esRopaFemenina = producto.getSubcategoriaIdsubcategoria().getCategoriaIdcategoria().getNombre().equals("Moda femenina");
+        boolean esRopaMasculina = producto.getSubcategoriaIdsubcategoria().getCategoriaIdcategoria().getNombre().equals("Moda masculina");
+        boolean esMueble = producto.getSubcategoriaIdsubcategoria().getCategoriaIdcategoria().getNombre().equals("Muebles");
 
-            if (formProducto.getProductoEnZonaNorte().getCantidad() >= 25) {
-                formProducto.getProductoEnZonaNorte().setEstadoRepo((byte) 0); // Stock adecuado
-                // Mensaje de notificación
-                String mensajeNotificacionNorte = "El stock del producto '" + formProducto.getProductoEnZonaNorte().getProductoIdproducto().getNombre() +
-                        "' ha sido repuesto. Cantidad actual: " + formProducto.getProductoEnZonaNorte().getCantidad();
-                notificationService.stockNotification(mensajeNotificacionNorte,formProducto.getProductoEnZonaNorte().getZonaIdzona());
-            }
-            if (formProducto.getProductoEnZonaSur().getCantidad() >= 25) {
-                formProducto.getProductoEnZonaSur().setEstadoRepo((byte) 0); // Stock adecuado
-                // Mensaje de notificación
-                String mensajeNotificacionSur = "El stock del producto '" + formProducto.getProductoEnZonaSur().getProductoIdproducto().getNombre() +
-                        "' ha sido repuesto. Cantidad actual: " + formProducto.getProductoEnZonaSur().getCantidad();
-                notificationService.stockNotification(mensajeNotificacionSur,formProducto.getProductoEnZonaSur().getZonaIdzona());
-            }
-            if (formProducto.getProductoEnZonaEste().getCantidad() >= 25) {
-                formProducto.getProductoEnZonaEste().setEstadoRepo((byte) 0); // Stock adecuado
-                // Mensaje de notificación
-                String mensajeNotificacionEste = "El stock del producto '" + formProducto.getProductoEnZonaEste().getProductoIdproducto().getNombre() +
-                        "' ha sido repuesto. Cantidad actual: " + formProducto.getProductoEnZonaEste().getCantidad();
-                notificationService.stockNotification(mensajeNotificacionEste,formProducto.getProductoEnZonaEste().getZonaIdzona());
-            }
-            if (formProducto.getProductoEnZonaOeste().getCantidad() >= 25) {
-                formProducto.getProductoEnZonaOeste().setEstadoRepo((byte) 0); // Stock adecuado
-                // Mensaje de notificación
-                String mensajeNotificacionOeste = "El stock del producto '" + formProducto.getProductoEnZonaOeste().getProductoIdproducto().getNombre() +
-                        "' ha sido repuesto. Cantidad actual: " + formProducto.getProductoEnZonaOeste().getCantidad();
-                notificationService.stockNotification(mensajeNotificacionOeste,formProducto.getProductoEnZonaOeste().getZonaIdzona());
-            }
-            //Guardar los productos en zona
-            productoEnZonaRepository.save(formProducto.getProductoEnZonaNorte());
-            productoEnZonaRepository.save(formProducto.getProductoEnZonaSur());
-            productoEnZonaRepository.save(formProducto.getProductoEnZonaEste());
-            productoEnZonaRepository.save(formProducto.getProductoEnZonaOeste());
+        //Validaciones Generales
 
-            //Enviar mensaje de éxito como redirect attribute
-            redirectAttributes.addFlashAttribute("successMessage", "Producto editado correctamente.");
-            return "redirect:/superadmin/productoLista";
-        }else{
-            //Enviar mensaje de error como redirect attribute
-            redirectAttributes.addFlashAttribute("errorMessage", "No se puede guardar el producto porque los atributos no coinciden con la categoría.");
-            return "redirect:/superadmin/productoLista";
+        if (producto.getNombre() == null || producto.getNombre().trim().isEmpty()) {
+            model.addAttribute("nombreError", "El nombre del producto es obligatorio y debe contener solo letras, números y espacios.");
+            hasErrors = true;
         }
+
+        if (producto.getDescripcion() == null || producto.getDescripcion().trim().isEmpty() || producto.getDescripcion().length() > 250) {
+            model.addAttribute("descripcionError", "La descripción es obligatoria y no puede exceder los 250 caracteres.");
+            hasErrors = true;
+        }
+
+        if (producto.getCantidad() == null || producto.getCantidad() < 0) {
+            model.addAttribute("cantidadError", "La cantidad debe ser un número entero positivo.");
+            hasErrors = true;
+        }
+
+        if (producto.getPrecio() == null || producto.getPrecio().compareTo(BigDecimal.ZERO) <= 0) {
+            model.addAttribute("precioError", "El precio debe ser un número decimal positivo.");
+            hasErrors = true;
+        }
+
+        if (producto.getPeso() == null || producto.getPeso().compareTo(BigDecimal.ZERO) <= 0) {
+            model.addAttribute("pesoError", "El peso debe ser un número positivo.");
+            hasErrors = true;
+        }
+
+        if (producto.getProveedorIdproveedor() == null) {
+            model.addAttribute("proveedorError", "Debe seleccionar un proveedor válido.");
+            hasErrors = true;
+        }
+
+        if (producto.getSubcategoriaIdsubcategoria()==null) {
+            model.addAttribute("subcategoriaError", "Debe seleccionar una subcategoría válida.");
+            hasErrors = true;
+        }
+
+        if(producto.getMarca() == null || producto.getMarca().trim().isEmpty()){
+            model.addAttribute("marcaError", "La marca del producto es obligatoria.");
+            hasErrors = true;
+        }
+
+        if (producto.getMarca() != null && producto.getMarca().length() > 45) {
+            model.addAttribute("marcaError", "La marca no puede exceder los 45 caracteres.");
+            hasErrors = true;
+        }
+        if(producto.getColor() == null || producto.getColor().trim().isEmpty()){
+            model.addAttribute("colorError", "El color del producto es obligatorio.");
+            hasErrors = true;
+        }
+        if (producto.getColor() != null  && producto.getColor().length() > 45) {
+            model.addAttribute("colorError", "El color no puede exceder los 45 caracteres.");
+            hasErrors = true;
+        }
+        if(producto.getMaterial() == null || producto.getMaterial().trim().isEmpty()){
+            model.addAttribute("materialError", "El material del producto es obligatorio.");
+            hasErrors = true;
+        }
+        if (producto.getMaterial() != null  &&  producto.getMaterial().length() > 45) {
+            model.addAttribute("materialError", "El material no puede exceder los 45 caracteres.");
+            hasErrors = true;
+        }
+        //Validaciones por tipo de producto
+        if(esRopaFemenina || esRopaMasculina){
+            if(producto.getTalla() == null || producto.getTalla().trim().isEmpty()){
+                model.addAttribute("tallaError", "La talla del producto es obligatoria.");
+                hasErrors = true;
+            }
+            if (producto.getTalla().length() > 45) {
+                model.addAttribute("tallaError", "La talla no puede exceder los 45 caracteres.");
+                hasErrors = true;
+            }
+        }
+        if (esTecnologia||esMueble){
+            if(producto.getModelo() == null || producto.getModelo().trim().isEmpty()){
+                model.addAttribute("modeloError", "El modelo del producto es obligatorio.");
+                hasErrors = true;
+            }
+            if (producto.getModelo() != null  &&  producto.getModelo().length() > 45) {
+                model.addAttribute("modeloError", "El modelo no puede exceder los 45 caracteres.");
+                hasErrors = true;
+            }
+            if(!(producto.getSubcategoriaIdsubcategoria().getId() == 15 )){
+                if(producto.getAncho() == null || producto.getAncho().trim().isEmpty()){
+                    model.addAttribute("anchoError", "El ancho del producto es obligatorio.");
+                    hasErrors = true;
+                }
+                if (producto.getAncho().length() > 45) {
+                    model.addAttribute("anchoError", "El ancho no puede exceder los 45 caracteres.");
+                    hasErrors = true;
+                }
+                if(producto.getAlto() == null || producto.getAlto().trim().isEmpty()){
+                    model.addAttribute("altoError", "El alto del producto es obligatorio.");
+                    hasErrors = true;
+                }
+                if (producto.getAlto().length() > 45) {
+                    model.addAttribute("altoError", "El alto no puede exceder los 45 caracteres.");
+                    hasErrors = true;
+                }
+                if(producto.getProfundidad() == null || producto.getProfundidad().trim().isEmpty()){
+                    model.addAttribute("profundidadError", "La profundidad del producto es obligatoria.");
+                    hasErrors = true;
+                }
+                if (producto.getProfundidad().length() > 45) {
+                    model.addAttribute("profundidadError", "La profundidad no puede exceder los 45 caracteres.");
+                    hasErrors = true;
+                }
+                if(esTecnologia){
+                    if(producto.getResolucion() == null || producto.getResolucion().trim().isEmpty()){
+                        model.addAttribute("resolucionError", "La resolución del producto es obligatoria.");
+                        hasErrors = true;
+                    }
+                    if (producto.getResolucion().length() > 45) {
+                        model.addAttribute("resolucionError", "La resolucion no puede exceder los 45 caracteres.");
+                        hasErrors = true;
+                    }
+                    if(producto.getRam() == null || producto.getRam().trim().isEmpty()){
+                        model.addAttribute("ramError", "La ram del producto es obligatoria.");
+                        hasErrors = true;
+                    }
+                    if (producto.getRam().length() > 45) {
+                        model.addAttribute("ramError", "La ram no puede exceder los 45 caracteres.");
+                        hasErrors = true;
+                    }
+                    if(producto.getAlmacenamiento() == null || producto.getAlmacenamiento().trim().isEmpty()){
+                        model.addAttribute("almacenamientoError", "El almacenamiento del producto es obligatorio.");
+                        hasErrors = true;
+                    }
+                    if (producto.getAlmacenamiento().length() > 45) {
+                        model.addAttribute("almacenamientoError", "El almacenamiento no puede exceder los 45 caracteres.");
+                        hasErrors = true;
+                    }
+                }
+            }
+
+        }
+
+        // Validaciones por zona
+        for (ProductoEnZona zona : new ProductoEnZona[]{
+                formProducto.getProductoEnZonaNorte(),
+                formProducto.getProductoEnZonaSur(),
+                formProducto.getProductoEnZonaEste(),
+                formProducto.getProductoEnZonaOeste()
+        }) {
+            if (zona.getCantidad() == null || zona.getCantidad() < 0) {
+                model.addAttribute("zonaCantidadError", "La cantidad en cada zona debe ser un número entero positivo.");
+                hasErrors = true;
+            }
+            if (zona.getCostoEnvio() == null || zona.getCostoEnvio().compareTo(BigDecimal.ZERO) < 0) {
+                model.addAttribute("zonaCostoEnvioError", "El costo de envío en cada zona debe ser un número positivo.");
+                hasErrors = true;
+            }
+        }
+
+        if (hasErrors) {
+            model.addAttribute("formProducto", formProducto);
+            model.addAttribute("proveedores", proveedorRepository.findAll());
+            if (esRopaMasculina){
+                return "SuperAdmin/productoEditar-RopaM";
+            }
+            if (esRopaFemenina){
+                return "SuperAdmin/productoEditar-RopaF";
+            }
+            if(esMueble){
+                return "SuperAdmin/productoEditar-Mueble";
+            }
+            if(esTecnologia){
+                return "SuperAdmin/productoEditar-Tecno";
+            }
+        }
+        //Actualizar producto
+        Producto productoEdit = formProducto.getProducto();
+
+        productosRepository.save(productoEdit);
+        System.out.println("Llegué a guardar el producto");
+        //Determinar los ProductoZonaID
+        formProducto.getProductoEnZonaNorte().setProductoyZona(productoEdit,zonaRepository.findById(1).get());
+        formProducto.getProductoEnZonaSur().setProductoyZona(productoEdit,zonaRepository.findById(2).get());
+        formProducto.getProductoEnZonaEste().setProductoyZona(productoEdit,zonaRepository.findById(3).get());
+        formProducto.getProductoEnZonaOeste().setProductoyZona(productoEdit,zonaRepository.findById(4).get());
+
+        if (formProducto.getProductoEnZonaNorte().getCantidad() >= 25 && formProducto.getProductoEnZonaNorte().getEstadoRepo() == 1) {
+            formProducto.getProductoEnZonaNorte().setEstadoRepo((byte) 0); // Stock adecuado
+            // Mensaje de notificación
+            String mensajeNotificacionNorte = "El stock del producto '" + formProducto.getProductoEnZonaNorte().getProductoIdproducto().getNombre() +
+                    "' ha sido repuesto. Cantidad actual: " + formProducto.getProductoEnZonaNorte().getCantidad();
+            notificationService.stockNotification(mensajeNotificacionNorte,formProducto.getProductoEnZonaNorte().getZonaIdzona());
+        }
+        if (formProducto.getProductoEnZonaSur().getCantidad() >= 25 && formProducto.getProductoEnZonaNorte().getEstadoRepo() == 1) {
+            formProducto.getProductoEnZonaSur().setEstadoRepo((byte) 0); // Stock adecuado
+            // Mensaje de notificación
+            String mensajeNotificacionSur = "El stock del producto '" + formProducto.getProductoEnZonaSur().getProductoIdproducto().getNombre() +
+                    "' ha sido repuesto. Cantidad actual: " + formProducto.getProductoEnZonaSur().getCantidad();
+            notificationService.stockNotification(mensajeNotificacionSur,formProducto.getProductoEnZonaSur().getZonaIdzona());
+        }
+        if (formProducto.getProductoEnZonaEste().getCantidad() >= 25 && formProducto.getProductoEnZonaNorte().getEstadoRepo() == 1) {
+            formProducto.getProductoEnZonaEste().setEstadoRepo((byte) 0); // Stock adecuado
+            // Mensaje de notificación
+            String mensajeNotificacionEste = "El stock del producto '" + formProducto.getProductoEnZonaEste().getProductoIdproducto().getNombre() +
+                    "' ha sido repuesto. Cantidad actual: " + formProducto.getProductoEnZonaEste().getCantidad();
+            notificationService.stockNotification(mensajeNotificacionEste,formProducto.getProductoEnZonaEste().getZonaIdzona());
+        }
+        if (formProducto.getProductoEnZonaOeste().getCantidad() >= 25 && formProducto.getProductoEnZonaNorte().getEstadoRepo() == 1) {
+            formProducto.getProductoEnZonaOeste().setEstadoRepo((byte) 0); // Stock adecuado
+            // Mensaje de notificación
+            String mensajeNotificacionOeste = "El stock del producto '" + formProducto.getProductoEnZonaOeste().getProductoIdproducto().getNombre() +
+                    "' ha sido repuesto. Cantidad actual: " + formProducto.getProductoEnZonaOeste().getCantidad();
+            notificationService.stockNotification(mensajeNotificacionOeste,formProducto.getProductoEnZonaOeste().getZonaIdzona());
+        }
+        //Guardar los productos en zona
+        productoEnZonaRepository.save(formProducto.getProductoEnZonaNorte());
+        productoEnZonaRepository.save(formProducto.getProductoEnZonaSur());
+        productoEnZonaRepository.save(formProducto.getProductoEnZonaEste());
+        productoEnZonaRepository.save(formProducto.getProductoEnZonaOeste());
+
+        //Enviar mensaje de éxito como redirect attribute
+        redirectAttributes.addFlashAttribute("successMessage", "Producto "+ producto.getCodigo()+" editado correctamente");
+        return "redirect:/superadmin/productoLista";
     }
     @GetMapping("/productoBorrar")
     public String viewProductoBorrar(Integer id,RedirectAttributes redirectAttributes) {
