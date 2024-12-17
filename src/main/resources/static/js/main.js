@@ -11,6 +11,7 @@ var stompClient = null;
 var username = null;
 var orderId = null;
 var usuarioId = null;
+var apellido = null;
 
 var colors = [
     "#2196F3",
@@ -35,6 +36,7 @@ var colors = [
 username = document.body.dataset.username;
 orderId = document.body.dataset.idorden;
 usuarioId = document.body.dataset.idusuario;
+apellido = document.body.dataset.apellido;
 
 var socket = new SockJS('/websocket');
 stompClient = Stomp.over(socket);
@@ -48,11 +50,11 @@ function onConnected() {
 
     // Tell your username to the server
     slide.scrollTop = slide.scrollHeight;
-    
+
     stompClient.send(
         `/app/chat.register/${orderId}`,
         {},
-        JSON.stringify({ sender: username, type: "JOIN" , idSender: usuarioId, idOrder: orderId})
+        JSON.stringify({ sender: username, type: "JOIN" , idSender: usuarioId, idOrder: orderId, lastname : apellido,})
     );
 
 }
@@ -73,6 +75,7 @@ function send(event) {
             idSender: usuarioId,
             idOrder: orderId,
             type: "CHAT",
+            lastname : apellido,
         };
 
         stompClient.send(`/app/chat.send/${orderId}`, {}, JSON.stringify(chatMessage));
@@ -86,10 +89,12 @@ function send(event) {
 function onMessageReceived(payload) {
 
     var currentDate = new Date();
-    var hours = currentDate.getHours();
-    var minutes = currentDate.getMinutes();
-    minutes = minutes < 10 ? '0' + minutes : minutes;
-    var timeString = hours + ':' + minutes;
+    var hours = currentDate.getHours().toString().padStart(2, "0"); // Formato de 2 dígitos
+    var minutes = currentDate.getMinutes().toString().padStart(2, "0"); // Formato de 2 dígitos
+    var day = currentDate.getDate().toString().padStart(2, "0"); // Día con 2 dígitos
+    var month = currentDate.toLocaleString("es-ES", { month: "short" }); // Mes abreviado en español
+
+    var formattedDate = `${hours}:${minutes} - ${day} ${month}`;
     var message = JSON.parse(payload.body);
 
     // Selecciona el elemento en el que deseas insertar HTML
@@ -100,13 +105,13 @@ function onMessageReceived(payload) {
             htmlCode = `<div class="d-flex justify-content-end mb-3">
                             <div>
                                 <h6 class="mb-1 text-end">
-                                    <span type="text">` + message.sender + `</span>
-                                    <small class="text-muted">` + timeString + `</small>
+                                    <span type="text">` + message.sender + " " + message.lastname +`</span>
+                                    <small class="text-muted">` + formattedDate + `</small>
                                 </h6>
                                 <p class="bg-primary text-white p-2 rounded">` + message.content + `</p>
                             </div>
                             <div class="avatar ms-3">
-                                <span class="avatar-title bg-primary text-white rounded-circle" style="width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; border-radius: 50%;">
+                                <span class="avatar-title bg-primary text-white rounded-circle" style="width: 40px; height: 40px; display: flex; justify-content: center; align-items: center; border-radius: 50%;">
                                     <i class="ri-user-fill"></i>
                                 </span>
                             </div>
@@ -116,14 +121,16 @@ function onMessageReceived(payload) {
             var messageText = document.createTextNode(message.content);
             htmlCode = `<div class="d-flex mb-3">
                             <div class="avatar me-3">
-                                <span class="avatar-title bg-primary-subtle text-primary rounded-circle" style="width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; border-radius: 50%;">
+                                <span class="avatar-title bg-primary-subtle text-primary rounded-circle" style="width: 40px; height: 40px; display: flex; justify-content: center; align-items: center; border-radius: 50%;">
                                     <i class="ri-user-fill"></i>
                                 </span>
                             </div>
 
                             <div>
-                                <h6 class="mb-1">` + message.sender + `</h6>
-                                <small class="text-muted">` + timeString + `</small>
+                                <h6 class="mb-1">
+                                    <span type="text">` + message.sender + " " + message.lastname +`</span>
+                                    <small class="text-muted">` + formattedDate + `</small>
+                                </h6>
                                 <p class="bg-light p-2 rounded">` + message.content + `</p>
                             </div>
                         </div>`;

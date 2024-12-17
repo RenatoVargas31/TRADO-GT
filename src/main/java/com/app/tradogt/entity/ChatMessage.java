@@ -12,6 +12,7 @@ public class ChatMessage {
     private String idSender;
     private String idOrder;
     private String sender;
+    private String lastname;
     private MessageType type;
     public enum MessageType {
         CHAT, LEAVE, JOIN

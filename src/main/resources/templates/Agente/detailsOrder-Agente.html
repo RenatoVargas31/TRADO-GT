@@ -9,6 +9,7 @@
     <meta th:replace="~{Common/cssBase :: css_Base}">
     <!-- End CSS BASE -->
     <!-- DataTables -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link th:href="@{../libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css}" rel="stylesheet" type="text/css" />
     <link th:href="@{../libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css}" rel="stylesheet" type="text/css" />
     <link th:href="@{../libs/datatables.net-select-bs4/css/select.bootstrap4.min.css}" rel="stylesheet" type="text/css" />
@@ -18,7 +19,7 @@
 
 </head>
 
-<body data-sidebar="dark" th:data-username="${usuarioAutenticado.nombre}" th:data-idusuario="${usuarioAutenticado.id}" th:data-idorden="${orden.id}">
+<body data-sidebar="dark" th:data-username="${usuarioAutenticado.nombre}" th:data-idusuario="${usuarioAutenticado.id}" th:data-idorden="${orden.id}" th:data-apellido="${usuarioAutenticado.apellido}">
 
 <!-- <body data-layout="horizontal" data-topbar="dark"> -->
 
@@ -595,12 +596,12 @@
                                                     <div>
                                                         <h6 class="mb-1 text-end">
                                                             <span th:text="${usuarioAutenticado.nombre} + ' ' + ${usuarioAutenticado.apellido}"></span>
-                                                            <small th:text="${mensaje.getFechaEnvio()}" class="text-muted"></small>
+                                                            <small th:text="${mensaje.getFormattedTimestamp()}" class="text-muted"></small>
                                                         </h6>
                                                         <p th:text="${mensaje.getMensaje()}" class="bg-primary text-white p-2 rounded"></p>
                                                     </div>
                                                     <div class="avatar ms-3">
-                                                    <span class="avatar-title bg-primary text-white rounded-circle" style="width: 50px; height: 50px; display: flex; justify-content: center; align-items: center;">
+                                                    <span class="avatar-title bg-primary text-white rounded-circle" style="width: 40px; height: 40px; display: flex; justify-content: center; align-items: center;">
                                                         <i class="ri-user-fill"></i>
                                                     </span>
                                                     </div>
@@ -609,14 +610,14 @@
                                                 <!-- Mensaje del importador (izquierda) -->
                                                 <div th:if="${usuarioAutenticado != mensaje.getSender()}" class="d-flex mb-3">
                                                     <div class="avatar me-3">
-                                                    <span class="avatar-title bg-primary-subtle text-primary rounded-circle" style="width: 50px; height: 50px; display: flex; justify-content: center; align-items: center;">
+                                                    <span class="avatar-title bg-primary-subtle text-primary rounded-circle" style="width: 40px; height: 40px; display: flex; justify-content: center; align-items: center;">
                                                         <i class="ri-user-fill"></i>
                                                     </span>
                                                     </div>
                                                     <div>
                                                         <h6 class="mb-1">
                                                             <span th:text="${mensaje.getSender().nombre} + ' ' + ${mensaje.getSender().apellido}"></span>
-                                                            <small th:text="${mensaje.getFechaEnvio()}" class="text-muted"></small>
+                                                            <small th:text="${mensaje.getFormattedTimestamp()}" class="text-muted" id="fecha-mandada"></small>
                                                         </h6>
                                                         <p th:text="${mensaje.getMensaje()}" class="bg-light p-2 rounded"></p>
                                                     </div>
@@ -627,14 +628,18 @@
                                     </div>
                                     <div class="card-footer">
                                         <form id="messageForm" name="messageForm">
-                                            <div class="form-group">
-                                                <input type="text" id="message" class="form-control" placeholder="Escribe un mensaje...">
-                                                <button type="submit" class="btn">
-                                                    <i class="fa-solid fa-paper-plane"></i>Enviar
+                                            <div class="form-group d-flex">
+                                                <!-- Input del mensaje -->
+                                                <input type="text" id="message" class="form-control me-2" placeholder="Escribe un mensaje...">
+
+                                                <!-- Botón de envío -->
+                                                <button type="submit" class="btn btn-primary">
+                                                    <i class="fa-solid fa-paper-plane"></i> Enviar
                                                 </button>
                                             </div>
                                         </form>
                                     </div>
+
                                 </div>
 
 

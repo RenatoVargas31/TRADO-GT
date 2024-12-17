@@ -35,7 +35,7 @@
 
 </head>
 
-<body data-sidebar="dark" th:data-username="${usuarioAutenticado.nombre}" th:data-idusuario="${usuarioAutenticado.id}" th:data-idorden="${orden.id}">
+<body data-sidebar="dark" th:data-username="${usuarioAutenticado.nombre}" th:data-idusuario="${usuarioAutenticado.id}" th:data-idorden="${orden.id}" th:data-apellido="${usuarioAutenticado.apellido}">
 
 <!-- <body data-layout="horizontal" data-topbar="dark"> -->
 
@@ -497,7 +497,7 @@
                                                     <div>
                                                         <h6 class="mb-1 text-end">
                                                             <span th:text="${mensaje.getSender().nombre} + ' ' + ${mensaje.getSender().apellido}"></span>
-                                                            <small th:text="${mensaje.getFechaEnvio()}" class="text-muted"></small>
+                                                            <small th:text="${mensaje.getFormattedTimestamp()}" class="text-muted" id="fecha-mandada2"></small>
                                                         </h6>
                                                         <p th:text="${mensaje.getMensaje()}" class="bg-primary text-white p-2 rounded"></p>
                                                     </div>
@@ -511,13 +511,13 @@
                                                 <div th:if="${usuarioAutenticado != mensaje.getSender()}" class="d-flex">
                                                     <div class="avatar me-3">
                                                     <span class="avatar-title bg-primary-subtle text-primary rounded-circle d-flex justify-content-center align-items-center" style="width: 40px; height: 40px;">
-                                                        <i class="ri-user-fill fs-5"></i>
+                                                        <i class="ri-user-fill"></i>
                                                     </span>
                                                     </div>
                                                     <div>
                                                         <h6 class="mb-1">
                                                             <span th:text="${mensaje.getSender().nombre} + ' ' + ${mensaje.getSender().apellido}"></span>
-                                                            <small th:text="${mensaje.getFechaEnvio()}" class="text-muted"></small>
+                                                            <small th:text="${mensaje.getFormattedTimestamp()}" class="text-muted" id="fecha-mandada"></small>
                                                         </h6>
                                                         <p th:text="${mensaje.getMensaje()}" class="bg-light p-2 rounded"></p>
                                                     </div>
@@ -672,7 +672,6 @@
 <!--JAVASCRIPT NOTIFICACIONES-->
 <span th:replace="~{Usuario/fragments/notificaciones-scripts :: js_Notificaciones}"></span>
 <!-- End JAVASCRIPT NOTIFICACIONES-->
-
 
 
 <script>
