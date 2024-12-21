@@ -103,8 +103,7 @@ public class ChatBotGPTController {
                                 "- Bannear usuarios por mal comportamiento, datos falsos o pagos incompletos.\n\n" +
 
                                 "El chatbot debe:\n" +
-                                "- Conversar con el usuario final para verificar el número de orden generado.\n" +
-                                "- Confirmar la dirección de delivery.\n" +
+                                "- Confirmar la dirección de delivery siempre que la orden se encuentre en estado EN VALIDACIÓN.\n" +
                                 "- Indicar los costos adicionales que pueden afectar luego que la importación arribe al país.\n" +
                                 "- Brindar el enlace al libro de reclamaciones siempre que el usuario lo solicite, el link es https://forms.gle/9EKiu2iSA1kN83wFA.\n" +
                                 "- Funcionará 24/7.\n\n" +
